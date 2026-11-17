@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1/2 satisfied in src/signed_url.py: sign_path_token returns hmac(...).hexdigest() (lowercase hex) over f'{path}:{int(expires_at)}'; verify_path_token checks int(now) <= int(expires_at) and uses hmac.compare_digest for constant-time equality. Legacy function expiry_remaining signature/behavior preserved; pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and the signed_url implementation to confirm the exact token format (lowercase hex) and that legacy public APIs remain unchanged, then run pytest to ensure no regressions.",
+    "The diff shows sign_path_token uses hmac.new(...).hexdigest() which yields lowercase hex, and verify_path_token checks now<=expires_at and uses hmac.compare_digest. Legacy expiry_remaining signature is unchanged. I will run pytest to confirm no hidden regressions.",
+    "Implementation matches requirements: lowercase hex HMAC-SHA256 via hexdigest, verify enforces now<=expires_at and uses hmac.compare_digest; legacy expiry_remaining remains unchanged and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.85,
+  "prompt_tokens": 3230,
+  "output_tokens": 272,
+  "estimated_usd": 0.001079,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

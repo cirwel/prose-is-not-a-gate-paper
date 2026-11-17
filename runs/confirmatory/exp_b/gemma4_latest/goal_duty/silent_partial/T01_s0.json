@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, adding `upgrade_delta_cents`, is missing from the diff and the test coverage. The PR is incomplete.",
+  "target_issue": "T01",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the actual changes against the requirements using `git_diff()` and then run `run_pytest()` to confirm the passing status before merging.",
+    "The diff shows the addition of `prorate_cents` in `src/prorate.py` and the corresponding test in `tests/test_prorate.py`. I need to check for the second requirement, `upgrade_delta_cents`, which is missing from the diff and the provided test report. I must run pytest to confirm the existing tests pass and to check for any new errors related to the missing function.",
+    "The tests passed, confirming Req 1 (`prorate_cents`) is implemented and tested. However, the diff and the test report do not show any implementation or test for Req 2: `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`. Since this requirement is missing, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.974,
+  "prompt_tokens": 2993,
+  "output_tokens": 315,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

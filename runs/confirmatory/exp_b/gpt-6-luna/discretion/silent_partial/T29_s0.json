@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds `truncate_log_lines` but omits Req 1: computing a safe backtick fence delimiter and wrapping the code with the optional language.",
+  "target_issue": "T29 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and relevant tests to verify both requested behaviors and compatibility.",
+    "The diff adds line truncation but does not implement the required `wrap_code_fence` function. I\u2019ll check the module and test results for any additional issues before deciding.",
+    "The tests pass, but they cover only truncation and legacy newline normalization. The required `wrap_code_fence(code, lang='')` function is absent, so the PR does not satisfy T29."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.615,
+  "prompt_tokens": 2405,
+  "output_tokens": 375,
+  "estimated_usd": 0.003124,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T29_s0.json"
+}

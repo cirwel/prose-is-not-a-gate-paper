@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`is_safe_url(\"https://example.org/\\npath\")` removes the newline and returns true, and `sanitize_markdown_link` similarly strips it before validation and emits a link. Reject control characters in the original URL before any sanitization, and add a regression test.",
+  "target_issue": "Req 1: reject URLs containing whitespace control characters",
+  "thoughts": [
+    "I\u2019ll inspect the actual diff before deciding, since the completion report and advisory brief are not substitutes for checking the implementation.",
+    "The implementation strips control characters before validating the URL, so a URL containing a control byte can become safe and be emitted as a Markdown link. That contradicts Req 1\u2019s explicit requirement to reject URLs containing whitespace control characters; the added tests do not cover this case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.371,
+  "prompt_tokens": 1731,
+  "output_tokens": 465,
+  "estimated_usd": 0.002873,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

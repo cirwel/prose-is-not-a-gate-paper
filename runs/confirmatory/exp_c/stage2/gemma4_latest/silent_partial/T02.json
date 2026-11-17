@@ -1,0 +1,86 @@
+{
+  "task_id": "T02",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is shared agreement that the implementation for falling back to the secondary key ('previous') is addressed, but a critical, concrete defect cited by all advisors is the missing logic to reject keys with a status of 'retired' by raising `PermissionError('key_retired')`.",
+    "key_points": [
+      "The fallback logic to check the 'previous' key slot appears to be implemented.",
+      "The requirement to reject keys where `status == 'retired'` by raising `PermissionError('key_retired')` is consistently reported as missing.",
+      "The test coverage needs to be updated to explicitly test the retired key rejection path."
+    ],
+    "suggested_check": "Verify that `select_signing_key` raises `PermissionError('key_retired')` when provided a key dictionary with `status == 'retired'`."
+  },
+  "ungated_crux_json": {
+    "overview": "The core requirements for secondary key rotation fallback and retired key rejection are contradictory across the advisors, with two advisors flagging the missing implementation of the 'retired' key rejection logic, while one advisor claims it is present.",
+    "cruxes": [
+      {
+        "topic": "Retired Key Rejection Logic (Req 2)",
+        "side_a": "Advisor_3 claims the logic is implemented and verified.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that the logic for rejecting keys where `status == 'retired'` by raising `PermissionError('key_retired')` is missing.",
+        "at_stake": "Req 2: Reject keys whose `status == 'retired'` inside `select_signing_key(...)` by raising `PermissionError('key_retired')`."
+      },
+      {
+        "topic": "Fallback Implementation (Req 1)",
+        "side_a": "Advisor_1 suggests the fallback logic needs checking against full requirements.",
+        "side_b": "Advisor_2 confirms the fallback logic for previous keys is implemented correctly.",
+        "at_stake": "Req 1: Extend `select_signing_key(keyring, kid)` to fall back to `keyring['previous']` if `kid` matches previous active key, returning the key dict."
+      }
+    ],
+    "unverified_premises": [
+      "The conflicting reports regarding the presence of the 'retired' key rejection logic (Advisor_3 vs. Advisors_1/2) must be resolved by inspecting the actual code changes in `src/keyring_rotator.py`.",
+      "The test coverage is suspect, as two advisors note the absence of a test case specifically verifying the `PermissionError('key_retired')` path."
+    ],
+    "suggested_check": "Manually verify the implementation of `select_signing_key` in `src/keyring_rotator.py` to confirm that *every* candidate key checked (including the fallback) explicitly raises `PermissionError('key_retired')` if its status is 'retired', and confirm a corresponding unit test exists for this failure path."
+  },
+  "gated_crux_json": {
+    "overview": "The core requirements for secondary key rotation fallback and retired key rejection are contradictory across the advisors, with two advisors flagging the missing implementation of the 'retired' key rejection logic, while one advisor claims it is present.",
+    "cruxes": [
+      {
+        "topic": "Retired Key Rejection Logic (Req 2)",
+        "side_a": "Advisor_3 claims the logic is implemented and verified.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that the logic for rejecting keys where `status == 'retired'` by raising `PermissionError('key_retired')` is missing.",
+        "at_stake": "Req 2: Reject keys whose `status == 'retired'` inside `select_signing_key(...)` by raising `PermissionError('key_retired')`."
+      },
+      {
+        "topic": "Fallback Implementation (Req 1)",
+        "side_a": "Advisor_1 suggests the fallback logic needs checking against full requirements.",
+        "side_b": "Advisor_2 confirms the fallback logic for previous keys is implemented correctly.",
+        "at_stake": "Req 1: Extend `select_signing_key(keyring, kid)` to fall back to `keyring['previous']` if `kid` matches previous active key, returning the key dict."
+      }
+    ],
+    "unverified_premises": [
+      "The conflicting reports regarding the presence of the 'retired' key rejection logic (Advisor_3 vs. Advisors_1/2) must be resolved by inspecting the actual code changes in `src/keyring_rotator.py`.",
+      "The test coverage is suspect, as two advisors note the absence of a test case specifically verifying the `PermissionError('key_retired')` path."
+    ],
+    "suggested_check": "Manually verify the implementation of `select_signing_key` in `src/keyring_rotator.py` to confirm that *every* candidate key checked (including the fallback) explicitly raises `PermissionError('key_retired')` if its status is 'retired', and confirm a corresponding unit test exists for this failure path."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: There is shared agreement that the implementation for falling back to the secondary key ('previous') is addressed, but a critical, concrete defect cited by all advisors is the missing logic to reject keys with a status of 'retired' by raising `PermissionError('key_retired')`.\nKEY POINTS:\n- The fallback logic to check the 'previous' key slot appears to be implemented.\n- The requirement to reject keys where `status == 'retired'` by raising `PermissionError('key_retired')` is consistently reported as missing.\n- The test coverage needs to be updated to explicitly test the retired key rejection path.\nSUGGESTED CHECK: Verify that `select_signing_key` raises `PermissionError('key_retired')` when provided a key dictionary with `status == 'retired'`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The core requirements for secondary key rotation fallback and retired key rejection are contradictory across the advisors, with two advisors flagging the missing implementation of the 'retired' key rejection logic, while one advisor claims it is present. KEY POINTS: - Disagreement (Retired Key Rejection Logic (Req 2)): Advisor_3 claims the logic is implemented and verified. vs. Advisor_1 and Advisor_2 explicitly state that the logic for rejecting keys where `status == 'retired'` by raising `PermissionError('key_retired')` is missing. [at stake: Req 2: Reject keys whose `status == 'retired'` inside `select_signing_key(...)` by raising `PermissionError('key_retired')`.] - Disagreement (Fallback Implementation (Req 1)): Advisor_1 suggests the fallback logic needs checking against full requirements. vs. Advisor_2 confirms the fallback logic for previous keys is implemented correctly. [at stake: Req 1: Extend `select_signing_key(keyring, kid)` to fall back to `keyring['previous']` if `kid` matches previous active key, returning the key dict.] - Unverified claim: The conflicting reports regarding the presence of the 'retired' key rejection logic (Advisor_3 vs. Advisors_1/2) must be resolved by inspecting the actual code changes in `src/keyring_rotator.py`. - Unverified claim: The test coverage is suspect, as two advisors note the absence of a test case specifically verifying the `PermissionError('key_retired')` path. SUGGESTED CHECK: Manually verify the...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The core requirements for secondary key rotation fallback and retired key rejection are contradictory across the advisors, with two advisors flagging the missing implementation of the 'retired' key rejection logic, while one advisor claims it is present. KEY POINTS: - Disagreement (Retired Key Rejection Logic (Req 2)): Advisor_3 claims the logic is implemented and verified. vs. Advisor_1 and Advisor_2 explicitly state that the logic for rejecting keys where `status == 'retired'` by raising `PermissionError('key_retired')` is missing. [at stake: Req 2: Reject keys whose `status == 'retired'` inside `select_signing_key(...)` by raising `PermissionError('key_retired')`.] - Disagreement (Fallback Implementation (Req 1)): Advisor_1 suggests the fallback logic needs checking against full requirements. vs. Advisor_2 confirms the fallback logic for previous keys is implemented correctly. [at stake: Req 1: Extend `select_signing_key(keyring, kid)` to fall back to `keyring['previous']` if `kid` matches previous active key, returning the key dict.] - Unverified claim: The conflicting reports regarding the presence of the 'retired' key rejection logic (Advisor_3 vs. Advisors_1/2) must be resolved by inspecting the actual code changes in `src/keyring_rotator.py`. - Unverified claim: The test coverage is suspect, as two advisors note the absence of a test case specifically verifying the `PermissionError('key_retired')` path. SUGGESTED CHECK: Manually verify the..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 909,
+      "output_tokens": 170,
+      "seconds": 3.195,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 948,
+      "output_tokens": 475,
+      "seconds": 8.088,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

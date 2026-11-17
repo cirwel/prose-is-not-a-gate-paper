@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key only checks current/previous KID matching; it does not reject keys with status == 'retired', so PermissionError('key_retired') is never raised.",
+  "target_issue": "tests/test_keyring_rotator.py::test_retired_key_rejected",
+  "thoughts": [
+    "Need to inspect diff and run tests to verify PR correctness; metadata says evidence mismatch and pytest failed in worktree.",
+    "Diff shows Req1 implemented by checking current then previous; Req2 not implemented in select_signing_key (no status=='retired' check). Also tests added but may not cover retired rejection correctly if function unchanged. Need to run pytest to confirm failure.",
+    "Pytest fails: test_retired_key_rejected did not raise PermissionError, meaning select_signing_key lacks retired-key rejection logic. Req2 is not implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.301,
+  "prompt_tokens": 2584,
+  "output_tokens": 220,
+  "estimated_usd": 0.000866,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

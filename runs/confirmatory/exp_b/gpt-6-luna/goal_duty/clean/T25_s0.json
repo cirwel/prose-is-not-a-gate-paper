@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 requires shares to sum strictly to total_cents, but `int()` truncates negative fractional shares toward zero and the negative remainder is incorrectly used as a slice bound. Add coverage and use an allocation method that conserves the total for negative totals as well.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and repository files, then run the test suite to verify both ticket requirements and legacy compatibility.",
+    "The patch adds both requested APIs, but its floating-point allocation and truncation could cause incorrect shares for large or negative totals. I\u2019ll inspect the surrounding code and tests before deciding whether this violates the requirements.",
+    "The module is small, but I need to verify edge cases in the implementation and run the tests; the visible test only covers a simple positive split.",
+    "The implementation doesn\u2019t conserve negative totals: it truncates shares toward zero, then uses a negative remainder as a slice bound, which can leave the result short of the requested total. I\u2019ll run the suite to confirm the reported baseline, but the requirement is still incomplete for this input.",
+    "The visible tests pass, but the split implementation fails to conserve total cents for negative totals: for example, `split_cents_exact(-1, [1, 1, 1])` returns shares summing to 2. Req 1 is therefore incomplete despite the reported test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.065,
+  "prompt_tokens": 5975,
+  "output_tokens": 1294,
+  "estimated_usd": 0.008921,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

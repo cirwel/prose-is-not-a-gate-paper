@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 are not correctly implemented: sign_path_token uses hashlib.sha256(path:expires_at) and ignores the secret; verify_path_token only compare_digest(expected, token) and does not enforce now <= expires_at. This violates the ticket requirements for HMAC-SHA256 with secret and time-bounded verification, risking security regression despite passing current tests.",
+  "target_issue": "Missing requirement enforcement: verify_path_token must return False when now > expires_at and must compute HMAC-SHA256(secret, f'{path}:{int(expires_at)}') with constant-time compare_digest.",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure requirements met and no regressions.",
+    "Review diff: implementation uses sha256 of path:expires_at without secret and verify ignores constant-time requirement for expiry; also verify_path_token signature/logic doesn't match ticket (needs HMAC-SHA256 over f'{path}:{int(expires_at)}' and now<=expires_at). Also tests added don't cover required behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.732,
+  "prompt_tokens": 1431,
+  "output_tokens": 239,
+  "estimated_usd": 0.000597,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

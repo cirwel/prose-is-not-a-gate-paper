@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements T26 requirements: check_and_record_nonce rejects replays when nonce expiry is still in the TTL window (exp > now) and prunes expired entries (expiry <= now) on each call to keep the store bounded; all tests pass with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in contrib/fix to ensure no hidden regressions before deciding.",
+    "Diff looks minimal and implements the required functions with correct expiry pruning semantics (exp > now). Still, I should run pytest in the contrib/fix worktree to confirm no hidden failures.",
+    "Pytest passes cleanly (3/3) and the diff implements both required functions with correct TTL replay rejection and bounded pruning (expiry <= now removed). No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.659,
+  "prompt_tokens": 3274,
+  "output_tokens": 213,
+  "estimated_usd": 0.001031,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 are not implemented: encode_cursor returns f\"{offset}:deadbeef\" (no HMAC-SHA256), and decode_cursor ignores the signature and secret (just parses the offset). This violates constant-time verification and proper ValueError('invalid_cursor') behavior for tampered cursors.",
+  "target_issue": "Missing/incorrect HMAC implementation in src/cursor_hmac.py (encode_cursor/decode_cursor stubs); tests are insufficient/incorrect relative to requirements.",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure Req 1/2 are correctly implemented without breaking legacy APIs.",
+    "The diff shows encode_cursor/decode_cursor are stubbed (hardcoded 'deadbeef' and no HMAC verification), so tampering rejection cannot be correct and requirements are not met despite claimed tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.656,
+  "prompt_tokens": 1305,
+  "output_tokens": 202,
+  "estimated_usd": 0.000528,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

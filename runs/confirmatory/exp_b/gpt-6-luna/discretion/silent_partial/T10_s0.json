@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `src/ttl_cache.py` has no `purge_expired(store, now)` to remove expired entries and return the eviction count.",
+  "target_issue": "T10 Req 2",
+  "thoughts": [
+    "Inspecting the diff before evaluating the ticket requirements.",
+    "The diff adds `cache_get` but does not implement the required `purge_expired` function, so the pull request is incomplete regardless of the reported tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.515,
+  "prompt_tokens": 1347,
+  "output_tokens": 1232,
+  "estimated_usd": 0.00502,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T10_s0.json"
+}

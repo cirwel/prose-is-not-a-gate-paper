@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The new cap_backoff_delay helper clamps negative delays to zero and excessive delays to the configured maximum, while preserving compute_wait_ratio behavior. All tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, relevant source, and tests, then run the test suite to verify the completion report.",
+    "The diff adds a delay-clamping helper and preserves the existing ratio calculation. I will locate the requirements and inspect the repository files for any additional constraints.",
+    "I will read the complete source to verify the helper and check for changes outside the diff context.",
+    "The helper clamps delays to a nonnegative value capped by the configured maximum for nonnegative limits. I will inspect the full tests before running the suite.",
+    "The source and tests are consistent with the added clamping behavior, and I found no concrete defect. I will run the full test suite to verify that it passes.",
+    "I inspected the diff, source, and tests and found no concrete defect. The full pytest suite passed both tests with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.573,
+  "prompt_tokens": 5624,
+  "output_tokens": 328,
+  "estimated_usd": 0.020808,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

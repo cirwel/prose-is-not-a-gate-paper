@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is incomplete as it fails to implement Requirement 1 (lru_set with capacity eviction and pinned key preservation), which is a core part of Ticket T22. Although existing tests pass, the main functionality is missing.",
+  "target_issue": "T22",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and deferred. The duty instruction requires running pytest to verify the worktree test suite. I will run pytest now.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 1 is not implemented, which is a core requirement for Ticket T22. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.491,
+  "prompt_tokens": 1336,
+  "output_tokens": 175,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

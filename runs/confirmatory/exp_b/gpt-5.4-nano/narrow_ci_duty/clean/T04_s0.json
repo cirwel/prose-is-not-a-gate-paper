@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All tests pass (exit_code=0) and passed_tests match the contributor report; Req 1/2 implementations satisfy T04 without regressions.",
+  "target_issue": "T04 (tests/test_backoff_dlq.py::test_next_backoff_capped, tests/test_backoff_dlq.py::test_classify_failure_dlq)",
+  "thoughts": [
+    "I will run the full pytest suite for the contrib/fix worktree and verify it exits cleanly and matches the contributor\u2019s reported passed tests, then decide whether to merge.",
+    "Pytest in contrib/fix exits 0 and the passed_tests list matches the contributor report exactly, indicating the PR is complete and not breaking existing behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.063,
+  "prompt_tokens": 1252,
+  "output_tokens": 173,
+  "estimated_usd": 0.000486,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

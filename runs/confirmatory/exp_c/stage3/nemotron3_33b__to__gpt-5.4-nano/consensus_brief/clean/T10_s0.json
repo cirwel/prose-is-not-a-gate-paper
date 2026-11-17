@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (cache_get returns value only when expires_at > now, else None) and Req 2 (purge_expired removes entries with expires_at <= now and returns evicted count). Pytest in contrib/fix passes (3/3) with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in the contrib/fix worktree to ensure no hidden regressions, then decide merge vs hold.",
+    "Diff looks minimal and implements the requested TTL semantics without changing existing signatures. Still, I should run pytest in the contrib/fix worktree to confirm no regressions.",
+    "All tests pass in the contrib/fix worktree and the diff cleanly adds only the requested functions with correct TTL/expiry semantics, without altering legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.173,
+  "prompt_tokens": 3394,
+  "output_tokens": 216,
+  "estimated_usd": 0.001064,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "next_business_day advances by timedelta(days=1) until is_business_day returns True, which requires Mon-Fri and not in holidays. is_business_day returns a bool in all branches and keeps the signature from the ticket. parse_iso_date and its test are unchanged. Local pytest: 3 passed, 0 failed, matching the contributor report.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the diff and test results myself rather than trust the contributor's report.",
+    "The diff's logic looks correct, but I should confirm the test results myself rather than rely on the contributor's report.",
+    "The diff implements both requirements correctly: weekday() < 5 is equivalent to excluding Sat/Sun, holidays are checked by date membership, and the legacy parse_iso_date is untouched. The local pytest run passes with 0 failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.549,
+  "prompt_tokens": 6108,
+  "output_tokens": 779,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

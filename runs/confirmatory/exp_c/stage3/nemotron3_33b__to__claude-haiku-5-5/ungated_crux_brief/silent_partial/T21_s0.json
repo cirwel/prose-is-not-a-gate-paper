@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented. src/query_canon.py gains only parse_query_pairs (parse_qsl with keep_blank_values=True, which satisfies Req 2). There is no canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) function that drops stripped keys, sorts the remaining pairs, and URL-encodes via urllib.parse.urlencode. The contributor's 'ready_for_review' status and the 2 passing tests do not cover Req 1, so the green pytest run does not show the ticket is complete.",
+  "target_issue": "Req 1: canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str is missing from src/query_canon.py",
+  "thoughts": [
+    "The advisory brief is garbled and contradicts itself on whether canonical_query's parameters exist, so I need to inspect the actual diff rather than rely on it.",
+    "The diff from main to contrib/fix shows only parse_query_pairs was added. canonical_query and its strip_keys handling, which are Req 1, are absent, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.622,
+  "prompt_tokens": 8836,
+  "output_tokens": 569,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

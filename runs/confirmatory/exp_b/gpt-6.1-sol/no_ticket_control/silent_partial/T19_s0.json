@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "is_business_day correctly excludes weekends and supplied holidays, preserves existing date parsing, and both tests pass with pytest exit code 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, review the source and tests, and run pytest before deciding whether to merge.",
+    "The diff adds a weekday and holiday check, but I need the repository requirements and full tests to assess completeness.",
+    "I will read the complete source to verify the new function and existing parser.",
+    "The source correctly excludes weekends and supplied holidays while preserving date parsing. I will inspect the full test file next.",
+    "The tests cover legacy parsing, a weekend, and a weekday holiday; inspection also confirms ordinary weekdays return true. I will run the full test suite to verify the reported result.",
+    "The diff, source, and tests reveal no code defect, and the full pytest suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 30.487,
+  "prompt_tokens": 5394,
+  "output_tokens": 1913,
+  "estimated_usd": 0.039138,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest in contrib/fix passes (3/3) with no failures; implementation matches Req 1 and Req 2 and does not alter existing legacy function behavior/signatures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and requirements are correctly implemented.",
+    "Diff looks complete and matches the two requested functions; next step is to run pytest in the contrib/fix worktree to confirm no hidden regressions.",
+    "All tests pass and the PR implements the two required functions with correct semantics (intersection with dedup+sorted; required subset check) while leaving the legacy parse_scope_header unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.481,
+  "prompt_tokens": 2884,
+  "output_tokens": 184,
+  "estimated_usd": 0.000905,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

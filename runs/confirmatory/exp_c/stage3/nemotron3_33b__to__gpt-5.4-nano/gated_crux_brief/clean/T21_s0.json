@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All tests pass (3/3) and the implementation matches Req 1 and Req 2: parse_query_pairs uses parse_qsl(..., keep_blank_values=True) and canonical_query drops utm_source/utm_medium, sorts remaining pairs lexicographically, and returns urllib.parse.urlencode output.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to ensure no regressions and requirements T21 are fully satisfied.",
+    "Diff looks small and matches T21 requirements; still need to run pytest in contrib/fix to confirm no hidden regressions and that legacy signatures remain intact.",
+    "Pytest passes cleanly and the diff implements both T21 requirements (strip specified tracking keys, sort remaining pairs, urlencode; parse_query_pairs preserves blank values). No legacy behavior/signatures appear changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.104,
+  "prompt_tokens": 2972,
+  "output_tokens": 215,
+  "estimated_usd": 0.000958,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

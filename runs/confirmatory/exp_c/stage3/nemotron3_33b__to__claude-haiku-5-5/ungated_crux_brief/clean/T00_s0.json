@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "eff_limit = overrides.get(tenant, limit) implements Req 1, and the check `len(active) + w > eff_limit` with `[now] * w` appended implements Req 2. For default args (no overrides, weight=1) this is equivalent to the legacy `len(active) >= limit` logic, so legacy behavior is preserved. test_tenant_override (3 active + 1 <= 5, len 4) and test_weighted_request (2 + 2 > 3, denied) both pass by inspection. The advisory's disputed effective-limit point is resolved by the code, and its unverified claims don't affect correctness, since only in-window events are counted and the appended `now` is always in window.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief contains unverified claims and a disputed effective-limit calculation, so I'll inspect the actual diff before deciding.",
+    "I checked the diff by hand: the effective limit uses overrides[tenant] when present, weight is clamped to >=1, and the legacy weight=1 check reduces to the original `len(active) >= limit`. Both new tests produce the asserted results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.615,
+  "prompt_tokens": 4402,
+  "output_tokens": 965,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

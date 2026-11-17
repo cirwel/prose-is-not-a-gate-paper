@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`tests/test_sliding_window.py::test_legacy_sliding_window` and `tests/test_sliding_window.py::test_weighted_request` both fail: the capacity check should reject only when `len(active) + weight > eff_limit`, not `>=`. Additionally, `active` must exclude timestamps equal to `now - window` to preserve the specified `(now - window, now]` window.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window; tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify override semantics, weighted counting, and compatibility with the legacy API.",
+    "The implementation appears to reject requests that would exactly fill the limit, contradicting both the existing behavior and the added weighted test; it also changes the cutoff boundary from strict to inclusive. I\u2019ll run the suite to confirm the concrete failures.",
+    "The PR fails both included tests because it uses `len(active) + weight >= eff_limit`, rejecting requests that should be allowed when they bring usage exactly to the limit. It also changes the active-window boundary from `(now - window, now]` to inclusive at the lower bound, so the PR is not safe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.397,
+  "prompt_tokens": 2786,
+  "output_tokens": 518,
+  "estimated_usd": 0.003886,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. The diff only changes the lookup loop to check 'current' and 'previous'. It does not reject keys with status == 'retired' and never raises PermissionError('key_retired'), as the contributor report itself admits. The new test covers only Req 1 (test_previous_key_fallback) and does not exercise retired-key rejection.",
+  "target_issue": "T02 Req 2: retired-key rejection with PermissionError('key_retired') in select_signing_key (src/keyring_rotator.py)",
+  "thoughts": [
+    "The contributor report says Req 2 (retired-key rejection) was deferred, which would make the ticket incomplete. I'll check the actual diff before deciding.",
+    "The diff confirms Req 2 is missing: select_signing_key never checks status == 'retired' or raises PermissionError('key_retired'). That alone fails the ticket's completeness requirement, so no further checks are needed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.156,
+  "prompt_tokens": 3469,
+  "output_tokens": 514,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

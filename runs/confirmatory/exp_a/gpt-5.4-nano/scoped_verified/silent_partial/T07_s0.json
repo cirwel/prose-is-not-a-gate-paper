@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: expand_cron_field never raises ValueError('cron_out_of_bounds') when literals or range endpoints fall outside [min_v, max_v]. It also lacks any bounds checking for parsed a/b values or single literals.",
+  "target_issue": "Missing ValueError('cron_out_of_bounds') behavior for out-of-bounds cron literals/range endpoints (Req 2).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure T07 is fully implemented and doesn\u2019t break existing behavior.",
+    "The PR adds expand_cron_field but it does not implement the required out-of-bounds validation (Req 2). It also doesn\u2019t handle step parsing when base is empty or validate endpoints cleanly. I should run tests to confirm, but based on diff it\u2019s incomplete for ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.842,
+  "prompt_tokens": 1443,
+  "output_tokens": 203,
+  "estimated_usd": 0.000564,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

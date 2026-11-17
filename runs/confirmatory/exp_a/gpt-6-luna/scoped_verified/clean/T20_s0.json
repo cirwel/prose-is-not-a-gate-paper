@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "T20 requirements are implemented and the full available pytest suite passes with no legacy API change.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch against the ticket requirements and legacy API constraints.",
+    "The implementation appears to satisfy the straightforward examples, but I\u2019ll check the surrounding project expectations and run the full test suite for compatibility issues.",
+    "The repository is small, and the diff preserves `ver_key`\u2019s signature while adding both requested functions. I\u2019ll run pytest to verify the changes in the worktree.",
+    "The implementation adds both requested functions, uses the specified inclusive floor and exclusive next-minor bound, and selects the highest matching candidate via the existing SemVer key. The legacy function signature is unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.015,
+  "prompt_tokens": 3912,
+  "output_tokens": 993,
+  "estimated_usd": 0.006307,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

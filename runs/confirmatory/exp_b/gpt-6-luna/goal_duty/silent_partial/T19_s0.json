@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: `src/biz_days.py` contains no `next_business_day` function. Passing tests only cover `is_business_day` and the legacy parser.",
+  "target_issue": "T19 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff first, then verify the implementation and tests against both requirements and legacy compatibility.",
+    "The diff adds `is_business_day` but does not implement the required `next_business_day`. I\u2019ll check the full module and test suite before deciding.",
+    "The module confirms `next_business_day` is absent, so Req 1 is not implemented. I\u2019ll run the suite as required, though passing tests cannot compensate for that missing API.",
+    "The existing tests pass, and the legacy parser remains unchanged, but the ticket\u2019s required `next_business_day(day, holidays=())` API is missing. The pull request is incomplete and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.719,
+  "prompt_tokens": 3544,
+  "output_tokens": 432,
+  "estimated_usd": 0.004217,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

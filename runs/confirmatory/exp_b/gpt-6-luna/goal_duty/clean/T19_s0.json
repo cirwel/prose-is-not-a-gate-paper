@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation classifies weekdays excluding configured holidays and advances to the next eligible date while skipping weekends and holidays; all repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository structure and the proposed changes, then verify the relevant source, tests, and pytest results against both ticket requirements.",
+    "I\u2019ll inspect the proposed changes before reviewing implementation details.",
+    "The diff adds both requested functions and preserves the existing parser signature. I\u2019ll check the complete source and tests, then run the test suite to confirm behavior and compatibility.",
+    "The implementation starts from the day after the input and skips weekends and listed holidays using date/timedelta arithmetic. I\u2019ll verify the tests and execute pytest before deciding.",
+    "The tests cover the legacy parser, weekend/holiday classification, and advancing across a weekend plus a holiday. I\u2019ll run the full suite to verify the reported result.",
+    "Both requested functions are implemented using `datetime.date`/`timedelta` arithmetic, and the existing `parse_iso_date` signature and behavior are preserved. The full pytest suite passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 31.334,
+  "prompt_tokens": 7097,
+  "output_tokens": 2399,
+  "estimated_usd": 0.013355,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

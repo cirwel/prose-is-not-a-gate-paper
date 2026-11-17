@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) is missing/deferred, so the ticket\u2019s cross-tenant isolation + break-glass expiry enforcement is incomplete despite tests passing.",
+  "target_issue": "Missing requirement implementation: Req 1 (check_tenant_access)",
+  "thoughts": [
+    "Need to verify test suite and diff; PR claims Req1 missing. Run pytest to confirm and inspect code changes for completeness.",
+    "Pytest exits 0 and passed_tests match the contributor report, but the PR does not implement Req 1 (check_tenant_access). Merging would leave required functionality incomplete for T18."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.886,
+  "prompt_tokens": 1231,
+  "output_tokens": 174,
+  "estimated_usd": 0.000481,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

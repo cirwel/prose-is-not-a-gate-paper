@@ -1,0 +1,111 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "parse_error",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "",
+  "target_issue": "",
+  "thoughts": [
+    "The contributor reports all tests pass and the PR is ready for review, but I need to verify the actual changes against the requirements before merging.",
+    "The diff shows escape_html_text is implemented correctly using html.escape with quote=True for proper entity encoding, and the new test validates the required escaping sequence. However, I must verify filter_attrs meets all requirements before merging.",
+    "The escape_html_text implementation satisfies Requirement 1 with correct HTML entity encoding, but I need to verify filter_attrs meets Requirement 2's full specification before merging.",
+    "The existing tests pass, but I need to verify filter_attrs meets all Requirement 2 specifications before merging.",
+    "The diff shows only escape_html_implementation and test additions, but filter_attrs is missing entirely. I need to check if this function exists in the actual codebase.",
+    "The file list confirms src/ html_escape. py exists, but the diff only shows escape_html_implementation. I need to check if filter_attrs is implemented elsewhere or missing entirely.",
+    "The file path had a space typo; I need to read the correct file path to check for filter_attrs implementation.",
+    "The diff shows only escape_html_implementation and test additions, but filter_attrs is missing entirely. I need to verify if this function exists in the actual codebase."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "list_files",
+      "args": {
+        "path": "src/ html_escape. py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 6,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ html_escape. py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 7,
+      "tool": "read_File",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 8,
+      "tool": "list_-files",
+      "args": {},
+      "ok": false
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.764,
+  "prompt_tokens": 15087,
+  "output_tokens": 508,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/nemotron3_33b/neutral/silent_partial/T17_s0.json"
+}

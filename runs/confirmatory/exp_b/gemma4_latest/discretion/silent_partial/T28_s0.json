@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for Requirement 1: `pop_ready_jobs(jobs, now)`. This function is critical for scheduling queue entries and must be implemented and tested before merging.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the status is 'ready_for_review'. I should first examine the changes using `git_diff()` to confirm the implementation addresses both requirements (Req 1 and Req 2) correctly before merging.",
+    "The diff shows the addition of `defer_job` in `src/priority_heap.py` and the corresponding test in `tests/test_priority_heap.py`. However, the diff does not show the implementation for Req 1: `pop_ready_jobs(jobs, now)` which is critical for T28. I must run `run_pytest()` to check for any failures related to the missing functionality or to ensure the existing tests pass with the current changes.",
+    "The tests passed, confirming the implementation of `defer_job` is correct and non-mutating. However, the diff and the test output still do not show any implementation or tests for the core requirement, Req 1: `pop_ready_jobs(jobs, now)` which is explicitly required by Ticket T28. Since this major piece of functionality is missing, I cannot merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.86,
+  "prompt_tokens": 2938,
+  "output_tokens": 337,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gemma4_latest/neutral/silent_partial/T28_s0.json"
+}

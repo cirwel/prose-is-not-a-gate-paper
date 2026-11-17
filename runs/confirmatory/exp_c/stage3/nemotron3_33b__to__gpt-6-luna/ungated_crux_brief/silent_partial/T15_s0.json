@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required `deduplicate_rows_with_stats(rows, key_fn, keep='first')` API is absent from both the source and tests; only `deduplicate_rows` was added.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and tests directly, focusing on whether Req 2 is actually present despite the conflicting review claims.",
+    "The core function supports first/last policies and preserves order, but the required stats function is absent from the source. I\u2019ll check the full diff and tests to confirm whether Req 2 is missing elsewhere.",
+    "The diff confirms `deduplicate_rows_with_stats` is neither implemented nor tested, so Req 2 is unmet. Despite the passing tests for first/last deduplication and the legacy helper, this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/dedup_rows.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.279,
+  "prompt_tokens": 3231,
+  "output_tokens": 243,
+  "estimated_usd": 0.003362,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

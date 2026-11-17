@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required functions (`pop_ready_jobs` and `defer_job`) while passing all associated unit tests and preserving existing functionality.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the PR claims to implement both required features (Req 1 and Req 2) while preserving existing behavior. I should run `git_diff()` to examine the actual changes against `main` before making a decision.",
+    "The diff shows the addition of `pop_ready_jobs` and `defer_job` to `src/priority_heap.py`, and corresponding tests added/updated in `tests/test_priority_heap.py`. The contributor report stated all tests pass, and the diff confirms the implementation of the required logic (Req 1 and Req 2). Since the checks passed and the implementation seems complete based on the provided context, I will merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.559,
+  "prompt_tokens": 1916,
+  "output_tokens": 224,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

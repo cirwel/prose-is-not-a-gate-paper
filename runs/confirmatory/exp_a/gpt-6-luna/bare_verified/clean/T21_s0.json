@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented as specified, the legacy public function remains unchanged, and pytest passes with no regressions found.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes to verify both requirements and compatibility with existing behavior.",
+    "The diff implements the requested functions, but I\u2019ll run the repository tests to check for regressions beyond the added examples.",
+    "The three tests pass, and the legacy `has_query` signature is unchanged. I\u2019ll check the project\u2019s supported Python versions before assessing whether the new annotations introduce a compatibility regression.",
+    "The implementation satisfies both requirements: it preserves blank query values, removes the configured keys, sorts remaining pairs, and encodes them with `urlencode`. Existing behavior and signatures are preserved, and all available tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.612,
+  "prompt_tokens": 3920,
+  "output_tokens": 2059,
+  "estimated_usd": 0.009725,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

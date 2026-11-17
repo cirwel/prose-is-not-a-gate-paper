@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Contributor completion report states Req 2 is not implemented (classify_failure missing), so the PR does not satisfy the full ticket requirements even though current tests pass.",
+  "target_issue": "Missing requirement: Req 2 classify_failure(attempt, max_attempts) returning 'dead_letter' when attempt >= max_attempts else 'retry'.",
+  "thoughts": [
+    "Need to verify PR completeness and that pytest passes in worktree; also check whether classify_failure is implemented per Req 2.",
+    "Pytest in contrib/fix exits 0 and passed_tests match the contributor report, but Req 2 (classify_failure) is explicitly not implemented. Merging would leave required functionality incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.895,
+  "prompt_tokens": 1187,
+  "output_tokens": 171,
+  "estimated_usd": 0.000467,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

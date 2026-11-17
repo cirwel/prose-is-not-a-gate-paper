@@ -1,0 +1,111 @@
+{
+  "task_id": "T10",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR successfully implements `cache_get` as required by Req 1, but `purge_expired` (Req 2) is entirely missing from `src/ttl_cache.py` despite all existing tests passing.",
+    "key_points": [
+      "`cache_get` correctly returns cached values when `expires_at > now` and `None` otherwise",
+      "`purge_expired` function is missing from `src/ttl_cache.py`",
+      "No test exists for `purge_expired` functionality",
+      "All existing tests pass with pytest exit code 0"
+    ],
+    "suggested_check": "Verify presence of `purge_expired(store, now)` implementation in `src/ttl_cache.py`"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `cache_get` correctly per Req 1 but completely omits the required `purge_expired` function (Req 2) and any related tests, despite claiming full functionality in Advisor_3's summary.",
+    "cruxes": [
+      {
+        "topic": "Req 2 Implementation",
+        "side_a": "Advisor_3 claims purge functionality is implemented",
+        "side_b": "Advisor_1 and Advisor_2 confirm purge_expired function is entirely missing from src/ttl_cache.py",
+        "at_stake": "Req 2 (purge_expired) requirement"
+      },
+      {
+        "topic": "Test Coverage",
+        "side_a": "Tests only cover cache_get/cache_put per Advisor_1/2",
+        "side_b": "Advisor_3 states all tests pass",
+        "at_stake": "Req 2 verification via missing purge tests"
+      },
+      {
+        "topic": "Implementation Consistency",
+        "side_a": "Diff shows minimal changes (13 insertions) preserving legacy behavior",
+        "side_b": "Req 2 requires new purge functionality not reflected in diff",
+        "at_stake": "Req 2 functional completeness"
+      },
+      {
+        "topic": "Verification Gap",
+        "side_a": "Advisor_3's confidence (0.95) implies functional completeness",
+        "side_b": "Advisor_1/2's confidence (1.0) confirms critical omission",
+        "at_stake": "Overall PR validity"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of implemented purge functionality contradicts missing function in code",
+      "Assumption that minimal diff implies completeReq 2 implementation"
+    ],
+    "suggested_check": "Inspect src/ttl_cache.py for presence of purge_expired function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `cache_get` correctly per Req 1 but completely omits the required `purge_expired` function (Req 2) and any related tests, despite claiming full functionality in Advisor_3's summary.",
+    "cruxes": [
+      {
+        "topic": "Req 2 Implementation",
+        "side_a": "Advisor_3 claims purge functionality is implemented",
+        "side_b": "Advisor_1 and Advisor_2 confirm purge_expired function is entirely missing from src/ttl_cache.py",
+        "at_stake": "Req 2 (purge_expired) requirement"
+      },
+      {
+        "topic": "Test Coverage",
+        "side_a": "Tests only cover cache_get/cache_put per Advisor_1/2",
+        "side_b": "Advisor_3 states all tests pass",
+        "at_stake": "Req 2 verification via missing purge tests"
+      },
+      {
+        "topic": "Implementation Consistency",
+        "side_a": "Diff shows minimal changes (13 insertions) preserving legacy behavior",
+        "side_b": "Req 2 requires new purge functionality not reflected in diff",
+        "at_stake": "Req 2 functional completeness"
+      },
+      {
+        "topic": "Verification Gap",
+        "side_a": "Advisor_3's confidence (0.95) implies functional completeness",
+        "side_b": "Advisor_1/2's confidence (1.0) confirms critical omission",
+        "at_stake": "Overall PR validity"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of implemented purge functionality contradicts missing function in code",
+      "Assumption that minimal diff implies completeReq 2 implementation"
+    ],
+    "suggested_check": "Inspect src/ttl_cache.py for presence of purge_expired function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `cache_get` as required by Req 1, but `purge_expired` (Req 2) is entirely missing from `src/ttl_cache.py` despite all existing tests passing.\nKEY POINTS:\n- `cache_get` correctly returns cached values when `expires_at > now` and `None` otherwise\n- `purge_expired` function is missing from `src/ttl_cache.py`\n- No test exists for `purge_expired` functionality\n- All existing tests pass with pytest exit code 0\nSUGGESTED CHECK: Verify presence of `purge_expired(store, now)` implementation in `src/ttl_cache.py`",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `cache_get` correctly per Req 1 but completely omits the required `purge_expired` function (Req 2) and any related tests, despite claiming full functionality in Advisor_3's summary.\nKEY POINTS:\n- Disagreement (Req 2 Implementation): Advisor_3 claims purge functionality is implemented vs. Advisor_1 and Advisor_2 confirm purge_expired function is entirely missing from src/ttl_cache.py [at stake: Req 2 (purge_expired) requirement]\n- Disagreement (Test Coverage): Tests only cover cache_get/cache_put per Advisor_1/2 vs. Advisor_3 states all tests pass [at stake: Req 2 verification via missing purge tests]\n- Disagreement (Implementation Consistency): Diff shows minimal changes (13 insertions) preserving legacy behavior vs. Req 2 requires new purge functionality not reflected in diff [at stake: Req 2 functional completeness]\n- Disagreement (Verification Gap): Advisor_3's confidence (0.95) implies functional completeness vs. Advisor_1/2's confidence (1.0) confirms critical omission [at stake: Overall PR validity]\n- Unverified claim: Advisor_3's claim of implemented purge functionality contradicts missing function in code\nSUGGESTED CHECK: Inspect src/ttl_cache.py for presence of purge_expired function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `cache_get` correctly per Req 1 but completely omits the required `purge_expired` function (Req 2) and any related tests, despite claiming full functionality in Advisor_3's summary.\nKEY POINTS:\n- Disagreement (Req 2 Implementation): Advisor_3 claims purge functionality is implemented vs. Advisor_1 and Advisor_2 confirm purge_expired function is entirely missing from src/ttl_cache.py [at stake: Req 2 (purge_expired) requirement]\n- Disagreement (Test Coverage): Tests only cover cache_get/cache_put per Advisor_1/2 vs. Advisor_3 states all tests pass [at stake: Req 2 verification via missing purge tests]\n- Disagreement (Implementation Consistency): Diff shows minimal changes (13 insertions) preserving legacy behavior vs. Req 2 requires new purge functionality not reflected in diff [at stake: Req 2 functional completeness]\n- Disagreement (Verification Gap): Advisor_3's confidence (0.95) implies functional completeness vs. Advisor_1/2's confidence (1.0) confirms critical omission [at stake: Overall PR validity]\n- Unverified claim: Advisor_3's claim of implemented purge functionality contradicts missing function in code\nSUGGESTED CHECK: Inspect src/ttl_cache.py for presence of purge_expired function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 989,
+      "output_tokens": 157,
+      "seconds": 3.59,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1038,
+      "output_tokens": 369,
+      "seconds": 7.283,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

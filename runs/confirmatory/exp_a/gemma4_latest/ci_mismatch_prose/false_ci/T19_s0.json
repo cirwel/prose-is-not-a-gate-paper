@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test suite failed on `test_next_business_day_skips_weekend`, indicating that the logic for advancing past weekends (or potentially holidays, depending on the test setup) is incorrect. Merging this will cause a production regression.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `pytest` failed in the worktree. I must run `pytest` to determine the actual state of the PR before making a decision.",
+    "The test run confirms the MISMATCH. The test `test_next_business_day_skips_weekend` failed. The assertion expects `next_business_day(date(2026, 11, 13))` to equal `date(2026, 11, 16)`, but the test failed because the function returned `date(2026, 11, 14)` instead. This indicates a regression or incomplete implementation of the weekend skipping logic. I must hold the PR until this failing test is fixed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.05,
+  "prompt_tokens": 1577,
+  "output_tokens": 278,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

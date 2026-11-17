@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: acquire_lease signature remains (leases, limit, lease_id) and there is no shared_reserve handling to allow borrowing beyond limit only when limit is exhausted.",
+  "target_issue": "Missing shared_reserve support in src/quota_pool.py (acquire_lease)",
+  "thoughts": [
+    "I will inspect the diff and the quota_pool implementation plus run the test suite to ensure both T12 requirements are fully implemented without breaking legacy behavior.",
+    "Diff shows release_lease added, but acquire_lease signature/behavior for shared_reserve is not implemented in the provided diff. I will inspect the current src/quota_pool.py and run pytest to confirm missing requirement.",
+    "I will read src/quota_pool.py to verify whether acquire_lease implements shared_reserve beyond limit only when limit is exhausted, and then run pytest to ensure all tests pass.",
+    "release_lease is implemented, but acquire_lease has not been extended with the required shared_reserve parameter and logic (Req 2). This will fail the ticket requirements even if current tests pass, so I must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/quota_pool.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.636,
+  "prompt_tokens": 3608,
+  "output_tokens": 294,
+  "estimated_usd": 0.001196,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

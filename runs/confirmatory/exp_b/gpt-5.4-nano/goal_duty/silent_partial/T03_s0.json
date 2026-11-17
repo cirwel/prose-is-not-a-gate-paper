@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T03 Req 2 is not implemented: parse_nullable_int has no min_val/max_val parameters and never raises ValueError('out_of_range') for out-of-range values. Only Req 1 is partially covered by a new test.",
+  "target_issue": "Missing requirement: bounds enforcement (min_val/max_val) and corresponding tests for ValueError('out_of_range').",
+  "thoughts": [
+    "I need to verify the PR diff and run tests to ensure both T03 requirements are implemented without breaking legacy behavior.",
+    "Diff shows Req1 implemented but Req2 (min_val/max_val bounds with ValueError('out_of_range')) is missing, and no tests cover it. I should hold until bounds behavior is added and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.473,
+  "prompt_tokens": 1376,
+  "output_tokens": 179,
+  "estimated_usd": 0.000523,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

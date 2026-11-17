@@ -1,0 +1,25 @@
+{
+  "task_id": "T24",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements the required `retry_after_seconds` and `cap_backoff_delay` functions according to the ticket specifications, preserving legacy behavior and passing all tests.",
+  "key_findings": [
+    "Req 1: `retry_after_seconds` correctly returns 0 for non-positive tokens and uses `max(min_seconds, math.ceil(...))` otherwise.",
+    "Req 2: `cap_backoff_delay` correctly clamps negative delays to 0.0 and upper bounds to `max_delay`.",
+    "Legacy function `compute_wait_ratio` remains unchanged and its test passes.",
+    "All 3 unit tests pass with exit code 0."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_retry_after.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 874,
+    "output_tokens": 179,
+    "seconds": 25.049,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

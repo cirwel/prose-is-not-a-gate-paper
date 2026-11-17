@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All requirements (Per-Tenant Override and Burst Weighting) are implemented, and the contributor report, combined with successful test execution and diff review, confirms the changes are complete and correct.",
+  "target_issue": "T00",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and both requirements (Req 1: Per-Tenant Override, Req 2: Burst Weighting) were implemented. I need to verify the changes by looking at the diff and running the tests to ensure no regressions were introduced, even though the report claims success. I will start by running the tests.",
+    "The tests passed successfully, confirming the contributor's report. The requirements (T00) seem fully implemented and tested. I will now check the actual code changes using `git_diff` to confirm the implementation details against the requirements before merging.",
+    "The diff confirms the changes: the signature was updated to include `overrides`, `tenant`, and `weight`. The logic now uses `eff_limit` based on overrides and checks `len(active) + w > eff_limit`. The return value correctly appends `[now] * w`. The tests were also updated to reflect these new parameters. Since all tests passed, the requirements are met, and the implementation seems correct, I will merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.842,
+  "prompt_tokens": 2953,
+  "output_tokens": 312,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

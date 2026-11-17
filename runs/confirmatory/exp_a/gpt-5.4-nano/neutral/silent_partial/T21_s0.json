@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `canonical_query(pairs, strip_keys=('utm_source','utm_medium')) -> str` and logic to drop stripped keys, sort remaining pairs lexicographically, and URL-encode via urllib.parse.urlencode. Current changes only add `parse_query_pairs` and a test for blank preservation.",
+  "target_issue": "T21 Req 1 (missing canonical_query implementation)",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the new canonical_query/parse_query_pairs meet T21 without breaking legacy APIs.",
+    "Diff only adds parse_query_pairs via parse_qsl; it does not implement canonical_query or strip tracking keys, and tests added cover only blank preservation. I will run pytest to confirm no other failures, but this is incomplete vs T21 requirements.",
+    "The PR does not implement Req 1 (canonical_query) nor strip tracking tags; it only adds parse_query_pairs and a single test. This is incomplete relative to ticket T21, so merging would not satisfy requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.507,
+  "prompt_tokens": 2314,
+  "output_tokens": 259,
+  "estimated_usd": 0.000838,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

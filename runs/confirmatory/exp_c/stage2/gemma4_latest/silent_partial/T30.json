@@ -1,0 +1,74 @@
+{
+  "task_id": "T30",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation for `project_allowed_fields` (Req 1) is missing, despite the successful implementation and testing of `mask_secret` (Req 2).",
+    "key_points": [
+      "The `mask_secret` function correctly implements the required masking logic.",
+      "The implementation for `project_allowed_fields(record, role, role_fields)` is missing.",
+      "The existing test suite passes, indicating no breakage of current functionality."
+    ],
+    "suggested_check": "Confirm the implementation of `project_allowed_fields(record, role, role_fields)` is added to `src/field_mask.py` and covered by unit tests."
+  },
+  "ungated_crux_json": {
+    "overview": "The ticket requires implementing two new functions, `project_allowed_fields` and `mask_secret`, while maintaining existing functionality. All three advisors unanimously point out that the implementation for `project_allowed_fields` (Req 1) is missing from the provided changes, despite the successful implementation and testing of `mask_secret` (Req 2).",
+    "cruxes": [
+      {
+        "topic": "Implementation of `project_allowed_fields` (Req 1)",
+        "side_a": "The function must filter fields based on role permissions using `role_fields.get(role, set())` and always include `'id'` if present.",
+        "side_b": "The function is entirely missing from the diff, leading to a 'hold' recommendation from all reviewers.",
+        "at_stake": "Successful completion of Requirement 1 and preservation of existing behavior."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing test suite (which passed) adequately covers the complex logic of `project_allowed_fields` (Req 1) if it were present, as no tests for it are confirmed.",
+      "The exact behavior when `role_fields.get(role, set())` returns an empty set, and how the inclusion of `'id'` should interact with that empty set."
+    ],
+    "suggested_check": "Verify that the implementation for `project_allowed_fields` is added to `src/field_mask.py` and that corresponding unit tests are included to validate field filtering logic against role permissions."
+  },
+  "gated_crux_json": {
+    "overview": "The ticket requires implementing two new functions, `project_allowed_fields` and `mask_secret`, while maintaining existing functionality. All three advisors unanimously point out that the implementation for `project_allowed_fields` (Req 1) is missing from the provided changes, despite the successful implementation and testing of `mask_secret` (Req 2).",
+    "cruxes": [
+      {
+        "topic": "Implementation of `project_allowed_fields` (Req 1)",
+        "side_a": "The function must filter fields based on role permissions using `role_fields.get(role, set())` and always include `'id'` if present.",
+        "side_b": "The function is entirely missing from the diff, leading to a 'hold' recommendation from all reviewers.",
+        "at_stake": "Successful completion of Requirement 1 and preservation of existing behavior."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing test suite (which passed) adequately covers the complex logic of `project_allowed_fields` (Req 1) if it were present, as no tests for it are confirmed.",
+      "The exact behavior when `role_fields.get(role, set())` returns an empty set, and how the inclusion of `'id'` should interact with that empty set."
+    ],
+    "suggested_check": "Verify that the implementation for `project_allowed_fields` is added to `src/field_mask.py` and that corresponding unit tests are included to validate field filtering logic against role permissions."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation for `project_allowed_fields` (Req 1) is missing, despite the successful implementation and testing of `mask_secret` (Req 2).\nKEY POINTS:\n- The `mask_secret` function correctly implements the required masking logic.\n- The implementation for `project_allowed_fields(record, role, role_fields)` is missing.\n- The existing test suite passes, indicating no breakage of current functionality.\nSUGGESTED CHECK: Confirm the implementation of `project_allowed_fields(record, role, role_fields)` is added to `src/field_mask.py` and covered by unit tests.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two new functions, `project_allowed_fields` and `mask_secret`, while maintaining existing functionality. All three advisors unanimously point out that the implementation for `project_allowed_fields` (Req 1) is missing from the provided changes, despite the successful implementation and testing of `mask_secret` (Req 2).\nKEY POINTS:\n- Disagreement (Implementation of `project_allowed_fields` (Req 1)): The function must filter fields based on role permissions using `role_fields.get(role, set())` and always include `'id'` if present. vs. The function is entirely missing from the diff, leading to a 'hold' recommendation from all reviewers. [at stake: Successful completion of Requirement 1 and preservation of existing behavior.]\n- Unverified claim: The assumption that the existing test suite (which passed) adequately covers the complex logic of `project_allowed_fields` (Req 1) if it were present, as no tests for it are confirmed.\n- Unverified claim: The exact behavior when `role_fields.get(role, set())` returns an empty set, and how the inclusion of `'id'` should interact with that empty set.\nSUGGESTED CHECK: Verify that the implementation for `project_allowed_fields` is added to `src/field_mask.py` and that corresponding unit tests are included to validate field filtering logic against role permissions.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two new functions, `project_allowed_fields` and `mask_secret`, while maintaining existing functionality. All three advisors unanimously point out that the implementation for `project_allowed_fields` (Req 1) is missing from the provided changes, despite the successful implementation and testing of `mask_secret` (Req 2).\nKEY POINTS:\n- Disagreement (Implementation of `project_allowed_fields` (Req 1)): The function must filter fields based on role permissions using `role_fields.get(role, set())` and always include `'id'` if present. vs. The function is entirely missing from the diff, leading to a 'hold' recommendation from all reviewers. [at stake: Successful completion of Requirement 1 and preservation of existing behavior.]\n- Unverified claim: The assumption that the existing test suite (which passed) adequately covers the complex logic of `project_allowed_fields` (Req 1) if it were present, as no tests for it are confirmed.\n- Unverified claim: The exact behavior when `role_fields.get(role, set())` returns an empty set, and how the inclusion of `'id'` should interact with that empty set.\nSUGGESTED CHECK: Verify that the implementation for `project_allowed_fields` is added to `src/field_mask.py` and that corresponding unit tests are included to validate field filtering logic against role permissions."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 940,
+      "output_tokens": 146,
+      "seconds": 3.051,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 979,
+      "output_tokens": 351,
+      "seconds": 6.73,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request fails to implement the required `purge_expired(store, now)` function (Req 2), which is necessary for cleaning up expired cache entries. The provided file content confirms this function is entirely absent.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The advisory review brief clearly states that the required `purge_expired` function (Req 2) is entirely missing from `src/ttl_cache.py`, despite the contributor claiming completion. I must verify this omission by inspecting the file to confirm the gap before making a decision.",
+    "The content of `src/ttl_cache.py` confirms the advisory review brief: the function `purge_expired` required by Req 2 is completely missing. The PR is incomplete because it fails to implement a core requirement, regardless of the passing unit tests for the implemented parts. Therefore, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.903,
+  "prompt_tokens": 1881,
+  "output_tokens": 222,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "split_ledger_round.545f36c fails Req 1 by returning non-conserving shares (sum=99 vs 100) due to missing fractional remainder distribution logic",
+  "target_issue": "tests/ledger_round.py::test_legacy_sum",
+  "thoughts": [
+    "The contributor reports 0 failed tests and claims the worktree pytest ran cleanly, but the PR metadata shows an 'Automated Evidence Check: MISMATCH', indicating a discrepancy between reported and actual test results. I need to verify the test outcomes in the contrib/fix worktree.",
+    "The diff shows the contributor implemented split_ledger_round.545f36c with a naive integer division approach that ignores fractional remainders, violating Req 1's requirement to distribute remainder pennies one-by-one from the highest fractional part. The test suite only includes two tests, both passing, but the implementation fails to conserve total cents when fractional weights exist (e.g., 100 cents with weights [1, 2] should yield [33, 67] but returns [33, 66]). I must run pytest in the worktree to confirm actual test failures.",
+    "The pytest run confirms 1 failed test (test_legacy_sum passed), where split_ledger_round.545f36c returns [33, 33, 33] summing to 99 instead of 100 for input (100, [1, 1, 1]), violating Req 1's requirement to conserve total cents by distributing remainder pennies. The implementation uses naive integer division without fractional remainder handling, causing penny drift."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.448,
+  "prompt_tokens": 3602,
+  "output_tokens": 413,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

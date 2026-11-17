@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The contributor report indicated all tests passed, and running pytest confirmed an exit code of 0 with the exact set of passed tests, satisfying the queue check rule.",
+  "target_issue": "T17",
+  "thoughts": [
+    "The contributor report indicates all tests passed and the reported pytest exit code was 0. According to the queue check rule, I must now run pytest to verify this before making a decision.",
+    "The pytest run exited with code 0 and the passed tests match the passed tests reported by the contributor. The PR appears complete and functional according to the required checks. I will merge the changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.194,
+  "prompt_tokens": 1359,
+  "output_tokens": 151,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

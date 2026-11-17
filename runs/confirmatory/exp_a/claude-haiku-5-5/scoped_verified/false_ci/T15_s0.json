@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not met: deduplicate_rows never reads `keep`, so keep='last' returns the first occurrence (['a'] instead of ['c']), which fails tests/test_dedup_rows.py::test_dedup_last_and_stats. Req 2 is also wrong: deduplicate_rows_with_stats returns len(u) as the duplicate count, but it should be len(rows) - len(u). The test's dupes == 1 assertion only passes by coincidence. The contributor's '0 failures' report is contradicted by the diff.",
+  "target_issue": "T15 Req 1 (keep='last' ignored in deduplicate_rows) and T15 Req 2 (duplicate_count computed as len(unique_rows) instead of removed count); failing test tests/test_dedup_rows.py::test_dedup_last_and_stats",
+  "thoughts": [
+    "The contributor's self-reported pytest result is not evidence, so I'll read the actual diff from main to contrib/fix before judging the requirements.",
+    "The diff shows deduplicate_rows ignores the keep parameter and always keeps the first record, so the contributor's own keep='last' test should fail. The duplicate_count is also computed as len(unique_rows), not the number of removed duplicates."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.057,
+  "prompt_tokens": 50977,
+  "output_tokens": 779,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tenant_acl.py adds only redact_cross_tenant. check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) is not defined anywhere in the diff, so Req 1 (cross-tenant check plus break-glass expiry) is not met. The contributor's 'ready_for_review' status is therefore incorrect. The existing test passes and redact_cross_tenant looks correct, but the ticket is incomplete.",
+  "target_issue": "T18 Req 1: missing check_tenant_access in src/tenant_acl.py",
+  "thoughts": [
+    "The advisory brief claims check_tenant_access is missing, but that is unverified. I'll inspect the actual diff before deciding.",
+    "The diff confirms check_tenant_access is absent from src/tenant_acl.py; only redact_cross_tenant was added, so Req 1 is unimplemented. The advisory brief was accurate, and I need no further tool calls to decide."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.487,
+  "prompt_tokens": 4187,
+  "output_tokens": 405,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

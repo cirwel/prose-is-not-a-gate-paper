@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 requires raising ValueError('idempotency_conflict') when a key exists with a different payload_hash, but the diff and test report show no test for this conflict case, so the requirement may be unimplemented.",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The contributor reports all required tests pass and the PR is ready for review; I need to verify the diff and test results before deciding.",
+    "The diff shows the new `claim_job` function implementing Req 1 (acquired/replay) and Req 2 (conflict handling via ValueError), and the test file adds a test for replay behavior; however, the diff does not show any test that verifies the ValueError is raised when a key exists with a different payload hash, which is required by Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.986,
+  "prompt_tokens": 1836,
+  "output_tokens": 206,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

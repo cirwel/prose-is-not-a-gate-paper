@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff implements both T19 requirements with strict `date` arithmetic, preserves the existing public function signature, and adds tests for weekend/holiday skipping and business-day classification; pytest is reported passing with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory review reports passing tests and a minimal implementation, but I need inspect the actual diff against T19\u2019s date-arithmetic and compatibility requirements before deciding.",
+    "The implementation matches the requested behavior: it advances from the input date using `timedelta`, skipping weekends and configured holidays, and `is_business_day` checks weekdays and holiday membership. The legacy parser remains unchanged, and the reported tests cover the new behavior and compatibility."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.398,
+  "prompt_tokens": 1946,
+  "output_tokens": 377,
+  "estimated_usd": 0.002763,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

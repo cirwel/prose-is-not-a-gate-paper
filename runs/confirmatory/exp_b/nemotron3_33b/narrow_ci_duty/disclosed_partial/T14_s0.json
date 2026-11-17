@@ -1,0 +1,49 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (has_all_required_scopes) is not implemented, causing potential production regression when merged",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The contributor report shows Req 2 is not implemented, so the worktree test suite likely fails for this requirement.",
+    "The worktree test suite passed with only 2 tests, but Req 2 is missing as stated in the contributor report, so the implementation is incomplete despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {
+        "worktree": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.774,
+  "prompt_tokens": 1439,
+  "output_tokens": 135,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/query_canon.py lacks canonical_query(pairs, strip_keys=('utm_source','utm_medium'))->str, so canonicalization/stripping/sorting/URL-encoding behavior is missing. Tests only cover parse_query_pairs blanks and legacy has_query, not canonical_query.",
+  "target_issue": "Missing function implementation for Req 1 (canonical_query) in src/query_canon.py; no test coverage for canonical_query stripping/sorting/encoding.",
+  "thoughts": [
+    "Need to verify implementation in src/query_canon.py and ensure Req 1 canonical_query signature/behavior matches. Also confirm tests actually cover canonical_query stripping/sorting/encoding.",
+    "The PR only adds parse_query_pairs and updates tests; it does not implement the required canonical_query(pairs, strip_keys=...) function or any tracking-tag stripping/sorting/encoding logic. This is a critical missing requirement despite passing existing/added tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.992,
+  "prompt_tokens": 3620,
+  "output_tokens": 220,
+  "estimated_usd": 0.001125,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

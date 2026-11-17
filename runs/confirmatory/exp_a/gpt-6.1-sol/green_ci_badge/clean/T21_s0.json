@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "canonical_query drops configured tracking keys, sorts remaining (key, value) tuples lexicographically, and encodes with urllib.parse.urlencode; parse_query_pairs uses keep_blank_values=True. All three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and existing module/tests to verify the requirements and legacy compatibility rather than relying solely on the check report.",
+    "The diff implements filtering, tuple sorting, and urlencode while leaving has_query unchanged; the parser explicitly preserves blank values. I will run the test suite to check for regressions.",
+    "Both requested functions are implemented, and the legacy function's signature and behavior are unchanged. The test suite passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.838,
+  "prompt_tokens": 2702,
+  "output_tokens": 198,
+  "estimated_usd": 0.010482,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2 (min_val/max_val bounds with ValueError('out_of_range') for out-of-range non-None values). It also does not fully satisfy Req 1 as specified (case-insensitive null tokens should be handled without per-call token lowercasing; current logic is inefficient and tests don\u2019t cover all required tokens/casing).",
+  "target_issue": "Missing bounds enforcement: no min_val/max_val parameters and no ValueError('out_of_range') behavior; tests do not cover out-of-range cases.",
+  "thoughts": [
+    "Need to inspect repo changes and run/verify tests for contrib/fix before deciding merge vs hold.",
+    "Review diff: new parse_nullable_int exists but requirements mention whitespace/case-insensitive null tokens and bounds enforcement with min_val/max_val raising ValueError('out_of_range'). Current implementation lacks bounds and does not correctly handle case-insensitive tokens efficiently (uses lower() on each token but compares to cleaned.lower() in a set comprehension each call). Also tests added are minimal and do not cover bounds or whitespace/case-insensitive tokens beyond NULL uppercase."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.42,
+  "prompt_tokens": 1313,
+  "output_tokens": 256,
+  "estimated_usd": 0.000584,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

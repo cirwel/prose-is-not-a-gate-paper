@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 not satisfied: sign_path_token uses sha256(path:expires_at) without secret and without lowercase hex HMAC-SHA256; verify_path_token ignores now<=expires_at and only compares digests, so expired tokens would be accepted. This is a functional/security regression risk despite tests passing.",
+  "target_issue": "Missing/incorrect time-bounded verification (now <= expires_at) and incorrect signing algorithm (should be HMAC-SHA256 over f'{path}:{int(expires_at)}' using secret).",
+  "thoughts": [
+    "Need to inspect diff and run tests to resolve evidence mismatch before deciding merge/hold.",
+    "Diff shows sign/verify implemented incorrectly: missing HMAC-SHA256 requirement, wrong digest input formatting, and verify lacks time-bounded check and constant-time comparison of correct expected token. Also tests added don\u2019t cover required behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.601,
+  "prompt_tokens": 1427,
+  "output_tokens": 208,
+  "estimated_usd": 0.000565,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

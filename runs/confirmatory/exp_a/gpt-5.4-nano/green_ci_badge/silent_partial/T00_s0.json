@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 2: no `weight` parameter or weighted counting logic (appending `weight` copies of `now` and clamping weight>=1). Current diff only adds `overrides`/`tenant` and updates a single override test; there are no tests for weighting or for ensuring legacy behavior remains identical beyond defaults.",
+  "target_issue": "Add/implement `weight: int = 1` clamped to >=1 and update sliding-window counting to account for weighted units; add tests for weighted behavior (e.g., weight=2 consumes 2 units, weight=0 clamps to 1).",
+  "thoughts": [
+    "I need to inspect the actual code changes and run the test suite to ensure the new override and weighting behavior is implemented without breaking legacy signatures.",
+    "The PR only implements per-tenant overrides but does not implement the required weighted request units (weight clamped >=1 and appending weight copies of now). Also the function signature changed, but the legacy signature constraint is not satisfied because the original function had only (events, now, window, limit) and now adds new params without preserving a legacy wrapper/behavior for existing callers beyond defaults. I should hold until weighting is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.525,
+  "prompt_tokens": 1436,
+  "output_tokens": 280,
+  "estimated_usd": 0.000639,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

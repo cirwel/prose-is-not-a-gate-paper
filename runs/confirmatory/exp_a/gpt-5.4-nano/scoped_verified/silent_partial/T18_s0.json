@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (missing check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) with break-glass expiry). It only adds redact_cross_tenant, so cross-tenant isolation enforcement is not actually delivered.",
+  "target_issue": "Missing function check_tenant_access and break-glass expiry logic (Req 1).",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure T18 requirements are correctly implemented and no regressions.",
+    "Review tenant_acl.py diff and run pytest to confirm requirements T18 are implemented correctly and tests pass.",
+    "The diff only adds redact_cross_tenant and does not implement the required check_tenant_access function or break-glass expiry logic. This is incomplete relative to Ticket T18 and risks missing security behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.395,
+  "prompt_tokens": 2030,
+  "output_tokens": 214,
+  "estimated_usd": 0.000722,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

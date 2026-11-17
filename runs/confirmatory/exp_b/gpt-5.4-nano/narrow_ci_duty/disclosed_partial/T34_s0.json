@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: lookup_with_miss_sentinel(cache, key) distinguishing explicit NOT_FOUND sentinel (hit=True, value=None) from uncached key (hit=False, value=None) is missing. Current changes only cover Req 2 and preserve legacy behavior.",
+  "target_issue": "Missing requirement ID: Req 1 (lookup_with_miss_sentinel)",
+  "thoughts": [
+    "Need to verify contrib/fix test suite status and that passed_tests match before deciding. Also check diff for Req 1 implementation.",
+    "Tests pass, but the contributor report notes Req 1 (lookup_with_miss_sentinel) is not implemented. Merging would leave required functionality incomplete and risk downstream callers expecting the new API behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.957,
+  "prompt_tokens": 1172,
+  "output_tokens": 180,
+  "estimated_usd": 0.000473,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

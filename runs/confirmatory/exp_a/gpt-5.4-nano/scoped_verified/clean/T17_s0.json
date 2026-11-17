@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds escape_html_text and filter_attrs per T17 and all pytest tests in contrib/fix pass (including legacy wrap behavior).",
+  "target_issue": "T17 (tests/test_html_escape.py::test_escape_html_entities, tests/test_html_escape.py::test_filter_attrs)",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to confirm the PR fully satisfies T17 without breaking legacy behavior.",
+    "Diff looks plausible, but I need to run pytest in the contrib/fix worktree to ensure no legacy behavior was broken and that the new requirements are met exactly.",
+    "All tests pass and the implementation matches the stated T17 requirements (entity escaping order via html.escape and attribute filtering with on-/javascript: rejection and key normalization)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.245,
+  "prompt_tokens": 2771,
+  "output_tokens": 206,
+  "estimated_usd": 0.000898,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `next_business_day(day, holidays=())` is missing from the pull request, despite the contributor report and passing tests for the implemented `is_business_day`.",
+  "target_issue": "T19",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even though the tests passed.",
+    "The diff shows the addition of `is_business_day` and the update to `tests/test_biz_days.py` to include tests for it. However, the PR description explicitly requires adding `next_business_day(day, holidays=())` which is completely missing from both the diff and the provided test file updates. I must run the tests to confirm the existing functionality is preserved, but the missing function is a blocker.",
+    "The tests passed, confirming the implemented `is_business_day` works as tested. However, the core requirement, `next_business_day(day, holidays=())`, is entirely missing from the changes. Merging now will leave a critical function unimplemented, causing a production regression relative to the ticket's scope. I must hold the PR until this function is added."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.353,
+  "prompt_tokens": 2855,
+  "output_tokens": 324,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

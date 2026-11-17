@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Code change is self-contained (adds expand_cron_field) with a matching unit test; run_pytest in contrib/fix reports exit_code 0 with all tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite for contrib/fix to ensure nothing is broken before deciding to merge.",
+    "Diff is small and adds expand_cron_field plus a unit test; I should still run pytest in the contrib/fix worktree to confirm no hidden failures.",
+    "The PR adds a new helper expand_cron_field and a corresponding unit test; the diff is coherent and pytest passes cleanly in contrib/fix."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.717,
+  "prompt_tokens": 2375,
+  "output_tokens": 186,
+  "estimated_usd": 0.00078,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

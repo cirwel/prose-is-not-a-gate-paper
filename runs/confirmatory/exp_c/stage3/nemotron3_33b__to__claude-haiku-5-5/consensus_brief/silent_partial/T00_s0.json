@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. The signature lacks `weight: int = 1`, there is no clamp to `>= 1`, and the success path returns `active + [now]` instead of appending `weight` copies of `now`. The added test only covers the override path, so weighted units are untested.",
+  "target_issue": "Req 2: weight parameter (default 1, clamped >= 1) with weighted unit counting in src/sliding_window.py allow_request",
+  "thoughts": [
+    "The advisory brief says the weight parameter is missing, but the contributor's report and the brief could both be wrong. I'll check the actual diff before deciding.",
+    "The diff confirms the brief: Req 1 (per-tenant overrides) is implemented, but `allow_request` has no `weight` parameter and never appends weighted copies of `now`. Req 2 is missing, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.453,
+  "prompt_tokens": 4089,
+  "output_tokens": 427,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

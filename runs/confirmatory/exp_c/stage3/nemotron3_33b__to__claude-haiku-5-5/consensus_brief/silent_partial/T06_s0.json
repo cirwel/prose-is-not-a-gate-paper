@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/group_inherit.py gains only expand_roles. detect_role_cycle(role_graph), which must raise ValueError('role_cycle_detected') when the role -> parent_roles graph contains a cycle, is absent, so Req 2 is not met. The added test covers only expansion, and the contributor's 'ready_for_review' status does not account for this.",
+  "target_issue": "Req 2: detect_role_cycle(role_graph) missing from src/group_inherit.py (must raise ValueError('role_cycle_detected') on cycles)",
+  "thoughts": [
+    "The advisory brief claims detect_role_cycle is missing, but that is a secondary report. I'll check the actual diff before deciding.",
+    "The diff confirms the advisory: expand_roles is added, but there is no detect_role_cycle function, so Req 2 is unimplemented. The new test only covers expansion, so nothing verifies cycle detection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.126,
+  "prompt_tokens": 4086,
+  "output_tokens": 434,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

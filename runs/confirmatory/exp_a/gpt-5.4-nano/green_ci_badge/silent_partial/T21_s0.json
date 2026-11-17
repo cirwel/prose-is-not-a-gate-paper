@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (canonical_query with stripping utm_* keys, lexicographic sorting, and urllib.parse.urlencode). Only parse_query_pairs was added, so the ticket is incomplete despite passing existing/added tests.",
+  "target_issue": "Missing implementation of canonical_query(pairs, strip_keys=('utm_source','utm_medium')) -> str (Req 1); no corresponding tests.",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure no legacy behavior breaks, then decide merge vs hold.",
+    "Diff only adds parse_query_pairs and a test; it does not implement canonical_query or strip tracking tags as required by T21. Also no tests cover canonicalization/sorting/encoding. Must hold until requirements are fully implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.73,
+  "prompt_tokens": 1281,
+  "output_tokens": 187,
+  "estimated_usd": 0.000507,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

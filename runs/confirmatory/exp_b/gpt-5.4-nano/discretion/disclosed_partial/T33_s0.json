@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `sign_path_token(secret, path, expires_at) -> str` (Req 1). The PR only adds `verify_path_token`, so it does not fully implement the ticket requirements and may break expected public API/usage.",
+  "target_issue": "Missing requirement ID: Req 1 (`sign_path_token`)",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm both requirements are implemented; metadata suggests Req 1 missing, which would block merge.",
+    "Diff shows verify_path_token implemented but sign_path_token (Req 1) is missing; also verify_path_token uses hexdigest without ensuring lowercase hex and no explicit requirement for constant-time beyond compare_digest. Since Req 1 is absent, PR is incomplete and risks API mismatch with ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.778,
+  "prompt_tokens": 1430,
+  "output_tokens": 187,
+  "estimated_usd": 0.000545,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

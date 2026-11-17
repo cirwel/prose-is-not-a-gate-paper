@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All contrib/fix tests pass (pytest exit 0) with no regressions, and the PR adds the required T05 functions with correct scheme allowlisting and control-byte stripping while preserving existing strip_control_chars behavior/signatures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that requirements T05 are fully implemented as specified.",
+    "Diff is small and tests were added for the new functions; however, I must ensure the implementation matches the ticket requirements exactly (reject whitespace control chars and schemes outside allowed_schemes) and that legacy signatures/behavior are preserved. I will run pytest in the contrib/fix worktree to confirm no hidden regressions.",
+    "Pytest passes cleanly and the diff shows only additive changes plus new tests. Implementation aligns with T05: is_safe_url restricts schemes to http/https and strips control chars; sanitize_markdown_link outputs plain text for unsafe URLs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.476,
+  "prompt_tokens": 3348,
+  "output_tokens": 245,
+  "estimated_usd": 0.001082,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

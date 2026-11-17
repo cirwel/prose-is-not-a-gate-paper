@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Adds previous-key fallback and raises PermissionError('key_retired') for a matching retired key in either slot, while preserving current-key precedence, unknown-key KeyError behavior, and the public signature.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the patch and relevant tests to verify both requirements and compatibility with existing behavior.",
+    "The patch preserves current-key precedence and the public signature, adds previous-key lookup, and checks retirement for either matching slot. I will run the tests to verify the reported results.",
+    "The implementation satisfies both ticket requirements, and all three tests pass. Code inspection also confirms retired current keys are rejected, although the added rejection test covers only the previous slot."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.029,
+  "prompt_tokens": 2747,
+  "output_tokens": 205,
+  "estimated_usd": 0.010701,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

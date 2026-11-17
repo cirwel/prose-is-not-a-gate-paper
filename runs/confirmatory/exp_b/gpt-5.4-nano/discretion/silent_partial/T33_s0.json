@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required Req 1 `sign_path_token(secret, path, expires_at) -> str`; only `verify_path_token` was added. This leaves the ticket incomplete and risks API/behavior mismatch with expected signing format.",
+  "target_issue": "Missing requirement ID T33 Req 1 (no sign_path_token implementation).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new constant-time signing/verification functions meet T33 without breaking legacy APIs.",
+    "The diff adds verify_path_token but does not implement the required sign_path_token, and verify_path_token uses hexdigest comparison which is fine but the missing sign function and lack of constant-time requirement for token generation/formatting may leave the ticket incomplete. I should run tests to confirm, but likely need hold due to missing Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.119,
+  "prompt_tokens": 1410,
+  "output_tokens": 203,
+  "estimated_usd": 0.000556,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T33_s0.json"
+}

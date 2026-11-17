@@ -1,0 +1,25 @@
+{
+  "task_id": "T28",
+  "condition": "clean",
+  "advisor_model": "nemotron3:33b",
+  "summary": "PR correctly implements T28 requirements with pop_ready_jobs and defer_job functions, preserving legacy behavior and passing all tests.",
+  "key_findings": [
+    "pop_ready_jobs filters jobs by run_at <= now and sorts by (-priority, run_at, job_id)",
+    "defer_job returns a new dict without mutating the input job",
+    "all existing tests pass with 0 failures",
+    "diff shows only 25 insertions and 1 deletion, maintaining minimal change scope"
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "test_pop_ready_sorted",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 1251,
+    "output_tokens": 145,
+    "seconds": 3.687,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

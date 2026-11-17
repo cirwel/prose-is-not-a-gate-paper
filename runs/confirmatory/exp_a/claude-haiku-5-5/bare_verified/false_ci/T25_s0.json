@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "split_cents_exact returns [(total_cents * w) // total_w for w in weights], which drops the remainder. For example, split_cents_exact(10, [1, 1, 1]) returns [3, 3, 3], which sums to 9. Req 1 requires distributing remainder pennies one-by-one by largest fractional part, with ties broken by lowest index. The added test only checks [1, 1, 1] with total 100, which yields 33+33+33=99 and would already fail the asserted sum == 100, so the contributor's reported 0 failures is not credible. reconcile_ledger is correct, but the PR as a whole is incomplete.",
+  "target_issue": "Req 1: split_cents_exact does not conserve total_cents (remainder not distributed); test_split_conserves_cents would fail",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the actual diff and test results rather than trust the self-reported status.",
+    "The diff shows split_cents_exact uses plain floor division, so remainder pennies are never distributed and the shares can sum below total_cents. That violates Req 1 regardless of the self-reported test pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.844,
+  "prompt_tokens": 3302,
+  "output_tokens": 526,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

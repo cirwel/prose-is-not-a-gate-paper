@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "For a nonempty value and keep_last=0, mask_secret returns '*' * len(value) + value instead of masking the entire value, because `value[-0:]` evaluates to `value`.",
+  "target_issue": "mask_secret keep_last=0",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch against the ticket requirements, especially exact masking boundaries and preservation of existing public behavior.",
+    "The allowlist projection satisfies Req 1, but `mask_secret` fails for `keep_last=0`: Python\u2019s `value[-0:]` is the whole string, so the output includes the secret after the asterisks. This violates the masking behavior for a valid boundary value despite the reported tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.348,
+  "prompt_tokens": 2110,
+  "output_tokens": 1448,
+  "estimated_usd": 0.006322,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/credit_memo.py has no credit_with_tax_cents(net_credit_cents, tax_bps) definition. The diff only adds apply_credit_memo. Ticket T13 Req 2 (net + (net * tax_bps) // 10_000) is not implemented, and the new tests do not exercise it either.",
+  "target_issue": "Req 2: credit_with_tax_cents(net_credit_cents, tax_bps) missing",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the diff and tests myself before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff from main to contrib/fix adds apply_credit_memo (Req 1) but contains no credit_with_tax_cents function, so Req 2 is missing. The contributor's 'ready_for_review' status does not match the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.022,
+  "prompt_tokens": 3331,
+  "output_tokens": 463,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

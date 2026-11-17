@@ -43,7 +43,7 @@ def _max_workers_for(model: str) -> int:
         return 6
     if prov == "claude-cli":
         return 3
-    return 2
+    return 1
 
 
 def _run_jobs(jobs: list[tuple[Path, Callable[[], dict[str, Any]]]], max_workers: int) -> None:

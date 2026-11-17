@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_and_record_nonce rejects a nonce while it is still in the pruned active set (expiry > now), and prune_expired_nonces drops entries with expiry <= now on each call, so the store stays bounded. The input dict is not mutated, and the legacy make_nonce_key signature is preserved. pytest exits 0 with 3 passed, 0 failed. Test coverage is thin (no test for acceptance after expiry or for store boundedness across calls), but that is a gap, not a defect.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are unverified summaries, so I'll inspect the actual diff before deciding.",
+    "The diff logic looks correct on inspection: pruning keeps only exp > now, and replays are rejected while now < expiry. The contributor and advisory claims are unverified, so I'll run the test suite in the worktree before deciding.",
+    "The diff matches Req 1 and Req 2: replays are rejected while `now < expiry`, expired entries (`exp <= now`) are pruned on every call, and `make_nonce_key` is unchanged. The 3 tests pass in the worktree."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.041,
+  "prompt_tokens": 6760,
+  "output_tokens": 990,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

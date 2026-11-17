@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/query_canon.py does not add canonical_query(pairs, strip_keys=...) or strip/sort/urlencode behavior. The PR only adds parse_query_pairs and updates tests accordingly, leaving required canonicalization unaddressed.",
+  "target_issue": "Missing function/requirement: canonical_query(pairs, strip_keys=('utm_source','utm_medium')) -> str (Req 1).",
+  "thoughts": [
+    "Need to inspect actual diff and implementation in src/query_canon.py to confirm whether canonical_query has required strip_keys parameter and behavior. Then run pytest to ensure no regressions.",
+    "Diff shows only parse_query_pairs added; canonical_query and strip_keys behavior from Req 1 are missing. Tests also only cover parse_query_pairs and legacy has_query, so missing functionality would not be caught."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.543,
+  "prompt_tokens": 3620,
+  "output_tokens": 192,
+  "estimated_usd": 0.001097,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

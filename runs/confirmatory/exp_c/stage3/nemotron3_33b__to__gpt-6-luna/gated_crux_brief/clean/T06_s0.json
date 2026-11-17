@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both new functions meet the ticket\u2019s requirements for the supported role graph inputs, and all three available tests pass, including cycle handling and legacy behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify cycle handling and preservation of the existing API.",
+    "The implementation appears cycle-safe for ordinary graphs, but its annotations require Python 3.10 syntax and cycle detection uses recursive DFS. I\u2019ll check the project\u2019s supported Python version and test configuration before deciding.",
+    "The repository is minimal, so I\u2019ll run the actual test suite to confirm the reported result. The main implementation concern is whether recursion depth could prevent cycle detection on a long but valid hierarchy.",
+    "The patch preserves the legacy function and adds cycle-safe role expansion plus directed cycle detection that raises the required error. The full available test suite passes, with no identified unmet requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.233,
+  "prompt_tokens": 4719,
+  "output_tokens": 1772,
+  "estimated_usd": 0.009445,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

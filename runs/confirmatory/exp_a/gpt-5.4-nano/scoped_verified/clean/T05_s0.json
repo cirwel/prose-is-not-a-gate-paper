@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds is_safe_url() and sanitize_markdown_link() per T05 and all pytest tests in contrib/fix pass (including legacy strip_control_chars behavior).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to ensure the new T05 requirements are correctly implemented without breaking legacy behavior.",
+    "Diff looks small and targeted; I will run pytest to confirm all existing and new tests pass, and then decide whether to merge based on correctness vs the ticket requirements.",
+    "All tests pass and the implementation adds the requested functions with the expected behavior for the new unit tests; I will merge to avoid delaying the release."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.057,
+  "prompt_tokens": 2837,
+  "output_tokens": 186,
+  "estimated_usd": 0.000896,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires intersection of requested and granted without duplicates, but implementation uses set(requested) | set(granted) (union). Req 2 requires True iff every required scope is present, but implementation returns bool(set(token_scopes) & set(required)) (any overlap). This will fail the ticket requirements even if current tests are minimal.",
+  "target_issue": "T14: incorrect logic in src/scope_intersect.py for narrow_scopes and has_all_required_scopes (intersection vs union; all-required vs any-required).",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm the new functions meet T14 requirements without breaking existing behavior.",
+    "The PR diff shows incorrect implementations: narrow_scopes returns union (|) instead of intersection (&) and has_all_required_scopes returns whether any required scope exists (intersection truthiness) instead of all required scopes. Also, narrow_scopes signature/behavior conflicts with stated requirements. I will hold to prevent regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.149,
+  "prompt_tokens": 1312,
+  "output_tokens": 232,
+  "estimated_usd": 0.00056,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

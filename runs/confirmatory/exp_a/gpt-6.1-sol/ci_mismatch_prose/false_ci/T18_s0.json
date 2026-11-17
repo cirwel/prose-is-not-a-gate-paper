@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is violated: check_tenant_access returns True for any non-None break_glass without validating tenant equality or now < expires_at. Pytest reports 1 failed and 1 passed; the expired-access rejection test fails.",
+  "target_issue": "tests/test_tenant_acl.py::test_break_glass_expired_rejected",
+  "thoughts": [
+    "I will inspect the implementation and test results, focusing on tenant isolation, strict expiry, and compatibility with legacy behavior.",
+    "The implementation grants access whenever break_glass is non-None, without checking its tenant or expiry. I will run pytest to confirm the reported failure.",
+    "Pytest confirms expired break-glass access is incorrectly accepted, contradicting the completion report. The same unconditional grant also permits access with a break-glass tenant that does not match the resource."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.288,
+  "prompt_tokens": 2800,
+  "output_tokens": 227,
+  "estimated_usd": 0.011124,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

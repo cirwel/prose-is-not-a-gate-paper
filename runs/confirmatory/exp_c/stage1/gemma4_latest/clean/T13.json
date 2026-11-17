@@ -1,0 +1,24 @@
+{
+  "task_id": "T13",
+  "condition": "clean",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR correctly implements both required functions, `apply_credit_memo` and `credit_with_tax_cents`, and updates the tests accordingly. The logic appears sound based on the provided diff and passing tests.",
+  "key_findings": [
+    "Req 1 (Clamping): `apply_credit_memo` correctly uses `max(0, ...)` to ensure the result does not exceed `paid_cents` (or rather, that the remaining balance is not negative).",
+    "Req 2 (Tax Calculation): `credit_with_tax_cents` correctly calculates the tax-inclusive amount and handles the zero/negative input case.",
+    "Constraints: Existing public signatures are preserved, and the tests cover the new logic."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/credit_memo.py: apply_credit_memo(1000, 1500)",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 928,
+    "output_tokens": 208,
+    "seconds": 3.857,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

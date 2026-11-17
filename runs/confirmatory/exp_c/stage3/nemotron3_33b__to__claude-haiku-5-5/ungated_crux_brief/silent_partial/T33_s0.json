@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/signed_url.py does not define sign_path_token(secret, path, expires_at) -> str. The diff adds only verify_path_token and the imports. Ticket T33 Req 1 requires the hex HMAC-SHA256 signer over f'{path}:{int(expires_at)}', and no test exercises signing. The existing tests pass, but the ticket is incomplete.",
+  "target_issue": "T33 Req 1: sign_path_token missing from src/signed_url.py",
+  "thoughts": [
+    "The advisory claims sign_path_token is missing, but the contributor report and advisor disagree, so I need to check the actual diff before deciding.",
+    "The diff shows src/signed_url.py adds only verify_path_token and no sign_path_token, so Req 1 is unmet. The advisory's claim is confirmed by the diff, and the passing tests don't cover signing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.155,
+  "prompt_tokens": 4249,
+  "output_tokens": 459,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

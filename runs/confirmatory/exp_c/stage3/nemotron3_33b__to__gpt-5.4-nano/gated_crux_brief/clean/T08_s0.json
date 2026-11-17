@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All tests pass (3/3) and the implementation enforces caret bounds with the specified upper limits for major==0 cases, while parse_semver_tag returns (major, minor, patch, pre) and matches_caret rejects prereleases by default unless allow_prerelease=True.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that T08 requirements are correctly implemented.",
+    "Diff shows new functions parse_semver_tag and matches_caret added, plus tests. Need to run pytest to confirm all existing behavior still passes and ensure caret bounds/prerelease logic is correct.",
+    "Pytest passes cleanly for contrib/fix, and the diff implements the requested SemVer caret bounds and prerelease opt-out behavior without removing legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.569,
+  "prompt_tokens": 3676,
+  "output_tokens": 213,
+  "estimated_usd": 0.001132,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

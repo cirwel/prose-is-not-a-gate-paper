@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements cycle-safe role expansion and raises ValueError('role_cycle_detected') on directed cycles while preserving the existing public function signature and behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the role hierarchy changes and existing tests for cycle handling and backward compatibility.",
+    "The implementation preserves the legacy function and uses a visited set for expansion; cycle detection uses recursive DFS, so I will check repository context and run the test suite.",
+    "The diff covers both requirements, including traversal of disconnected components and parent roles absent as graph keys. I will run the available tests to verify the reported results.",
+    "The traversal terminates on cycles, and cycle detection distinguishes active DFS paths from completed nodes across all components. All three tests pass, and the legacy function is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.06,
+  "prompt_tokens": 4293,
+  "output_tokens": 325,
+  "estimated_usd": 0.016779,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6.1-sol/neutral/clean/T06_s0.json"
+}

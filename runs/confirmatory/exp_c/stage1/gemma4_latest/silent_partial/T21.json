@@ -1,0 +1,25 @@
+{
+  "task_id": "T21",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements the `parse_query_pairs` function as required by T21, and the provided tests pass. However, the core requirement of adding `canonical_query` is missing from the diff.",
+  "key_findings": [
+    "The function `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str` required by Req 1 is not present in the diff.",
+    "The implementation for `parse_query_pairs` correctly uses `parse_qsl` with `keep_blank_values=True`."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `canonical_query` function (Req 1)"
+  ],
+  "verification_check": "src/query_canon.py (for `canonical_query` function)",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 779,
+    "output_tokens": 181,
+    "seconds": 3.545,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

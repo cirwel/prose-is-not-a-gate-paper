@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `sign_path_token` (Ticket Req 1) is missing from src/signed_url.py, making the PR incomplete and failing to meet the ticket's core requirements.",
+  "target_issue": "Req 1: Add `sign_path_token(secret, path, expires_at) -> str`",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the advisory review points out a critical omission: the required `sign_path_token` function (Req 1) is missing, even though the PR claims to complete the ticket. I must verify the actual code changes to confirm this omission before deciding. I will use `git_diff()` to inspect the changes.",
+    "The diff confirms the advisory review's suspicion. The `sign_path_token` function, required by Ticket T33 (Req 1), is entirely missing from `src/signed_url.py`. Only `verify_path_token` has been implemented, and the tests only cover verification, not the full signing flow. This is an incomplete implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.509,
+  "prompt_tokens": 2176,
+  "output_tokens": 255,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

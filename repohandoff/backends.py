@@ -149,23 +149,33 @@ def unload_ollama_model(model: str) -> None:
 
 def call_ollama(model: str, messages: list[dict[str, str]], seed: int = 0, temperature: float = 0.2) -> tuple[str, dict[str, Any]]:
     last_error: str = "no attempt"
-    for attempt in range(5):
+    for attempt in range(6):
         opts: dict[str, Any] = {
-            "temperature": temperature,
+            "temperature": temperature if attempt == 0 else min(0.7, round(temperature + 0.12 * attempt, 2)),
             "seed": seed if attempt == 0 else seed + 101 * attempt,
             "num_ctx": 8192,
-            "num_predict": 2048,
+            "num_predict": 2048 if attempt < 2 else 1024,
         }
         if attempt > 0:
-            opts["repeat_penalty"] = 1.1
-        body = {
+            opts["repeat_penalty"] = round(1.15 + 0.08 * attempt, 2)
+            opts["repeat_last_n"] = 256
+        req_messages = messages
+        if attempt == 5 and messages:
+            req_messages = list(messages[:-1]) + [
+                {
+                    "role": messages[-1]["role"],
+                    "content": messages[-1]["content"] + "\n\nReply with ONE valid JSON object only.",
+                }
+            ]
+        body: dict[str, Any] = {
             "model": model,
-            "messages": messages,
+            "messages": req_messages,
             "stream": False,
             "think": False,
-            "format": "json",
             "options": opts,
         }
+        if attempt < 5:
+            body["format"] = "json"
         req = urllib.request.Request(
             OLLAMA_CHAT_URL,
             data=json.dumps(body).encode("utf-8"),
@@ -193,6 +203,17 @@ def call_ollama(model: str, messages: list[dict[str, str]], seed: int = 0, tempe
             last_error = f"HTTP {exc.code}: {detail}"
             if exc.code >= 500:
                 if "repeat" in detail.lower():
+                    if attempt == 5:
+                        return '{"error": "ollama_repeat_abort"}', {
+                            "provider": "ollama",
+                            "model": model,
+                            "prompt_tokens": 0,
+                            "output_tokens": 0,
+                            "seconds": round(time.time() - started, 3),
+                            "retry_attempt": attempt,
+                            "aborted_repeat": True,
+                            "estimated_usd": 0.0,
+                        }
                     time.sleep(0.5)
                     continue
                 unload_ollama_model(model)

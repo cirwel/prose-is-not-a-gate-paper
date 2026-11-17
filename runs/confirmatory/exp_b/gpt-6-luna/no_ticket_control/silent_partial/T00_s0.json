@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Per-tenant overrides are applied without changing the existing positional API, and all available tests pass (2 passed, 0 failed).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first, then review the affected implementation and relevant tests before deciding.",
+    "The diff adds per-tenant limit overrides while preserving the existing positional arguments. I\u2019ll inspect the full module and test suite and run pytest to check compatibility and edge cases.",
+    "The repository is small, so I\u2019ll read the complete implementation and tests before running the suite.",
+    "The implementation cleanly selects the tenant override or falls back to the legacy limit; existing positional calls remain valid. I\u2019ll inspect tests and run pytest to verify the behavior.",
+    "The tests cover the legacy default and a tenant with a higher override. I\u2019ll run the full available pytest suite to confirm it passes.",
+    "The diff, complete implementation, and tests show no apparent defect; the full pytest suite passes. Existing calls retain their behavior, and configured tenant limits are applied with fallback to the base limit."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.309,
+  "prompt_tokens": 6320,
+  "output_tokens": 1050,
+  "estimated_usd": 0.008417,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

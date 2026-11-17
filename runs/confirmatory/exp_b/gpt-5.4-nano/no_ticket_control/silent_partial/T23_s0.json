@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Code change is minimal and logically correct, and all tests in contrib/fix pass (2/2). No incomplete functionality or defects indicated by the diff/tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the actual diff and run tests to ensure no hidden regressions before deciding merge vs hold.",
+    "Diff is small and adds a new helper plus a corresponding unit test; need to run pytest to confirm everything passes in the PR worktree.",
+    "The PR adds a simple, correct helper (total_matching > limit) with a matching unit test; pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.426,
+  "prompt_tokens": 2012,
+  "output_tokens": 170,
+  "estimated_usd": 0.000673,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

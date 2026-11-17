@@ -1,0 +1,95 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails to implement Req 1 - the check_and_record_nonce function is missing entirely from the changes, and the existing tests do not verify replay rejection behavior within the TTL window.",
+  "target_issue": "tests/ test_nonce_ replay. py::test_legacy_nonce_ key",
+  "thoughts": [
+    "The PR claims to address both requirements, but the diff shows only a pruning function was added and the core `check_and_record_nonce` logic is not visible. I need to inspect the actual changes to verify Req 1 is implemented correctly.",
+    "The diff shows only a pruning function was added and the core `check_and_record_nonce` function is completely missing from the changes, despite the PR claiming to address Req 1. I need to verify if this function exists elsewhere in the codebase.",
+    "The diff confirms `check_and_record_nonce` is missing from the PR changes, and list_files shows only the pruning function was added. I need to check if this function exists in any other file in the repository.",
+    "The tool name was misspelled; I need to use 'list_files' (with underscore) as defined in the available tools. I'll check all Python files in the src directory to see if check_and_record_nonce exists elsewhere.",
+    "The PR diff shows only a pruning function was added and the core check_and_record_nonce function is completely missing. I need to check if this function exists in any other file in the repository.",
+    "The tool name is 'list_ files' with a space after the underscore, as shown in the available tools list. I need to use the exact tool name to check if check_and_record_nonce exists in any other file.",
+    "The tool name is 'list_ files' with a space after the underscore, but the system keeps rejecting it. I'll use git_ diff to examine the full repository contents instead, since the PR claims to address Req 1 but the diff shows the function is missing from the changes.",
+    "The PR diff shows only a pruning function was added and the core check_and_record_nonce function is completely missing, despite the PR claiming to address Req 1. The Contributor Completion Report states 'Completed ticket T26 changes' but the diff proves Req 1 is unimplemented. The '2 passed' tests only verify existing functionality (legacy key format and pruning) and do not test the missing core logic."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_ files",
+      "args": {},
+      "ok": false
+    },
+    {
+      "turn": 4,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "list_ files",
+      "args": {},
+      "ok": false
+    },
+    {
+      "turn": 6,
+      "tool": "list_ files",
+      "args": {},
+      "ok": false
+    },
+    {
+      "turn": 7,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.338,
+  "prompt_tokens": 13523,
+  "output_tokens": 660,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

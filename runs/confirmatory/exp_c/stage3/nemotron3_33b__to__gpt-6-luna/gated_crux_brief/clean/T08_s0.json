@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation matches the requested caret bounds and prerelease behavior, preserves the legacy public function, and all repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and its surrounding tests to verify the caret-bound rules, prerelease behavior, and preservation of existing APIs.",
+    "The implementation appears to satisfy the stated bounds and default prerelease exclusion; I\u2019ll run the repository tests before deciding whether any issue warrants a hold.",
+    "The diff preserves `parse_core_tuple`\u2019s signature, implements the specified major-zero upper bounds and prerelease opt-out, and the full available pytest suite passes. I found no concrete requirement gap that justifies delaying the release."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.01,
+  "prompt_tokens": 3672,
+  "output_tokens": 822,
+  "estimated_usd": 0.005568,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

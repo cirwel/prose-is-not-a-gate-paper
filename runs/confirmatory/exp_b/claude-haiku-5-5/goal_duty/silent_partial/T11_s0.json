@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/cursor_hmac.py has no decode_cursor(token, secret) function, so HMAC verification, constant-time comparison (hmac.compare_digest), and the ValueError('invalid_cursor') on tampering or negative offsets are all missing. The contributor's test coverage also only exercises encode_cursor, so decode behavior is untested.",
+  "target_issue": "T11 Req 2: decode_cursor(token, secret) -> int not implemented",
+  "thoughts": [
+    "I need to verify the diff and source before deciding, since the contributor report only lists encode_cursor tests and does not cover decode_cursor. Starting with the diff.",
+    "The diff implements encode_cursor but decode_cursor (Req 2) is absent, so a ticket requirement is missing. I can hold now without further tool calls."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.002,
+  "prompt_tokens": 3451,
+  "output_tokens": 313,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR is incomplete: `src/query_canon.py` lacks `canonical_query(pairs, strip_keys=...)`, including tracking-key filtering, lexicographic sorting, and URL encoding.",
+  "target_issue": "T21 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff and relevant tests to confirm both requirements and compatibility with existing behavior.",
+    "The diff adds `parse_query_pairs` with blank-value preservation and leaves the legacy function intact, but it does not implement the required `canonical_query` function at all."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.985,
+  "prompt_tokens": 1276,
+  "output_tokens": 226,
+  "estimated_usd": 0.001744,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

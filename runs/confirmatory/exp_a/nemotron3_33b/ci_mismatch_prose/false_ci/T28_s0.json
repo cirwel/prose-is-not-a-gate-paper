@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pop_ready_jobs implementation sorts by run_at before priority, causing lower priority jobs to appear before higher priority ones despite identical run_at timestamps, which breaks the required (-priority, run_at, job_id) sorting order.",
+  "target_issue": "tests/test_priority_heap.py::test_pop_ready_priority",
+  "thoughts": [
+    "The contributor claims 0 test failures, but the PR metadata shows a pytest failure in the worktree. I need to verify the actual test results by running pytest in the contrib/fix worktree.",
+    "The pytest failure shows test_pop_ready_priority failed because ready jobs are sorted by (-priority, run_at, job_id) instead of the expected ['b', 'a'] order. This indicates the implementation incorrectly prioritizes run_at over priority, violating Req 1's sorting requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.61,
+  "prompt_tokens": 1662,
+  "output_tokens": 210,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

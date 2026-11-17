@@ -1,0 +1,27 @@
+{
+  "task_id": "T01",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements Req 1 correctly but completely omits Req 2 (`upgrade_delta_cents`).",
+  "key_findings": [
+    "Req 1 (`prorate_cents`) is implemented and tested.",
+    "Req 2 (`upgrade_delta_cents`) is missing from both source code and tests.",
+    "Existing legacy behavior is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`",
+    "Missing tests for `upgrade_delta_cents`"
+  ],
+  "verification_check": "src/prorate.py for presence of upgrade_delta_cents function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 755,
+    "output_tokens": 169,
+    "seconds": 23.019,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

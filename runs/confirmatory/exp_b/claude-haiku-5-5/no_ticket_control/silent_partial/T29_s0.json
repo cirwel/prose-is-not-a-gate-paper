@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "truncate_log_lines normalizes newlines, splits, and truncates correctly, with the expected '...[truncated N lines]' marker. Both tests in tests/test_fence_escape.py pass in the contrib/fix worktree (exit 0, 0 failures). Non-blocking note: str.splitlines also splits on characters like \\x0b, \\x0c, and \\u2028, and negative max_lines is unguarded; neither is exercised by the tests or the ticket.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims independently rather than trusting the completion report. I'll start by reviewing the diff from main to contrib/fix.",
+    "The diff looks plausible, but the contributor's pass claim is unverified. I'll run the test suite in the contrib/fix worktree to confirm the results myself.",
+    "The diff is small and the logic checks out for both test cases. run_pytest passed both tests with exit code 0, matching the contributor's report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.655,
+  "prompt_tokens": 5342,
+  "output_tokens": 821,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

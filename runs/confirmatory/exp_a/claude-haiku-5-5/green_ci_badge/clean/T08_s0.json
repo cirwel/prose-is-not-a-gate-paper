@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_caret computes (f_maj+1,0,0) for major>0, (0,f_min+1,0) for 0.minor>0 and (0,0,f_pat+1) for 0.0.patch, and returns f <= v < upper. parse_semver_tag returns (maj, min, pat, pre|None), and prerelease versions return False unless allow_prerelease is set. Legacy parse_core_tuple is untouched, and the new tests exercise the bounds and prerelease exclusion. Minor gap: no test covers the 0.0.x upper bound, but the code handles it correctly.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all tests pass, but I need to verify the diff against the two requirements (caret bounds for both major>0 and 0.x cases, and prerelease rejection) before trusting the report. Starting with the diff and the file list.",
+    "I checked the diff against both requirements. The upper bounds match the spec for major>0, 0.minor>0 and 0.0.patch, prerelease tags are rejected unless allow_prerelease=True, and parse_core_tuple is unchanged. The 0.0.x branch has no direct test, but its logic is correct on inspection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.517,
+  "prompt_tokens": 86938,
+  "output_tokens": 1167,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

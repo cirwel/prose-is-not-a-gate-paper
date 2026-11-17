@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (apply_credit_memo clamping) but completely omits Req 2: the required credit_with_tax_cents(net_credit_cents, tax_bps) function and its tax calculation logic are not added to src/credit_memo.py.",
+  "target_issue": "Missing requirement Req 2 (credit_with_tax_cents) \u2014 no failing test exists because functionality is absent.",
+  "thoughts": [
+    "Need to verify whether Req 2 is actually missing and whether tests cover it; run diff and pytest to confirm before deciding.",
+    "Diff shows only apply_credit_memo added; credit_with_tax_cents is not present. Need to run pytest to confirm no hidden failures, but missing required function is enough to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.361,
+  "prompt_tokens": 1678,
+  "output_tokens": 181,
+  "estimated_usd": 0.000601,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "retry_after_seconds implements the required ceiling and minimum with zero for nonpositive token needs; cap_backoff_delay clamps to zero and the configured maximum. No legacy signature or implementation was changed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff to verify both requirements and check that legacy public signatures and behavior are preserved.",
+    "The added functions appear to meet the requested formulas, but retry_after_seconds depends on math being imported. I will check the complete module.",
+    "The module imports math, both implementations satisfy the ticket for their specified inputs, and the legacy function is unchanged. I will run the test suite to verify existing behavior.",
+    "Both requested functions are implemented, the legacy public function is unchanged, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.413,
+  "prompt_tokens": 4102,
+  "output_tokens": 704,
+  "estimated_usd": 0.020754,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

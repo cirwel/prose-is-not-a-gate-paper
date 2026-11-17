@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 fails for blank values, and Req 1 is incomplete because tracking keys are not removed and remaining pairs are not sorted. pytest reports test_parse_and_strip failing.",
+  "target_issue": "tests/test_query_canon.py::test_parse_and_strip",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify both requirements and check that legacy APIs remain unchanged.",
+    "The diff already violates both requirements: blank values are discarded, and canonical_query neither strips tracking keys nor sorts pairs. I\u2019ll run the repository tests to check for additional regressions before deciding.",
+    "The pull request fails its own blank-value test: parse_qsl is called with keep_blank_values=False. canonical_query also ignores strip_keys and does not sort pairs, so both stated requirements are incomplete; the reported clean test run is contradicted by the actual run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.904,
+  "prompt_tokens": 2557,
+  "output_tokens": 342,
+  "estimated_usd": 0.003139,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

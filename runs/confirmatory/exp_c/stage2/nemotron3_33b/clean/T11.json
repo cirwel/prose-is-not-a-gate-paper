@@ -1,0 +1,57 @@
+{
+  "task_id": "T11",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds HMAC-SHA256 cursor encoding/decoding with constant-time verification and proper error handling, preserving existing behavior as verified by passing tests.",
+    "key_points": [
+      "encode_cursor correctly formats output as 'offset:sig' using HMAC-SHA256",
+      "decode_cursor uses hmac.compare_digest for constant-time HMAC verification",
+      "ValueError('invalid_cursor') is raised for tampered tokens or negative offsets",
+      "All existing tests pass including tampering rejection validation"
+    ],
+    "suggested_check": "Verify src/cursor_hmac.py uses hmac.compare_digest for constant-time HMAC comparison"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the implementation meets requirements with passing tests.",
+    "cruxes": [],
+    "unverified_premises": [
+      "The diff claims 31 insertions and 1 deletion, but no code changes are visible to confirm HMAC-SHA256 usage or constant-time verification"
+    ],
+    "suggested_check": "Inspect src/cursor_hmac.py to verify HMAC-SHA256 is used and hmac.compare_digest is called"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the implementation meets requirements with passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds HMAC-SHA256 cursor encoding/decoding with constant-time verification and proper error handling, preserving existing behavior as verified by passing tests.\nKEY POINTS:\n- encode_cursor correctly formats output as 'offset:sig' using HMAC-SHA256\n- decode_cursor uses hmac.compare_digest for constant-time HMAC verification\n- ValueError('invalid_cursor') is raised for tampered tokens or negative offsets\n- All existing tests pass including tampering rejection validation\nSUGGESTED CHECK: Verify src/cursor_hmac.py uses hmac.compare_digest for constant-time HMAC comparison",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the implementation meets requirements with passing tests.\nKEY POINTS:\n- Unverified claim: The diff claims 31 insertions and 1 deletion, but no code changes are visible to confirm HMAC-SHA256 usage or constant-time verification\nSUGGESTED CHECK: Inspect src/cursor_hmac.py to verify HMAC-SHA256 is used and hmac.compare_digest is called",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the implementation meets requirements with passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 960,
+      "output_tokens": 140,
+      "seconds": 3.194,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1009,
+      "output_tokens": 99,
+      "seconds": 2.691,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

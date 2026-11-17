@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements T19 requirements: adds is_business_day(day, holidays) and next_business_day(day, holidays) using date.weekday() and date arithmetic (timedelta) while preserving existing parse_iso_date signature; pytest passes with no failures.",
+  "target_issue": "T19",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm the PR fully implements T19 without breaking legacy behavior.",
+    "Diff looks small and directly implements T19, but I need to run pytest to ensure no legacy behavior/signatures were broken and that type/holiday handling matches expectations.",
+    "All tests pass and the change adds the required functions with correct Mon\u2013Fri/weekend and holiday skipping using datetime.date arithmetic, without altering existing legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.791,
+  "prompt_tokens": 2779,
+  "output_tokens": 200,
+  "estimated_usd": 0.000895,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

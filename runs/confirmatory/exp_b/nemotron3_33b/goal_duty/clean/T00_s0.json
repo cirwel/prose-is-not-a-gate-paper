@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All ticket requirements are implemented and verified by passing tests; no regressions detected.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor reports all required tests pass and the implementation covers both per-tenant overrides and weighted requests while preserving legacy behavior, so I need to verify the actual diff and test results before deciding.",
+    "The diff shows the implementation adds per-tenant overrides and weighted requests as required, and the test additions cover both new features while preserving existing tests; however, I must verify the actual test results in the worktree.",
+    "All required tests pass and the diff confirms the implementation satisfies both requirements while preserving existing behavior, so the PR is ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.623,
+  "prompt_tokens": 3732,
+  "output_tokens": 188,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

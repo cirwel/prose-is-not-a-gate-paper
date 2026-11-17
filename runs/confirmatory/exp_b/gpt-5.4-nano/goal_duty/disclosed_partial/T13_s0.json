@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T13 requires adding `credit_with_tax_cents(net_credit_cents, tax_bps)` (Req 2), but the PR only adds `apply_credit_memo` (Req 1). Missing function means the ticket requirements are not fully implemented.",
+  "target_issue": "Missing requirement: `credit_with_tax_cents(net_credit_cents, tax_bps)` in src/credit_memo.py (no corresponding tests added).",
+  "thoughts": [
+    "Need to verify diff/tests and ensure both T13 requirements are implemented without breaking legacy behavior.",
+    "Diff shows Req 1 implemented and tests added, but Req 2 (credit_with_tax_cents) is missing. Must hold until both requirements are implemented and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.68,
+  "prompt_tokens": 1349,
+  "output_tokens": 179,
+  "estimated_usd": 0.000516,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

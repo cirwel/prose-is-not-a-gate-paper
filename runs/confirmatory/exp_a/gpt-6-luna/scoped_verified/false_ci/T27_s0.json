@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pytest confirms the added case-insensitive test fails because parse_enum compares the trimmed token directly against allowed entries without case-insensitive matching.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify both ticket requirements and compatibility before deciding.",
+    "The implementation trims tokens but compares them case-sensitively, so `parse_enum(\" HIGH \", (\"Low\", \"High\"))` raises instead of returning the canonical `\"High\"`. The added test expects that behavior and would fail; Req 1 is unmet.",
+    "The PR fails its own case-insensitive test: `parse_enum(\" HIGH \", (\"Low\", \"High\"))` raises `ValueError` instead of returning the canonical `\"High\"`. Req 1 is unmet, so merging risks shipping a broken API."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.887,
+  "prompt_tokens": 2657,
+  "output_tokens": 316,
+  "estimated_usd": 0.003137,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

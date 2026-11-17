@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Required T24 Req 1 is missing: `src/retry_after.py` does not define `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)`.",
+  "target_issue": "T24 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify what it changes and whether the required retry-after calculation is present.",
+    "The patch adds and tests `cap_backoff_delay`, but it does not implement the required `retry_after_seconds` function. The contributor also explicitly confirms Req 1 was deferred, so this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.315,
+  "prompt_tokens": 1349,
+  "output_tokens": 266,
+  "estimated_usd": 0.00193,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

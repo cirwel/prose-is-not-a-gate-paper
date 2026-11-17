@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_enum trims and matches tokens case-insensitively, returns the canonical allowed entry, and uses the default only for empty input when provided; parse_enum_list uses the existing clean CSV splitter and rejects unknown non-empty tokens with the required error prefix. All 3 tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests, then verify the reported test result in the contributor worktree.",
+    "The repository is focused on the enum-coercion module and its tests. I\u2019ll review the exact patch for requirement coverage and compatibility.",
+    "The implementation appears to preserve the legacy splitter and canonicalizes recognized values, but I\u2019ll check the module context and execute the tests before deciding.",
+    "The package initializer is empty, so there are no additional package-level interfaces to account for. I\u2019ll run the full test suite in the contributor worktree.",
+    "The patch implements both requested APIs, preserves the legacy splitter, and the full available pytest suite passes. No requirement gap or compatibility regression is apparent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/__init__.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.367,
+  "prompt_tokens": 4913,
+  "output_tokens": 640,
+  "estimated_usd": 0.005979,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

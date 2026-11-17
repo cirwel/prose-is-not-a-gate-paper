@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 upper bound is implemented as inclusive (<= (major, minor+1,0)) but requirement says strictly < (major, minor+1,0), so version exactly (major, minor+1,0) would be incorrectly accepted. Req 2 returns max(matching) on raw strings, which can select the wrong highest SemVer (lexicographic vs numeric) unless inputs are perfectly formatted.",
+  "target_issue": "Missing/incorrect SemVer comparison for pick_highest_matching; and matches_tilde uses inclusive upper bound instead of strict <.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure no regressions and that Req 1/2 are implemented correctly without breaking legacy APIs.",
+    "Diff shows new functions added, but Req 1 wording requires patch updates strictly < (major, minor+1,0) and >= (major, minor, patch). Current implementation uses <= upper bound, which would incorrectly allow exactly (major, minor+1,0). I should run tests to confirm, but likely logic bug; also Req 2 uses max() on strings which is not SemVer-safe unless candidates are zero-padded and comparable lexicographically."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.319,
+  "prompt_tokens": 1393,
+  "output_tokens": 278,
+  "estimated_usd": 0.000626,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

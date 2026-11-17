@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested helpers are implemented with the required behavior, the existing public parser signature and behavior are preserved, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff first, then verify the implementation and tests against both ticket requirements and the legacy API constraint.",
+    "The diff appears to add both requested helpers while leaving the legacy parser unchanged. I\u2019ll inspect the repository context and test coverage, including project Python compatibility, before deciding.",
+    "The repository is small, so I\u2019ll read the module and its tests directly to check signatures, edge cases, and compatibility with the existing behavior.",
+    "The implementations satisfy the stated set semantics and retain the parser signature. I\u2019ll inspect the tests and run the suite to confirm there are no regressions.",
+    "The tests cover deduplication, sorting, required-scope success and failure, and the legacy parser. I\u2019ll run the full pytest suite as the final verification.",
+    "The diff implements both requirements: `narrow_scopes` returns a sorted, deduplicated intersection, and `has_all_required_scopes` checks that all required scopes are present. The legacy parser remains unchanged, and the full test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/scope_intersect.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_scope_intersect.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.725,
+  "prompt_tokens": 7086,
+  "output_tokens": 534,
+  "estimated_usd": 0.007377,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

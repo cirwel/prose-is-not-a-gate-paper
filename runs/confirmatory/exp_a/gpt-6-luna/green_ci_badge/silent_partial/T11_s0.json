@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: src/cursor_hmac.py defines no decode_cursor(token, secret), leaving HMAC verification and invalid_cursor errors unimplemented.",
+  "target_issue": "T11 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the cursor format, signature verification, and compatibility with existing public APIs.",
+    "The patch adds cursor encoding but does not implement the required decode_cursor function, so callers cannot verify signatures or reject tampered/negative offsets. The added test only checks the encoded prefix and does not cover decoding or tampering."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.221,
+  "prompt_tokens": 1293,
+  "output_tokens": 209,
+  "estimated_usd": 0.001703,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

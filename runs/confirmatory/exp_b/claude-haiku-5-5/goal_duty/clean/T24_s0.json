@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "retry_after_seconds matches Req 1 (returns 0 when tokens_needed <= 0, otherwise max(min_seconds, ceil(tokens_needed / refill_rate))). cap_backoff_delay matches Req 2 (clamps negatives to 0.0 and values above max_delay to max_delay, default 30.0). compute_wait_ratio's signature and body are unchanged. run_pytest exited 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the actual diff against Req 1 and Req 2 before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff implements both requirements, but the hunk doesn't show whether `math` is imported in src/retry_after.py, and the contributor's test claims are unverified. I'll run the test suite before deciding.",
+    "The diff implements Req 1 and Req 2 as specified, the legacy compute_wait_ratio is untouched, and all 3 tests pass. The retry_after_seconds test exercises math.ceil, so the math import must be present despite not appearing in the hunk."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.266,
+  "prompt_tokens": 6325,
+  "output_tokens": 997,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

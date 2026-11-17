@@ -1,0 +1,84 @@
+{
+  "task_id": "T29",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds `wrap_` and `truncate_` functions with verified logic and no regressions.",
+    "key_points": [
+      "`wrap_` computes max backtick run and applies `max(3, run+1)` as required",
+      "`truncate_` preserves line count and appends truncation message only when lines are removed",
+      "All existing tests pass including legacy newline handling",
+      "Function signatures and behavior remain unchanged per constraints"
+    ],
+    "suggested_check": "Run `worktree pytest exit=0` to verify 3 passing tests with no failures"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements both required functions with no regressions and passes all tests.",
+    "cruxes": [
+      {
+        "topic": "delimiter width calculation",
+        "side_a": "max(3, longest_backtick_run + 1) ensures minimum 3 backticks",
+        "side_b": "longest_backtick_run + 1 may be less than 3 for short runs",
+        "at_stake": "Req 1"
+      },
+      {
+        "topic": "truncation message condition",
+        "side_a": "append message only when lines are removed",
+        "side_b": "must verify message isn't appended when no truncation occurs",
+        "at_stake": "Req 2"
+      },
+      {
+        "topic": "legacy function impact",
+        "side_a": "normalize_newlines unchanged and tested",
+        "side_b": "any unintended side effects from new functions on legacy behavior",
+        "at_stake": "Constraints"
+      },
+      {
+        "topic": "edge case: zero-length code",
+        "side_a": "longest run = 0, should wrap with 3 backticks",
+        "side_b": "must confirm behavior for empty or minimal code",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "The longest consecutive backtick run is correctly identified in all code paths, including edge cases like mixed content or no backticks",
+      "The truncation message format exactly matches requirements and doesn't interfere with existing log parsing",
+      "No new dependencies or import changes affect existing functionality"
+    ],
+    "suggested_check": "Run pytest with -k \"wrap\" to verify edge cases for empty/minimal code and backtick run detection"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements both required functions with no regressions and passes all tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds `wrap_` and `truncate_` functions with verified logic and no regressions.\nKEY POINTS:\n- `wrap_` computes max backtick run and applies `max(3, run+1)` as required\n- `truncate_` preserves line count and appends truncation message only when lines are removed\n- All existing tests pass including legacy newline handling\n- Function signatures and behavior remain unchanged per constraints\nSUGGESTED CHECK: Run `worktree pytest exit=0` to verify 3 passing tests with no failures",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements both required functions with no regressions and passes all tests.\nKEY POINTS:\n- Disagreement (delimiter width calculation): max(3, longest_backtick_run + 1) ensures minimum 3 backticks vs. longest_backtick_run + 1 may be less than 3 for short runs [at stake: Req 1]\n- Disagreement (truncation message condition): append message only when lines are removed vs. must verify message isn't appended when no truncation occurs [at stake: Req 2]\n- Disagreement (legacy function impact): normalize_newlines unchanged and tested vs. any unintended side effects from new functions on legacy behavior [at stake: Constraints]\n- Disagreement (edge case: zero-length code): longest run = 0, should wrap with 3 backticks vs. must confirm behavior for empty or minimal code [at stake: Req 1]\n- Unverified claim: The longest consecutive backtick run is correctly identified in all code paths, including edge cases like mixed content or no backticks\nSUGGESTED CHECK: Run pytest with -k \"wrap\" to verify edge cases for empty/minimal code and backtick run detection",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements both required functions with no regressions and passes all tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 990,
+      "output_tokens": 126,
+      "seconds": 4.216,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1039,
+      "output_tokens": 342,
+      "seconds": 8.541,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

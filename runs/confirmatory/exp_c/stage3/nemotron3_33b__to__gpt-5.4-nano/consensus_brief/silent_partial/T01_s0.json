@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T01 Req 2 requires adding upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days), but the PR diff only adds prorate_cents and updates tests for prorate_cents/zero-day; upgrade_delta_cents is missing from src/prorate.py.",
+  "target_issue": "Missing implementation: upgrade_delta_cents in src/prorate.py (Req 2).",
+  "thoughts": [
+    "Need to verify whether upgrade_delta_cents exists in src/prorate.py and whether tests truly cover it; run diff and inspect file.",
+    "Diff shows only prorate_cents added; upgrade_delta_cents is not present in src/prorate.py, so requirements are not fully implemented despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.587,
+  "prompt_tokens": 1751,
+  "output_tokens": 183,
+  "estimated_usd": 0.000621,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 not implemented: parse_query_pairs uses parse_qsl(..., keep_blank_values=False) which drops blank values (violates keep_blank_values=True), and canonical_query does not strip provided strip_keys nor sort remaining pairs lexicographically before URL-encoding (it just urlencode(pairs)).",
+  "target_issue": "tests/test_query_canon.py::test_parse_and_strip (and T21 requirements for blank preservation + stripping/sorting)",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the PR is complete and doesn\u2019t break legacy behavior.",
+    "The diff shows parse_query_pairs uses keep_blank_values=False and canonical_query just urlencode(pairs) without stripping keys or sorting, so it does not meet T21 requirements and would likely fail the new tests/expected behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.872,
+  "prompt_tokens": 1339,
+  "output_tokens": 200,
+  "estimated_usd": 0.000535,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

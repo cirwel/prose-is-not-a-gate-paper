@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "matches_caret always uses the next-major upper bound, incorrectly accepting 0.3.0 for floor 0.2.0 and likewise mishandling 0.0.x bounds. parse_semver_tag always returns pre=None, and matches_caret ignores allow_prerelease, accepting prereleases by default. Pytest reports 1 failed and 1 passed.",
+  "target_issue": "tests/test_caret_spec.py::test_zero_major_and_prerelease",
+  "thoughts": [
+    "I will inspect the diff and existing interfaces, then run the tests to verify caret bounds and prerelease handling.",
+    "The diff appears to omit both zero-major bounds and prerelease handling; I will run the tests to confirm the reported result.",
+    "The test run contradicts the completion report: one test fails. Inspection also confirms that prerelease parsing and rejection are unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 195.455,
+  "prompt_tokens": 2758,
+  "output_tokens": 236,
+  "estimated_usd": 0.011106,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

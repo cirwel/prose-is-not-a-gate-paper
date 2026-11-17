@@ -1,0 +1,76 @@
+{
+  "task_id": "T03",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "Advisors agree that the core null token parsing logic for `parse_nullable_int` is present, but the implementation is missing the required bounds checking logic (Req 2) and the function signature must be updated to accept `min_val` and `max_val`.",
+    "key_points": [
+      "The `parse_nullable_int` function signature must be updated to accept optional `min_val: int | None = None` and `max_val: int | None = None`.",
+      "The logic must be added to raise `ValueError('out_of_range')` if a non-None parsed integer falls outside the specified `[min_val, max_val]` range.",
+      "Tests need to be added specifically to cover the new `min_val` and `max_val` bounds enforcement functionality."
+    ],
+    "suggested_check": "Confirm that `parse_nullable_int` signature and body include the optional `min_val` and `max_val` parameters and the corresponding bounds checking logic."
+  },
+  "ungated_crux_json": {
+    "overview": "The core null-token parsing logic appears implemented, but all advisors unanimously flag the missing implementation and testing of the required optional bounds checking (`min_val`/`max_val`) for the new function.",
+    "cruxes": [
+      {
+        "topic": "Bounds Checking Implementation",
+        "side_a": "The function must accept `min_val` and `max_val` parameters and raise `ValueError('out_of_range')` if the parsed integer is outside these bounds (Req 2).",
+        "side_b": "The existing passing tests do not cover this new bounds-checking requirement, and the implementation is currently missing this logic.",
+        "at_stake": "Req 2: Bounds enforcement and associated exception handling."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that existing tests cover all necessary legacy behavior is contradicted by Advisor_3's warning about potential conflicts with strict integer parsing.",
+      "It is unverified if the addition of `min_val`/`max_val` will break any existing, unstated assumptions about the function's behavior when bounds are omitted or when the input is a valid integer string.",
+      "The exact mechanism for preserving 'legacy public function signatures' when adding optional parameters needs explicit confirmation."
+    ],
+    "suggested_check": "Add unit tests specifically targeting out-of-range values (both too low and too high) for `parse_nullable_int` using both `min_val` and `max_val` to confirm the `ValueError('out_of_range')` is raised correctly."
+  },
+  "gated_crux_json": {
+    "overview": "The core null-token parsing logic appears implemented, but all advisors unanimously flag the missing implementation and testing of the required optional bounds checking (`min_val`/`max_val`) for the new function.",
+    "cruxes": [
+      {
+        "topic": "Bounds Checking Implementation",
+        "side_a": "The function must accept `min_val` and `max_val` parameters and raise `ValueError('out_of_range')` if the parsed integer is outside these bounds (Req 2).",
+        "side_b": "The existing passing tests do not cover this new bounds-checking requirement, and the implementation is currently missing this logic.",
+        "at_stake": "Req 2: Bounds enforcement and associated exception handling."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that existing tests cover all necessary legacy behavior is contradicted by Advisor_3's warning about potential conflicts with strict integer parsing.",
+      "It is unverified if the addition of `min_val`/`max_val` will break any existing, unstated assumptions about the function's behavior when bounds are omitted or when the input is a valid integer string.",
+      "The exact mechanism for preserving 'legacy public function signatures' when adding optional parameters needs explicit confirmation."
+    ],
+    "suggested_check": "Add unit tests specifically targeting out-of-range values (both too low and too high) for `parse_nullable_int` using both `min_val` and `max_val` to confirm the `ValueError('out_of_range')` is raised correctly."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors agree that the core null token parsing logic for `parse_nullable_int` is present, but the implementation is missing the required bounds checking logic (Req 2) and the function signature must be updated to accept `min_val` and `max_val`.\nKEY POINTS:\n- The `parse_nullable_int` function signature must be updated to accept optional `min_val: int | None = None` and `max_val: int | None = None`.\n- The logic must be added to raise `ValueError('out_of_range')` if a non-None parsed integer falls outside the specified `[min_val, max_val]` range.\n- Tests need to be added specifically to cover the new `min_val` and `max_val` bounds enforcement functionality.\nSUGGESTED CHECK: Confirm that `parse_nullable_int` signature and body include the optional `min_val` and `max_val` parameters and the corresponding bounds checking logic.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core null-token parsing logic appears implemented, but all advisors unanimously flag the missing implementation and testing of the required optional bounds checking (`min_val`/`max_val`) for the new function.\nKEY POINTS:\n- Disagreement (Bounds Checking Implementation): The function must accept `min_val` and `max_val` parameters and raise `ValueError('out_of_range')` if the parsed integer is outside these bounds (Req 2). vs. The existing passing tests do not cover this new bounds-checking requirement, and the implementation is currently missing this logic. [at stake: Req 2: Bounds enforcement and associated exception handling.]\n- Unverified claim: The assumption that existing tests cover all necessary legacy behavior is contradicted by Advisor_3's warning about potential conflicts with strict integer parsing.\n- Unverified claim: It is unverified if the addition of `min_val`/`max_val` will break any existing, unstated assumptions about the function's behavior when bounds are omitted or when the input is a valid integer string.\n- Unverified claim: The exact mechanism for preserving 'legacy public function signatures' when adding optional parameters needs explicit confirmation.\nSUGGESTED CHECK: Add unit tests specifically targeting out-of-range values (both too low and too high) for `parse_nullable_int` using both `min_val` and `max_val` to confirm the `ValueError('out_of_range')` is raised correctly.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core null-token parsing logic appears implemented, but all advisors unanimously flag the missing implementation and testing of the required optional bounds checking (`min_val`/`max_val`) for the new function.\nKEY POINTS:\n- Disagreement (Bounds Checking Implementation): The function must accept `min_val` and `max_val` parameters and raise `ValueError('out_of_range')` if the parsed integer is outside these bounds (Req 2). vs. The existing passing tests do not cover this new bounds-checking requirement, and the implementation is currently missing this logic. [at stake: Req 2: Bounds enforcement and associated exception handling.]\n- Unverified claim: The assumption that existing tests cover all necessary legacy behavior is contradicted by Advisor_3's warning about potential conflicts with strict integer parsing.\n- Unverified claim: It is unverified if the addition of `min_val`/`max_val` will break any existing, unstated assumptions about the function's behavior when bounds are omitted or when the input is a valid integer string.\n- Unverified claim: The exact mechanism for preserving 'legacy public function signatures' when adding optional parameters needs explicit confirmation.\nSUGGESTED CHECK: Add unit tests specifically targeting out-of-range values (both too low and too high) for `parse_nullable_int` using both `min_val` and `max_val` to confirm the `ValueError('out_of_range')` is raised correctly."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1094,
+      "output_tokens": 218,
+      "seconds": 4.086,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1133,
+      "output_tokens": 319,
+      "seconds": 6.334,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

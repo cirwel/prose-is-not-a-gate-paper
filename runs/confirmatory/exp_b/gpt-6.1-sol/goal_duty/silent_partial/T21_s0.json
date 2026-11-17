@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/query_canon.py does not define canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')); stripping tracking keys, lexicographically sorting remaining pairs, and encoding them with urllib.parse.urlencode are unimplemented.",
+  "target_issue": "T21 Req 1",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff adds blank-preserving parsing but appears to omit canonical_query entirely. I will inspect the source and tests to confirm the missing requirement.",
+    "The source confirms that canonical_query is absent and has_query retains its existing signature and behavior. I will inspect the tests for requirement coverage.",
+    "The tests cover legacy behavior and blank-preserving parsing, but not the missing canonicalization function. I will run pytest to verify the current suite's status.",
+    "Both tests pass, and Req 2 is implemented, but Req 1 is entirely missing. The queue check rule requires holding an incomplete PR even when its tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.345,
+  "prompt_tokens": 4829,
+  "output_tokens": 317,
+  "estimated_usd": 0.018291,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation lacks conflict rejection logic (Req 2) as it returns 'replay' for any existing key without validating payload_hash equality, and the test suite does not cover the conflict scenario, risking a production regression.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The PR claims to have implemented Req 2 (conflict rejection), but the advisory review explicitly states this requirement is missing or failing, and the test suite does not cover the critical conflict scenario. To verify, I need to inspect the actual changes in the pull request to confirm whether the ValueError is properly raised when a key exists with a different payload_hash.",
+    "The diff shows the `claim_job` function was implemented to return 'replay' when the key exists (regardless of payload_hash), but it does not check if the existing payload_hash differs from the new one. Req 2 requires raising `ValueError('idempotency_conflict')` when a key exists with a different payload_hash, which is currently missing. The existing test `test_claim_and_replay` only verifies the 'replay' case with matching hashes and does not test conflict rejection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.442,
+  "prompt_tokens": 2552,
+  "output_tokens": 274,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

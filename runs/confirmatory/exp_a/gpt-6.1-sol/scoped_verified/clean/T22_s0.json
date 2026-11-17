@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In lru_set, when cache={'cfg': 1}, capacity=1, and pinned={'cfg'}, inserting 'new' finds no eviction victim, breaks the loop, and unconditionally inserts, leaving two entries. Handle insertion without exceeding capacity or evicting pinned entries, and add regression coverage.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I will inspect the implementation and diff to verify capacity eviction, pinned-key preservation, and compatibility.",
+    "The eviction loop appears to insert beyond capacity when all existing keys are pinned. I will check repository documentation and tests for the expected boundary behavior.",
+    "The added tests cover ordinary eviction but not a full cache containing only pinned keys; the implementation breaks out of eviction and then unconditionally inserts. I will run the suite to verify the reported passing baseline.",
+    "All three tests pass, but they omit the full, all-pinned case where the implementation exceeds capacity."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 41.85,
+  "prompt_tokens": 4432,
+  "output_tokens": 3122,
+  "estimated_usd": 0.05076,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

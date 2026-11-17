@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T27 Req 1 requires adding parse_enum(raw, allowed, default=None) with whitespace trimming, case-insensitive matching, and default fallback rules; the PR diff only adds parse_enum_list and does not add/modify parse_enum in src/enum_coerce.py.",
+  "target_issue": "Missing implementation for Req 1: parse_enum(raw, allowed, default=None) (no corresponding function or tests added).",
+  "thoughts": [
+    "I need to verify the PR diff implements both requirements without breaking legacy APIs, and that all tests pass in the contrib/fix worktree.",
+    "The diff only adds parse_enum_list and tests; it does not implement the required parse_enum(raw, allowed, default=None) function. I should run the full pytest suite to confirm, but the missing requirement already warrants holding."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.829,
+  "prompt_tokens": 1467,
+  "output_tokens": 195,
+  "estimated_usd": 0.000562,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

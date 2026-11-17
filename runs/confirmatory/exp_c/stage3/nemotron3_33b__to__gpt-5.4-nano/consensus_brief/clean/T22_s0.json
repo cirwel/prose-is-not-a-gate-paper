@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest exit=0 with all existing and new tests passing; lru_set maintains OrderedDict recency and evicts the first non-pinned key when capacity is exceeded, while lru_touch returns the value (or None) and marks the key most-recently-used via move_to_end.",
+  "target_issue": "none",
+  "thoughts": [
+    "Run a quick diff and pytest to confirm the PR fully implements T22 without regressions, especially pinned-key eviction behavior.",
+    "Diff shows new lru_set/lru_touch implementations and tests; run pytest to ensure no hidden regressions and confirm pinned eviction/LRU behavior.",
+    "All tests pass and the diff implements both T22 requirements: lru_touch uses move_to_end and lru_set evicts least-recently-used non-pinned keys while preserving pinned entries."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.82,
+  "prompt_tokens": 3636,
+  "output_tokens": 215,
+  "estimated_usd": 0.001124,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

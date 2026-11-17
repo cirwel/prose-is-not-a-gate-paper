@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `select_signing_key` returns a matching retired key instead of raising `PermissionError('key_retired')`.",
+  "target_issue": "T02 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the changed implementation and its tests to verify both fallback lookup and retired-key rejection while checking that existing behavior is preserved.",
+    "The change implements fallback lookup from `current` to `previous`, but it returns matching keys without checking their status. A matching key with `status == 'retired'` must raise `PermissionError('key_retired')`, and no test covers this required behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.582,
+  "prompt_tokens": 1311,
+  "output_tokens": 222,
+  "estimated_usd": 0.001759,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

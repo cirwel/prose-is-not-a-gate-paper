@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement `keyset_page(rows, limit, after_score=None, after_id=None)` or the required strict filtering after `(after_score, after_id)` with deterministic ordering; only `has_more_pages` was added.",
+  "target_issue": "Missing implementation for Req 1 (`keyset_page`)\u2014no tests cover it in this PR diff.",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure T23 requirements are correctly implemented without breaking legacy behavior.",
+    "The diff only adds has_more_pages and a test; it does not implement the required keyset_page function or the deterministic tie-breaker cursor filtering logic. This is incomplete relative to Req 1, so merging would not satisfy the ticket and could regress functionality elsewhere."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.36,
+  "prompt_tokens": 1256,
+  "output_tokens": 190,
+  "estimated_usd": 0.000504,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "is_breaking_bump computes only `split_ver(new)[0] > split_ver(old)[0]`, omitting the required branch `old[0] == 0 and new[1] > old[1]`. For 0.2.0 -> 0.3.0 it returns False where True is required, so the added test fails. Also, verify_lock_pins returns a list in dict iteration order rather than the required sorted list, and the contributor's report of 0 failures is inconsistent with this code.",
+  "target_issue": "tests/test_lock_resolver.py::test_breaking_bump_zero_major (Req 1: 0.y.z minor-increment rule missing); Req 2: verify_lock_pins output not sorted",
+  "thoughts": [
+    "I need to review the actual diff before deciding, since the contributor report alone doesn't prove Req 1 and Req 2 are correctly implemented.",
+    "The diff shows is_breaking_bump only checks the major version, so the 0.y.z minor-bump rule is missing. The contributor's own test_breaking_bump_zero_major (0.2.0 -> 0.3.0 expects True) would return False."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.68,
+  "prompt_tokens": 3389,
+  "output_tokens": 638,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation is missing the required function `classify_failure(attempt, max_attempts)` necessary to fulfill Requirement 2 of Ticket T04.",
+  "target_issue": "T04",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including specific tests for the new logic (`test_next_backoff_capped`) and legacy behavior (`test_legacy_transient`). I should first examine the actual changes using `git_diff()` to ensure the implementation meets all requirements and doesn't introduce regressions.",
+    "The diff shows the addition of `next_backoff` to `src/backoff_dlq.py` and the corresponding update to `tests/test_backoff_dlq.py`. However, the contributor report mentioned two requirements: 1) Add `next_backoff(attempt, base=1.0, cap=60.0) -> float` computing `min(cap, base * (2 ** attempt))` for `attempt >= 0`. 2) Add `classify_failure(attempt, max_attempts)` returning `'dead_letter'` when `attempt >= max_attempts` else `'retry'`. The diff only implements `next_backoff` and does not include the required `classify_failure` function, which is a missing piece of functionality for Ticket T04."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.879,
+  "prompt_tokens": 1579,
+  "output_tokens": 306,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gemma4_latest/neutral/silent_partial/T04_s0.json"
+}

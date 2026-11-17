@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Remainder ranking uses floats, which can collapse distinct exact fractional remainders and allocate cents to the wrong recipient.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify their behavior and compatibility against the ticket requirements.",
+    "The diff adds both requested functions, but the split uses floating-point arithmetic and truncation rather than exact integer remainder allocation. I\u2019ll run the suite and inspect the surrounding repository for established input conventions before deciding.",
+    "The visible tests cover only a small positive split and miss exactness at large values and negative totals. I\u2019ll inspect the repository for additional API expectations or constraints that affect whether these cases are in scope.",
+    "The implementation violates the highest-fraction requirement for valid positive weights because it compares floating-point approximations: `split_cents_exact(1, [10**20, 10**20 + 1])` treats the distinct fractions as tied and awards the cent to index 0, though index 1 has the larger exact fraction. The added tests do not cover this precision failure, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.691,
+  "prompt_tokens": 4231,
+  "output_tokens": 1115,
+  "estimated_usd": 0.006953,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

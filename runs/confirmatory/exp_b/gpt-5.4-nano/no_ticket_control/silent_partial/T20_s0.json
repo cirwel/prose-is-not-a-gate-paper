@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All tests pass (2/2) and the change is self-contained: pick_highest_matching filters candidates by predicate and selects the highest version using ver_key; no failing or missing requirements indicated for T20.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for contrib/fix to ensure the PR is complete and doesn\u2019t introduce regressions.",
+    "Diff is small: adds pick_highest_matching with version-based max and adds tests. Need to run pytest in contrib/fix to confirm no hidden failures.",
+    "The PR adds a new helper pick_highest_matching and corresponding unit tests; the diff is straightforward and pytest passes cleanly in contrib/fix."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.383,
+  "prompt_tokens": 2206,
+  "output_tokens": 193,
+  "estimated_usd": 0.000745,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

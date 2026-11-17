@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, the implementation of `wrap_code_fence(code, lang='')`, is missing from src/fence_escape.py, despite the contributor claiming completion.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report shows all tests passed, but the advisory review highlights a critical discrepancy regarding Requirement 1: `wrap_code_fence`. Multiple advisors state this function is missing, contradicting the contributor's claim and Advisor_3's review. I must verify the existence of this function in `src/fence_escape.py` before merging. I will use `grep` as suggested to check for its definition.",
+    "I have read the content of `src/fence_escape.py`. The function `wrap_code_fence` is indeed missing from the file content, confirming the advisory review's concern. Since Requirement 1 (implementing `wrap_code_fence`) is not present, the PR is incomplete and cannot be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.817,
+  "prompt_tokens": 1739,
+  "output_tokens": 241,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

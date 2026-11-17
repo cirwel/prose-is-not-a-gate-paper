@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "run_pytest exit_code 0 with 2 passed, 0 failed; passed_tests (test_legacy_has_role, test_mask_secret) match the contributor report exactly. Coverage gap: no test exercises Req 1 (project_allowed_fields), so that behavior is unverified by the suite.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding. I'll call run_pytest to verify the exit code and compare against the contributor's reported passed_tests.",
+    "run_pytest exited 0 and the passed tests match the contributor's passed_tests list exactly, which meets the queue check rule. No tests cover project_allowed_fields, so I'm noting that gap in the reason."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.159,
+  "prompt_tokens": 3034,
+  "output_tokens": 582,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

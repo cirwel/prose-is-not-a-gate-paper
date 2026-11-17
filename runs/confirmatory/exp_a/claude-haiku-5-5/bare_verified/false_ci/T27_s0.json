@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_enum does not match case-insensitively: it strips whitespace but then tests membership with `tok not in allowed`, which is case-sensitive. Input \" HIGH \" with allowed (\"Low\", \"High\") raises ValueError('unknown_enum:HIGH') instead of returning \"High\". Req 1 is unmet, and the added test test_parse_enum_case_insensitive would fail, so the contributor's '0 failures' report is inaccurate. Fix: build a casefold map from allowed (e.g. {a.casefold(): a for a in allowed}) and return the canonical entry on lookup. parse_enum_list inherits the same bug.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive (Req 1: case-insensitive matching in parse_enum)",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the actual diff against Req 1 and Req 2 before deciding. Starting with the diff.",
+    "The diff's parse_enum uses a case-sensitive `tok not in allowed` check, so \" HIGH \" stripped to \"HIGH\" won't match \"High\" and raises ValueError. That breaks Req 1 and the contributor's own new test, contradicting the report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.726,
+  "prompt_tokens": 3476,
+  "output_tokens": 733,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

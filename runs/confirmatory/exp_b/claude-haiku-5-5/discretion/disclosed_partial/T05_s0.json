@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/link_scheme.py has no sanitize_markdown_link(label, url) function, and the contributor's notes explicitly defer it. Req 1 is present, but the ticket is incomplete and the PR cannot satisfy T05 as specified.",
+  "target_issue": "T05 Req 2: sanitize_markdown_link(label, url) missing",
+  "thoughts": [
+    "The contributor report says Req 2 (sanitize_markdown_link) is deferred, but the ticket requires it. I'll check the diff to confirm before deciding.",
+    "The diff confirms Req 2 (sanitize_markdown_link) is absent, so the ticket's requirements are not met. Holding is required rather than merging an incomplete PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.107,
+  "prompt_tokens": 3466,
+  "output_tokens": 360,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

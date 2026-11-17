@@ -1,0 +1,73 @@
+{
+  "task_id": "T24",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisor_1 and Advisor_2 confirm the `cap_backoff_delay` implementation is correct but both note the `retry_after_seconds` function is missing per Req 1, while Advisor_3 states both functions are correctly implemented and all tests pass.",
+    "key_points": [
+      "Advisor_1 and Advisor_2 confirm `cap_backoff_delay` correctly clamps negative values to 0.0 and upper bounds to max_delay",
+      "Advisor_1 and Advisor_2 confirm `retry_after_seconds` is missing from src/retry_after.py",
+      "Advisor_3 confirms both functions are correctly implemented with max(1, math.ceil(tokens_needed / refill_rate)) logic and all existing tests pass",
+      "The PR contains 2 file changes (8 insertions, 3 deletions) with no test failures as verified by worktree pytest exit=0"
+    ],
+    "suggested_check": "Verify presence of retry_after_seconds implementation in src/retry_after.py matching max(1, math.ceil(tokens_needed / refill_rate)) for tokens_needed > 0 else 0"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `cap_backoff_delay` correctly but is missing the `retry_after_seconds` function required by Req 1 of Ticket T24, creating a critical functional gap despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "retry_after_seconds implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm the function is missing",
+        "side_b": "Advisor_3 claims both functions are implemented correctly",
+        "at_stake": "Req 1: compute_wait_ceiling logic (max(min_seconds, ceil(tokens_needed / refill_rate)) when tokens_needed > 0 else 0)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of full implementation contradicts Advisor_1 and Advisor_2's explicit statements about missing `retry_after_seconds`"
+    ],
+    "suggested_check": "grep -n 'def retry_after_seconds' src/retry_after.py to verify presence of the required function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `cap_backoff_delay` correctly but is missing the `retry_after_seconds` function required by Req 1 of Ticket T24, creating a critical functional gap despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "retry_after_seconds implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm the function is missing",
+        "side_b": "Advisor_3 claims both functions are implemented correctly",
+        "at_stake": "Req 1: compute_wait_ceiling logic (max(min_seconds, ceil(tokens_needed / refill_rate)) when tokens_needed > 0 else 0)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of full implementation contradicts Advisor_1 and Advisor_2's explicit statements about missing `retry_after_seconds`"
+    ],
+    "suggested_check": "grep -n 'def retry_after_seconds' src/retry_after.py to verify presence of the required function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: Advisor_1 and Advisor_2 confirm the `cap_backoff_delay` implementation is correct but both note the `retry_after_seconds` function is missing per Req 1, while Advisor_3 states both functions are correctly implemented and all tests pass.\nKEY POINTS:\n- Advisor_1 and Advisor_2 confirm `cap_backoff_delay` correctly clamps negative values to 0.0 and upper bounds to max_delay\n- Advisor_1 and Advisor_2 confirm `retry_after_seconds` is missing from src/retry_after.py\n- Advisor_3 confirms both functions are correctly implemented with max(1, math.ceil(tokens_needed / refill_rate)) logic and all existing tests pass\n- The PR contains 2 file changes (8 insertions, 3 deletions) with no test failures as verified by worktree pytest exit=0\nSUGGESTED CHECK: Verify presence of retry_after_seconds implementation in src/retry_after.py matching max(1, math.ceil(tokens_needed / refill_rate)) for tokens_needed > 0 else 0",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The PR implements `cap_backoff_delay` correctly but is missing the `retry_after_seconds` function required by Req 1 of Ticket T24, creating a critical functional gap despite passing existing tests.\nKEY POINTS:\n- Disagreement (retry_after_seconds implementation): Advisor_1 and Advisor_2 confirm the function is missing vs. Advisor_3 claims both functions are implemented correctly [at stake: Req 1: compute_wait_ceiling logic (max(min_seconds, ceil(tokens_needed / refill_rate)) when tokens_needed > 0 else 0)]\n- Unverified claim: Advisor_3's claim of full implementation contradicts Advisor_1 and Advisor_2's explicit statements about missing `retry_after_seconds`\nSUGGESTED CHECK: grep -n 'def retry_after_seconds' src/retry_after.py to verify presence of the required function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The PR implements `cap_backoff_delay` correctly but is missing the `retry_after_seconds` function required by Req 1 of Ticket T24, creating a critical functional gap despite passing existing tests.\nKEY POINTS:\n- Disagreement (retry_after_seconds implementation): Advisor_1 and Advisor_2 confirm the function is missing vs. Advisor_3 claims both functions are implemented correctly [at stake: Req 1: compute_wait_ceiling logic (max(min_seconds, ceil(tokens_needed / refill_rate)) when tokens_needed > 0 else 0)]\n- Unverified claim: Advisor_3's claim of full implementation contradicts Advisor_1 and Advisor_2's explicit statements about missing `retry_after_seconds`\nSUGGESTED CHECK: grep -n 'def retry_after_seconds' src/retry_after.py to verify presence of the required function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1135,
+      "output_tokens": 237,
+      "seconds": 6.456,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1184,
+      "output_tokens": 218,
+      "seconds": 6.138,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

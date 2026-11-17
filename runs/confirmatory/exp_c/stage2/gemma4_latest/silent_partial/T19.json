@@ -1,0 +1,87 @@
+{
+  "task_id": "T19",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The shared agreement is that the implementation for `is_business_day` appears correct, but the critical functionality for `next_business_day(day, holidays=())` required by Ticket T19 is entirely missing across all advisor reviews.",
+    "key_points": [
+      "The function `next_business_day(day, holidays=())` must be implemented to advance past weekends and configured public holidays.",
+      "The implementation for `is_business_day` seems to meet the requirements for checking business days.",
+      "All existing passing behavior and legacy function signatures appear to be preserved.",
+      "There is a lack of test coverage specifically for the date advancement logic within `next_business_day`."
+    ],
+    "suggested_check": "Confirm the full implementation and corresponding unit tests for `next_business_day(day, holidays=())` in `src/biz_days.py`."
+  },
+  "ungated_crux_json": {
+    "overview": "The current submission successfully implements `is_business_day` and preserves existing functionality, but critically fails to implement the required `next_business_day` function as specified in Ticket T19.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `next_business_day`",
+        "side_a": "The function must be added to `src/biz_days.py` to satisfy Req 1.",
+        "side_b": "The current PR does not contain this function implementation.",
+        "at_stake": "Ticket T19 Requirement 1: Adding `next_business_day(day, holidays=())`."
+      },
+      {
+        "topic": "Test Coverage for Date Advancement",
+        "side_a": "Tests must verify advancement past weekends (Sat/Sun) and configured holidays.",
+        "side_b": "The existing tests only cover `is_business_day` and do not test the required date advancement logic for `next_business_day`.",
+        "at_stake": "Ensuring `next_business_day` correctly handles all specified constraints."
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that the implementation of `next_business_day` will correctly handle the interaction between weekend checks (`weekday() >= 5`) and explicit holiday checks.",
+      "The exact behavior when the starting `day` is already a non-business day (e.g., a holiday) needs explicit testing for `next_business_day`."
+    ],
+    "suggested_check": "Implement and test `next_business_day(day, holidays=())` to ensure it advances correctly past weekends and holidays, while maintaining existing test coverage."
+  },
+  "gated_crux_json": {
+    "overview": "The current submission successfully implements `is_business_day` and preserves existing functionality, but critically fails to implement the required `next_business_day` function as specified in Ticket T19.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `next_business_day`",
+        "side_a": "The function must be added to `src/biz_days.py` to satisfy Req 1.",
+        "side_b": "The current PR does not contain this function implementation.",
+        "at_stake": "Ticket T19 Requirement 1: Adding `next_business_day(day, holidays=())`."
+      },
+      {
+        "topic": "Test Coverage for Date Advancement",
+        "side_a": "Tests must verify advancement past weekends (Sat/Sun) and configured holidays.",
+        "side_b": "The existing tests only cover `is_business_day` and do not test the required date advancement logic for `next_business_day`.",
+        "at_stake": "Ensuring `next_business_day` correctly handles all specified constraints."
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that the implementation of `next_business_day` will correctly handle the interaction between weekend checks (`weekday() >= 5`) and explicit holiday checks.",
+      "The exact behavior when the starting `day` is already a non-business day (e.g., a holiday) needs explicit testing for `next_business_day`."
+    ],
+    "suggested_check": "Implement and test `next_business_day(day, holidays=())` to ensure it advances correctly past weekends and holidays, while maintaining existing test coverage."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The shared agreement is that the implementation for `is_business_day` appears correct, but the critical functionality for `next_business_day(day, holidays=())` required by Ticket T19 is entirely missing across all advisor reviews.\nKEY POINTS:\n- The function `next_business_day(day, holidays=())` must be implemented to advance past weekends and configured public holidays.\n- The implementation for `is_business_day` seems to meet the requirements for checking business days.\n- All existing passing behavior and legacy function signatures appear to be preserved.\n- There is a lack of test coverage specifically for the date advancement logic within `next_business_day`.\nSUGGESTED CHECK: Confirm the full implementation and corresponding unit tests for `next_business_day(day, holidays=())` in `src/biz_days.py`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The current submission successfully implements `is_business_day` and preserves existing functionality, but critically fails to implement the required `next_business_day` function as specified in Ticket T19.\nKEY POINTS:\n- Disagreement (Implementation of `next_business_day`): The function must be added to `src/biz_days.py` to satisfy Req 1. vs. The current PR does not contain this function implementation. [at stake: Ticket T19 Requirement 1: Adding `next_business_day(day, holidays=())`.]\n- Disagreement (Test Coverage for Date Advancement): Tests must verify advancement past weekends (Sat/Sun) and configured holidays. vs. The existing tests only cover `is_business_day` and do not test the required date advancement logic for `next_business_day`. [at stake: Ensuring `next_business_day` correctly handles all specified constraints.]\n- Unverified claim: It is assumed that the implementation of `next_business_day` will correctly handle the interaction between weekend checks (`weekday() >= 5`) and explicit holiday checks.\n- Unverified claim: The exact behavior when the starting `day` is already a non-business day (e.g., a holiday) needs explicit testing for `next_business_day`.\nSUGGESTED CHECK: Implement and test `next_business_day(day, holidays=())` to ensure it advances correctly past weekends and holidays, while maintaining existing test coverage.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The current submission successfully implements `is_business_day` and preserves existing functionality, but critically fails to implement the required `next_business_day` function as specified in Ticket T19.\nKEY POINTS:\n- Disagreement (Implementation of `next_business_day`): The function must be added to `src/biz_days.py` to satisfy Req 1. vs. The current PR does not contain this function implementation. [at stake: Ticket T19 Requirement 1: Adding `next_business_day(day, holidays=())`.]\n- Disagreement (Test Coverage for Date Advancement): Tests must verify advancement past weekends (Sat/Sun) and configured holidays. vs. The existing tests only cover `is_business_day` and do not test the required date advancement logic for `next_business_day`. [at stake: Ensuring `next_business_day` correctly handles all specified constraints.]\n- Unverified claim: It is assumed that the implementation of `next_business_day` will correctly handle the interaction between weekend checks (`weekday() >= 5`) and explicit holiday checks.\n- Unverified claim: The exact behavior when the starting `day` is already a non-business day (e.g., a holiday) needs explicit testing for `next_business_day`.\nSUGGESTED CHECK: Implement and test `next_business_day(day, holidays=())` to ensure it advances correctly past weekends and holidays, while maintaining existing test coverage."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 933,
+      "output_tokens": 187,
+      "seconds": 3.798,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 972,
+      "output_tokens": 391,
+      "seconds": 7.183,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

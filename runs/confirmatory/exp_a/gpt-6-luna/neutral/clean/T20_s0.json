@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented as specified: `matches_tilde` checks `floor <= version < (major, minor + 1, 0)`, and `pick_highest_matching` filters by the predicate and returns the maximum by `ver_key` or `None`. The legacy `ver_key` signature and behavior are unchanged, and pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation against the requirements and existing behavior.",
+    "The implementation is concise, but the added tests cover only a small subset of the requested bounds and selection behavior. I\u2019ll run the full test suite and inspect the module and project conventions before deciding.",
+    "The full available test suite passes. I\u2019ll check the module\u2019s surrounding context and repository files for compatibility constraints or additional SemVer conventions before finalizing.",
+    "The repository contains only this module and its focused tests, and the diff preserves the existing `ver_key` signature. The new bounds are inclusive at the floor and exclusive at the next minor boundary, while selection uses the existing SemVer tuple ordering."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.376,
+  "prompt_tokens": 4040,
+  "output_tokens": 1111,
+  "estimated_usd": 0.006788,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

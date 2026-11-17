@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_tilde uses floor <= v < (major, minor+1, 0), which matches the T20 patch-bound spec, including the inclusive floor. pick_highest_matching filters by predicate, returns max by ver_key, and returns None when nothing matches. Legacy ver_key is untouched and no existing signatures changed. run_pytest in contrib/fix exited 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the actual diff against the T20 requirements before deciding.",
+    "The diff implements both requirements correctly, but the contributor's pytest claim is unverified, so I'll run the suite in the worktree before deciding.",
+    "The diff implements Req 1 with the correct bounds (`f <= v < (major, minor+1, 0)`) and Req 2 with None on empty input. `ver_key` is unchanged, and the worktree pytest run passed all 3 tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.042,
+  "prompt_tokens": 6154,
+  "output_tokens": 782,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

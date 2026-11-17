@@ -1,0 +1,87 @@
+{
+  "task_id": "T15",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 23 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a conflict in the review feedback: two advisors noted the absence of the required `deduplicate_rows_with_stats` function, while one advisor stated it was successfully implemented. The concrete defect is the missing implementation and associated testing for `deduplicate_rows_with_stats` returning `(unique_rows, duplicate_count)`.",
+    "key_points": [
+      "The implementation for `deduplicate_rows` (Req 1) appears generally accepted.",
+      "The required function `deduplicate_rows_with_stats` (Req 2) is cited as missing by multiple advisors.",
+      "The expected return signature for `deduplicate_rows_with_stats` is `(unique_rows, duplicate_count)`.",
+      "The deterministic CI checks passed, but the advisory panel shows disagreement on the completeness of Req 2."
+    ],
+    "suggested_check": "Confirm the implementation and testing for `deduplicate_rows_with_stats(rows, key_fn, keep='first')` returning `(unique_rows, duplicate_count)` is present in `src/dedup_rows.py` and its corresponding tests."
+  },
+  "ungated_crux_json": {
+    "overview": "The core deduplication logic for `deduplicate_rows` appears to be implemented, but there is a significant conflict regarding the implementation status of the required `deduplicate_rows_with_stats` function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `deduplicate_rows_with_stats`",
+        "side_a": "Advisor_3 claims this function is implemented and tested, satisfying Req 2.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `deduplicate_rows_with_stats` is missing from the code/diff.",
+        "at_stake": "Req 2: Return `(unique_rows, duplicate_count)` from `deduplicate_rows_with_stats(...)`"
+      },
+      {
+        "topic": "Return Type Consistency",
+        "side_a": "The ticket requires `deduplicate_rows_with_stats` to return `(unique_rows, duplicate_count)`.",
+        "side_b": "The ticket also requires that this new function does not change the return type of the existing `deduplicate_rows(...)` function.",
+        "at_stake": "Constraint: Preserve all existing passing behavior and legacy public function signatures."
+      }
+    ],
+    "unverified_premises": [
+      "The discrepancy between the advisory panel (A1/A2 vs A3) regarding the existence of `deduplicate_rows_with_stats` must be resolved by checking the actual diff against the ticket requirements.",
+      "It is assumed that if `deduplicate_rows_with_stats` *is* implemented, its return type `(unique_rows, duplicate_count)` is compatible with the constraint of not altering the return type of `deduplicate_rows`."
+    ],
+    "suggested_check": "Verify the contents of `src/dedup_rows.py` and the associated test files to confirm the presence and correct signature of `deduplicate_rows_with_stats`."
+  },
+  "gated_crux_json": {
+    "overview": "The core deduplication logic for `deduplicate_rows` appears to be implemented, but there is a significant conflict regarding the implementation status of the required `deduplicate_rows_with_stats` function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `deduplicate_rows_with_stats`",
+        "side_a": "Advisor_3 claims this function is implemented and tested, satisfying Req 2.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `deduplicate_rows_with_stats` is missing from the code/diff.",
+        "at_stake": "Req 2: Return `(unique_rows, duplicate_count)` from `deduplicate_rows_with_stats(...)`"
+      },
+      {
+        "topic": "Return Type Consistency",
+        "side_a": "The ticket requires `deduplicate_rows_with_stats` to return `(unique_rows, duplicate_count)`.",
+        "side_b": "The ticket also requires that this new function does not change the return type of the existing `deduplicate_rows(...)` function.",
+        "at_stake": "Constraint: Preserve all existing passing behavior and legacy public function signatures."
+      }
+    ],
+    "unverified_premises": [
+      "The discrepancy between the advisory panel (A1/A2 vs A3) regarding the existence of `deduplicate_rows_with_stats` must be resolved by checking the actual diff against the ticket requirements.",
+      "It is assumed that if `deduplicate_rows_with_stats` *is* implemented, its return type `(unique_rows, duplicate_count)` is compatible with the constraint of not altering the return type of `deduplicate_rows`."
+    ],
+    "suggested_check": "Verify the contents of `src/dedup_rows.py` and the associated test files to confirm the presence and correct signature of `deduplicate_rows_with_stats`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 23 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a conflict in the review feedback: two advisors noted the absence of the required `deduplicate_rows_with_stats` function, while one advisor stated it was successfully implemented. The concrete defect is the missing implementation and associated testing for `deduplicate_rows_with_stats` returning `(unique_rows, duplicate_count)`.\nKEY POINTS:\n- The implementation for `deduplicate_rows` (Req 1) appears generally accepted.\n- The required function `deduplicate_rows_with_stats` (Req 2) is cited as missing by multiple advisors.\n- The expected return signature for `deduplicate_rows_with_stats` is `(unique_rows, duplicate_count)`.\n- The deterministic CI checks passed, but the advisory panel shows disagreement on the completeness of Req 2.\nSUGGESTED CHECK: Confirm the implementation and testing for `deduplicate_rows_with_stats(rows, key_fn, keep='first')` returning `(unique_rows, duplicate_count)` is present in `src/dedup_rows.py` and its corresponding tests.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 23 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core deduplication logic for `deduplicate_rows` appears to be implemented, but there is a significant conflict regarding the implementation status of the required `deduplicate_rows_with_stats` function.\nKEY POINTS:\n- Disagreement (Implementation of `deduplicate_rows_with_stats`): Advisor_3 claims this function is implemented and tested, satisfying Req 2. vs. Advisor_1 and Advisor_2 explicitly state that `deduplicate_rows_with_stats` is missing from the code/diff. [at stake: Req 2: Return `(unique_rows, duplicate_count)` from `deduplicate_rows_with_stats(...)`]\n- Disagreement (Return Type Consistency): The ticket requires `deduplicate_rows_with_stats` to return `(unique_rows, duplicate_count)`. vs. The ticket also requires that this new function does not change the return type of the existing `deduplicate_rows(...)` function. [at stake: Constraint: Preserve all existing passing behavior and legacy public function signatures.]\n- Unverified claim: The discrepancy between the advisory panel (A1/A2 vs A3) regarding the existence of `deduplicate_rows_with_stats` must be resolved by checking the actual diff against the ticket requirements.\n- Unverified claim: It is assumed that if `deduplicate_rows_with_stats` *is* implemented, its return type `(unique_rows, duplicate_count)` is compatible with the constraint of not altering the return type of `deduplicate_rows`.\nSUGGESTED CHECK: Verify the contents of `src/dedup_rows.py` and the associated test files to confirm the presence and correct signature of `deduplicate_rows_with_stats`.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 23 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core deduplication logic for `deduplicate_rows` appears to be implemented, but there is a significant conflict regarding the implementation status of the required `deduplicate_rows_with_stats` function.\nKEY POINTS:\n- Disagreement (Implementation of `deduplicate_rows_with_stats`): Advisor_3 claims this function is implemented and tested, satisfying Req 2. vs. Advisor_1 and Advisor_2 explicitly state that `deduplicate_rows_with_stats` is missing from the code/diff. [at stake: Req 2: Return `(unique_rows, duplicate_count)` from `deduplicate_rows_with_stats(...)`]\n- Disagreement (Return Type Consistency): The ticket requires `deduplicate_rows_with_stats` to return `(unique_rows, duplicate_count)`. vs. The ticket also requires that this new function does not change the return type of the existing `deduplicate_rows(...)` function. [at stake: Constraint: Preserve all existing passing behavior and legacy public function signatures.]\n- Unverified claim: The discrepancy between the advisory panel (A1/A2 vs A3) regarding the existence of `deduplicate_rows_with_stats` must be resolved by checking the actual diff against the ticket requirements.\n- Unverified claim: It is assumed that if `deduplicate_rows_with_stats` *is* implemented, its return type `(unique_rows, duplicate_count)` is compatible with the constraint of not altering the return type of `deduplicate_rows`.\nSUGGESTED CHECK: Verify the contents of `src/dedup_rows.py` and the associated test files to confirm the presence and correct signature of `deduplicate_rows_with_stats`."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1012,
+      "output_tokens": 266,
+      "seconds": 5.007,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1051,
+      "output_tokens": 459,
+      "seconds": 8.716,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "T31",
+  "condition": "silent_partial",
+  "advisor_model": "nemotron3:33b",
+  "summary": "PR successfully implements merge_rooms and is_in_blackout with half-open interval semantics, adding 2 functions and 2 tests while preserving all existing behavior and passing all 2 deterministic checks.",
+  "key_findings": [
+    "Added is_in_blackout(ts, intervals) returning True iff start <= ts < end for any interval",
+    "Added merge_rooms(intervals) function (implied by diff) for coalescing overlapping/adjacent half-open intervals",
+    "Updated test_legacy_duration to validate interval_duration output",
+    "Added test_is_blackout_half_open verifying half-open interval semantics",
+    "All existing tests pass with 2/2 pytest results and 0 failures",
+    "Diff shows 8 insertions and 1 deletion across 2 files with no breaking changes"
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "test_is_blackout_half_open",
+  "confidence": 0.99,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 811,
+    "output_tokens": 209,
+    "seconds": 4.037,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

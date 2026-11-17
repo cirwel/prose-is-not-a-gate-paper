@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`claim_job` does not compare the existing lock record\u2019s `hash` against `payload_hash`; the added `test_conflict_raises` fails because no ValueError is raised.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "I\u2019ll inspect the patch and run the test suite to verify the new API, conflict behavior, and compatibility with existing behavior.",
+    "The implementation returns `replay` for every existing key without comparing its stored hash, so a different payload is accepted instead of raising the required conflict. The added conflict test would expose this; I\u2019ll run pytest to confirm.",
+    "The test run confirms the PR violates Req 2: an existing key with a different payload hash returns `replay` rather than raising `ValueError('idempotency_conflict')`. The legacy behavior test passes, but the requested conflict handling is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.08,
+  "prompt_tokens": 2551,
+  "output_tokens": 285,
+  "estimated_usd": 0.002954,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

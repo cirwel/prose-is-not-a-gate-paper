@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "canonical_query and parse_query_pairs match Req 1 and Req 2 of T21 with the specified default strip_keys. The legacy has_query signature and behavior are preserved, and run_pytest in the contrib/fix worktree confirms all 3 tests pass with exit code 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than trust the contributor's self-reported completion report.",
+    "The diff implements both requirements, but I should verify the contributor's claimed test results by running pytest in the worktree.",
+    "The diff implements both requirements: canonical_query drops the strip keys, sorts pairs, and URL-encodes via urlencode, and parse_query_pairs uses keep_blank_values=True. has_query is unchanged, and pytest reports 3 passed with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.836,
+  "prompt_tokens": 6179,
+  "output_tokens": 558,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

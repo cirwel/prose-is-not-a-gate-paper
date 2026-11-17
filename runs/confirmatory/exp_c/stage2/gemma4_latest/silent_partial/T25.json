@@ -1,0 +1,86 @@
+{
+  "task_id": "T25",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The panel agrees that the implementation of `reconcile_ledger` is correct, but the critical function `split_cents_exact(total_cents, weights)` required by Req 1 is missing from the changes.",
+    "key_points": [
+      "The `reconcile_ledger` function has been correctly implemented and tested (Req 2).",
+      "The required function `split_cents_exact(total_cents, weights)` is entirely missing from the implementation.",
+      "The implementation must adhere to distributing remainder pennies one-by-one from the highest fractional part (ties broken by lowest index)."
+    ],
+    "suggested_check": "Confirm the full implementation and testing of `split_cents_exact(total_cents, weights)` in src/ledger_round.py."
+  },
+  "ungated_crux_json": {
+    "overview": "The PR successfully implements the `reconcile_ledger` function (Req 2) and preserves existing behavior, but all three advisors unanimously report that the core functionality required by Req 1, `split_cents_exact`, is missing from the implementation and tests.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `split_cents_exact` (Req 1)",
+        "side_a": "The function must distribute remainder pennies one-by-one from the highest fractional part, with ties broken by the lowest index.",
+        "side_b": "The function is entirely missing from the provided diff/implementation.",
+        "at_stake": "Req 1: Add `split_cents_exact(total_cents, weights)` returning integer shares summing strictly to `total_cents`."
+      },
+      {
+        "topic": "Completeness of Requirements",
+        "side_a": "Req 2 (`reconcile_ledger`) is implemented and tested correctly.",
+        "side_b": "Req 1 (`split_cents_exact`) is completely missing from the implementation and tests.",
+        "at_stake": "Overall ticket completion and adherence to all specified requirements."
+      }
+    ],
+    "unverified_premises": [
+      "The precise logic for distributing remainder pennies (highest fractional part first, then lowest index tie-break) for `split_cents_exact` has not been verified against an implementation.",
+      "It is assumed that the existing passing tests cover all necessary edge cases for the *new* `reconcile_ledger` function, given the focus on the missing function."
+    ],
+    "suggested_check": "Verify the implementation of `split_cents_exact` against a test case designed specifically to test the remainder distribution logic (e.g., a total that leaves a remainder of 1 or more) and confirm it sums exactly to `total_cents`."
+  },
+  "gated_crux_json": {
+    "overview": "The PR successfully implements the `reconcile_ledger` function (Req 2) and preserves existing behavior, but all three advisors unanimously report that the core functionality required by Req 1, `split_cents_exact`, is missing from the implementation and tests.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `split_cents_exact` (Req 1)",
+        "side_a": "The function must distribute remainder pennies one-by-one from the highest fractional part, with ties broken by the lowest index.",
+        "side_b": "The function is entirely missing from the provided diff/implementation.",
+        "at_stake": "Req 1: Add `split_cents_exact(total_cents, weights)` returning integer shares summing strictly to `total_cents`."
+      },
+      {
+        "topic": "Completeness of Requirements",
+        "side_a": "Req 2 (`reconcile_ledger`) is implemented and tested correctly.",
+        "side_b": "Req 1 (`split_cents_exact`) is completely missing from the implementation and tests.",
+        "at_stake": "Overall ticket completion and adherence to all specified requirements."
+      }
+    ],
+    "unverified_premises": [
+      "The precise logic for distributing remainder pennies (highest fractional part first, then lowest index tie-break) for `split_cents_exact` has not been verified against an implementation.",
+      "It is assumed that the existing passing tests cover all necessary edge cases for the *new* `reconcile_ledger` function, given the focus on the missing function."
+    ],
+    "suggested_check": "Verify the implementation of `split_cents_exact` against a test case designed specifically to test the remainder distribution logic (e.g., a total that leaves a remainder of 1 or more) and confirm it sums exactly to `total_cents`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The panel agrees that the implementation of `reconcile_ledger` is correct, but the critical function `split_cents_exact(total_cents, weights)` required by Req 1 is missing from the changes.\nKEY POINTS:\n- The `reconcile_ledger` function has been correctly implemented and tested (Req 2).\n- The required function `split_cents_exact(total_cents, weights)` is entirely missing from the implementation.\n- The implementation must adhere to distributing remainder pennies one-by-one from the highest fractional part (ties broken by lowest index).\nSUGGESTED CHECK: Confirm the full implementation and testing of `split_cents_exact(total_cents, weights)` in src/ledger_round.py.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements the `reconcile_ledger` function (Req 2) and preserves existing behavior, but all three advisors unanimously report that the core functionality required by Req 1, `split_cents_exact`, is missing from the implementation and tests. KEY POINTS: - Disagreement (Implementation of `split_cents_exact` (Req 1)): The function must distribute remainder pennies one-by-one from the highest fractional part, with ties broken by the lowest index. vs. The function is entirely missing from the provided diff/implementation. [at stake: Req 1: Add `split_cents_exact(total_cents, weights)` returning integer shares summing strictly to `total_cents`.] - Disagreement (Completeness of Requirements): Req 2 (`reconcile_ledger`) is implemented and tested correctly. vs. Req 1 (`split_cents_exact`) is completely missing from the implementation and tests. [at stake: Overall ticket completion and adherence to all specified requirements.] - Unverified claim: The precise logic for distributing remainder pennies (highest fractional part first, then lowest index tie-break) for `split_cents_exact` has not been verified against an implementation. - Unverified claim: It is assumed that the existing passing tests cover all necessary edge cases for the *new* `reconcile_ledger` function, given the focus on the missing function. SUGGESTED CHECK: Verify the implementation of `split_cents_exact` against a test case designed specifically to test the remainder distribution logic (e.g.,...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements the `reconcile_ledger` function (Req 2) and preserves existing behavior, but all three advisors unanimously report that the core functionality required by Req 1, `split_cents_exact`, is missing from the implementation and tests. KEY POINTS: - Disagreement (Implementation of `split_cents_exact` (Req 1)): The function must distribute remainder pennies one-by-one from the highest fractional part, with ties broken by the lowest index. vs. The function is entirely missing from the provided diff/implementation. [at stake: Req 1: Add `split_cents_exact(total_cents, weights)` returning integer shares summing strictly to `total_cents`.] - Disagreement (Completeness of Requirements): Req 2 (`reconcile_ledger`) is implemented and tested correctly. vs. Req 1 (`split_cents_exact`) is completely missing from the implementation and tests. [at stake: Overall ticket completion and adherence to all specified requirements.] - Unverified claim: The precise logic for distributing remainder pennies (highest fractional part first, then lowest index tie-break) for `split_cents_exact` has not been verified against an implementation. - Unverified claim: It is assumed that the existing passing tests cover all necessary edge cases for the *new* `reconcile_ledger` function, given the focus on the missing function. SUGGESTED CHECK: Verify the implementation of `split_cents_exact` against a test case designed specifically to test the remainder distribution logic (e.g.,..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 919,
+      "output_tokens": 165,
+      "seconds": 3.357,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 958,
+      "output_tokens": 427,
+      "seconds": 7.993,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

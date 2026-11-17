@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket requires Req 2: add is_hidden_segment(rel_path) -> bool detecting hidden path components; PR does not implement this function and no tests cover it. Merging would leave the security requirement incomplete.",
+  "target_issue": "Missing requirement: is_hidden_segment implementation (Req 2); no failing tests yet because coverage is absent.",
+  "thoughts": [
+    "Need to verify diff and tests; PR likely incomplete because Req 2 not implemented per report. I will inspect repository changes and run pytest to confirm.",
+    "Diff shows Req 1 implemented but Req 2 (is_hidden_segment) is missing; also only one new test added. Must hold until all ticket requirements are implemented and tests cover them."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.805,
+  "prompt_tokens": 1455,
+  "output_tokens": 173,
+  "estimated_usd": 0.000536,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

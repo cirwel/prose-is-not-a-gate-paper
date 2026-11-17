@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key returns a matching current or previous key even when status == 'retired'; it must instead raise PermissionError('key_retired').",
+  "target_issue": "T02 Req 2",
+  "thoughts": [
+    "I will inspect the diff and key-selection tests to verify both requirements and preservation of legacy behavior.",
+    "The diff implements previous-key fallback but returns matching keys without checking their status. Passing the reported tests cannot establish Req 2 because neither test covers retired keys."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.521,
+  "prompt_tokens": 1340,
+  "output_tokens": 153,
+  "estimated_usd": 0.005856,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

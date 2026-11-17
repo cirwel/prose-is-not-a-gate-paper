@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (`split_cents_exact`) is entirely missing from the implementation and tests, violating the ticket's core requirement despite `reconcile_ledger` being correctly implemented.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR implements `reconcile_ledger` (Req 2) but completely omits `split_cent_exact` (Req 1), with no implementation or tests for the required remainder distribution logic.",
+    "The PR implements `reconcile_ledger` (Req 2) but completely omits `split_cents_exact` (Req 1), with no implementation or tests for the required remainder distribution logic."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.408,
+  "prompt_tokens": 2575,
+  "output_tokens": 170,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

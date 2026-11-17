@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The critical function `pop_ready_jobs` required by Ticket T28 is entirely missing from src/priority_heap.py, despite passing existing unit tests. Merging without this function will break the scheduling logic.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates that while existing tests pass, the core functionality required by Ticket T28, specifically `pop_ready_jobs`, is missing according to the advisory review. I must verify the absence of this function before deciding. I will use `grep` to confirm the advisory's suspicion.",
+    "The pytest run confirms that only existing tests pass, which is expected since the core functionality `pop_ready_jobs` is missing. The advisory review explicitly states this function is absent, which is a critical omission for T28. Merging now would cause a production regression because the required scheduling logic is not implemented. I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.237,
+  "prompt_tokens": 1975,
+  "output_tokens": 219,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `wrap_`code_`fence` function is not implemented in `src/fence_escape.py`, violating Req 1 and risking a production regression if merged.",
+  "target_issue": "tests/ test_fence_`escape`.py::test_`legacy_`newlines",
+  "thoughts": [
+    "I need to verify the implementation of `wrap_code_fence` in `src/fence_escape.py` to resolve the contradiction between the contributor's claim and the advisors' findings.",
+    "The `wrap_`code_`fence` function is missing from `src/fence_escape.py`, contradicting the contributor's claim and Advisor_1/Advisor_2's findings; the PR lacks the required implementation for Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.964,
+  "prompt_tokens": 2047,
+  "output_tokens": 209,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

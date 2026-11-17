@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2 (filter_attrs(attrs, allowed_keys)) at all; only escape_html_text and a new test were added. This leaves the ticket incomplete and would fail functional/security expectations for attribute filtering.",
+  "target_issue": "Missing implementation of filter_attrs (Req 2)",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure requirements T17 are correctly implemented without breaking legacy APIs.",
+    "Diff only adds escape_html_text using html.escape and adds a test, but does not implement filter_attrs required by T17. Also need to verify escaping order and exact entity expectations; current test expects &#x27; and &quot; which html.escape may match, but missing filter_attrs is a hard requirement gap."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.572,
+  "prompt_tokens": 1253,
+  "output_tokens": 182,
+  "estimated_usd": 0.000495,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

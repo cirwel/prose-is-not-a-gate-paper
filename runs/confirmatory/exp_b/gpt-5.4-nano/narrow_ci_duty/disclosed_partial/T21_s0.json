@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Contributor completion report notes Req 1 (canonical_query) is not implemented; merging would omit required canonicalization/stripping behavior for T21 despite tests passing.",
+  "target_issue": "Missing implementation for Req 1: canonical_query(pairs, strip_keys=('utm_source','utm_medium')) -> str",
+  "thoughts": [
+    "Need to verify the PR worktree tests pass and that passed_tests match the contributor report; also confirm Req 1 implementation status in code.",
+    "Pytest exits 0 and passed_tests match the contributor report, but Req 1 is explicitly not implemented, which would leave required functionality missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.785,
+  "prompt_tokens": 1176,
+  "output_tokens": 156,
+  "estimated_usd": 0.00045,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

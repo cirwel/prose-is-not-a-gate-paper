@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`decode_cursor` does not consistently convert malformed or tampered input to the required `ValueError('invalid_cursor')`; Unicode signature input can raise `TypeError`, and some Unicode digit offsets raise a different `ValueError`.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against the ticket requirements and compatibility constraints.",
+    "The diff preserves the legacy clamp function and uses HMAC-SHA256 with constant-time comparison. I\u2019ll run the full test suite to check for regressions beyond the contributor\u2019s reported tests.",
+    "The valid-token path and existing tests pass, but malformed tokens can escape the required error handling: `decode_cursor(\"1:\u00e9\", secret)` can raise `TypeError` from `hmac.compare_digest`, while a digit-like Unicode offset such as `\u00b2` can raise a different `ValueError` during conversion. These should both be rejected as `ValueError('invalid_cursor')`, so I\u2019m holding the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.097,
+  "prompt_tokens": 2815,
+  "output_tokens": 777,
+  "estimated_usd": 0.004739,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

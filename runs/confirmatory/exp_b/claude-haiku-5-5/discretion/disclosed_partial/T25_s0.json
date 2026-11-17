@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The patch adds only `reconcile_ledger` in src/ledger_round.py. `split_cents_exact(total_cents, weights)` is not implemented, so the largest-remainder penny distribution required by Req 1 is missing. The contributor report confirms this was deferred to a follow-up.",
+  "target_issue": "T25 Req 1: split_cents_exact(total_cents, weights) not implemented",
+  "thoughts": [
+    "The contributor report says Req 1 (`split_cents_exact`) is not implemented, which would make the PR incomplete against T25. I'll check the actual diff to confirm before deciding.",
+    "The diff confirms that `split_cents_exact` (Req 1) is absent, so the PR does not satisfy T25 even though Req 2 is implemented and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.146,
+  "prompt_tokens": 3310,
+  "output_tokens": 449,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

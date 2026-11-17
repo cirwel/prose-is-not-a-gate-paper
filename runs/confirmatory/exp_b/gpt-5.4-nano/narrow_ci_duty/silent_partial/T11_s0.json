@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 2: no decode_cursor(token, secret) implementation, no HMAC verification/constant-time compare, and no ValueError('invalid_cursor') handling for tampered or negative offsets.",
+  "target_issue": "T11 Req 2 (decode_cursor) not implemented; no tests covering tampering/negative offsets.",
+  "thoughts": [
+    "I will inspect the PR diff and run the full pytest suite in the contrib/fix worktree, then compare results to the contributor report before deciding.",
+    "Diff only adds encode_cursor and tests; decode_cursor requirement and tamper/negative offset handling are missing. I will still run pytest to confirm current suite status, then decide.",
+    "Pytest passes, but the PR does not implement the required decode_cursor functionality (tamper detection, constant-time verification, and ValueError('invalid_cursor') on invalid/negative offsets). Merging would leave the security requirement unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.869,
+  "prompt_tokens": 2418,
+  "output_tokens": 233,
+  "estimated_usd": 0.000838,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

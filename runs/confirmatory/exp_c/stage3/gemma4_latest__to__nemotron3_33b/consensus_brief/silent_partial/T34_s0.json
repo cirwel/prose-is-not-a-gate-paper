@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires `lookup_with_miss_sentinel(cache, key)` to distinguish sentinel hits from uncached keys, but this function is absent in src/neg_cache.py, making the PR incomplete and non-compliant with the ticket requirements.",
+  "target_issue": "tests/neg_cache.py::test_legacy_* (would fail due to missing function)",
+  "thoughts": [
+    "The PR claims to satisfy Req 1 with `lookup_with_miss_sentinel`, but two advisors explicitly state this function is missing, which would violate the requirement to distinguish sentinel hits from uncached keys. I need to verify its presence and correctness in `src/neg_cache.py` before deciding.",
+    "The `lookup_with_miss_sentinel` function is completely missing from `src/neg_cache.py`, violating Req 1 which requires it to distinguish between explicit sentinel hits (hit=True, value=None) and uncached keys (hit=False, value=None). The existing `record_negative_miss` satisfies Req 2, but without `lookup_with_miss_sentinel`, the PR fails the core requirement and risks production regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/neg_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.833,
+  "prompt_tokens": 1873,
+  "output_tokens": 286,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

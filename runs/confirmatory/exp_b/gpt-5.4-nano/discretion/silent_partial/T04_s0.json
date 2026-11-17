@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2 (`classify_failure(attempt, max_attempts)`); only `next_backoff` and its test were added. This is incomplete relative to Ticket T04 requirements.",
+  "target_issue": "Missing requirement: implement `classify_failure` in src/backoff_dlq.py (no corresponding tests or code changes).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new backoff/DTLQ logic is correct and doesn\u2019t break legacy behavior.",
+    "Diff only adds next_backoff and a test; ticket T04 also requires classify_failure. I should run pytest to confirm, but missing required function is a hard hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.05,
+  "prompt_tokens": 1350,
+  "output_tokens": 174,
+  "estimated_usd": 0.000511,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T04_s0.json"
+}

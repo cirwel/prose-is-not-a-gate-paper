@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: `src/fence_escape.py` has no `wrap_code_fence(code, lang='')` implementation. The PR therefore does not satisfy T29 despite the reported passing tests.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and verify they meet both requirements without altering legacy behavior.",
+    "The diff adds line truncation but does not implement the required `wrap_code_fence` function or safe delimiter calculation. The passing tests shown cover only truncation and do not establish completeness."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.438,
+  "prompt_tokens": 1342,
+  "output_tokens": 281,
+  "estimated_usd": 0.001973,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

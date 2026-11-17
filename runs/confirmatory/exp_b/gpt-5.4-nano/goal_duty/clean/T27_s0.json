@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "T27 requirements are implemented in src/enum_coerce.py (parse_enum trims whitespace, matches case-insensitively, returns canonical allowed entry, and falls back to default only when raw is empty; parse_enum_list splits CSV and raises ValueError('unknown_enum:' + tok) for unknown tokens). All pytest tests pass with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure both T27 requirements are fully implemented without breaking legacy behavior.",
+    "Diff shows parse_enum/parse_enum_list added, but parse_enum currently raises ValueError(\"unknown_enum:\") when raw is empty even if default is None; also parse_enum_list uses split_csv_tokens which drops empty tokens, matching likely intent. I will run pytest to confirm all tests pass and verify legacy behavior is preserved.",
+    "All tests pass, and the diff implements both T27 requirements: case-insensitive canonical matching with whitespace trimming and parse_enum_list rejecting unknown non-empty labels with the required ValueError prefix. Legacy split_csv_tokens behavior is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.976,
+  "prompt_tokens": 2995,
+  "output_tokens": 267,
+  "estimated_usd": 0.001016,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

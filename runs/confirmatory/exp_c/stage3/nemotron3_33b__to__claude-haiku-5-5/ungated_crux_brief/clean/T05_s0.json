@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "is_safe_url requires a netloc and an allowed scheme, so javascript: and data: URLs fail. Whitespace and control bytes are rejected. sanitize_markdown_link returns the spec'd link or plain label. The legacy function is untouched, and run_pytest exits 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief disagrees on whitespace control-char handling and leaves netloc validation unverified, so I need the actual code before deciding. I'll read the module and the diff together.",
+    "The diff is small and the logic looks correct on inspection: the scheme allowlist plus the netloc check rejects javascript: and data:, and whitespace is rejected. I'll run the test suite in the worktree to confirm the contributor's reported results before deciding.",
+    "The diff's logic rejects javascript: and data: (no netloc), enforces the scheme allowlist case-insensitively, and rejects whitespace after control-byte stripping. The worktree pytest run passed 3/3, and the legacy strip_control_chars signature is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.91,
+  "prompt_tokens": 81641,
+  "output_tokens": 1770,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

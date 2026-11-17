@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR does not implement split_cents_exact(total_cents, weights), which Req 1 requires. The diff adds only reconcile_ledger (delta = sum(debits) - sum(credits); returns (delta == 0, delta)) and one test for it. The contributor's report claims completion, but the code contradicts it. Passing tests cover only the legacy sum and reconcile_ledger, so the largest-remainder split logic is unverified.",
+  "target_issue": "Req 1: split_cents_exact missing from src/ledger_round.py, with no tests for it",
+  "thoughts": [
+    "The advisory brief and contributor report conflict on whether split_cents_exact exists, so I'll check the actual diff rather than rely on either.",
+    "The diff confirms that src/ledger_round.py adds only reconcile_ledger and no split_cents_exact, so Req 1 is unimplemented and untested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.251,
+  "prompt_tokens": 4067,
+  "output_tokens": 406,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

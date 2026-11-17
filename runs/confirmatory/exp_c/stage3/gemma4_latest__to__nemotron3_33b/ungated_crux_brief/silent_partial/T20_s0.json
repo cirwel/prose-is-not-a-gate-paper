@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The function `matches_tilde(version, floor)` is completely missing, failing to implement Requirement 1 (patch bounds logic). Merging would introduce undefined behavior.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The PR adds `pick_highest_matching` and passes existing tests, but `matches_tilde(version, floor)` is entirely missing, violating Requirement 1. I need to verify its implementation in `src/tilde_spec.py` before deciding.",
+    "`matches_tilde(version, floor)` is entirely missing from `src/tilde_spec.py`, violating Requirement 1. The PR adds `pick_highest_matching` and passes existing tests, but the core logic for `matches_tilde` is absent, risking a production regression if merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tilde_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.826,
+  "prompt_tokens": 2134,
+  "output_tokens": 213,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

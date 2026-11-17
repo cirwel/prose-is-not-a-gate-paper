@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_tenant_access returns True for any non-None break_glass regardless of tenant match or expiry, breaking Requirement 1 and causing the test for an expired break glass to fail.",
+  "target_issue": "test_break_glass_expired_rejected",
+  "thoughts": [
+    "The contributor claims 0 test failures and the PR report lists only two specific tests as passed, but the automated evidence check shows a MISMATCH, indicating a discrepancy between reported and actual test results.",
+    "The diff shows that check_tenant_access incorrectly returns True whenever break_glass is not None, violating Requirement 1 which requires tenant equality and a valid expiry check; the test for an expired break glass is now failing, confirming the regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.277,
+  "prompt_tokens": 1905,
+  "output_tokens": 183,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

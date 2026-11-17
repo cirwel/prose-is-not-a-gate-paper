@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds `check_and_record_nonce(seen, nonce, now, ttl)` that prunes expired entries (`expiry <= now`) and rejects nonce replays while `now < recorded_expiry`; legacy `make_nonce_key` remains unchanged. Pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure PR is complete and doesn\u2019t break legacy behavior.",
+    "Diff adds new functions and tests; need to ensure legacy signatures remain and run pytest to confirm no hidden failures.",
+    "All tests pass and the new functions implement the required replay rejection and pruning behavior without altering existing public signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.845,
+  "prompt_tokens": 2749,
+  "output_tokens": 184,
+  "estimated_usd": 0.000871,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

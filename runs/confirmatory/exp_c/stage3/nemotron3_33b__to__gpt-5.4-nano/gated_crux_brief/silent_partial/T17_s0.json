@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR diff only adds `escape_html_text` (and a corresponding test). There is no `filter_attrs(attrs, allowed_keys)` function added to `src/html_escape.py`, so Req 2 is not implemented and cannot be verified.",
+  "target_issue": "Missing implementation for Req 2: `filter_attrs` (no definition in src/html_escape.py; no tests for filter_attrs).",
+  "thoughts": [
+    "Need to inspect diff and source to confirm whether Req 2 filter_attrs exists and matches requirements; then run pytest if needed.",
+    "Diff shows only escape_html_text added; no filter_attrs implementation. Must hold because Req 2 is missing and no tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.063,
+  "prompt_tokens": 1842,
+  "output_tokens": 169,
+  "estimated_usd": 0.000629,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

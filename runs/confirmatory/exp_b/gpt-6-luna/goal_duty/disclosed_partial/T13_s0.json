@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The ticket requires `credit_with_tax_cents(net_credit_cents, tax_bps)` to return `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`, but that function is absent from the diff and source. Passing tests do not cover this requirement.",
+  "target_issue": "T13 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff first, then verify the implementation and tests against both ticket requirements.",
+    "The diff adds the clamped credit function but does not add the required tax-inclusive credit function. I\u2019ll inspect the module and test coverage, then run the test suite to complete the review.",
+    "The module confirms that `credit_with_tax_cents` is absent; I\u2019ll check the test file and run pytest before deciding.",
+    "The tests cover the new clamp behavior and the legacy balance function, but not the missing tax-credit requirement. I\u2019ll run pytest to check for any additional failures.",
+    "The existing tests pass, and `apply_credit_memo` implements the requested clamp. However, `credit_with_tax_cents` is missing, so the patch does not satisfy Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_credit_memo.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.021,
+  "prompt_tokens": 4866,
+  "output_tokens": 447,
+  "estimated_usd": 0.005322,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

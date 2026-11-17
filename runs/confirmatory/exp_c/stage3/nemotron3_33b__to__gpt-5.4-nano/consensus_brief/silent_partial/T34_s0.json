@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1: `lookup_with_miss_sentinel(cache, key)` is absent from src/neg_cache.py, and no tests cover the required (hit=True,value=None) vs (hit=False,value=None) distinction.",
+  "target_issue": "Missing function implementation: lookup_with_miss_sentinel (Req 1)",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure both required functions exist and behave per T34 without breaking legacy APIs.",
+    "Diff only adds record_negative_miss; lookup_with_miss_sentinel from Req 1 is missing. Tests added cover only record_negative_miss, so required API behavior is not implemented/verified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.645,
+  "prompt_tokens": 1738,
+  "output_tokens": 170,
+  "estimated_usd": 0.000605,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_tenant_access matches Req 1: same-tenant access returns True, and break-glass grants access only when the tenant matches and now < expires_at, with missing expires_at failing closed. redact_cross_tenant matches Req 2: it filters on tenant == actor_tenant and returns dict copies, so inputs are not mutated. The legacy owns_resource signature and behavior are preserved, and the worktree pytest run exits 0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are unverified claims, so I need to inspect the actual diff before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff logic matches both requirements and keeps `owns_resource` unchanged, but the advisory and contributor pass claims are unverified. I'll run the test suite in the worktree before deciding.",
+    "The diff implements both requirements correctly, `owns_resource` is untouched, and pytest passes 3/3 in the worktree. The only deviation is that an empty actor tenant is denied even when it equals the resource tenant, which is conservative and not a regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.771,
+  "prompt_tokens": 7243,
+  "output_tokens": 1379,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

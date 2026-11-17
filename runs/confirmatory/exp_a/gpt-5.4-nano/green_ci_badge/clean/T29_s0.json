@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 `wrap_code_fence` by computing longest consecutive backtick run and using `max(3, longest+1)`; implements Req 2 `truncate_log_lines` to preserve up to `max_lines` and append `...[truncated N lines]` only when lines are removed. Existing `normalize_newlines` behavior is unchanged and pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Review diff for correctness vs requirements and ensure no legacy behavior/signature changes; then run pytest to confirm.",
+    "Diff appears to implement both required functions and tests pass; verify requirements are met and no legacy signatures were altered."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.024,
+  "prompt_tokens": 2837,
+  "output_tokens": 204,
+  "estimated_usd": 0.000913,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

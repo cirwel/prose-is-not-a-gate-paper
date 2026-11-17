@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (intersection with de-duplication and sorted output) and Req 2 (subset check) in src/scope_intersect.py; legacy parse_scope_header remains unchanged. pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff looks complete and tests cover the new functions; run pytest to confirm no hidden regressions and ensure legacy behavior remains intact.",
+    "All tests pass and the PR cleanly adds the two required functions without changing existing public APIs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.421,
+  "prompt_tokens": 2573,
+  "output_tokens": 176,
+  "estimated_usd": 0.000819,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T14_s0.json"
+}

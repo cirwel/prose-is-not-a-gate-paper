@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff implements the requested escaping and filtering behavior while preserving the legacy public function; all three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and surrounding legacy API to verify both requirements and compatibility.",
+    "The implementation uses `html.escape(..., quote=True)`, which escapes ampersands first and covers all five requested characters. Attribute keys are normalized and event handlers and JavaScript-prefixed values are excluded; the legacy `wrap_tag` signature and behavior remain unchanged.",
+    "The implementation satisfies both requirements: `html.escape` escapes ampersands before introducing entities, and attribute filtering normalizes keys, rejects event handlers and stripped JavaScript-prefixed values, then escapes retained values. The legacy wrapper is unchanged and the test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.388,
+  "prompt_tokens": 3294,
+  "output_tokens": 528,
+  "estimated_usd": 0.004325,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

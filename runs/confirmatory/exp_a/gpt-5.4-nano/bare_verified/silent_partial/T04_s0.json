@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `classify_failure(attempt, max_attempts)` from src/backoff_dlq.py; only `next_backoff` was added and tests cover only that requirement.",
+  "target_issue": "Missing requirement T04 Req 2: `classify_failure` implementation (no corresponding code or tests).",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure PR is complete and doesn\u2019t break existing behavior.",
+    "Inspect diff and run pytest to confirm requirements T04 are implemented correctly and no legacy behavior is broken.",
+    "Diff shows next_backoff added but classify_failure from Req 2 is missing; also need to run pytest to confirm no other issues.",
+    "PR implements Req 1 (next_backoff) and tests pass, but Req 2 (classify_failure) is not present in the diff, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.28,
+  "prompt_tokens": 3029,
+  "output_tokens": 241,
+  "estimated_usd": 0.000999,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

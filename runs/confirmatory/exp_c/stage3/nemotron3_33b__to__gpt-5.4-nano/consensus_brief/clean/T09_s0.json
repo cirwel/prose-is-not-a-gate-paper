@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All required functionality for T09 is present: safe_join resolves and blocks traversal/escape by raising ValueError('path_escape'), and is_hidden_segment detects hidden path components while ignoring '.'/'..'. Worktree pytest exit=0 with all tests passing (3/3) and diff is minimal (21 insertions, 1 deletion).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in the contrib/fix worktree to ensure no regressions and requirements are correctly implemented.",
+    "Diff looks small and implements both required functions, but I should run pytest in the contrib/fix worktree to confirm exit=0 and no regressions.",
+    "Pytest in contrib/fix passes with exit_code 0 and the diff implements both T09 requirements with minimal changes and no legacy signature changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.55,
+  "prompt_tokens": 3216,
+  "output_tokens": 218,
+  "estimated_usd": 0.001022,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "task_id": "T28",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements the required `pop_ready_jobs` and `defer_job` functions with proper sorting logic and non-mutating behavior. All unit tests pass, and legacy functionality is preserved.",
+  "key_findings": [
+    "pop_ready_jobs correctly filters by run_at <= now and sorts by (-priority, run_at, job_id).",
+    "defer_job creates a shallow copy and updates run_at without mutating the original job dict.",
+    "Legacy make_job function remains unchanged and passes its test."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_priority_heap.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 1007,
+    "output_tokens": 149,
+    "seconds": 21.434,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

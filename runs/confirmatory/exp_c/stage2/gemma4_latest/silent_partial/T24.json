@@ -1,0 +1,87 @@
+{
+  "task_id": "T24",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a conflict in the advisory feedback: two advisors noted the absence of the `retry_after_seconds` implementation, while one advisor stated both required functions were correctly implemented. The concrete defect cited by multiple advisors is the missing implementation of `retry_after_seconds`.",
+    "key_points": [
+      "The implementation for `cap_backoff_delay` appears correct based on multiple checks.",
+      "The required function `retry_after_seconds` (Req 1) is cited as missing by two out of three advisors.",
+      "The logic for `retry_after_seconds` must implement `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`.",
+      "The deterministic checks passed, indicating no immediate regressions in existing tests."
+    ],
+    "suggested_check": "Confirm the presence and correct logic implementation of `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` in `src/retry_after.py`."
+  },
+  "ungated_crux_json": {
+    "overview": "There is a direct contradiction among the advisors regarding the implementation status of `retry_after_seconds`, with two advisors noting its absence while one claims both requirements are fully met.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `retry_after_seconds`",
+        "side_a": "Advisor_1 & Advisor_2: The function is missing entirely from `src/retry_after.py`.",
+        "side_b": "Advisor_3: The function logic is correctly implemented as `max(min_seconds, math.ceil(tokens_needed / refill_rate))`.",
+        "at_stake": "Ticket T24, Requirement 1 implementation."
+      },
+      {
+        "topic": "Test Coverage for `retry_after_seconds`",
+        "side_a": "Advisor_2: Corresponding unit tests for the new function are missing.",
+        "side_b": "Advisor_3: All existing tests pass, implying coverage is sufficient or the new tests were added.",
+        "at_stake": "Ensuring full test coverage for the new logic."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that the logic for `retry_after_seconds` is correctly implemented contradicts the explicit findings of Advisor_1 and Advisor_2.",
+      "The discrepancy in test coverage assessment (missing tests vs. all tests pass) needs resolution, especially since the core function implementation itself is disputed."
+    ],
+    "suggested_check": "Verify the actual content of `src/retry_after.py` to confirm the presence and exact logic of `retry_after_seconds` against the formula: `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`."
+  },
+  "gated_crux_json": {
+    "overview": "There is a direct contradiction among the advisors regarding the implementation status of `retry_after_seconds`, with two advisors noting its absence while one claims both requirements are fully met.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `retry_after_seconds`",
+        "side_a": "Advisor_1 & Advisor_2: The function is missing entirely from `src/retry_after.py`.",
+        "side_b": "Advisor_3: The function logic is correctly implemented as `max(min_seconds, math.ceil(tokens_needed / refill_rate))`.",
+        "at_stake": "Ticket T24, Requirement 1 implementation."
+      },
+      {
+        "topic": "Test Coverage for `retry_after_seconds`",
+        "side_a": "Advisor_2: Corresponding unit tests for the new function are missing.",
+        "side_b": "Advisor_3: All existing tests pass, implying coverage is sufficient or the new tests were added.",
+        "at_stake": "Ensuring full test coverage for the new logic."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that the logic for `retry_after_seconds` is correctly implemented contradicts the explicit findings of Advisor_1 and Advisor_2.",
+      "The discrepancy in test coverage assessment (missing tests vs. all tests pass) needs resolution, especially since the core function implementation itself is disputed."
+    ],
+    "suggested_check": "Verify the actual content of `src/retry_after.py` to confirm the presence and exact logic of `retry_after_seconds` against the formula: `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: There is a conflict in the advisory feedback: two advisors noted the absence of the `retry_after_seconds` implementation, while one advisor stated both required functions were correctly implemented. The concrete defect cited by multiple advisors is the missing implementation of `retry_after_seconds`.\nKEY POINTS:\n- The implementation for `cap_backoff_delay` appears correct based on multiple checks.\n- The required function `retry_after_seconds` (Req 1) is cited as missing by two out of three advisors.\n- The logic for `retry_after_seconds` must implement `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`.\n- The deterministic checks passed, indicating no immediate regressions in existing tests.\nSUGGESTED CHECK: Confirm the presence and correct logic implementation of `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` in `src/retry_after.py`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: There is a direct contradiction among the advisors regarding the implementation status of `retry_after_seconds`, with two advisors noting its absence while one claims both requirements are fully met.\nKEY POINTS:\n- Disagreement (Implementation of `retry_after_seconds`): Advisor_1 & Advisor_2: The function is missing entirely from `src/retry_after.py`. vs. Advisor_3: The function logic is correctly implemented as `max(min_seconds, math.ceil(tokens_needed / refill_rate))`. [at stake: Ticket T24, Requirement 1 implementation.]\n- Disagreement (Test Coverage for `retry_after_seconds`): Advisor_2: Corresponding unit tests for the new function are missing. vs. Advisor_3: All existing tests pass, implying coverage is sufficient or the new tests were added. [at stake: Ensuring full test coverage for the new logic.]\n- Unverified claim: Advisor_3's claim that the logic for `retry_after_seconds` is correctly implemented contradicts the explicit findings of Advisor_1 and Advisor_2.\n- Unverified claim: The discrepancy in test coverage assessment (missing tests vs. all tests pass) needs resolution, especially since the core function implementation itself is disputed.\nSUGGESTED CHECK: Verify the actual content of `src/retry_after.py` to confirm the presence and exact logic of `retry_after_seconds` against the formula: `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: There is a direct contradiction among the advisors regarding the implementation status of `retry_after_seconds`, with two advisors noting its absence while one claims both requirements are fully met.\nKEY POINTS:\n- Disagreement (Implementation of `retry_after_seconds`): Advisor_1 & Advisor_2: The function is missing entirely from `src/retry_after.py`. vs. Advisor_3: The function logic is correctly implemented as `max(min_seconds, math.ceil(tokens_needed / refill_rate))`. [at stake: Ticket T24, Requirement 1 implementation.]\n- Disagreement (Test Coverage for `retry_after_seconds`): Advisor_2: Corresponding unit tests for the new function are missing. vs. Advisor_3: All existing tests pass, implying coverage is sufficient or the new tests were added. [at stake: Ensuring full test coverage for the new logic.]\n- Unverified claim: Advisor_3's claim that the logic for `retry_after_seconds` is correctly implemented contradicts the explicit findings of Advisor_1 and Advisor_2.\n- Unverified claim: The discrepancy in test coverage assessment (missing tests vs. all tests pass) needs resolution, especially since the core function implementation itself is disputed.\nSUGGESTED CHECK: Verify the actual content of `src/retry_after.py` to confirm the presence and exact logic of `retry_after_seconds` against the formula: `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1021,
+      "output_tokens": 220,
+      "seconds": 4.526,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1060,
+      "output_tokens": 411,
+      "seconds": 7.805,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

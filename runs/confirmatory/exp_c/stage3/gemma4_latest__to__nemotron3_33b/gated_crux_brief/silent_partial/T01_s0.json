@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Critical requirement 2 (upgrade_delta_cents) is missing from the PR - function is not implemented in src/prorate.py and no tests exist for downgrade scenarios as required.",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR claims to have implemented both required functions, but Advisor_1 and Advisor_2 explicitly state that `upgrade_delta_cents` is missing from the diff, and the function name appears inconsistent (possible typo `upgrade_delta_ceints`). The Contributor Completion Report shows only 2 passing tests, none of which verify the second requirement. I need to inspect the actual code to confirm implementation status before deciding.",
+    "The diff shows `prorate_cents` was correctly implemented with proper zero-day handling, but `upgrade_delta_cents` is completely absent from the changes. The test file only added tests for `prorate_cents`, with no evidence of `upgrade_delta_cents` implementation or tests for downgrade scenarios. The Advisor_3 claim about `upgrade_delta_cents` being implemented appears false."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.363,
+  "prompt_tokens": 2732,
+  "output_tokens": 260,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/cursor_hmac.py defines clamp_limit and encode_cursor only. decode_cursor(token, secret) -> int, which must verify the HMAC in constant time, raise ValueError('invalid_cursor') on tampering or negative offsets, and is required by Req 2, is missing. The contributor's report claims ready_for_review, but the tests it lists cover only encode_cursor and clamp_limit, so no test exercises Req 2.",
+  "target_issue": "Req 2: decode_cursor(token, secret) -> int not implemented in src/cursor_hmac.py",
+  "thoughts": [
+    "The advisory brief disagrees on whether decode_cursor exists, so I need to check the source directly before deciding.",
+    "I read src/cursor_hmac.py directly: encode_cursor is present, but decode_cursor is not defined anywhere in the module. Req 2 is unmet, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.088,
+  "prompt_tokens": 3704,
+  "output_tokens": 432,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required `merge_rooms` function (to be renamed to `merge_windows`) is entirely missing from the PR, violating Req 1. The PR only added `is_blackout` and modified existing functions, but no coalescing logic exists.",
+  "target_issue": "missing required function implementation for Req 1",
+  "thoughts": [
+    "The PR claims all tests pass, but the review notes a critical conflict about the `merge_rooms` vs `merge_windows` function name and implementation. I need to verify the actual function name and logic in the code before deciding.",
+    "The diff shows that `is_blackout` was added correctly, but there is no `merge_rooms` or `merge_windows` function in the diff. The PR only modified existing functions and added `is_blackout`, but the required `merge_rooms` function (which should be renamed to `merge_windows` per Req 1) is completely missing. The PR claims to have completed the ticket, but the core requirement is unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.537,
+  "prompt_tokens": 2084,
+  "output_tokens": 251,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

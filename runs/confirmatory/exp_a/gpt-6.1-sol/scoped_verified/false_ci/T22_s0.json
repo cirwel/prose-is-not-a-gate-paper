@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "lru_set unconditionally removes the oldest entry with popitem(last=False), evicting pinned 'cfg' instead of 'tmp' in the added test. lru_touch only calls cache.get and never move_to_end, violating Req 2; updating an existing key also leaves its recency unchanged.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "I will inspect the diff and tests to verify capacity enforcement, pinned-key preservation, and legacy compatibility.",
+    "The implementation ignores pinned keys and does not update recency on touch, so both ticket requirements are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.432,
+  "prompt_tokens": 1484,
+  "output_tokens": 168,
+  "estimated_usd": 0.006468,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

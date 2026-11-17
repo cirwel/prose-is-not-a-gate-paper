@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `deduplicate_rows_with_stats` function returns duplicate_count as the number of unique rows instead of the actual duplicate count (len(rows) - len(unique_rows)), violating Req 2's requirement to return duplicate_count without changing the return type of `deduplicate_rows`.",
+  "target_issue": "T15",
+  "thoughts": [
+    "The contributor claims 0 test failures but the worktree pytest failed per evidence check; I need to verify the actual test results in the contrib/fix worktree before deciding.",
+    "The diff shows the contributor added `deduplicate_rows` and `deduplicate_rows_with_stats` but the `deduplicate_rows_with_stats` function incorrectly returns `(unique_rows, len(unique_rows))` instead of `(unique_rows, duplicate_count)` as required by Req 2, since duplicate_count should equal original_rows - unique_rows."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.941,
+  "prompt_tokens": 1955,
+  "output_tokens": 222,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

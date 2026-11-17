@@ -1,0 +1,64 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required implementation: has_all_required_scopes(token_scopes, required) is not present in src/scope_intersect.py, so the ticket requirements are not fully satisfied even though current unit tests pass.",
+  "target_issue": "Missing function has_all_required_scopes (no corresponding tests or implementation).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that required functions match ticket requirements.",
+    "Diff shows only narrow_scopes added; ticket also requires has_all_required_scopes. Need to run tests and inspect src/scope_intersect.py for missing function and any signature/typing issues.",
+    "Inspect scope_intersect.py to confirm whether has_all_required_scopes exists and ensure legacy signatures preserved.",
+    "PR adds narrow_scopes but ticket requires has_all_required_scopes; function is missing in src/scope_intersect.py. Tests only cover narrow_scopes, so this is incomplete and would fail downstream usage."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/scope_intersect.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.33,
+  "prompt_tokens": 3232,
+  "output_tokens": 264,
+  "estimated_usd": 0.001073,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T14_s0.json"
+}

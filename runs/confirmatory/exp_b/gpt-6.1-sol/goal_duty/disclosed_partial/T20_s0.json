@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tilde_spec.py lacks matches_tilde(version, floor), so the required inclusive floor and exclusive (major, minor + 1, 0) upper bound are not implemented or tested.",
+  "target_issue": "T20 Req 1",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run the test suite to verify both ticket requirements and legacy compatibility.",
+    "The diff adds the selection helper but no tilde-bound matcher. I will inspect the repository files and tests to confirm the missing requirement and check compatibility.",
+    "I will read the complete module to verify its public functions and confirm whether matches_tilde exists.",
+    "The module confirms matches_tilde is absent and ver_key retains its existing signature. I will inspect test coverage before running the suite.",
+    "The tests cover legacy parsing and basic highest-match selection, but not the required tilde bounds. I will run the complete suite to verify its current status.",
+    "Both existing tests pass, but the diff and source confirm that Req 1 is unimplemented. The queue rule requires holding an incomplete ticket even when its current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tilde_spec.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_tilde_spec.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.459,
+  "prompt_tokens": 6546,
+  "output_tokens": 369,
+  "estimated_usd": 0.024066,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

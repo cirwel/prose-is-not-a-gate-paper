@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/caret_spec.py` has no `parse_semver_tag(tag)` implementation, and `matches_caret` has no `allow_prerelease` parameter or prerelease rejection logic. Prerelease versions are instead stripped to their core tuple and may incorrectly match.",
+  "target_issue": "T08 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify whether it satisfies prerelease parsing and opt-out requirements, beyond the reported passing tests.",
+    "The patch implements the basic core-tuple bounds but omits both required prerelease features: `parse_semver_tag` and the `allow_prerelease` behavior in `matches_caret`. The two added tests do not cover those requirements, so merging would leave T08 incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.349,
+  "prompt_tokens": 1988,
+  "output_tokens": 1259,
+  "estimated_usd": 0.00562,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

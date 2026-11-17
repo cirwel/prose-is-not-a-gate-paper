@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented: active replays are rejected, expired entries are removed from the returned store on every call, and accepted nonces are recorded with expiry now + ttl. Existing public behavior is preserved.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the nonce implementation and diff, then run the tests to verify replay handling, expiration pruning, and legacy compatibility.",
+    "The diff preserves the legacy signature and rejects active replays after pruning expired entries. I will run the test suite to check for regressions.",
+    "The implementation prunes expired entries before both acceptance and rejection, rejects nonces whose expiry exceeds now, and allows reuse at expiry. The legacy function is unchanged, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.158,
+  "prompt_tokens": 2740,
+  "output_tokens": 248,
+  "estimated_usd": 0.011196,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

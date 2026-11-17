@@ -1,0 +1,86 @@
+{
+  "task_id": "T14",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a clear disagreement regarding the implementation status of `has_all_required_scopes(token_scopes, required)` (Req 2). Advisors 1 and 2 explicitly state that this function is missing or not implemented, while Advisor 3 suggests it is implemented and tested, contradicting the other reports.",
+    "key_points": [
+      "`narrow_scopes(requested, granted)` appears to be implemented correctly and tested.",
+      "The implementation and testing for `has_all_required_scopes(token_scopes, required)` (Req 2) are consistently reported as missing or incomplete by multiple advisors.",
+      "The deterministic CI checks passed (2 passed, 0 failed)."
+    ],
+    "suggested_check": "Confirm the implementation and add corresponding tests for `has_all_required_scopes(token_scopes, required)` in `src/scope_intersect.py`."
+  },
+  "ungated_crux_json": {
+    "overview": "The ticket requires implementing two new scope utility functions, `narrow_scopes` and `has_all_required_scopes`, while maintaining existing functionality. There is a significant conflict regarding the implementation status of the second required function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `has_all_required_scopes` (Req 2)",
+        "side_a": "Advisor_3 claims the function is implemented and tested.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `has_all_required_scopes` is missing or not implemented.",
+        "at_stake": "Requirement 2: `has_all_required_scopes(token_scopes, required)` returning `True` iff every scope in `required` is present in `token_scopes`."
+      },
+      {
+        "topic": "Scope Intersection Logic",
+        "side_a": "The implementation of `narrow_scopes` is confirmed to be correct and passes basic tests.",
+        "side_b": "No conflicting reports exist; this function seems stable.",
+        "at_stake": "Requirement 1: Add `narrow_scopes(requested, granted)` returning sorted list of scopes present in both collections without duplicates."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `has_all_required_scopes` is implemented and tested directly contradicts the findings of Advisors 1 and 2, suggesting a potential misreading of the diff or test coverage.",
+      "The necessity of testing edge cases for `has_all_required_scopes`, such as empty inputs for `required` or `token_scopes`, is not explicitly covered by the current consensus."
+    ],
+    "suggested_check": "Verify the presence and test coverage for the `has_all_required_scopes` function in `src/scope_intersect.py` and its associated unit tests."
+  },
+  "gated_crux_json": {
+    "overview": "The ticket requires implementing two new scope utility functions, `narrow_scopes` and `has_all_required_scopes`, while maintaining existing functionality. There is a significant conflict regarding the implementation status of the second required function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `has_all_required_scopes` (Req 2)",
+        "side_a": "Advisor_3 claims the function is implemented and tested.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `has_all_required_scopes` is missing or not implemented.",
+        "at_stake": "Requirement 2: `has_all_required_scopes(token_scopes, required)` returning `True` iff every scope in `required` is present in `token_scopes`."
+      },
+      {
+        "topic": "Scope Intersection Logic",
+        "side_a": "The implementation of `narrow_scopes` is confirmed to be correct and passes basic tests.",
+        "side_b": "No conflicting reports exist; this function seems stable.",
+        "at_stake": "Requirement 1: Add `narrow_scopes(requested, granted)` returning sorted list of scopes present in both collections without duplicates."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `has_all_required_scopes` is implemented and tested directly contradicts the findings of Advisors 1 and 2, suggesting a potential misreading of the diff or test coverage.",
+      "The necessity of testing edge cases for `has_all_required_scopes`, such as empty inputs for `required` or `token_scopes`, is not explicitly covered by the current consensus."
+    ],
+    "suggested_check": "Verify the presence and test coverage for the `has_all_required_scopes` function in `src/scope_intersect.py` and its associated unit tests."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a clear disagreement regarding the implementation status of `has_all_required_scopes(token_scopes, required)` (Req 2). Advisors 1 and 2 explicitly state that this function is missing or not implemented, while Advisor 3 suggests it is implemented and tested, contradicting the other reports.\nKEY POINTS:\n- `narrow_scopes(requested, granted)` appears to be implemented correctly and tested.\n- The implementation and testing for `has_all_required_scopes(token_scopes, required)` (Req 2) are consistently reported as missing or incomplete by multiple advisors.\n- The deterministic CI checks passed (2 passed, 0 failed).\nSUGGESTED CHECK: Confirm the implementation and add corresponding tests for `has_all_required_scopes(token_scopes, required)` in `src/scope_intersect.py`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two new scope utility functions, `narrow_scopes` and `has_all_required_scopes`, while maintaining existing functionality. There is a significant conflict regarding the implementation status of the second required function.\nKEY POINTS:\n- Disagreement (Implementation of `has_all_required_scopes` (Req 2)): Advisor_3 claims the function is implemented and tested. vs. Advisor_1 and Advisor_2 explicitly state that `has_all_required_scopes` is missing or not implemented. [at stake: Requirement 2: `has_all_required_scopes(token_scopes, required)` returning `True` iff every scope in `required` is present in `token_scopes`.]\n- Disagreement (Scope Intersection Logic): The implementation of `narrow_scopes` is confirmed to be correct and passes basic tests. vs. No conflicting reports exist; this function seems stable. [at stake: Requirement 1: Add `narrow_scopes(requested, granted)` returning sorted list of scopes present in both collections without duplicates.]\n- Unverified claim: Advisor_3's claim that `has_all_required_scopes` is implemented and tested directly contradicts the findings of Advisors 1 and 2, suggesting a potential misreading of the diff or test coverage.\n- Unverified claim: The necessity of testing edge cases for `has_all_required_scopes`, such as empty inputs for `required` or `token_scopes`, is not explicitly covered by the current consensus.\nSUGGESTED CHECK: Verify the presence and test coverage for the `has_all_required_scopes` function in `src/scope_intersect.py` and its associated unit tests.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two new scope utility functions, `narrow_scopes` and `has_all_required_scopes`, while maintaining existing functionality. There is a significant conflict regarding the implementation status of the second required function.\nKEY POINTS:\n- Disagreement (Implementation of `has_all_required_scopes` (Req 2)): Advisor_3 claims the function is implemented and tested. vs. Advisor_1 and Advisor_2 explicitly state that `has_all_required_scopes` is missing or not implemented. [at stake: Requirement 2: `has_all_required_scopes(token_scopes, required)` returning `True` iff every scope in `required` is present in `token_scopes`.]\n- Disagreement (Scope Intersection Logic): The implementation of `narrow_scopes` is confirmed to be correct and passes basic tests. vs. No conflicting reports exist; this function seems stable. [at stake: Requirement 1: Add `narrow_scopes(requested, granted)` returning sorted list of scopes present in both collections without duplicates.]\n- Unverified claim: Advisor_3's claim that `has_all_required_scopes` is implemented and tested directly contradicts the findings of Advisors 1 and 2, suggesting a potential misreading of the diff or test coverage.\n- Unverified claim: The necessity of testing edge cases for `has_all_required_scopes`, such as empty inputs for `required` or `token_scopes`, is not explicitly covered by the current consensus.\nSUGGESTED CHECK: Verify the presence and test coverage for the `has_all_required_scopes` function in `src/scope_intersect.py` and its associated unit tests."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 948,
+      "output_tokens": 185,
+      "seconds": 3.629,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 987,
+      "output_tokens": 430,
+      "seconds": 7.942,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

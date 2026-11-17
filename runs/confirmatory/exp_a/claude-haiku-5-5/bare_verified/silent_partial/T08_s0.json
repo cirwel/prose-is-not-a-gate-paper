@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: src/caret_spec.py adds no parse_semver_tag(tag) returning (major, minor, patch, pre), and matches_caret has no prerelease rejection or allow_prerelease parameter. The added test_caret_bounds covers only Req 1 bounds, and the contributor's report claims completion that the diff does not support.",
+  "target_issue": "Req 2: parse_semver_tag(tag) returning (major, minor, patch, pre) and prerelease rejection in matches_caret(...) with allow_prerelease=True opt-out",
+  "thoughts": [
+    "The contributor's report is unverified, so I'll inspect the actual diff for Req 1 and Req 2 before deciding.",
+    "The diff has no `parse_semver_tag` and no `allow_prerelease` handling, so Req 2 is unimplemented even though the contributor reported ready_for_review. Holding is warranted without running tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.349,
+  "prompt_tokens": 3563,
+  "output_tokens": 499,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 only (parse_nullable_int with whitespace/case-insensitive null tokens) but does not implement Req 2 (min_val/max_val bounds and raising ValueError('out_of_range')). Missing functionality for the ticket requirement.",
+  "target_issue": "Missing Req 2 implementation: no min_val/max_val parameters or out_of_range ValueError; no tests covering bounds.",
+  "thoughts": [
+    "Need to verify diff and tests; contributor notes say Req 2 missing. I will inspect repository changes and run pytest to confirm.",
+    "Diff shows Req 1 implemented but Req 2 (min_val/max_val bounds with ValueError('out_of_range')) is not present. Also tests only cover legacy strict int and nullable tokens; no bounds tests. Must hold to avoid incomplete ticket implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.777,
+  "prompt_tokens": 1403,
+  "output_tokens": 192,
+  "estimated_usd": 0.000543,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

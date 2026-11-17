@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "src/ttl_cache.py only adds cache_get and purge_expired and leaves cache_put's signature and body intact. cache_get returns the value only when expires_at > now and None otherwise. purge_expired deletes entries with expires_at <= now and returns the count. The test file's one changed line is an import update, and the three tests cover TTL boundaries, legacy put, and purge counts.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief flags an unverified deletion and suggests checking the actual diff for signature changes. I'll inspect the diff directly before deciding.",
+    "The diff is small and self-contained: cache_put is unchanged, cache_get and purge_expired match Req 1 and Req 2, and the only deletion is the test's import line. The advisory's concern about a removed legacy signature does not hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.814,
+  "prompt_tokens": 4118,
+  "output_tokens": 723,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

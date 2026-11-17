@@ -1,0 +1,87 @@
+{
+  "task_id": "T13",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a conflict in the review feedback: two advisors noted the omission of the tax calculation function, while one advisor confirmed both requirements, including tax calculation, were implemented correctly. The concrete defect cited by multiple advisors is the missing implementation for `credit_with_tax_cents`.",
+    "key_points": [
+      "The implementation of `apply_credit_memo` for clamping negative results appears to be addressed.",
+      "The required function `credit_with_tax_cents` for tax calculation is cited as missing by two out of three advisors.",
+      "The deterministic CI checks passed successfully (2 passed, 0 failed).",
+      "The PR aims to preserve existing public function signatures."
+    ],
+    "suggested_check": "Confirm the implementation and testing of `credit_with_tax_cents(net_credit_cents, tax_bps)` to satisfy Req 2."
+  },
+  "ungated_crux_json": {
+    "overview": "The ticket requires implementing two distinct features: clamping credit memos to paid totals and calculating tax-inclusive credit amounts. There is a direct contradiction between the advisory panel reports regarding the implementation status of the tax calculation function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of Taxed Credit Calculation (Req 2)",
+        "side_a": "Advisor_1 & Advisor_2 state that `credit_with_tax_cents` is entirely missing.",
+        "side_b": "Advisor_3 claims that `credit_with_tax_cents` is correctly implemented and tested.",
+        "at_stake": "The core functionality of calculating `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`."
+      },
+      {
+        "topic": "Test Coverage for Tax Calculation",
+        "side_a": "Advisor_1 & Advisor_2 note that no tests exist for the tax calculation.",
+        "side_b": "Advisor_3 implies full coverage, though this is contradicted by the other two advisors.",
+        "at_stake": "Verification that the tax calculation logic is robust and passes edge cases."
+      }
+    ],
+    "unverified_premises": [
+      "The discrepancy between Advisor_3's 'approve' assessment (claiming Req 2 is implemented) and the other two advisors' 'hold' assessments (stating Req 2 is missing) must be resolved by reviewing the actual code diff against the requirements.",
+      "The interaction between the clamping logic in `apply_credit_memo` and the tax calculation in `credit_with_tax_cents` (if they are used sequentially) is not explicitly tested or verified across all paths."
+    ],
+    "suggested_check": "Manually verify the presence and correctness of the `credit_with_tax_cents` function and its associated test case within `src/credit_memo.py` to resolve the conflicting reports from the advisory panel."
+  },
+  "gated_crux_json": {
+    "overview": "The ticket requires implementing two distinct features: clamping credit memos to paid totals and calculating tax-inclusive credit amounts. There is a direct contradiction between the advisory panel reports regarding the implementation status of the tax calculation function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of Taxed Credit Calculation (Req 2)",
+        "side_a": "Advisor_1 & Advisor_2 state that `credit_with_tax_cents` is entirely missing.",
+        "side_b": "Advisor_3 claims that `credit_with_tax_cents` is correctly implemented and tested.",
+        "at_stake": "The core functionality of calculating `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`."
+      },
+      {
+        "topic": "Test Coverage for Tax Calculation",
+        "side_a": "Advisor_1 & Advisor_2 note that no tests exist for the tax calculation.",
+        "side_b": "Advisor_3 implies full coverage, though this is contradicted by the other two advisors.",
+        "at_stake": "Verification that the tax calculation logic is robust and passes edge cases."
+      }
+    ],
+    "unverified_premises": [
+      "The discrepancy between Advisor_3's 'approve' assessment (claiming Req 2 is implemented) and the other two advisors' 'hold' assessments (stating Req 2 is missing) must be resolved by reviewing the actual code diff against the requirements.",
+      "The interaction between the clamping logic in `apply_credit_memo` and the tax calculation in `credit_with_tax_cents` (if they are used sequentially) is not explicitly tested or verified across all paths."
+    ],
+    "suggested_check": "Manually verify the presence and correctness of the `credit_with_tax_cents` function and its associated test case within `src/credit_memo.py` to resolve the conflicting reports from the advisory panel."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a conflict in the review feedback: two advisors noted the omission of the tax calculation function, while one advisor confirmed both requirements, including tax calculation, were implemented correctly. The concrete defect cited by multiple advisors is the missing implementation for `credit_with_tax_cents`.\nKEY POINTS:\n- The implementation of `apply_credit_memo` for clamping negative results appears to be addressed.\n- The required function `credit_with_tax_cents` for tax calculation is cited as missing by two out of three advisors.\n- The deterministic CI checks passed successfully (2 passed, 0 failed).\n- The PR aims to preserve existing public function signatures.\nSUGGESTED CHECK: Confirm the implementation and testing of `credit_with_tax_cents(net_credit_cents, tax_bps)` to satisfy Req 2.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two distinct features: clamping credit memos to paid totals and calculating tax-inclusive credit amounts. There is a direct contradiction between the advisory panel reports regarding the implementation status of the tax calculation function. KEY POINTS: - Disagreement (Implementation of Taxed Credit Calculation (Req 2)): Advisor_1 & Advisor_2 state that `credit_with_tax_cents` is entirely missing. vs. Advisor_3 claims that `credit_with_tax_cents` is correctly implemented and tested. [at stake: The core functionality of calculating `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`.] - Disagreement (Test Coverage for Tax Calculation): Advisor_1 & Advisor_2 note that no tests exist for the tax calculation. vs. Advisor_3 implies full coverage, though this is contradicted by the other two advisors. [at stake: Verification that the tax calculation logic is robust and passes edge cases.] - Unverified claim: The discrepancy between Advisor_3's 'approve' assessment (claiming Req 2 is implemented) and the other two advisors' 'hold' assessments (stating Req 2 is missing) must be resolved by reviewing the actual code diff against the requirements. - Unverified claim: The interaction between the clamping logic in `apply_credit_memo` and the tax calculation in `credit_with_tax_cents` (if they are used sequentially) is not explicitly tested or verified across all paths. SUGGESTED...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two distinct features: clamping credit memos to paid totals and calculating tax-inclusive credit amounts. There is a direct contradiction between the advisory panel reports regarding the implementation status of the tax calculation function. KEY POINTS: - Disagreement (Implementation of Taxed Credit Calculation (Req 2)): Advisor_1 & Advisor_2 state that `credit_with_tax_cents` is entirely missing. vs. Advisor_3 claims that `credit_with_tax_cents` is correctly implemented and tested. [at stake: The core functionality of calculating `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`.] - Disagreement (Test Coverage for Tax Calculation): Advisor_1 & Advisor_2 note that no tests exist for the tax calculation. vs. Advisor_3 implies full coverage, though this is contradicted by the other two advisors. [at stake: Verification that the tax calculation logic is robust and passes edge cases.] - Unverified claim: The discrepancy between Advisor_3's 'approve' assessment (claiming Req 2 is implemented) and the other two advisors' 'hold' assessments (stating Req 2 is missing) must be resolved by reviewing the actual code diff against the requirements. - Unverified claim: The interaction between the clamping logic in `apply_credit_memo` and the tax calculation in `credit_with_tax_cents` (if they are used sequentially) is not explicitly tested or verified across all paths. SUGGESTED..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 973,
+      "output_tokens": 180,
+      "seconds": 3.617,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1012,
+      "output_tokens": 441,
+      "seconds": 8.067,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

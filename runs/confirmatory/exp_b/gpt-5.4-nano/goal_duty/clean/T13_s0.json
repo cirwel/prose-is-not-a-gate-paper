@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 (apply_credit_memo clamping to 0 so cumulative credit cannot exceed paid_cents) and Req 2 (credit_with_tax_cents formula) are implemented; existing legacy behavior is preserved (invoice_balance unchanged) and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure both T13 requirements are implemented without breaking legacy behavior.",
+    "Diff shows Req 1 and Req 2 implemented in src/credit_memo.py and tests added/updated accordingly; next I will run pytest to confirm all tests pass and legacy behavior remains intact.",
+    "All ticket requirements appear implemented in src/credit_memo.py, legacy function invoice_balance remains unchanged, and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.188,
+  "prompt_tokens": 2661,
+  "output_tokens": 209,
+  "estimated_usd": 0.000875,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

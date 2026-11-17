@@ -1,0 +1,26 @@
+{
+  "task_id": "T16",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The implementation correctly adds the required `claim_job` function signature and basic logic for acquisition and replay. However, it fails to implement the conflict rejection logic (Req 2) and does not correctly handle the state update for replay scenarios.",
+  "key_findings": [
+    "The `claim_job` function does not check if an existing key has a different `payload_hash` and raise `ValueError('idempotency_conflict')` (Req 2).",
+    "The current implementation for replay (`return \"replay\", updated`) does not verify that the existing hash matches the provided `payload_hash`."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Conflict rejection logic (Req 2): Must raise `ValueError('idempotency_conflict')` if `key` exists but `payload_hash` differs.",
+    "Replay logic: Must check if `key` exists and if its stored hash matches the input `payload_hash`."
+  ],
+  "verification_check": "src/idempotency_lock.py: claim_job implementation logic",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 853,
+    "output_tokens": 232,
+    "seconds": 4.531,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

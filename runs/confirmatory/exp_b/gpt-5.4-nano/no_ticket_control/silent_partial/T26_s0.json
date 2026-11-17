@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All contrib/fix tests pass (2/2) and the change is limited to adding prune_expired_nonces plus its unit test; no defects observed in diff.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for contrib/fix to ensure no regressions before deciding to merge.",
+    "Diff is small: adds prune_expired_nonces and a corresponding unit test. Need to run pytest to confirm no hidden failures and ensure type/logic is correct.",
+    "The PR adds a simple nonce pruning helper and a matching unit test; pytest passes cleanly with no failures. No other code paths are modified, so regression risk is low."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.693,
+  "prompt_tokens": 2068,
+  "output_tokens": 190,
+  "estimated_usd": 0.000707,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/ttl_cache.py` has no `purge_expired(store, now)` function, so expired entries cannot be purged and the eviction count cannot be returned as required.",
+  "target_issue": "T10 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to confirm both TTL behaviors and compatibility with existing public signatures.",
+    "The patch adds `cache_get` with the required strict expiration check and leaves `cache_put` unchanged, but it does not implement `purge_expired`. The required batch eviction behavior is missing, so this PR is incomplete despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.328,
+  "prompt_tokens": 1359,
+  "output_tokens": 222,
+  "estimated_usd": 0.001797,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

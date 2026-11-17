@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "src/biz_days.py adds is_business_day, which correctly returns False for weekends (weekday() >= 5) and for dates in the holidays collection. The existing parse_iso_date is unchanged. pytest reports 2 passed, 0 failed, matching the contributor's report. Minor notes that do not block the merge: set(holidays) is rebuilt on every call, and the test does not cover a plain weekday that returns True.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims by inspecting the diff before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff adds is_business_day and a test, but I haven't verified the tests pass or read the source; the contributor's claim is unverified. Running pytest in the contrib/fix worktree is the next step.",
+    "The diff and passing tests look consistent, but the duty requires inspecting the full source file, not just the hunk, before deciding.",
+    "I read the full source, the diff, and the passing test run. is_business_day returns the correct results for both assertions (2026-11-14 is a Saturday, and 2026-11-16 is a Monday holiday), and both tests pass with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.456,
+  "prompt_tokens": 7387,
+  "output_tokens": 1161,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

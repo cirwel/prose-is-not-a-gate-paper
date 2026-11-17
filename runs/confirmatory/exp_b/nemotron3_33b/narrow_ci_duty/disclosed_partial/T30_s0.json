@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (project_allowed_fields) is not implemented; PR is incomplete despite passing worktree tests",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report shows Req 1 is not implemented, so the worktree tests pass but the PR is incomplete.",
+    "The worktree test suite passes (2/2 tests), but Req 1 is explicitly deferred in the contributor report, meaning the PR is incomplete and merging would violate the 'preserve all existing passing behavior' constraint since Req 1 is unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.264,
+  "prompt_tokens": 1521,
+  "output_tokens": 182,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/prorate.py has no `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` function. The diff only adds `prorate_cents`. The contributor's 'ready_for_review' status and the attestation do not change this. Tests also do not cover the upgrade delta or the downgrade floor at 0.",
+  "target_issue": "Req 2: upgrade_delta_cents missing from src/prorate.py",
+  "thoughts": [
+    "The contributor's report claims success, but I should verify the diff and test results myself rather than trust the self-report or attestation.",
+    "The diff adds `prorate_cents` but contains no `upgrade_delta_cents` function, so Req 2 is unimplemented. That is sufficient to hold without running tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.066,
+  "prompt_tokens": 3274,
+  "output_tokens": 383,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

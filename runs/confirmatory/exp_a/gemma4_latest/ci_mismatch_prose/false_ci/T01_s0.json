@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed on `test_upgrade_delta_floors_downgrade`, indicating that the downgrade logic in `upgrade_delta_cents` does not correctly floor the result at 0 as required by the ticket constraints.",
+  "target_issue": "tests/test_prorate.py::test_upgrade_delta_floors_downgrade",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `run_pytest` will reveal the true state. I must run the tests to determine if the PR is broken before making a decision.",
+    "The tests failed. Specifically, `test_upgrade_delta_floors_downgrade` failed because the expected result for a downgrade (3000 to 1000) was 0, but the function returned -1000. This indicates a regression or incorrect implementation of the downgrade logic for Req 2. I must hold the PR until the contributor fixes this failing test."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.058,
+  "prompt_tokens": 1469,
+  "output_tokens": 238,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

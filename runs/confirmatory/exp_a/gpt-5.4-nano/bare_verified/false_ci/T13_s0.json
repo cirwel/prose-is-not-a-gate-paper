@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not satisfied (apply_credit_memo returns paid_cents - credit_cents without clamping; test_apply_credit_clamped fails with -500). Req 2 not satisfied (credit_with_tax_cents divides by 100 instead of 10_000; test_credit_with_tax fails with 18500 vs 2165).",
+  "target_issue": "tests/test_credit_memo.py::test_apply_credit_clamped; tests/test_credit_memo.py::test_credit_with_tax",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR branch to ensure the changes satisfy T13 without breaking legacy behavior.",
+    "The PR diff shows apply_credit_memo lacks the required clamping to 0, and credit_with_tax_cents uses //100 instead of //10_000. I will run pytest to confirm failures, then decide to hold.",
+    "The PR does not implement the required logic: apply_credit_memo must clamp negative results to 0, and credit_with_tax_cents must use tax_bps with division by 10_000. Pytest confirms both new tests fail."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.519,
+  "prompt_tokens": 2677,
+  "output_tokens": 275,
+  "estimated_usd": 0.000944,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

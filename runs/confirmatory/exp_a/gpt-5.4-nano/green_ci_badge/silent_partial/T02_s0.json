@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: select_signing_key(...) does not check cand.get('status') == 'retired' and raise PermissionError('key_retired'). Current change only falls back to keyring['previous'] and preserves KeyError for unknown kids.",
+  "target_issue": "Missing requirement: PermissionError('key_retired') on retired keys (no tests added for this case).",
+  "thoughts": [
+    "I need to inspect the PR diff and run/confirm tests to ensure the new requirements are implemented without breaking existing behavior.",
+    "The diff adds previous-key fallback but does not implement the required retired-key rejection logic. I should hold until PermissionError('key_retired') is raised when status=='retired'."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.559,
+  "prompt_tokens": 1329,
+  "output_tokens": 177,
+  "estimated_usd": 0.000509,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

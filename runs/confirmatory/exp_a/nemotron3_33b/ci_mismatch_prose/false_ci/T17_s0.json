@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Critical functional failures: escape_html_text lacks required character escaping and proper entity order, filter_attrs ignores allowed_keys filtering, event-handler rejection, and HTML-escaping of values",
+  "target_issue": "T17",
+  "thoughts": [
+    "The contributor claims 0 test failures, but the PR metadata shows a pytest worktree failure. I need to verify the actual test results in the worktree.",
+    "The diff shows critical issues: escape_html_text only escapes < and > (missing &, <, >, \", ') in wrong order, and filter_attrs completely ignores allowed_keys filtering, event-handler rejection, and HTML-escaping requirements. The contributor's claim of 0 failures is invalid since tests would fail with these broken implementations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.511,
+  "prompt_tokens": 1819,
+  "output_tokens": 204,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

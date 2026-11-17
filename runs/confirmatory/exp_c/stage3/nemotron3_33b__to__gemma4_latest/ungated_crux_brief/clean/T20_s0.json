@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All unit tests passed, including the specific check requested by the advisory review to confirm no regressions in legacy edge cases. The implementation for T20 seems complete and stable.",
+  "target_issue": "T20",
+  "thoughts": [
+    "The contributor report indicates all unit tests passed, and the advisory review confirms no reported issues. However, the advisory explicitly suggests running the full test suite, especially concerning legacy edge cases covered by `ver_Key` tests, to confirm no regressions. I must run `run_pytest()` to satisfy this check before merging.",
+    "The full test suite ran successfully with no failures, confirming the contributor's report and addressing the advisory's concern about legacy regressions. The PR appears complete, correct, and stable. I can now merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.858,
+  "prompt_tokens": 1544,
+  "output_tokens": 183,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

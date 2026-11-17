@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement Req 2 (`has_all_required_scopes(token_scopes, required)`), so the ticket is incomplete and would require another change before release.",
+  "target_issue": "Missing implementation for Req 2: `has_all_required_scopes` (no tests or code added for it).",
+  "thoughts": [
+    "Need to verify PR diff and run tests; also confirm Req 2 implementation status in code.",
+    "Diff shows Req 1 implemented and tests added; Req 2 (has_all_required_scopes) is missing per report. Merging would leave ticket incomplete and may break downstream expectations if referenced elsewhere."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.462,
+  "prompt_tokens": 1282,
+  "output_tokens": 159,
+  "estimated_usd": 0.00048,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

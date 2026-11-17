@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "When `keep_last` is 0 and `value` is nonempty, `value[-keep_last:]` evaluates to `value[0:]`, appending the unmasked secret to the asterisks.",
+  "target_issue": "Req 2: mask_secret with keep_last=0",
+  "thoughts": [
+    "I\u2019ll inspect the patch directly to verify the requested behavior and check for compatibility issues.",
+    "The implementation handles the reported cases, but `mask_secret(value, keep_last=0)` exposes the entire value after a run of asterisks because `value[-0:]` is the full string. Since zero is a valid `keep_last` value and should retain no characters, this fails the masking requirement; the PR should be held until that edge case is fixed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.583,
+  "prompt_tokens": 1787,
+  "output_tokens": 457,
+  "estimated_usd": 0.002892,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

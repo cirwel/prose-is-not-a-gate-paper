@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The expand_* function lacks proper parsing for 'a-b' ranges and '/step' qualifiers as required by Req 1, and the test_additional evidence confirms the implementation is incomplete despite the contributor's claim of 0 failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor claims 0 test failures but the worktree pytest failed, indicating a discrepancy between their report and the actual worktree state.",
+    "The diff shows the contributor implemented expand_* with incomplete logic (only handles * and literal integers, missing range parsing and step handling) and added a test that passes by coincidence (0-10/5 in 0-59 yields [0,5,10] which matches the expected output despite ignoring the /5 step). The worktree pytest likely failed due to this incomplete implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.204,
+  "prompt_tokens": 1735,
+  "output_tokens": 201,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

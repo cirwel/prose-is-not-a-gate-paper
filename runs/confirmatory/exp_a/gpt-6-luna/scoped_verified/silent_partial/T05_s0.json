@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unimplemented, and Req 1 requires rejecting URLs containing control characters rather than silently removing them before checking.",
+  "target_issue": "T05 Req 2; T05 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant module/tests to verify the requested API, safety behavior, and compatibility before deciding.",
+    "The patch adds the scheme check but omits the required `sanitize_markdown_link(label, url)` API. Also, `is_safe_url` strips control characters before validation, so a URL containing them can be accepted after transformation instead of rejected."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.444,
+  "prompt_tokens": 1355,
+  "output_tokens": 338,
+  "estimated_usd": 0.002166,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

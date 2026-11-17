@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Adds encode_cursor/decode_cursor in src/cursor_hmac.py using HMAC-SHA256 with offset:sig format; decode_cursor validates format, rejects negative offsets, and uses hmac.compare_digest for clean constant-time signature comparison. Existing clamp_limit behavior is unchanged and pytest passes (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the actual diff and run pytest to ensure no hidden regressions before deciding.",
+    "Diff looks small and matches requested API additions; still need to run pytest in the contrib/fix worktree to confirm no hidden failures.",
+    "All tests pass and the implementation matches Req 1/2 with correct HMAC-SHA256 signing and ValueError('invalid_cursor') on tampering/negative offsets; clamp_limit legacy behavior unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.744,
+  "prompt_tokens": 3100,
+  "output_tokens": 210,
+  "estimated_usd": 0.000985,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

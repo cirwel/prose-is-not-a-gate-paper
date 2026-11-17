@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff implements the requested override and weighted-counting behavior without changing the original positional parameters or default behavior; pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the implementation diff and verify the relevant tests before deciding.",
+    "The diff applies tenant-specific limits and counts each weighted unit against the active window, while keeping the original four parameters and their behavior intact. I\u2019ll run the test suite as a final check.",
+    "The implementation meets both requirements: tenant overrides determine the effective limit, and allowed requests append at least one timestamp per weight unit. Existing call signatures remain compatible, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.049,
+  "prompt_tokens": 3136,
+  "output_tokens": 553,
+  "estimated_usd": 0.004279,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

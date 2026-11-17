@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/lock_resolver.py does not define is_breaking_bump(old_ver, new_ver). Req 1 (major bump when new[0] > old[0], or minor bump on 0.y.z when old[0] == 0 and new[1] > old[1]) is unimplemented and untested, and the contributor report confirms it was deferred. Req 2 (verify_lock_pins) is present and its test passes per the report, but the ticket is incomplete.",
+  "target_issue": "Req 1: is_breaking_bump(old_ver, new_ver) -> bool not implemented",
+  "thoughts": [
+    "The contributor report says Req 1 (is_breaking_bump) is deferred and not implemented. I'll confirm against the actual diff before deciding.",
+    "The diff confirms Req 1 (is_breaking_bump) is absent; only verify_lock_pins was added. The ticket requires both requirements, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.662,
+  "prompt_tokens": 3387,
+  "output_tokens": 568,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

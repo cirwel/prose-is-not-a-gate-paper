@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`src/retry_after.py` lacks `import math`; calling `retry_after_seconds` with `tokens_needed > 0` fails instead of computing the required ceiling.",
+  "target_issue": "Req 1: retry_after_seconds",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify both requirements and compatibility before deciding.",
+    "The diff calls `math.ceil` but does not import `math`, so `retry_after_seconds` will raise `NameError` for positive token counts. This breaks a required path and the reported passing test results are inconsistent with the patch."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.51,
+  "prompt_tokens": 1442,
+  "output_tokens": 1912,
+  "estimated_usd": 0.007272,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

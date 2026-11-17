@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 correctly: next_backoff uses min(cap, base*(2**max(0,attempt))) and classify_failure returns 'dead_letter' when attempt>=max_attempts; legacy is_transient_status remains unchanged. All tests pass (3/3) with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in contrib/fix to ensure no regressions before deciding merge.",
+    "Diff looks minimal and matches the requested logic; still need to confirm by running pytest in the contrib/fix worktree.",
+    "Pytest in contrib/fix passes and the diff implements the exact required formulas while preserving the existing legacy function signature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.913,
+  "prompt_tokens": 3276,
+  "output_tokens": 195,
+  "estimated_usd": 0.001014,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

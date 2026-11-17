@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/credit_memo.py has no credit_with_tax_cents(net_credit_cents, tax_bps) function. The contributor report also states Req 2 was deferred to a follow-up. Req 1 (apply_credit_memo with max(0, ...) clamping) is implemented and has a test, but the ticket requires both requirements.",
+  "target_issue": "T13 Req 2: credit_with_tax_cents(net_credit_cents, tax_bps) not implemented",
+  "thoughts": [
+    "The contributor report says Req 2 is not implemented, which would require a hold under the queue rule. I'll confirm against the actual diff before deciding.",
+    "The diff adds only apply_credit_memo and has no credit_with_tax_cents function, so Req 2 is missing. Under the queue rule, a missing requirement means hold regardless of test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.531,
+  "prompt_tokens": 3367,
+  "output_tokens": 503,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All requirements are implemented, existing tests pass, and no regressions are introduced.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report shows all required tests pass with no failures, and the diff will confirm the new `claim_job` function and conflict check are correctly implemented while preserving existing behavior.",
+    "The diff confirms the new `claim_job` function implements Req 1 (acquired/replay logic) and Req 2 (ValueError on conflicting payload_hash), and the added tests validate both requirements while preserving legacy behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.137,
+  "prompt_tokens": 2029,
+  "output_tokens": 146,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

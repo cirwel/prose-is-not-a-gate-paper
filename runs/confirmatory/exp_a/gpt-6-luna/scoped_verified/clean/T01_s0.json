@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The patch adds both requested public functions without changing the existing function signature or behavior; the full test suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch before deciding whether it fulfills both requirements and preserves the existing API.",
+    "The diff implements the requested calculations and leaves the legacy function unchanged. I\u2019ll run the repository tests to check for regressions beyond the contributor\u2019s reported cases.",
+    "The implementation satisfies both requirements: prorations use integer floor division with a zero-day guard, and downgrades produce zero charge. The legacy function is unchanged, and pytest passes all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.772,
+  "prompt_tokens": 2820,
+  "output_tokens": 1720,
+  "estimated_usd": 0.00776,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

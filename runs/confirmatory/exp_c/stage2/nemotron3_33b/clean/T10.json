@@ -1,0 +1,57 @@
+{
+  "task_id": "T10",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements `cache_get` and `purge_expired` with proper TTL logic and maintains all existing tests.",
+    "key_points": [
+      "`cache_get` returns cached value when `expires_at > now` or None otherwise",
+      "`purge_expired` removes expired entries and returns the count of evicted keys",
+      "All existing tests pass with no regressions",
+      "Changes are minimal (25 insertions, 1 deletion) and focused"
+    ],
+    "suggested_check": "Run `worktree pytest` to confirm exit=0"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements T10's requirements with no regressions.",
+    "cruxes": [],
+    "unverified_premises": [
+      "The diff claims 25 insertions and 1 deletion, but the summary states 2 files changed\u2014verify whether the deletion affects a legacy function signature or test file, which could impact compatibility."
+    ],
+    "suggested_check": "Inspect the actual diff in src/ttl_cache.py to confirm no legacy public function signatures were altered."
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements T10's requirements with no regressions.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements `cache_get` and `purge_expired` with proper TTL logic and maintains all existing tests.\nKEY POINTS:\n- `cache_get` returns cached value when `expires_at > now` or None otherwise\n- `purge_expired` removes expired entries and returns the count of evicted keys\n- All existing tests pass with no regressions\n- Changes are minimal (25 insertions, 1 deletion) and focused\nSUGGESTED CHECK: Run `worktree pytest` to confirm exit=0",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements T10's requirements with no regressions.\nKEY POINTS:\n- Unverified claim: The diff claims 25 insertions and 1 deletion, but the summary states 2 files changed\u2014verify whether the deletion affects a legacy function signature or test file, which could impact compatibility.\nSUGGESTED CHECK: Inspect the actual diff in src/ttl_cache.py to confirm no legacy public function signatures were altered.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements T10's requirements with no regressions.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 916,
+      "output_tokens": 125,
+      "seconds": 2.93,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 965,
+      "output_tokens": 108,
+      "seconds": 2.778,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

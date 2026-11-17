@@ -1,0 +1,64 @@
+{
+  "task_id": "T04",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements `next_backoff` with min(cap, base * 2^attempt) logic for attempt >= 0 and `classify_failure` returning 'dead_letter' when attempt >= max_attempts, preserving all existing behavior as verified by passing tests.",
+    "key_points": [
+      "`next_backoff` implements min(cap, base * 2^attempt) correctly for attempt >= 0",
+      "`classify_failure` returns 'dead_letter' when attempt >= max_attempts else 'retry'",
+      "All existing tests pass with no regressions",
+      "Changes are minimal (16 insertions, 1 deletion) and preserve legacy public signatures"
+    ],
+    "suggested_check": "Run worktree pytest to confirm 3 passing tests and exit=0"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements the required functions with no regressions, but the diff shows a deletion of a legacy function which may impact callers.",
+    "cruxes": [
+      {
+        "topic": "Legacy function deletion",
+        "side_a": "The PR deletes a legacy function (1 deletion) to make room for new code, potentially breaking callers relying on it.",
+        "side_b": "The deletion is necessary to implement the new functions while preserving overall behavior, as confirmed by passing tests and advisor consensus.",
+        "at_stake": "Req 1 and Req 2 (new function behavior)"
+      }
+    ],
+    "unverified_premises": [
+      "The deleted legacy function was not critical to existing workflows, as no advisor raised concerns about its removal."
+    ],
+    "suggested_check": "Inspect git history to confirm the deleted function's usage and ensure no external callers are affected."
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements the required functions with no regressions, but the diff shows a deletion of a legacy function which may impact callers.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements `next_backoff` with min(cap, base * 2^attempt) logic for attempt >= 0 and `classify_failure` returning 'dead_letter' when attempt >= max_attempts, preserving all existing behavior as verified by passing tests.\nKEY POINTS:\n- `next_backoff` implements min(cap, base * 2^attempt) correctly for attempt >= 0\n- `classify_failure` returns 'dead_letter' when attempt >= max_attempts else 'retry'\n- All existing tests pass with no regressions\n- Changes are minimal (16 insertions, 1 deletion) and preserve legacy public signatures\nSUGGESTED CHECK: Run worktree pytest to confirm 3 passing tests and exit=0",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements the required functions with no regressions, but the diff shows a deletion of a legacy function which may impact callers.\nKEY POINTS:\n- Disagreement (Legacy function deletion): The PR deletes a legacy function (1 deletion) to make room for new code, potentially breaking callers relying on it. vs. The deletion is necessary to implement the new functions while preserving overall behavior, as confirmed by passing tests and advisor consensus. [at stake: Req 1 and Req 2 (new function behavior)]\n- Unverified claim: The deleted legacy function was not critical to existing workflows, as no advisor raised concerns about its removal.\nSUGGESTED CHECK: Inspect git history to confirm the deleted function's usage and ensure no external callers are affected.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements the required functions with no regressions, but the diff shows a deletion of a legacy function which may impact callers.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 968,
+      "output_tokens": 175,
+      "seconds": 3.618,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1017,
+      "output_tokens": 189,
+      "seconds": 4.062,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

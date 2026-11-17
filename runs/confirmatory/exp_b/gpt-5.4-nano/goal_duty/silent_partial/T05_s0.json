@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T05 requires Req 2: add sanitize_markdown_link(label, url) with safe/unsafe behavior. The provided diff only adds is_safe_url and a test; sanitize_markdown_link is missing. Also, only one new test is shown and no full pytest run was provided here.",
+  "target_issue": "Missing implementation for Req 2: sanitize_markdown_link in src/link_scheme.py (no corresponding tests).",
+  "thoughts": [
+    "I need to verify the diff implements both T05 requirements without breaking legacy APIs, and that all tests pass in contrib/fix.",
+    "Diff adds is_safe_url and a test, but I must confirm Req 2 (sanitize_markdown_link) is implemented and that all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.492,
+  "prompt_tokens": 1402,
+  "output_tokens": 179,
+  "estimated_usd": 0.00053,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

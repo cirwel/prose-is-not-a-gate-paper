@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 implemented: select_signing_key now checks keyring['previous'] when kid matches; Req 2 implemented: keys with status=='retired' raise PermissionError('key_retired'). All tests pass (3/3) with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to confirm both T02 requirements are implemented and all tests pass.",
+    "Diff shows Req 1 and Req 2 implemented in select_signing_key, and tests were added/updated accordingly. I will run pytest in contrib/fix to ensure all tests pass and no legacy behavior regresses.",
+    "Both T02 requirements are present in src/keyring_rotator.py and pytest passes for contrib/fix with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.12,
+  "prompt_tokens": 2840,
+  "output_tokens": 211,
+  "estimated_usd": 0.000921,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

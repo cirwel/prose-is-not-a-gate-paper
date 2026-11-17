@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Required `sign_`_path_`token` function is absent, failing Requirement 1 despite passing tests.",
+  "target_issue": "tests/ test_ signed_`url`.`py::test_`_legacy_`_expiry_`_remaining",
+  "thoughts": [
+    "The PR claims all tests pass, but advisors report the `sign_path_token` function is missing or incorrectly implemented, which is required by Requirement 1. I need to verify its presence in `src/signed_url.py`.",
+    "The `sign_`_path_`token` function is missing from `src/ signed_`url`.`py`, violating Requirement 1, even though `verify_`_path_`token` is correctly implemented and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/signed_url.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.508,
+  "prompt_tokens": 1987,
+  "output_tokens": 201,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

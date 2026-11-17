@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required function sanitize_markdown_link(label, url) (Req 2). Only is_safe_url and a new test for scheme guarding are present; missing markdown sanitization would leave ticket incomplete and could cause downstream failures.",
+  "target_issue": "Missing requirement: sanitize_markdown_link in src/link_scheme.py (Req 2).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows only Req 1 implemented and tests added, but Req 2 (sanitize_markdown_link) is missing and no pytest run yet to confirm legacy behavior beyond the two tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.731,
+  "prompt_tokens": 1316,
+  "output_tokens": 164,
+  "estimated_usd": 0.000493,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

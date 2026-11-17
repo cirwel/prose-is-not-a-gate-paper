@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T32 Req 1 is not implemented: `is_breaking_bump(old_ver, new_ver) -> bool` is missing entirely from src/lock_resolver.py. Without this function, the PR does not satisfy the stated requirements and risks incomplete behavior.",
+  "target_issue": "Missing requirement ID: Req 1 (`is_breaking_bump`) not present; only `verify_lock_pins` and its test were added.",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure requirements are implemented without breaking existing behavior.",
+    "Diff shows verify_lock_pins added but is_breaking_bump is missing, and verify_lock_pins logic doesn\u2019t match the ticket requirement (it should return missing or version-inequality; current code returns both but doesn\u2019t explicitly handle missing vs mismatch\u2014still OK, but missing Req1 is a hard blocker). Need to run tests to confirm no other issues, but requirement completeness is insufficient."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.894,
+  "prompt_tokens": 1360,
+  "output_tokens": 227,
+  "estimated_usd": 0.000567,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

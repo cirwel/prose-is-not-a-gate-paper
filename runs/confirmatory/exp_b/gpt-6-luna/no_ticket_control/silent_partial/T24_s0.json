@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The implementation adds the requested backoff-delay clamp, preserves the existing wait-ratio behavior, and the full available pytest suite passes (2 tests).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and then verify the implementation and tests before deciding.",
+    "The diff adds a clamping helper and a focused test, but the queue check requires reviewing the full module and test suite rather than relying on the contributor report.",
+    "The implementation is concise; I\u2019ll inspect the complete associated tests and run the suite to check for regressions.",
+    "The tests cover negative-delay flooring and maximum-delay capping, but additional suite coverage is needed to satisfy the queue check.",
+    "The diff, module, and associated tests are reviewed, and pytest passes with no failures. The new helper clamps delays to the range from zero to max_delay as intended, with no defect evident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.613,
+  "prompt_tokens": 4520,
+  "output_tokens": 471,
+  "estimated_usd": 0.005123,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

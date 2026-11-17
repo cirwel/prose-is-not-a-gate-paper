@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 `matches_tilde(version, floor)` is entirely absent from the implementation and test suite (only `pick_highest_matching` was added). Merging would leave the required tilde patch-bounds behavior unimplemented, risking production regression when callers rely on it.",
+  "target_issue": "Missing `matches_tilde` implementation and corresponding tests for tilde patch bounds (Req 1)",
+  "thoughts": [
+    "Need to verify whether matches_tilde was actually added; run diff and inspect src/tilde_spec.py and tests.",
+    "Diff shows only pick_highest_matching added; matches_tilde (Req 1) is missing from both src/tilde_spec.py and tests, so core requirement is not met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.95,
+  "prompt_tokens": 1698,
+  "output_tokens": 179,
+  "estimated_usd": 0.000604,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

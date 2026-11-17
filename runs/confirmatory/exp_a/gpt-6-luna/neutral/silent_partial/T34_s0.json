@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: `src/neg_cache.py` has no `lookup_with_miss_sentinel(cache, key)` to distinguish a cached `NOT_FOUND` sentinel from an uncached key.",
+  "target_issue": "T34 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify both new APIs and compatibility with existing behavior.",
+    "The patch adds `record_negative_miss` using the distinct `NOT_FOUND` object, but it does not implement the required `lookup_with_miss_sentinel` API. The PR is incomplete even if the reported tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.675,
+  "prompt_tokens": 1284,
+  "output_tokens": 299,
+  "estimated_usd": 0.001984,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

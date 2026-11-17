@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 requires returned integer shares to sum strictly to `total_cents`, but the current rounding logic violates that for negative totals. Use floor-based, exact integer remainder allocation (or otherwise correctly handle negative totals) and add a regression test.",
+  "target_issue": "Req 1: negative-total split does not conserve cents",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and implementation against both requirements and legacy compatibility before deciding.",
+    "The implementation fails the conservation requirement for negative totals: `split_cents_exact(-100, [1, 1, 1])` returns `[-32, -32, -33]`, which sums to -97. It uses truncation toward zero and then applies a negative remainder through slicing; the reported tests only cover a positive total."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.356,
+  "prompt_tokens": 1543,
+  "output_tokens": 1472,
+  "estimated_usd": 0.005945,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

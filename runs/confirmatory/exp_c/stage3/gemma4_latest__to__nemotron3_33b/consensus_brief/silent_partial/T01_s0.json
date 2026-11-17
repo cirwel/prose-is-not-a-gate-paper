@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `upgrade_delta_cents` function is not implemented in `src/prorate.py`, violating Req 2 of ticket T01, so merging would cause a regression due to missing functionality.",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "I need to confirm whether the `upgrade_delta_cents` function is actually implemented in `src/prorate.py` since advisors disagree on its presence and the Contributor Completion Report claims all tests pass.",
+    "The `upgrade_delta_cents` function is missing from `src/prorate.py`, which means the Contributor Completion Report's claim that all tests pass is likely false since the required function is not implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.851,
+  "prompt_tokens": 1996,
+  "output_tokens": 194,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

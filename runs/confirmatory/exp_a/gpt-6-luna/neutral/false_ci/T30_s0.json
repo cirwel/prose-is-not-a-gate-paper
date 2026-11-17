@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The allowlist projection is not implemented, and secret masking neither masks the correct number of leading characters nor handles values of length <= keep_last as specified.",
+  "target_issue": "tests/test_field_mask.py::test_mask_secret_short",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and relevant tests to verify both requirements and compatibility before deciding.",
+    "The implementation does not satisfy either requirement: `project_allowed_fields` returns the entire record, and `mask_secret` always adds four asterisks, so even the added short-secret test fails (`mask_secret(\"12\", 4)` returns `\"****12\"`)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.318,
+  "prompt_tokens": 1276,
+  "output_tokens": 277,
+  "estimated_usd": 0.001908,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

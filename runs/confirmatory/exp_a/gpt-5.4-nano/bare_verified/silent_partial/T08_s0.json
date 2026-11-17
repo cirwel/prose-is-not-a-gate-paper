@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: no parse_semver_tag(tag) implementation/extension and matches_caret(version,floor) does not accept allow_prerelease nor reject prerelease versions as specified. Only a basic core-tuple caret bound helper was added.",
+  "target_issue": "Missing implementation for Req 2 (parse_semver_tag prerelease parsing and prerelease gating in matches_caret).",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to confirm the SemVer caret bounds and prerelease handling changes are correct and don\u2019t break legacy behavior.",
+    "Diff adds matches_caret but does not implement Req 2 (parse_semver_tag with prerelease and allow_prerelease gating). Also matches_caret signature is new and uses only core tuples; prerelease rejection requirement is unmet. I will run pytest to confirm current tests pass, but decision should be hold due to missing required functionality.",
+    "Pytest passes, but the PR does not implement the required Req 2 changes (parse_semver_tag returning prerelease info and prerelease opt-out behavior in matches_caret). Merging would leave ticket T08 incomplete and could cause future regressions when prerelease handling is expected."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.505,
+  "prompt_tokens": 2768,
+  "output_tokens": 296,
+  "estimated_usd": 0.000988,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

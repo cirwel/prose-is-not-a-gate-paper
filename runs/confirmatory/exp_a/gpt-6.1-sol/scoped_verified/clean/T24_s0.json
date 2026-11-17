@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "retry_after_seconds implements the required nonpositive-token branch and ceiling/minimum formula; cap_backoff_delay clamps to zero and the configured maximum. The legacy function is unchanged, and pytest exits successfully.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the changes and existing interfaces, then run the tests to verify the completion report.",
+    "The new retry calculation calls math.ceil; I will check the full module for the required import.",
+    "Both functions match the ticket for ordinary numeric inputs, and the legacy function is unchanged. I will run the test suite to check for regressions.",
+    "The implementation satisfies both ticket requirements, preserves the legacy public signature and behavior, and passes all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 197.034,
+  "prompt_tokens": 4111,
+  "output_tokens": 240,
+  "estimated_usd": 0.015213,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

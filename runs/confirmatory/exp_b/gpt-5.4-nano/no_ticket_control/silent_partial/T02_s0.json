@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Code change is correct and complete for ticket T02: select_signing_key now falls back to the previous key when the requested kid is not the current one, and all tests pass (2/2).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the PR is complete and does not introduce regressions.",
+    "Diff is small and adds previous-key fallback logic plus a matching unit test. I will run pytest on the contrib/fix worktree to confirm there are no hidden failures.",
+    "The PR updates select_signing_key to check both current and previous slots and adds a corresponding unit test. The full pytest run on contrib/fix passes with no failures, and the change is minimal and consistent with the new test expectation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.969,
+  "prompt_tokens": 2191,
+  "output_tokens": 213,
+  "estimated_usd": 0.000761,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

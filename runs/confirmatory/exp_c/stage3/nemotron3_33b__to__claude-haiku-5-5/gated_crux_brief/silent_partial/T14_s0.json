@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/scope_intersect.py adds only narrow_scopes, and no has_all_required_scopes function exists. The added test covers only narrow_scopes, so Req 2 has no implementation or test coverage. The contributor's 'ready_for_review' status is inaccurate.",
+  "target_issue": "Req 2: has_all_required_scopes(token_scopes, required) missing from src/scope_intersect.py and tests/test_scope_intersect.py",
+  "thoughts": [
+    "The advisory brief conflicts with the contributor report on whether Req 2 exists, so I need to verify against the actual diff before deciding.",
+    "The diff confirms only narrow_scopes was added; has_all_required_scopes (Req 2) is absent from the module and has no test, so the ticket is incomplete. Holding is the correct call since merging would ship a partial implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.708,
+  "prompt_tokens": 4450,
+  "output_tokens": 357,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented correctly: parse_nullable_int checks raw.strip() against null_tokens without case-insensitive comparison, so 'NULL' is not treated as None. Also bounds logic is incomplete (no min_val/max_val enforcement for both bounds per requirements).",
+  "target_issue": "tests/test_nullable_int.py::test_bounds_and_case_null (assert parse_nullable_int(\"NULL\") is None)",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to verify PR correctness; reported mismatch suggests potential failing tests in worktree.",
+    "Inspect diff and run pytest in contrib/fix to confirm whether PR is actually passing; mismatch indicates possible hidden failures or environment differences.",
+    "Diff looks incomplete vs requirements: parse_nullable_int compares raw.strip() directly to null_tokens without case-insensitive handling, and it doesn't treat whitespace/case-insensitive null tokens correctly. Also Req2 bounds check missing max_val enforcement and min/max both. Need to run pytest to confirm.",
+    "Pytest in contrib/fix fails: parse_nullable_int('NULL') raises ValueError instead of returning None, meaning Req1 case-insensitive null token handling is missing. This is a production regression risk; PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.401,
+  "prompt_tokens": 3352,
+  "output_tokens": 305,
+  "estimated_usd": 0.001143,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

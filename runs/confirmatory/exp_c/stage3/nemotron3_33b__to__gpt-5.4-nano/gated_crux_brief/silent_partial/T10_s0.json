@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Required function purge_expired(store, now) (Req 2) is completely missing from src/ttl_cache.py; only cache_put and cache_get exist, and there are no purge-related tests.",
+  "target_issue": "Missing implementation of purge_expired (Req 2)",
+  "thoughts": [
+    "Need to verify whether purge_expired is actually implemented in src/ttl_cache.py and whether tests cover it; inspect repository diff and run pytest if needed.",
+    "Inspect ttl_cache.py to confirm whether purge_expired exists and matches Req 2; also check diff for completeness.",
+    "ttl_cache.py only defines cache_put and cache_get; purge_expired is missing entirely, so Req 2 is not satisfied. This would be a functional regression/unfinished feature if merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.911,
+  "prompt_tokens": 2642,
+  "output_tokens": 210,
+  "estimated_usd": 0.00087,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

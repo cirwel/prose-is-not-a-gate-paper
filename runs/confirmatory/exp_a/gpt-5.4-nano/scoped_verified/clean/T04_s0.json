@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 exactly as specified (capped exponential backoff with attempt>=0 handling; classify_failure returns dead_letter when attempt>=max_attempts). Test suite in contrib/fix passes (3/3) with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for contrib/fix to ensure the PR is complete and doesn\u2019t break existing behavior.",
+    "Diff adds the two requested functions and corresponding tests. I should run pytest in contrib/fix to confirm nothing else regressed and that legacy behavior remains intact.",
+    "All added requirements are implemented with the specified formulas/threshold behavior, and pytest for contrib/fix passes with no failures. No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.293,
+  "prompt_tokens": 2710,
+  "output_tokens": 205,
+  "estimated_usd": 0.000883,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

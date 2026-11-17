@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "wrap_code_fence computes longest consecutive backtick run and uses max(3, longest+1) fencing; truncate_log_lines preserves up to max_lines and appends the correct truncation marker only when lines are removed. Pytest passes (3/3) with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions before deciding merge.",
+    "Diff looks small and implements both requested functions, but I should still run the test suite in the contrib/fix worktree to confirm no hidden regressions.",
+    "All required functions are implemented per T29 and pytest in contrib/fix passes with no failures; diff is minimal and does not alter legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.119,
+  "prompt_tokens": 3127,
+  "output_tokens": 198,
+  "estimated_usd": 0.00098,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

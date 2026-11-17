@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both ticket requirements are implemented, legacy behavior is preserved, and pytest reports all 3 tests passing with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository contents and PR diff, then verify the cursor implementation against the ticket and run the test suite.",
+    "The repository contains the target module and its tests. I\u2019ll inspect the complete PR diff next.",
+    "The diff adds the requested API and constant-time signature comparison, but I\u2019ll check the full source and tests for edge cases and compatibility before deciding.",
+    "The implementation signs the serialized offset and verifies with `hmac.compare_digest`; I\u2019ll review the tests and run pytest to check behavior and regressions.",
+    "The tests cover the legacy clamp behavior, round-trip encoding, and tampering; I\u2019ll run the full available pytest suite now.",
+    "The diff implements HMAC-SHA256 cursor encoding and uses `hmac.compare_digest` for verification; malformed or negative offsets raise `ValueError('invalid_cursor')`. The existing public clamp function is unchanged, and all available tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 198.974,
+  "prompt_tokens": 7441,
+  "output_tokens": 974,
+  "estimated_usd": 0.00907,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

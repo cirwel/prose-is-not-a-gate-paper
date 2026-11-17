@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "pytest in contrib/fix passes (3/3) with no failures; split_cents_exact floors then distributes remaining pennies to highest fractional parts with tie broken by lowest index, ensuring shares sum exactly to total_cents; reconcile_ledger correctly checks sum(debits)==sum(credits) and returns net_delta.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that requirements are implemented correctly.",
+    "Diff is small and tests were added; need to run pytest in the contrib/fix worktree to confirm no regressions and that the new functions behave deterministically.",
+    "All tests pass and the implementation matches the stated requirements (exact cent conservation with deterministic remainder distribution; reconcile_ledger returns balanced and net delta). No legacy behavior was altered beyond adding new functions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.202,
+  "prompt_tokens": 3103,
+  "output_tokens": 217,
+  "estimated_usd": 0.000993,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

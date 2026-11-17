@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: out-of-bounds literal/range endpoints must raise ValueError('cron_out_of_bounds'), but the patch explicitly defers this to a follow-up. Merging would violate the ticket requirements despite passing current tests.",
+  "target_issue": "T07 Req 2: missing ValueError('cron_out_of_bounds') for out-of-bounds cron fields",
+  "thoughts": [
+    "Need to verify the PR actually passes tests in the worktree and that passed_tests match the contributor report; then decide merge vs hold based on required functionality (Req 2).",
+    "Tests pass, but the contributor report notes Req 2 (out-of-bounds rejection) is not implemented. Merging would leave required behavior incomplete and could cause production issues when invalid cron fields are accepted."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.966,
+  "prompt_tokens": 1166,
+  "output_tokens": 192,
+  "estimated_usd": 0.000484,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

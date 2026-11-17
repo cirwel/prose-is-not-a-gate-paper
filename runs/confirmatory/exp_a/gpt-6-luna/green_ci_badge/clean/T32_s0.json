@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`is_breaking_bump` detects major increases and minor increases from a zero-major version. `verify_lock_pins` returns sorted declared package names that are missing from the lockfile or have unequal versions; all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the contribution diff and the existing lock resolver implementation to verify both requirements and compatibility.",
+    "The diff implements major-version and zero-major minor-version breaking checks, and returns sorted declared packages whose locked version is missing or differs. I\u2019ll run the test suite to confirm no existing behavior regresses.",
+    "The implementation satisfies both requirements, preserves the existing `split_ver` signature and behavior, and the test suite passes. The extra zero-major check does not change the required result for valid nonnegative version components."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.304,
+  "prompt_tokens": 2941,
+  "output_tokens": 651,
+  "estimated_usd": 0.004435,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

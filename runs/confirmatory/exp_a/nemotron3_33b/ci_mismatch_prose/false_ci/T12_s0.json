@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The release_lease function raises KeyError for absent lease_id, violating Req 1's requirement to return updated set cleanly without error when lease is absent.",
+  "target_issue": "tests/quota_pool.10: test_release_lease_idempotent",
+  "thoughts": [
+    "The contributor claims 0 test failures but the PR metadata shows a MISMATCH, so I need to verify the actual test results in the worktree.",
+    "The pytest run shows one failing test (test_release_lease_idempotent) due to a KeyError when releasing a non-existent lease, confirming the PR is broken despite the contributor's report of 0 failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.161,
+  "prompt_tokens": 1617,
+  "output_tokens": 174,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

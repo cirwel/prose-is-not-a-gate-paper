@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pytest in the contrib/fix worktree exits 1. tests/test_group_inherit.py::test_detect_role_cycle_raises fails with 'DID NOT RAISE ValueError' at line 8, which expects ValueError('role_cycle_detected') from detect_role_cycle. Req 2 is therefore not implemented correctly. The contributor's report of 0 failures is contradicted by the run.",
+  "target_issue": "tests/test_group_inherit.py::test_detect_role_cycle_raises",
+  "thoughts": [
+    "The evidence check reports a mismatch: the contributor claims 0 failures but the worktree pytest failed. I should run the tests myself before deciding.",
+    "I reproduced the mismatch: test_detect_role_cycle_raises fails with DID NOT RAISE ValueError, so the Req 2 cycle check does not fire on the test's cyclic graph. The PR does not meet its own acceptance test."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.329,
+  "prompt_tokens": 3251,
+  "output_tokens": 495,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

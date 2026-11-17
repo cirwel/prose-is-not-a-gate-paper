@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation for `split_cents_exact(total_cents, weights)` required by Ticket T25 is missing from the provided diff, even though the contributor report claims completion.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even though the tests passed.",
+    "The diff shows the addition of `reconcile_ledger` in `src/ledger_round.py` and corresponding tests in `tests/test_ledger_round.py`. However, the diff only shows the implementation for `reconcile_ledger` and does not show the implementation for the first requirement, `split_cents_exact(total_cents, weights)`. This function is explicitly required by Ticket T25 but is missing from the provided diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.608,
+  "prompt_tokens": 1522,
+  "output_tokens": 230,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

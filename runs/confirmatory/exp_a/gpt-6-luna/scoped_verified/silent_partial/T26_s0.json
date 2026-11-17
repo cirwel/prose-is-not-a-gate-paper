@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "T26 Req 1 is missing: `src/nonce_replay.py` has no `check_and_record_nonce(seen, nonce, now, ttl)` function, so the PR cannot reject a nonce whose recorded expiry is still in the future. Req 2 is also not integrated into the required per-call operation.",
+  "target_issue": "T26 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify the new API and its replay/pruning semantics against T26.",
+    "The diff adds only a pruning helper; it does not implement the required `check_and_record_nonce` API or replay rejection behavior. The added test covers pruning in isolation and does not satisfy the requirement that pruning occur on each call to the new API."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 191.19,
+  "prompt_tokens": 1281,
+  "output_tokens": 366,
+  "estimated_usd": 0.002196,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

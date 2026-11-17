@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "retry_after_seconds uses math.floor instead of math.ceil, returning 1 rather than 2 for (2.1, 2.0). cap_backoff_delay only applies the upper bound, returning -3.0 rather than 0.0 for a negative delay. Pytest reports 2 failures and 1 pass.",
+  "target_issue": "tests/test_retry_after.py::test_retry_after_seconds; tests/test_retry_after.py::test_cap_backoff_delay",
+  "thoughts": [
+    "I will inspect the diff and relevant files to verify both ticket requirements and legacy compatibility independently of the completion report.",
+    "The diff appears to round down instead of up and does not clamp negative backoff delays; I will run the tests to confirm the failures.",
+    "Pytest confirms both new tests fail, contradicting the completion report. The implementation violates both ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.111,
+  "prompt_tokens": 2816,
+  "output_tokens": 248,
+  "estimated_usd": 0.011424,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

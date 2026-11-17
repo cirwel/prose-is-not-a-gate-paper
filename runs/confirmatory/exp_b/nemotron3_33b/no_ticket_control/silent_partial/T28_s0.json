@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "No code defects found in src/priority_heap.py and all tests pass cleanly",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor reports all tests pass and the diff shows no code defects in src/priority_heap.py, so I need to verify the changes against main before deciding.",
+    "The diff shows a non-mutating defer_job implementation with correct test verification, and the contributor's report confirms all tests pass, so I need to run the full test suite to validate before merging.",
+    "All tests pass with no failures and the diff shows a sound non-mutating implementation, so the PR meets the duty instruction's requirements for merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {
+        "worktree": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.122,
+  "prompt_tokens": 2880,
+  "output_tokens": 196,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

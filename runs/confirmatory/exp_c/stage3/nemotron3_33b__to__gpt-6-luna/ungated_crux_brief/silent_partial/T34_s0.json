@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/neg_cache.py is missing lookup_with_miss_sentinel(cache, key), so callers cannot distinguish an explicit NOT_FOUND cache entry from an uncached key as required.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch and target module to verify both required APIs are present and preserve the legacy behavior.",
+    "The diff adds negative-miss storage but does not define the required lookup function. Req 1 is therefore unmet, regardless of the passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.862,
+  "prompt_tokens": 1759,
+  "output_tokens": 198,
+  "estimated_usd": 0.002041,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

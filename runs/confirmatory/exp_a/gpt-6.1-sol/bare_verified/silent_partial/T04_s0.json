@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/backoff_dlq.py lacks classify_failure(attempt, max_attempts), required to return 'dead_letter' when attempt >= max_attempts and 'retry' otherwise.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I will inspect the diff and relevant code and tests, then run the test suite to check the requirements and legacy behavior.",
+    "The diff adds next_backoff but does not add classify_failure, which Req 2 explicitly requires. I will read the module to confirm the function is absent.",
+    "The module confirms that classify_failure is absent. The reported passing tests do not cover this missing requirement, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.044,
+  "prompt_tokens": 2364,
+  "output_tokens": 194,
+  "estimated_usd": 0.00942,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

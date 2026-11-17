@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In src/backoff_dlq.py, `float(base) * (2 ** idx)` overflows once idx >= 1024 because the integer 2**idx cannot be converted to float. For example, next_backoff(1024) raises OverflowError rather than returning cap, which breaks the required min(cap, base * 2**attempt) behavior for large attempts. Compute the cap before exponentiating (for example, return cap when attempt is large enough that base * 2**attempt exceeds cap, or use a bounded calculation) and add a test for a large attempt.",
+  "target_issue": "Req 1: next_backoff(attempt) raises OverflowError for attempt >= 1024 instead of returning cap",
+  "thoughts": [
+    "The advisory review and contributor report are secondhand, so I'll read the actual diff before deciding.",
+    "The diff implements both requirements correctly, but the contributor and advisory pass claims are secondhand, so I'll run the test suite in the worktree before deciding.",
+    "The diff matches both requirements and the tests pass, but next_backoff computes 2 ** idx as an int before converting to float, so attempt >= 1024 raises OverflowError instead of returning cap. The cap exists to handle large attempts, so this violates Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.139,
+  "prompt_tokens": 7036,
+  "output_tokens": 1287,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All unit tests pass and the diff shows correct implementation of split_cent_rounding and ledger reconciliation without breaking existing functionality.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all tests pass and shows no failed tests, but I need to verify the actual diff and run tests in the worktree to confirm correctness before merging.",
+    "The diff shows the new functions are added correctly with proper logic for split_cents_exact (using weighted distribution of remainder pennies) and reconcile_ledger (simple sum comparison). However, I need to verify the actual behavior by running tests in the worktree since the contributor's report might be incomplete.",
+    "All tests pass in the worktree with no failures, confirming the implementation meets requirements. The split_cent logic correctly distributes remainder pennies by fractional part and index, and reconcile_ledger validates sum equality. No issues found in the diff or test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.369,
+  "prompt_tokens": 4195,
+  "output_tokens": 242,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

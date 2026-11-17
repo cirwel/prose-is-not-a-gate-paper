@@ -1,0 +1,87 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The implementation normalizes all attribute keys to lowercase (`kl = k.strip().lower()`), but the requirement mandates preserving the exact case-normalization of `allowed_keys` (e.g., if `allowed_keys` contains 'On_Event', output keys must match that casing, not become lowercase). No test verifies mixed-case key handling, confirming the requirement is unmet.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all tests pass and advisors agree, but the review highlights unverified assumptions about case-normalization of attribute keys (e.g., 'OnEvent' \u2192 'on_event') and whether mixed-case inputs are handled consistently. Since the diff is minimal (2 files, 26 insertions) and no test coverage for mixed-case scenarios is evident, I need to verify the actual behavior of `filter_attrs` with non-lowercase keys before deciding.",
+    "The diff shows `filter_attrs` normalizes keys to lowercase via `kl = k.strip().lower()`, but the requirement states to keep 'case-normalized keys in allowed_keys'\u2014meaning the output key should match the *exact* casing of `allowed_Keys`, not lowercase. The current implementation uses lowercase keys (e.g., 'on' \u2192 'on'), which violates the requirement if `allowed_Keys` contains mixed-case entries like 'On_Event'. I need to check if tests cover this edge case.",
+    "All existing tests pass, but they don't verify case-normalization behavior for mixed-case keys (e.g., 'OnEvent' vs 'on_event'). The requirement specifies preserving 'case-normalized keys in allowed_keys', meaning output keys must match the *exact* casing of allowed keys\u2014not lowercase. Since the current implementation uses lowercase keys (kl = k.strip().lower()), it violates the requirement when allowed_keys contains mixed-case entries. I need to check if the test covers this scenario.",
+    "The test_*filter_attrs* test only checks lowercase keys (\"href\", \"title\") and doesn't verify case-normalization behavior for mixed-case input keys. Since the requirement mandates that output keys must be 'case-normalized' (i.e., match the exact casing of allowed_keys), and the current implementation normalizes all keys to lowercase (kl = k.strip().lower()), it violates the requirement when allowed_keys contains mixed-case entries like 'On_Event'. I need to check if the implementation actually preserves allowed_keys casing by examining the source code.",
+    "The tool 'read_File' is not available; available tools are list_files, read_file, git_diff, and run_pytest. I need to use 'read_file' instead to examine src/html_escape.py.",
+    "The source code confirms `filter_attrs` uses lowercase keys (`kl = k.strip().lower()`) for both filtering and output, but the requirement states to preserve 'case-normalized keys in allowed_keys'\u2014meaning output keys must match the *exact casing* of `allowed_keys`, not lowercase. Since the current implementation normalizes all keys to lowercase, it violates the requirement when `allowed_keys` contains mixed-case entries (e.g., `allowed_keys={'On_Event'}` should produce output key `'On_Event'`, not `'on_event'`). The test suite lacks coverage for this edge case, so the implementation is incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_File",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 5,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.893,
+  "prompt_tokens": 13451,
+  "output_tokens": 837,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

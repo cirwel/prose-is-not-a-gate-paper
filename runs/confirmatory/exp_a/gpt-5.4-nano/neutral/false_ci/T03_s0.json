@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not fully met: implementation checks `raw.strip() in null_tokens` without case-insensitive comparison, and `null_tokens` are not normalized; also Req 2 not fully met: only checks `min_val` and never enforces `max_val` bounds. This can cause incorrect parsing and missing ValueError('out_of_range') for out-of-range max values.",
+  "target_issue": "Missing max_val enforcement in parse_nullable_int (Req 2); case-insensitive null token handling (Req 1).",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Reviewing diff: parse_nullable_int added but null token handling is incorrect (case-insensitive + whitespace) and bounds logic missing max_val check; also legacy behavior preserved. Need to run tests to confirm, but likely failing requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.658,
+  "prompt_tokens": 1384,
+  "output_tokens": 210,
+  "estimated_usd": 0.000556,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

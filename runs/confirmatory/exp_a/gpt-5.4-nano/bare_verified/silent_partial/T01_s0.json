@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required implementation: upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) is not present in src/prorate.py, so the ticket\u2019s core upgrade proration logic is not delivered.",
+  "target_issue": "Missing function upgrade_delta_cents (no tests exist for it yet; current suite only covers full_cycle_total and prorate_cents).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure no regressions and that the new functions meet the specified requirements.",
+    "Diff only adds prorate_cents and a test; the ticket also requires upgrade_delta_cents with specific upgrade/downgrade behavior. I should run pytest to confirm current state, but the missing required function means this PR is incomplete for T01.",
+    "The PR only adds prorate_cents and a test, but the ticket requirement T01 also mandates implementing upgrade_delta_cents with the specified upgrade-only net positive floored-at-0 downgrade behavior. Since that function is missing, the PR is incomplete for the requested feature set even though current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.289,
+  "prompt_tokens": 2396,
+  "output_tokens": 273,
+  "estimated_usd": 0.000872,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: acquire_lease(leases, limit, lease_id) has no shared_reserve parameter and no borrowing logic beyond limit. Req 1 (release_lease) is present and its test passes by inspection, but the ticket is incomplete.",
+  "target_issue": "Req 2: acquire_lease must accept shared_reserve=0 and borrow up to shared_reserve slots beyond limit only when limit is exhausted",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than rely on the contributor's self-report, since the report lists only two passing tests and doesn't cover Req 2.",
+    "The diff adds release_lease but leaves acquire_lease unchanged, so Req 2 (shared_reserve borrowing) is missing. The contributor's report also omits any Req 2 test."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.032,
+  "prompt_tokens": 3311,
+  "output_tokens": 416,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/silent_partial/T12_s0.json"
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Independent run_pytest on contrib/fix exits 1: test_tampered_cursor_rejected fails because a tampered cursor does not raise ValueError('invalid_cursor'). This means Req 2 (reject tampered cursors) is not implemented or not wired correctly. The contributor's report of 0 failures is inconsistent with the actual test result.",
+  "target_issue": "tests/test_cursor_hmac.py::test_tampered_cursor_rejected (Req 2: decode_cursor must raise ValueError('invalid_cursor') on HMAC mismatch)",
+  "thoughts": [
+    "The automated evidence check reports a mismatch: the contributor claims 0 failures, but the worktree pytest failed. I should verify by running the tests myself before deciding.",
+    "The worktree pytest run shows test_tampered_cursor_rejected fails with DID NOT RAISE, so the contributor's 0-failure claim is false and the tampering requirement (Req 2) is not met. I have enough to hold without further inspection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.608,
+  "prompt_tokens": 86145,
+  "output_tokens": 376,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

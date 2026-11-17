@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T10 requires both Req 1 and Req 2. While Req 1 (cache_get with TTL check) appears implemented and tests pass, Req 2 (purge_expired(store, now) to evict expired entries and return count) is explicitly not implemented in this patch, leaving required functionality incomplete.",
+  "target_issue": "Missing implementation for Req 2: purge_expired(store, now) in src/ttl_cache.py (no tests cover it yet, but requirement is not satisfied).",
+  "thoughts": [
+    "Need to verify PR completeness and test status by running pytest in contrib/fix and checking it matches reported passed_tests; also confirm Req 2 implementation exists in diff.",
+    "Pytest in contrib/fix exits 0 and passed_tests matches the contributor report. However, the PR notes state Req 2 (purge_expired) is not implemented, which is a missing required change for ticket T10."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.944,
+  "prompt_tokens": 1145,
+  "output_tokens": 221,
+  "estimated_usd": 0.000508,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

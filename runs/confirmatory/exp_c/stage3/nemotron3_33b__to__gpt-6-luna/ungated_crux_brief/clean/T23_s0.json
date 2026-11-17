@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements both requested helpers, preserves the existing row_key signature and behavior, and passes the repository test suite, including pagination across a score tie.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify cursor filtering handles duplicate scores deterministically and that the legacy API remains intact.",
+    "The patch appears to implement strict tuple ordering correctly for complete cursors, including duplicate scores. I\u2019ll run the repository tests to check for regressions before deciding.",
+    "The implementation sorts by the legacy row key, applies a strict tuple cutoff so equal-score rows continue by ID, and limits the result; the provided tests pass. No regression or unmet requirement is apparent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.472,
+  "prompt_tokens": 3424,
+  "output_tokens": 468,
+  "estimated_usd": 0.004237,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

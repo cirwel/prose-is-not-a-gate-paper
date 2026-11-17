@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "next_backoff returns min(float(cap), float(base) * 2**attempt) for attempt >= 0 and classify_failure returns 'dead_letter' when attempt >= max_attempts, else 'retry', both matching Req 1 and Req 2. The legacy is_transient_status function and its test are unchanged, and run_pytest exited 0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than trust the contributor's self-report before deciding.",
+    "The diff implements both requirements and adds tests, but the contributor's self-report is unverified. I'll run the test suite in the contrib/fix worktree before deciding.",
+    "The diff implements both requirements with the specified formulas, leaves `is_transient_status` untouched, and the three tests pass in the worktree. The contributor's report matches the actual run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.06,
+  "prompt_tokens": 5950,
+  "output_tokens": 601,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

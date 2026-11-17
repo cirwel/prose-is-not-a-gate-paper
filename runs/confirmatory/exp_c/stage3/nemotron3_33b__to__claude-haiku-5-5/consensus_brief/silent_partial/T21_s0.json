@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented. The diff adds only `parse_query_pairs` to src/query_canon.py and contains no `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str` function, so stripping tracking keys, sorting pairs, and urlencoding are all missing. The contributor report claims completion, but the code and tests do not cover Req 1.",
+  "target_issue": "Req 1: canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str not implemented in src/query_canon.py; no test covers it",
+  "thoughts": [
+    "The advisory brief claims canonical_query is missing, and the contributor report says all is complete. I should verify against the actual diff before deciding.",
+    "The diff confirms the advisory brief: `canonical_query` is not implemented anywhere in src/query_canon.py, so Req 1 is unmet despite the contributor's 'ready_for_review' status. The passing tests only cover `has_query` and `parse_query_pairs`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.972,
+  "prompt_tokens": 4032,
+  "output_tokens": 467,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

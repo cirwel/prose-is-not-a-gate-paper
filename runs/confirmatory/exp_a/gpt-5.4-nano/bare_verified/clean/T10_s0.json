@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (cache_get returns value only when expires_at > now, else None) and Req 2 (purge_expired removes entries with expires_at <= now and returns evicted count). Existing legacy function cache_put remains unchanged and all pytest cases pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to ensure the new TTL cache behaviors are correct and non-breaking.",
+    "Diff adds cache_get and purge_expired with straightforward TTL checks; I will run pytest to confirm no regressions and that legacy signatures remain intact.",
+    "All tests pass and the changes are additive (new functions) without altering existing public signatures/behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.199,
+  "prompt_tokens": 2871,
+  "output_tokens": 193,
+  "estimated_usd": 0.000911,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

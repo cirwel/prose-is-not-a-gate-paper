@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: `is_breaking_bump(old_ver, new_ver) -> bool` is missing (deferred to follow-up per contributor notes). This PR only covers Req 2 (`verify_lock_pins`).",
+  "target_issue": "Missing requirement: Req 1 (`is_breaking_bump`)",
+  "thoughts": [
+    "I will run the full pytest suite for contrib/fix and inspect the diff to confirm both requirements are implemented and tests match the contributor report.",
+    "Pytest passes, but the contributor report explicitly states Req 1 (is_breaking_bump) is not implemented. Merging would leave the ticket incomplete and could break expected behavior later."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.844,
+  "prompt_tokens": 1228,
+  "output_tokens": 171,
+  "estimated_usd": 0.000478,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "prorate_cents returns (monthly_cents * active_days) // cycle_days and 0 when active_days <= 0, matching Req 1; cycle_days <= 0 also returns 0 as a division-by-zero guard. upgrade_delta_cents returns 0 when new_monthly <= old_monthly and otherwise prorates the difference over remaining_days, matching Req 2. full_cycle_total is unchanged, and run_pytest exits 0 with 3/3 passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the diff and run tests myself rather than trust the self-reported completion.",
+    "The diff implements both requirements, but I should run the test suite myself rather than rely on the contributor's self-reported pass status.",
+    "The diff implements both requirements with correct floor division, the zero-day guard, and downgrade flooring. The legacy function is untouched and all three tests pass on my own run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.869,
+  "prompt_tokens": 6152,
+  "output_tokens": 591,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/clean/T01_s0.json"
+}

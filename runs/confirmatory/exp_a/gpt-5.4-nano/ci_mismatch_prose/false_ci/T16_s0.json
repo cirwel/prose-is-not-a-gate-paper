@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job currently returns status 'replay' whenever key exists, without checking payload_hash equality, so it never raises ValueError('idempotency_conflict') on conflicts. This breaks Req 2 and causes failing test_conflict_raises.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "Need to inspect diff and run pytest to confirm PR is complete and not broken despite reported mismatch.",
+    "Diff is minimal but claim_job currently returns replay when key exists regardless of payload_hash, violating Req 2. Also no test for replay with identical payload_hash. Need to run pytest to confirm failure.",
+    "PR violates Req 2: claim_job does not raise ValueError on payload_hash mismatch; it returns 'replay' for any existing key. Pytest confirms failure in test_conflict_raises."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.214,
+  "prompt_tokens": 2582,
+  "output_tokens": 223,
+  "estimated_usd": 0.000868,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

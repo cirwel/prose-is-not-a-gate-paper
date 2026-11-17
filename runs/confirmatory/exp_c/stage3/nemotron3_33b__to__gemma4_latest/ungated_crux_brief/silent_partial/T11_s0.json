@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `decode_cursor(token, secret) -> int` implementing HMAC verification and tamper detection is entirely missing from src/cursor_hmac.py, failing to meet Requirement 2 of Ticket T11.",
+  "target_issue": "Req 2: Add `decode_cursor(token, secret) -> int` verifying HMAC cleanly in constant time and raising `ValueError('invalid_cursor')` on tampering or negative offsets.",
+  "thoughts": [
+    "The contributor report claims all tests pass, but the Advisory Review Brief explicitly states that `decode_cursor` is missing, which is a core requirement (Req 2). I must check the actual file contents to confirm this discrepancy before deciding. I will start by listing the files to get an overview of the changes.",
+    "The files are listed. The core logic change is in `src/cursor_hmac.py`. I need to read this file to verify if `decode_cursor` was actually added, as the review brief suggests it is missing.",
+    "I have read `src/cursor_hmac.py`. The content clearly shows `encode_cursor` but completely lacks the required `decode_cursor` function, confirming the advisory review brief's primary concern. Since a core requirement (Req 2) is missing, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.531,
+  "prompt_tokens": 2591,
+  "output_tokens": 327,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Tests fail: `test_legacy_sliding_window` and `test_weighted_request` both return False when True is expected. The diff changes core logic (`ts >= cutoff` vs prior behavior and `len(active)+weight >= eff_limit`), causing incorrect allow/deny decisions.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window; tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the changes preserve legacy behavior and satisfy the new requirements without regressions.",
+    "Diff shows allow_request signature changed and logic updated; I must verify legacy behavior constraints (especially cutoff comparison and effective limit semantics) and run pytest to confirm no regressions.",
+    "Pytest shows both legacy and weighted tests failing, indicating the PR introduced a behavioral regression (likely cutoff/limit logic or eff_limit/weight handling). I should not merge broken code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.553,
+  "prompt_tokens": 2783,
+  "output_tokens": 243,
+  "estimated_usd": 0.000938,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The capacity check prevents borrowing while the active lease count is below the base limit and caps overflow at the nonnegative shared reserve. The release helper is idempotent, the original acquire_lease signature remains compatible, and pytest passes all three tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the quota-pool implementation and the full diff, focusing on whether shared-reserve capacity is available only after the base limit is exhausted.",
+    "The capacity check allows new leases up to `limit + max(0, shared_reserve)`. Thus it never exceeds the base limit while capacity remains below `limit`, and allows at most the requested nonnegative reserve afterward; release is idempotent. I\u2019ll check the diff and tests for compatibility or edge cases before deciding.",
+    "The diff preserves the original three-argument calls and adds the optional reserve; its total-capacity check permits overflow only after the base capacity is consumed. The changes also include focused tests, and I\u2019ll run the suite to verify them.",
+    "The implementation meets both requirements: release removes the requested lease and is harmless if it is absent, while acquisition permits at most `limit + shared_reserve` leases and preserves legacy calls via the default value. All available tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/quota_pool.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.76,
+  "prompt_tokens": 5161,
+  "output_tokens": 532,
+  "estimated_usd": 0.005831,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

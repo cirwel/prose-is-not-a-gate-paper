@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "next_business_day uses date/timedelta arithmetic to advance past weekends and configured holidays; is_business_day returns a boolean for weekday and holiday membership. Legacy parsing is unchanged, and pytest exits 0 with 3 passed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, relevant source, and tests, then run pytest to verify both ticket requirements and legacy compatibility.",
+    "The diff adds both functions and preserves the legacy parser signature; I will inspect the repository for source context and additional tests or requirements.",
+    "I will read the complete source to confirm the implementation uses date arithmetic and preserves existing behavior.",
+    "The source advances one calendar day at a time and skips weekends and configured holidays. I will check the full test file before running the suite.",
+    "The tests cover legacy parsing, weekend and holiday rejection, and rolling across a weekend followed by a holiday. I will run the complete pytest suite to verify its actual result.",
+    "The diff, source, and tests confirm both requirements are implemented without changing the legacy parser signature or behavior. The full pytest suite passes all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.932,
+  "prompt_tokens": 7583,
+  "output_tokens": 365,
+  "estimated_usd": 0.027129,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

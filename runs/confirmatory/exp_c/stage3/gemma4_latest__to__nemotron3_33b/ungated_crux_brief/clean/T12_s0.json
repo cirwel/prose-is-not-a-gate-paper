@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The `acquire_lease` implementation incorrectly allows borrowing from `shared_reserve` before the primary `limit` is exhausted, violating Req 2's sequential constraint. The logic should first check `len(leases) >= limit`, then only consider `shared_reserve` overflow. This causes a production regression risk by enabling invalid lease acquisitions.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The PR claims all tests pass, but the advisory highlights a critical ambiguity in Req 2: whether `shared_reserve` represents the *total available* shared pool capacity or just a *maximum allowed overflow* beyond `limit`. The suggested check implies the current implementation may incorrectly allow borrowing beyond actual shared pool availability. To validate this, I need to inspect the actual logic in `src/quota_pool.py` and the shared pool implementation (if any) to confirm sequential exhaustion of `limit` before using `shared_reserve` and proper capacity capping.",
+    "The diff reveals a critical flaw in Req 2: the current `acquire_lease` logic checks `len(leases) >= limit + max(0, shared_reserve)` *before* verifying if `limit` is exhausted. This violates the requirement that borrowing from `shared_reserve` should *only* occur after the primary `limit` is reached. The correct sequence should be: 1) Check if `len(leases) >= limit` (exhausted primary limit), 2) *Then* check if `len(leases) >= limit + shared_reserve` (exhausted shared reserve). The current implementation allows borrowing even when `limit` is not exhausted, which breaks the sequential constraint."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.373,
+  "prompt_tokens": 2712,
+  "output_tokens": 391,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

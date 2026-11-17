@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_enum trims, matches case-insensitively, returns the canonical entry from `allowed`, and uses `default` only when the trimmed input is empty and default is not None. parse_enum_list splits via the existing split_csv_tokens and raises ValueError('unknown_enum:' + tok) for unknown entries. The legacy split_csv_tokens signature is unchanged, and run_pytest confirmed 3/3 passing with exit code 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to see the actual change before judging it, so I'll start with the diff from main to contrib/fix.",
+    "The diff looks correct on inspection, but the contributor's pytest report is self-reported, so I'll run the test suite in the worktree to confirm.",
+    "The diff implements both requirements, preserves `split_csv_tokens`, and the independent pytest run passed all 3 tests with exit code 0. The empty-input-without-default case raises rather than guessing, which the ticket leaves unspecified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.681,
+  "prompt_tokens": 89404,
+  "output_tokens": 907,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

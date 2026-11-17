@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The optional `weight` parameter and its associated logic for appending weighted copies of `now` are not implemented, violating Req 2. The function signature also lacks the `weight` parameter, breaking the requirement for optional weighting.",
+  "target_issue": "missing weight functionality",
+  "thoughts": [
+    "I need to verify the implementation of the optional `weight` parameter and its logic for appending weighted copies of `now` to ensure it correctly counts against the active time window limit.",
+    "The diff shows that the `weight` parameter is missing from the function signature and the logic for appending weighted copies of `now` is not implemented. The per-tenant override is correctly applied via `overrides.get(tenant, limit)`, but the `weight` functionality is not present, indicating the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.8,
+  "prompt_tokens": 2272,
+  "output_tokens": 196,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

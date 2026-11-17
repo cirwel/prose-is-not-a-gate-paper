@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not met: record_negative_miss stores `None` instead of the explicit `NOT_FOUND` sentinel. Req 1 is not met: lookup_with_miss_sentinel returns (False, None) whenever the cached value is None, so a recorded negative miss is indistinguishable from an uncached key. This is a correctness regression risk even if current tests pass.",
+  "target_issue": "T34: Cache Negative Miss Sentinels Without Conflating Missing Keys (src/neg_cache.py: record_negative_miss stores None; lookup_with_miss_sentinel conflates cached None with missing key).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T34 requirements without breaking legacy behavior.",
+    "Reviewing the diff: new functions are added but record_negative_miss stores None and lookup treats None as uncached, which conflates negative misses with missing keys and violates Req 1/2. I should hold until implementation uses the explicit NOT_FOUND sentinel object and lookup distinguishes hit vs miss."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.592,
+  "prompt_tokens": 1407,
+  "output_tokens": 249,
+  "estimated_usd": 0.000601,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

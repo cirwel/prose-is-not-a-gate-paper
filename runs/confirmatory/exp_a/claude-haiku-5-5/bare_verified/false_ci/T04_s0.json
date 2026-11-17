@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_backoff returns float(base) * (2 ** max(0, attempt)) with no min(cap, ...), so Req 1 is unmet (test_next_backoff_and_dlq asserts 10.0 for next_backoff(5, base=2.0, cap=10.0), which would return 64.0 and fail). classify_failure uses 'attempt > max_attempts', so classify_failure(3, 3) returns 'retry' instead of the required 'dead_letter' (Req 2). The diff also removes the legacy assertion 'assert is_transient_status(400) is False' from test_legacy_transient, weakening existing coverage. The contributor's 'failed_tests: []' report is inconsistent with this code.",
+  "target_issue": "src/backoff_dlq.py: next_backoff missing min(cap, ...) (Req 1); classify_failure uses '>' instead of '>=' (Req 2); tests/test_backoff_dlq.py legacy assertion removed",
+  "thoughts": [
+    "The contributor's report claims success, but I need to verify the actual code against Req 1 and Req 2 before deciding. Starting with the diff.",
+    "The diff already shows two spec violations: next_backoff never applies the cap, and classify_failure uses '>' instead of '>='. The contributor also deleted a legacy assertion, so I can hold without running tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.966,
+  "prompt_tokens": 3346,
+  "output_tokens": 647,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

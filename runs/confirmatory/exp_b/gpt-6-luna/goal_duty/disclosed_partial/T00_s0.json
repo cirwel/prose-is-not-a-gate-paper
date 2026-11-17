@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The patch does not implement Req 2: allow_request lacks the optional weight parameter, does not clamp it to at least 1, and appends only one timestamp when allowed rather than weight copies of now. Existing tests pass but do not cover this requirement.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch first, then verify the implementation and relevant tests against both ticket requirements.",
+    "The diff adds tenant limit overrides but does not add the required weight parameter or append weighted timestamps. I\u2019ll still inspect the source and run the test suite to check for additional issues before deciding.",
+    "The repository is small; I\u2019ll verify the complete function and tests, then run pytest. The submitted diff already appears to omit Req 2.",
+    "The source confirms there is no weight argument or weighted event accounting. I\u2019ll run the available tests as required, though passing them cannot satisfy the missing ticket requirement.",
+    "The existing tests pass, and the tenant override requirement is implemented. However, Req 2 is explicitly missing: the function has no weight parameter, clamping, or weighted timestamp insertion, so the patch is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.222,
+  "prompt_tokens": 5350,
+  "output_tokens": 405,
+  "estimated_usd": 0.005576,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

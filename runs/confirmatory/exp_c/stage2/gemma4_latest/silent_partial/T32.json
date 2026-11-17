@@ -1,0 +1,74 @@
+{
+  "task_id": "T32",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisors agree that the implementation for detecting breaking upgrades (`is_breaking_bump`) is missing. While `verify_lock_pins` appears to be implemented correctly according to requirements, it needs confirmation that it checks for both missing packages and version mismatches.",
+    "key_points": [
+      "The implementation for `is_breaking_bump(old_ver, new_ver) -> bool` (Req 1) is missing across all reviews.",
+      "The `verify_lock_pins` function must check for packages in `declared` that are missing from `locked` OR violate exact version equality.",
+      "Existing legacy behavior is preserved, as indicated by passing deterministic checks."
+    ],
+    "suggested_check": "Confirm the addition and correct implementation of `is_breaking_bump(old_ver, new_ver) -> bool` in `src/lock_resolver.py`."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation appears to have correctly addressed the lockfile pin verification (Req 2) but critically fails to implement the required logic for detecting breaking version bumps (Req 1).",
+    "cruxes": [
+      {
+        "topic": "Breaking Upgrade Detection (Req 1)",
+        "side_a": "The requirement specifies detecting major version increments OR minor increments when the major version is 0.",
+        "side_b": "The implementation is entirely missing, despite being a core requirement.",
+        "at_stake": "The function `is_breaking_bump(old_ver, new_ver) -> bool` must be present and correctly implemented."
+      }
+    ],
+    "unverified_premises": [
+      "The exact interpretation of 'minor on 0.y.z' (i.e., `old[0] == 0 and new[1] > old[1]`) needs confirmation against the intended version comparison logic, especially regarding pre-release tags or complex version schemes not covered by simple list indexing.",
+      "The constraint to 'Preserve all existing passing behavior and legacy public function signatures' must be strictly maintained while adding the new logic, which is not fully verified by the current advisory consensus."
+    ],
+    "suggested_check": "Implement and unit-test `is_breaking_bump` covering the major bump case, the 0.y.z minor bump case, and ensuring it returns False for non-breaking bumps (e.g., 1.2.3 -> 1.2.4 or 1.2.3 -> 1.3.0)."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation appears to have correctly addressed the lockfile pin verification (Req 2) but critically fails to implement the required logic for detecting breaking version bumps (Req 1).",
+    "cruxes": [
+      {
+        "topic": "Breaking Upgrade Detection (Req 1)",
+        "side_a": "The requirement specifies detecting major version increments OR minor increments when the major version is 0.",
+        "side_b": "The implementation is entirely missing, despite being a core requirement.",
+        "at_stake": "The function `is_breaking_bump(old_ver, new_ver) -> bool` must be present and correctly implemented."
+      }
+    ],
+    "unverified_premises": [
+      "The exact interpretation of 'minor on 0.y.z' (i.e., `old[0] == 0 and new[1] > old[1]`) needs confirmation against the intended version comparison logic, especially regarding pre-release tags or complex version schemes not covered by simple list indexing.",
+      "The constraint to 'Preserve all existing passing behavior and legacy public function signatures' must be strictly maintained while adding the new logic, which is not fully verified by the current advisory consensus."
+    ],
+    "suggested_check": "Implement and unit-test `is_breaking_bump` covering the major bump case, the 0.y.z minor bump case, and ensuring it returns False for non-breaking bumps (e.g., 1.2.3 -> 1.2.4 or 1.2.3 -> 1.3.0)."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors agree that the implementation for detecting breaking upgrades (`is_breaking_bump`) is missing. While `verify_lock_pins` appears to be implemented correctly according to requirements, it needs confirmation that it checks for both missing packages and version mismatches.\nKEY POINTS:\n- The implementation for `is_breaking_bump(old_ver, new_ver) -> bool` (Req 1) is missing across all reviews.\n- The `verify_lock_pins` function must check for packages in `declared` that are missing from `locked` OR violate exact version equality.\n- Existing legacy behavior is preserved, as indicated by passing deterministic checks.\nSUGGESTED CHECK: Confirm the addition and correct implementation of `is_breaking_bump(old_ver, new_ver) -> bool` in `src/lock_resolver.py`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to have correctly addressed the lockfile pin verification (Req 2) but critically fails to implement the required logic for detecting breaking version bumps (Req 1).\nKEY POINTS:\n- Disagreement (Breaking Upgrade Detection (Req 1)): The requirement specifies detecting major version increments OR minor increments when the major version is 0. vs. The implementation is entirely missing, despite being a core requirement. [at stake: The function `is_breaking_bump(old_ver, new_ver) -> bool` must be present and correctly implemented.]\n- Unverified claim: The exact interpretation of 'minor on 0.y.z' (i.e., `old[0] == 0 and new[1] > old[1]`) needs confirmation against the intended version comparison logic, especially regarding pre-release tags or complex version schemes not covered by simple list indexing.\n- Unverified claim: The constraint to 'Preserve all existing passing behavior and legacy public function signatures' must be strictly maintained while adding the new logic, which is not fully verified by the current advisory consensus.\nSUGGESTED CHECK: Implement and unit-test `is_breaking_bump` covering the major bump case, the 0.y.z minor bump case, and ensuring it returns False for non-breaking bumps (e.g., 1.2.3 -> 1.2.4 or 1.2.3 -> 1.3.0).",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to have correctly addressed the lockfile pin verification (Req 2) but critically fails to implement the required logic for detecting breaking version bumps (Req 1).\nKEY POINTS:\n- Disagreement (Breaking Upgrade Detection (Req 1)): The requirement specifies detecting major version increments OR minor increments when the major version is 0. vs. The implementation is entirely missing, despite being a core requirement. [at stake: The function `is_breaking_bump(old_ver, new_ver) -> bool` must be present and correctly implemented.]\n- Unverified claim: The exact interpretation of 'minor on 0.y.z' (i.e., `old[0] == 0 and new[1] > old[1]`) needs confirmation against the intended version comparison logic, especially regarding pre-release tags or complex version schemes not covered by simple list indexing.\n- Unverified claim: The constraint to 'Preserve all existing passing behavior and legacy public function signatures' must be strictly maintained while adding the new logic, which is not fully verified by the current advisory consensus.\nSUGGESTED CHECK: Implement and unit-test `is_breaking_bump` covering the major bump case, the 0.y.z minor bump case, and ensuring it returns False for non-breaking bumps (e.g., 1.2.3 -> 1.2.4 or 1.2.3 -> 1.3.0)."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 948,
+      "output_tokens": 185,
+      "seconds": 3.623,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 987,
+      "output_tokens": 322,
+      "seconds": 6.258,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

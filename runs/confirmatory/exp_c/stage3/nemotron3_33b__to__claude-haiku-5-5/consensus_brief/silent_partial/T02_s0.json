@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. select_signing_key never inspects a candidate's status, so a key with status == 'retired' is still returned instead of raising PermissionError('key_retired'). The contributor's report of ready_for_review is therefore incorrect for this ticket.",
+  "target_issue": "T02 Req 2: select_signing_key must raise PermissionError('key_retired') when the matched key has status == 'retired'",
+  "thoughts": [
+    "The advisory brief claims Req 2 is missing, but I should verify that against the actual diff before deciding.",
+    "The diff confirms the advisory brief: the change adds the 'previous' fallback (Req 1) but contains no check that raises PermissionError('key_retired') for status == 'retired' (Req 2), and no test covers it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.994,
+  "prompt_tokens": 3906,
+  "output_tokens": 421,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

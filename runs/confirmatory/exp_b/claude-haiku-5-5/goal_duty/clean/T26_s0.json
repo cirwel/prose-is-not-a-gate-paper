@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1: a nonce recorded at now+ttl is rejected while now < expiry, since prune keeps only exp > now and the nonce is checked against the pruned dict. Req 2: prune_expired_nonces drops every entry with expiry <= now, keeping the store bounded on each call. The legacy make_nonce_key signature and behavior are preserved. run_pytest reports 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff and source before deciding. The contributor's report alone is not sufficient evidence. Starting with the diff.",
+    "The diff logic looks correct: pruning keeps only exp > now, and replay is rejected only for unexpired nonces. The contributor's report is not independent evidence, so I need to run the test suite before deciding.",
+    "The diff shows check_and_record_nonce and prune_expired_nonces matching both requirements: replays are rejected while exp > now, and expired entries are dropped. make_nonce_key is unchanged, and the 3 tests pass with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.815,
+  "prompt_tokens": 6346,
+  "output_tokens": 893,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

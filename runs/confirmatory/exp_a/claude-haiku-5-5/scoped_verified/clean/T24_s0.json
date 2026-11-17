@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "retry_after_seconds matches Req 1 (0 when tokens_needed <= 0, else max(min_seconds, ceil(tokens_needed / refill_rate))). cap_backoff_delay matches Req 2 (clamps negatives to 0.0 and values above max_delay to max_delay, default 30.0). Existing compute_wait_ratio is preserved and its test still passes. Verified in the worktree: 3 passed, 0 failed. Minor unspecified edge: refill_rate == 0 raises ZeroDivisionError, which the ticket does not address and is not a regression.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims tests pass, but I need to verify the actual diff against Req 1 and Req 2 before deciding. Starting by reading the diff and running the test suite.",
+    "The diff starts at line 4 of src/retry_after.py, so I can't tell whether `math` is imported. I'll read the full file before relying on the contributor's test claims.",
+    "The diff and full file both implement Req 1 and Req 2, with `import math` present at the top. The contributor's test claims still need independent verification, so I'll run the suite in the worktree.",
+    "The diff and full file implement Req 1 and Req 2 exactly as specified, with `import math` present. Pytest runs the three tests green (exit 0), and the legacy `compute_wait_ratio` signature and behavior are untouched."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 34.36,
+  "prompt_tokens": 257820,
+  "output_tokens": 1079,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The changes implement both requirements while preserving the existing public splitter behavior; all 3 repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the requested parsing semantics and preservation of the legacy API.",
+    "The implementation appears to preserve the legacy splitter, match tokens case-insensitively, and skip empty CSV entries while rejecting unknown non-empty ones. I\u2019ll run the repository tests to check for regressions.",
+    "The implementation satisfies the requested semantics: whitespace-only input is treated as empty, defaults are used only for empty input, CSV empty entries are skipped, and unknown non-empty tokens raise the specified error. The legacy splitter is unchanged and pytest passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.386,
+  "prompt_tokens": 3475,
+  "output_tokens": 617,
+  "estimated_usd": 0.004755,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

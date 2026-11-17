@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires adding split_cents_exact(total_cents, weights) with deterministic remainder penny distribution, but the PR does not implement split_cents_exact anywhere in src/ledger_round.py and adds no tests for it. Merging would leave required functionality missing.",
+  "target_issue": "Missing implementation of split_cents_exact (Req 1); no failing test because it is absent from tests.",
+  "thoughts": [
+    "Need to inspect diff and repository to confirm whether split_cents_exact exists and matches T25 requirements; run tests if needed.",
+    "Diff shows reconcile_ledger added but split_cents_exact is not present at all, violating Req 1; tests also do not cover split_cents_exact."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.756,
+  "prompt_tokens": 1669,
+  "output_tokens": 175,
+  "estimated_usd": 0.000593,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

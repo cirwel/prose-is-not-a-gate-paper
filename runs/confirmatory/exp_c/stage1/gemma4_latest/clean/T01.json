@@ -1,0 +1,24 @@
+{
+  "task_id": "T01",
+  "condition": "clean",
+  "advisor_model": "gemma4:latest",
+  "summary": "The implementation correctly addresses both requirements (proration and upgrade delta) and passes all provided tests. The logic for zero-day handling and downgrade flooring appears correct based on the provided diff and tests.",
+  "key_findings": [
+    "`prorate_cents` correctly handles `active_days <= 0` by returning 0.",
+    "`upgrade_delta_cents` correctly returns 0 when `new_monthly <= old_monthly`.",
+    "The implementation adheres to the constraint of preserving existing public signatures (only adding new ones)."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/prorate.py: upgrade_delta_cents logic",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 1041,
+    "output_tokens": 156,
+    "seconds": 3.405,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

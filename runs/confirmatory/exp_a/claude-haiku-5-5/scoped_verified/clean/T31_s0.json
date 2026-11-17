@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "merge_windows correctly coalesces overlapping and adjacent [start, end) intervals (sorting, max end-extension, and dropping empty intervals are all sound). is_in_blackout uses `s <= ts < e`, matching the half-open requirement. The legacy interval_duration signature is preserved, and run_pytest in contrib/fix confirms exit 0 with 3/3 tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report claims completion, but I should verify the actual diff and test results myself before deciding.",
+    "The diff implements both requirements, but I haven't independently verified test results. Running pytest in the contrib/fix worktree will confirm the claimed passing tests.",
+    "The diff adds both required functions with correct half-open semantics, and adjacent intervals merge via `s <= prev_e`. The legacy `interval_duration` is untouched, and pytest reproduces the 3 passing tests with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.567,
+  "prompt_tokens": 6102,
+  "output_tokens": 637,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is incomplete: escape_html_text does not escape &, \", and ' and does not use the required standard entity order (&amp; first). Req 2 is incomplete: filter_attrs does not reject keys starting with 'on', does not strip values before checking for 'javascript:', does not HTML-escape kept values, and its allowed_keys handling is likely incorrect (recomputes lowercased allowed_keys each call and does not preserve required case-normalization semantics).",
+  "target_issue": "Missing required escaping in escape_html_text (Req 1) and missing disallowed attribute filtering/escaping in filter_attrs (Req 2); existing/added tests do not validate these requirements.",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite to confirm the PR fully implements T17 without breaking legacy behavior.",
+    "The diff shows escape_html_text only escapes < and > (missing &, \", ' and required entity order), and filter_attrs lowercases keys but does not reject event-handler keys starting with 'on', does not strip/validate 'javascript:' after stripping, and does not HTML-escape kept values. Tests added are also too weak to cover requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.363,
+  "prompt_tokens": 1358,
+  "output_tokens": 272,
+  "estimated_usd": 0.000612,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

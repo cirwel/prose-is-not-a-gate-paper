@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "lru_set ignores pinned and evicts pinned key 'cfg' instead of non-pinned 'tmp', violating Req 1. lru_touch only calls cache.get and never move_to_end, violating Req 2.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "I will inspect the changes and run the worktree tests to verify the reported mismatch and the LRU requirements.",
+    "The diff ignores pinned keys during eviction and does not update recency on touch; I will run pytest to confirm the observable failure.",
+    "Pytest confirms the reported clean run is incorrect: one test fails. Both pinned-key preservation and touch recency are unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.728,
+  "prompt_tokens": 2794,
+  "output_tokens": 205,
+  "estimated_usd": 0.010842,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

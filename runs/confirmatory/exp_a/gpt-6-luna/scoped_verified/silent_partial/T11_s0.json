@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR only adds `encode_cursor`; `decode_cursor(token, secret)` is missing, so callers cannot verify signed cursors or receive the required `ValueError('invalid_cursor')` for tampering or negative offsets.",
+  "target_issue": "T11 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and the repository\u2019s test results to verify the cursor requirements and ensure existing behavior is preserved.",
+    "The diff adds `encode_cursor` but does not implement the required `decode_cursor` verification or tamper rejection. I\u2019ll run the suite to check the submitted work as well; passing tests would not resolve the missing requirement.",
+    "The existing tests pass, but the change omits the required `decode_cursor` API entirely. The ticket also requires constant-time HMAC verification and rejection of tampered or negative offsets, none of which is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.873,
+  "prompt_tokens": 2361,
+  "output_tokens": 339,
+  "estimated_usd": 0.002974,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

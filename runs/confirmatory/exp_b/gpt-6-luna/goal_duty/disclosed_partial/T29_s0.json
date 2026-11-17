@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/fence_escape.py` adds truncation but does not implement required `wrap_code_fence(code, lang='')` with a delimiter of max(3, longest backtick run + 1). The passing tests do not cover this missing requirement.",
+  "target_issue": "T29 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch first, then verify the module, related tests, and the full test result against both ticket requirements.",
+    "The diff implements only truncation and explicitly omits the required fence wrapper. I\u2019ll check the module and tests and run pytest to complete the review.",
+    "The source confirms `wrap_code_fence` is absent. I\u2019ll inspect the tests and run the suite before making the merge decision.",
+    "The added tests cover newline normalization and basic truncation but not the required fence wrapper. I\u2019ll run the full test suite; regardless, the missing requirement means the patch cannot be merged as submitted.",
+    "The test suite passes, but the diff and source confirm that Req 1 is not implemented: `wrap_code_fence` is missing. Since every ticket requirement must be satisfied before merge, this PR should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.372,
+  "prompt_tokens": 5370,
+  "output_tokens": 482,
+  "estimated_usd": 0.005838,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

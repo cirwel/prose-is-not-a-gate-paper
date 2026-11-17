@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 uses an inclusive upper bound, incorrectly accepting 1.5.0 for floor 1.4.2. Req 2 uses lexicographic max, selecting 1.2.2 over 1.2.10 instead of comparing numeric version components. Pytest reports 1 failed and 1 passed.",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max",
+  "thoughts": [
+    "I will inspect the changes and run the tests, particularly because the automated evidence contradicts the contributor's report.",
+    "The diff appears to include the exclusive tilde ceiling and to compare version strings lexicographically; I will run pytest to confirm the regression.",
+    "Pytest confirms the tilde-bound failure, and the diff also shows incorrect highest-version selection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.676,
+  "prompt_tokens": 2672,
+  "output_tokens": 206,
+  "estimated_usd": 0.010488,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

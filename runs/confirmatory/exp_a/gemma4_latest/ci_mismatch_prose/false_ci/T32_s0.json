@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The test `test_breaking_bump_zero_major` failed, indicating that the logic for detecting breaking bumps when incrementing the minor version (e.g., 0.2.0 to 0.3.0) is incorrect according to the requirements.",
+  "target_issue": "tests/test_lock_resolver.py::test_breaking_bump_zero_major",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but the worktree pytest failed. I must run pytest to determine the actual state of the PR before making a decision.",
+    "The pytest run failed, specifically `test_breaking_bump_zero_major` failed. The failure indicates that `is_breaking_bump(\"0.2.0\", \"0.3.0\")` returned `False` when it was expected to be `True`. This directly relates to Requirement 1, which states that for `0.y.z`, a minor increment (`0.3.0` from `0.2.0`) should return `True`. Since the automated evidence check failed and a core requirement test failed, I cannot merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.383,
+  "prompt_tokens": 1472,
+  "output_tokens": 273,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

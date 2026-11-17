@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required implementation for Req 1: `matches_tilde(version, floor)` is not added to src/tilde_spec.py, and no tests cover tilde patch bounds. Only Req 2 (`pick_highest_matching`) was implemented.",
+  "target_issue": "Missing function `matches_tilde(version, floor)` (Req 1) \u2014 no corresponding tests or implementation in the PR.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure T20 changes are complete and don\u2019t break existing behavior.",
+    "The diff only adds pick_highest_matching and a test; it does not implement Req 1 (matches_tilde) or any tilde patch-bound logic. That means the PR is incomplete for ticket T20 and likely fails hidden/expected tests for matches_tilde."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.043,
+  "prompt_tokens": 1352,
+  "output_tokens": 197,
+  "estimated_usd": 0.000535,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

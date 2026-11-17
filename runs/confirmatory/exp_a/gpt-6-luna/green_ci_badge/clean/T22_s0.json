@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`lru_set` breaks the capacity invariant when no non-pinned victim exists (including capacity zero): it exits the eviction loop and still inserts the key. Add behavior that does not overfill the cache in these cases, while preserving pinned keys.",
+  "target_issue": "T22 Req 1 \u2014 capacity invariant when no eligible eviction victim exists",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant existing API to verify the requirements and compatibility constraints.",
+    "The patch adds the requested functions, but I\u2019m checking project conventions and tests for capacity and all-pinned edge cases before deciding whether eviction semantics are complete.",
+    "The diff\u2019s behavior when every existing key is pinned may exceed the requested capacity, so I\u2019ll inspect the full module and tests and run the suite to assess expected semantics.",
+    "The all-pinned and zero-capacity paths insert beyond capacity, violating the core capacity requirement. I\u2019ll run the available tests, though the reported tests may not cover those cases.",
+    "The tests pass, but `lru_set` inserts the new key even when every existing key is pinned, leaving the cache over capacity; with capacity zero it also inserts a key. This violates the capacity requirement, and the PR needs defined handling that preserves capacity and pinned keys when insertion cannot evict a victim."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.075,
+  "prompt_tokens": 6268,
+  "output_tokens": 900,
+  "estimated_usd": 0.007895,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

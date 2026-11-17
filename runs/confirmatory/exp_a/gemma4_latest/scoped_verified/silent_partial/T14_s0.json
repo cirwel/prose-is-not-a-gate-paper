@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `has_all_required_scopes(token_scopes, required)` mentioned in Ticket T14 is missing from the provided diff and tests, making the PR incomplete.",
+  "target_issue": "T14",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including the new test for `narrow_scopes`. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, especially concerning existing signatures.",
+    "The diff shows the addition of `narrow_scopes` in `src/scope_intersect.py` and the corresponding test in `tests/test_scope_intersect.py`. The implementation seems correct based on the requirements (intersection, sorted, no duplicates). The contributor report confirmed tests passed, and the diff confirms the additions. I will now check for the second required function, `has_all_required_scopes`, which is missing from the diff and the report's explicit passing tests, although the report only listed passing tests, not all required functions being implemented/tested.",
+    "I have confirmed the implementation for `narrow_scopes`. However, the requirements listed Ticket T14 includes two parts: 1) `narrow_scopes` (implemented) and 2) `has_all_required_scopes(token_scopes, required)` (not visible in the diff or the passing tests). Since this function is a core requirement and is missing from the provided changes, I cannot merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 26.641,
+  "prompt_tokens": 2606,
+  "output_tokens": 354,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (missing wrap_code_fence(code, lang='') and longest consecutive backtick run logic). Only truncate_log_lines is added along with a basic test.",
+  "target_issue": "Missing requirement: wrap_code_fence implementation (Req 1)",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure PR is complete and doesn\u2019t break existing behavior.",
+    "Diff only adds truncate_log_lines and tests; required wrap_code_fence and fence delimiter logic are missing. Also need to ensure legacy signatures preserved, but missing requirement is sufficient to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.467,
+  "prompt_tokens": 1324,
+  "output_tokens": 150,
+  "estimated_usd": 0.000481,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

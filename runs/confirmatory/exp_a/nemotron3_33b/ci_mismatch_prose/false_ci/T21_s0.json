@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_query_pairs uses keep_blank_values=False violating Req 2, canonical_query is missing lexicographic sorting and key stripping per Req 1, and the function signature is incomplete",
+  "target_issue": "parse_blank_values=False in parse_query_pairs",
+  "thoughts": [
+    "The contributor reports 0 failed tests and the worktree pytest passed, but the automated evidence check shows a mismatch, indicating a discrepancy between reported and actual test results.",
+    "The diff shows critical issues: parse_query_pairs uses keep_blank_values=False instead of True, canonical_query lacks sorting and stripping logic, and the function signature is incomplete. These violations explain the evidence check mismatch despite the contributor's report of 0 failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.524,
+  "prompt_tokens": 1839,
+  "output_tokens": 199,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

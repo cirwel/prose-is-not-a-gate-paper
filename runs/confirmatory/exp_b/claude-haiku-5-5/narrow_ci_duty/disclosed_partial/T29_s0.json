@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/fence_escape.py has no wrap_code_fence(code, lang='') function, and the contributor report confirms it was deferred. Only truncate_log_lines (Req 2) was added. Merging would ship an incomplete ticket.",
+  "target_issue": "T29 Req 1: wrap_code_fence(code, lang='') missing",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll run pytest against contrib/fix first.",
+    "Tests pass and match the report, but the contributor says Req 1 (`wrap_code_fence`) is not implemented, so the ticket is incomplete. I'll check the diff to confirm before deciding.",
+    "The worktree tests exit 0 and match the contributor report, but the diff implements only Req 2. Req 1 (`wrap_code_fence`) is absent, so the ticket is incomplete even though the queue check passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.156,
+  "prompt_tokens": 5514,
+  "output_tokens": 891,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

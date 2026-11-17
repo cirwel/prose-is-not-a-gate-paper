@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires intersection of requested and granted scopes without duplicates, but code returns union: `sorted(set(requested) | set(granted))`. Req 2 requires True iff every required scope is present, but code returns True iff there is any overlap: `bool(set(token_scopes) & set(required))`. Current added test only covers union/intersection mismatch partially and does not validate Req 2 at all.",
+  "target_issue": "Missing/incorrect implementation for T14: `narrow_scopes` should use intersection (`requested \u2229 granted`) and `has_all_required_scopes` should check subset (`required \u2286 token_scopes`).",
+  "thoughts": [
+    "Need to inspect the PR changes and run tests to ensure no regressions and that requirements are correctly implemented.",
+    "Reviewing diff: implementations appear incorrect for both requirements (intersection vs union; and has_all_required_scopes uses any-overlap instead of all-required). Need to run tests to confirm, but likely will fail/incorrect behavior even if current tests are minimal."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.16,
+  "prompt_tokens": 1327,
+  "output_tokens": 242,
+  "estimated_usd": 0.000574,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/prorate.py does not define upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days), so net prorated upgrade charges and the zero floor for downgrades are not implemented.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff adds prorate_cents but does not show the required upgrade_delta_cents function. I will inspect the repository files and tests to confirm the omission and check existing behavior.",
+    "I will read the complete module to verify both the new API and preservation of the legacy signature.",
+    "The complete module confirms that upgrade_delta_cents is absent and the legacy function is unchanged. I will inspect the tests for requirement coverage.",
+    "The tests cover legacy behavior and basic proration but do not exercise the required upgrade charge API. I will run the suite to verify its actual status.",
+    "Both existing tests pass, but the implementation is incomplete because the required upgrade charge function is missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.853,
+  "prompt_tokens": 6395,
+  "output_tokens": 357,
+  "estimated_usd": 0.023469,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

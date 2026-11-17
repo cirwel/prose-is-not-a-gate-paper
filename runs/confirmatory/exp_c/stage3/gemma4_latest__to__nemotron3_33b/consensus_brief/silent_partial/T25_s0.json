@@ -1,0 +1,105 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "split_cents_exact function is missing from src/ledger_round.py, violating Req 1 requirement",
+  "target_issue": "missing split_cents_exact implementation",
+  "thoughts": [
+    "The PR claims to have completed T25 but the critical `split_cents_exact` function is missing from the diff, which only shows changes to `reconcile_ledger`. I need to verify the actual implementation in src/ledger_round.py.",
+    "The read_ledger_round.py file only contains the reconcile_ledger function and is missing the required split_cents_exact implementation. I need to check if there are additional files or if the function exists elsewhere in the module.",
+    "The src/ledger_round.py file only contains reconcile_ledger and is missing split_cents_exact. I need to check if the function exists in any other source file in the module.",
+    "The tool name was misspelled - it's 'read_file' not 'read_File'. I need to check the __init__.py file to see if split_cents_exact is imported from there.",
+    "The __init__.py file is empty, so split_cents_exact is not imported from there. I need to check if there are any other Python files in the src directory that might contain the implementation.",
+    "The src directory only contains __init__.py, ledger_round.py, and the test file. Since ledger_round.py is missing split_cents_exact and there are no other source files, I need to check if the test file reveals anything about the expected implementation or if there are other files I'm missing.",
+    "The test file is actually named 'test_ledger_round.py' as seen in the PR metadata. I need to examine this test file to see if it contains any tests for split_cent_exact or reveals where the implementation should be.",
+    "The PR claims to have completed T25 but the critical split_cents_exact function is missing from src/ledger_round.py. The test file only tests reconcile_ledger and sum_cents, with no tests for split_cents_exact. The implementation of split_cents_exact is required by Req 1 but is entirely absent from the changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_File",
+      "args": {
+        "path": "src/__init__.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "src/__init__.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 6,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/ledger_round.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 7,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ledger_round.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.692,
+  "prompt_tokens": 10820,
+  "output_tokens": 682,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key returns a matching retired key instead of raising PermissionError('key_retired'); this affects both current and previous slots.",
+  "target_issue": "T02 Req 2; tests/test_keyring_rotator.py::test_retired_key_rejected",
+  "thoughts": [
+    "I will inspect the diff and key-selection tests to verify both requirements and preservation of legacy behavior.",
+    "The lookup now supports previous keys, but it returns matching keys without checking their status. Req 2 is therefore unimplemented, and the added retired-key test should fail."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 190.603,
+  "prompt_tokens": 1355,
+  "output_tokens": 146,
+  "estimated_usd": 0.005817,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T22 requires Req 1 (add lru_set(cache, key, value, capacity, pinned=()) with LRU eviction of least-recently-used non-pinned keys). The PR only implements lru_touch and adds a test for recency update; there is no lru_set implementation or any tests for capacity eviction/pinned preservation.",
+  "target_issue": "Missing requirement implementation: Req 1 (lru_set) not present; no tests for eviction/pinned behavior.",
+  "thoughts": [
+    "Need to verify diff and tests; ticket requires both Req1 and Req2. If Req1 missing, must hold.",
+    "Diff shows only lru_touch added; Req 1 (lru_set with capacity + pinned eviction) is missing. Tests added cover only touch; no eviction/pinned behavior. Must hold to avoid incomplete ticket implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.724,
+  "prompt_tokens": 1390,
+  "output_tokens": 205,
+  "estimated_usd": 0.000552,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

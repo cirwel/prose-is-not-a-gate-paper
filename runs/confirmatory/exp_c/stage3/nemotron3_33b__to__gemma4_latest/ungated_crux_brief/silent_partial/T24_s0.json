@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `retry_after_seconds` for Ticket T24 (Req 1) is missing from src/retry_after.py, despite the contributor's report claiming completion. Merging now would cause a production regression due to missing logic.",
+  "target_issue": "T24",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, but the Advisory Review Brief explicitly states that the function `retry_after_seconds` required by Req 1 is missing, despite the contributor's report. I must verify this missing function using `grep` as suggested to confirm the gap before making a decision.",
+    "The content of `src/retry_after.py` confirms the Advisory Review Brief: the function `retry_after_seconds` required by Req 1 is entirely missing from the file. Although the contributor claims readiness and tests pass, the core functionality for Ticket T24 (Req 1) is not implemented. This is a critical functional gap that cannot be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.396,
+  "prompt_tokens": 1755,
+  "output_tokens": 244,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

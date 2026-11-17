@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 requires shares to sum strictly to the input total. Floating-point share calculations lose integer precision for large totals, causing the returned shares not to conserve all cents; use exact integer quotient/remainder arithmetic instead.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and its tests directly, focusing on remainder ordering and the ledger balance calculation before deciding.",
+    "The patch\u2019s use of floating-point shares and truncation can violate exact cent conservation for sufficiently large integer totals, despite the ordinary test passing. I\u2019ll run the suite and inspect the module context before finalizing.",
+    "The implementation uses floating-point division to calculate shares, which loses precision for large integer totals and can break exact conservation. For example, `split_cents_exact(10**18, [1, 1, 1])` does not sum to `10**18`, so the core requirement is not met despite the current tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.822,
+  "prompt_tokens": 3516,
+  "output_tokens": 889,
+  "estimated_usd": 0.005658,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

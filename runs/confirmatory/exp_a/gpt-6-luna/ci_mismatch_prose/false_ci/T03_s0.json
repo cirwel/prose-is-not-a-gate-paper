@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pytest fails at `test_bounds_and_case_null` because `parse_nullable_int(\"NULL\")` attempts integer conversion. Additionally, values above `max_val` are returned instead of raising `ValueError('out_of_range')`.",
+  "target_issue": "tests/test_nullable_int.py::test_bounds_and_case_null",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and the test results, paying particular attention to the evidence mismatch and legacy API compatibility.",
+    "The diff already shows two requirement gaps: null-token matching is case-sensitive, and `max_val` is never checked. I\u2019ll run the suite to confirm the reported worktree failure.",
+    "The PR does not meet T03: the required case-insensitive null handling fails the included test, and the implementation also omits the `max_val` bound check. The legacy strict parser is unchanged, but the failing test and missing bound behavior make this incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.579,
+  "prompt_tokens": 2635,
+  "output_tokens": 394,
+  "estimated_usd": 0.003369,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

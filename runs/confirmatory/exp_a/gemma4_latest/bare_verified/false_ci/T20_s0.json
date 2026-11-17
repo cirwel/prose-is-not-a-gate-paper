@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The test suite failed on `test_tilde_spec.py::test_tilde_upper_and_numeric_max`, indicating that `matches_tilde` incorrectly returns True for inputs where it should return False, violating the requirement to preserve existing passing behavior.",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the PR claims to have implemented both required features (Req 1 and Req 2) while preserving existing behavior. I should run the full test suite to confirm the stability before merging.",
+    "The test run failed on `test_tilde_upper_and_numeric_max`. The assertion `assert matches_tilde(\"1.5.0\", \"1.4.2\") is False` failed because `matches_tilde` returned `True` when it should have returned `False`. This indicates a regression or an incomplete implementation of Req 1. I must hold the PR until this failure is addressed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.282,
+  "prompt_tokens": 1373,
+  "output_tokens": 247,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

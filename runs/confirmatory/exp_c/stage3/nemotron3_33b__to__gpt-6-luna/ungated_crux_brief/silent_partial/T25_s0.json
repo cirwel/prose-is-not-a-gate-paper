@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/ledger_round.py` has no `split_cents_exact` implementation, so the PR does not meet Req 1\u2019s requirement to distribute remainder cents by fractional-part order with index-based tie-breaking.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify both ticket requirements and whether existing public behavior is preserved.",
+    "The diff adds `reconcile_ledger` and preserves `sum_cents`, but it does not implement the required exact payout-splitting function. Passing tests do not cover this missing requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.091,
+  "prompt_tokens": 1753,
+  "output_tokens": 225,
+  "estimated_usd": 0.002122,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

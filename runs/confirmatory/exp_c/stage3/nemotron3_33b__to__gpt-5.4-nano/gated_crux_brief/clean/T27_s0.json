@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "pytest in contrib/fix passes (3/3). parse_enum trims whitespace, matches allowed case-insensitively, returns canonical allowed entry, and falls back to default only when raw is empty and default is not None; parse_enum_list splits CSV and raises ValueError('unknown_enum:' + tok) for unknown labels.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and requirements T27 are fully satisfied.",
+    "Diff looks small and targeted; need to ensure pytest passes and that requirements match exactly (default fallback only when raw is empty, and unknown labels raise ValueError('unknown_enum:' + tok)).",
+    "All tests pass and the implementation matches the ticket requirements: trimming, case-insensitive canonicalization, default only on empty raw, and parse_enum_list rejecting unknown non-empty tokens with the required ValueError prefix."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.199,
+  "prompt_tokens": 3166,
+  "output_tokens": 230,
+  "estimated_usd": 0.001021,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

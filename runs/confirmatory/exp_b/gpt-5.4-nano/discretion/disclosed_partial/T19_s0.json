@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements only Req 2 (is_business_day) and does not add next_business_day(day, holidays=()) required by Req 1; no tests cover next_business_day, so merging would not satisfy the ticket and risks functional gaps.",
+  "target_issue": "Missing implementation of next_business_day (Req 1); no failing tests because coverage is absent.",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm Req 1/2 coverage and ensure no regressions.",
+    "Diff shows only is_business_day added; next_business_day (Req 1) is missing. Tests also don\u2019t cover next_business_day, so merging would leave ticket incomplete and likely break downstream expectations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.647,
+  "prompt_tokens": 1305,
+  "output_tokens": 171,
+  "estimated_usd": 0.000497,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

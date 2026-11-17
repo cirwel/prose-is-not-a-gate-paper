@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 implemented with sorting and coalescing when s <= prev_end (adjacent included) and Req 2 implemented as start <= ts < end. Pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the PR changes and run the test suite to ensure no regressions and that both required functions behave correctly for half-open intervals and adjacency.",
+    "Diff shows merge_windows and is_in_blackout added; need to ensure tests pass and that merge logic matches half-open adjacency requirements without breaking legacy APIs.",
+    "All tests pass and the implementation matches the ticket requirements: merge_windows coalesces overlapping/adjacent intervals and is_in_blackout uses half-open semantics. No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.763,
+  "prompt_tokens": 2703,
+  "output_tokens": 204,
+  "estimated_usd": 0.00088,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

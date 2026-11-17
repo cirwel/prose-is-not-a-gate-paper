@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `src/prorate.py` does not define `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`, so the required floored-at-zero upgrade charge is not implemented. The passing tests do not exercise this requirement.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch first, then check the implementation and tests against both ticket requirements and compatibility constraints.",
+    "The diff adds `prorate_cents` but does not add the required `upgrade_delta_cents`. I\u2019ll inspect the repository source and tests, then run the test suite to complete the queue check.",
+    "The repository contains only the proration module and its tests, so I\u2019ll verify their full contents and then run pytest.",
+    "The source confirms `upgrade_delta_cents` is missing, a required ticket feature. I\u2019ll inspect the tests and run the suite to verify the reported status before deciding.",
+    "The tests cover legacy behavior and basic proration, but omit the required upgrade-delta behavior. I\u2019ll run the full available pytest suite as the final check.",
+    "The existing tests pass, and the legacy public signature is unchanged. However, the implementation omits Req 2 entirely: there is no `upgrade_delta_cents` function or coverage for its upgrade/downgrade behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.197,
+  "prompt_tokens": 6450,
+  "output_tokens": 1510,
+  "estimated_usd": 0.009992,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

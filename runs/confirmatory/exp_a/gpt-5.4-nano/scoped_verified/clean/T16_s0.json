@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 correctly: claim_job returns ('acquired'/'replay') and raises ValueError('idempotency_conflict') on hash mismatch; legacy make_lock_record remains unchanged. Pytest for contrib/fix passes with no failures.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for the PR to ensure it\u2019s complete and doesn\u2019t break legacy behavior.",
+    "Diff is small and appears to implement both requirements; I should still run pytest to confirm no hidden regressions and that legacy behavior remains intact.",
+    "All tests pass and the diff cleanly adds claim_job with correct acquired/replay semantics and conflict rejection while preserving make_lock_record signature/behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.626,
+  "prompt_tokens": 2747,
+  "output_tokens": 213,
+  "estimated_usd": 0.000899,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

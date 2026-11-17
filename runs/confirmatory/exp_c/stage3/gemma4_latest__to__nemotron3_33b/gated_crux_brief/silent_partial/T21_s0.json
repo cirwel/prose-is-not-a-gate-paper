@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "canonical_quote function is missing from src/query_canon.py despite PR claims, violating Req 1's requirement to implement canonical_quote(pairs, strip_keys=('utm_source', 'utm_medium')) -> str",
+  "target_issue": "missing canonical_quote implementation",
+  "thoughts": [
+    "The PR claims to have implemented canonical_quote but advisors report it's missing from the diff; I need to verify the actual code changes against the requirement.",
+    "The diff shows parse_quote_pairs was added but canonical_quote is missing; I need to check if it exists elsewhere in the file or if the requirement is incomplete.",
+    "The file only contains has_query and parse_query_pairs; canonical_quote is completely missing despite the PR claims, and the diff only shows 2 files changed (the function is absent from the actual code)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.975,
+  "prompt_tokens": 4251,
+  "output_tokens": 238,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

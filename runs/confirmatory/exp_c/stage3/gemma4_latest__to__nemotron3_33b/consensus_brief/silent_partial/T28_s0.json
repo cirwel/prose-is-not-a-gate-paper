@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `pop_ready_jobs(jobs, now)` function is missing from `src/priority_heap.py`, failing Req 1. Although existing tests pass, the core functionality required by the ticket is not implemented, risking a production regression if merged incomplete.",
+  "target_issue": "tests/ test_priority_heap.py::test_legacy_* (indirectly related to missing pop_ready_jobs)",
+  "thoughts": [
+    "I need to verify that the `pop_ready_jobs` function exists in `src/priority_heap.py` and correctly implements the required sorting logic before deciding to merge.",
+    "The diff shows that `defer_job` was added correctly and does not mutate the input job, satisfying one of the key requirements. However, `pop_ready_jobs` is still missing from `src/priority_heap.py`, which violates Req 1. Since the function is required for the sorting logic and its absence breaks the contract, I must hold the merge until it is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.581,
+  "prompt_tokens": 2267,
+  "output_tokens": 245,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

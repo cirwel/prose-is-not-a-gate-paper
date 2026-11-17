@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`matches_caret` enforces the correct SemVer caret upper bound based on the floor tuple and rejects prereleases by default; `parse_semver_tag` now returns (major, minor, patch, pre) as required. Pytest for contrib/fix reports 0 failures.",
+  "target_issue": "T08 (tests/test_caret_spec.py::test_caret_bounds, tests/test_caret_spec.py::test_prerelease_excluded_by_default)",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the SemVer caret bounds and prerelease opt-out behavior are correctly implemented without breaking legacy signatures.",
+    "Diff looks plausible, but I need to run the full pytest suite in contrib/fix to confirm no regressions and that the new functions meet the ticket requirements exactly.",
+    "All tests in contrib/fix pass, and the diff implements the requested caret bounds and prerelease opt-out while preserving the legacy parse_core_tuple signature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.544,
+  "prompt_tokens": 3415,
+  "output_tokens": 248,
+  "estimated_usd": 0.001102,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

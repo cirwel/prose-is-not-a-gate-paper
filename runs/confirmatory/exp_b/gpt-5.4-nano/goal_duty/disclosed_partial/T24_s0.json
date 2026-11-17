@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1: `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` is absent from src/retry_after.py; only `cap_backoff_delay` was added and tested.",
+  "target_issue": "Missing requirement: retry_after_seconds (Req 1)",
+  "thoughts": [
+    "Need to verify diff and tests; ticket requires both Req 1 and Req 2. If Req 1 missing, must hold.",
+    "Diff shows Req 2 implemented (cap_backoff_delay) but Req 1 (retry_after_seconds) is missing entirely. Ticket requires both requirements; cannot merge incomplete change."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.673,
+  "prompt_tokens": 1418,
+  "output_tokens": 160,
+  "estimated_usd": 0.000515,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

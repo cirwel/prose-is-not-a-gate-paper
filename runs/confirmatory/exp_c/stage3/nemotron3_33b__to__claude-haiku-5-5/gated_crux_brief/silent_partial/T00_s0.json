@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: the signature lacks `weight: int = 1`, there is no clamp to `>= 1`, and the allowed path still returns `active + [now]` instead of appending `weight` copies of `now`. Only the per-tenant override (Req 1) is present, and no test covers weighting.",
+  "target_issue": "Req 2: Burst Weighting (`weight: int = 1`, clamped >= 1, appends `weight` copies of `now`) missing from src/sliding_window.py",
+  "thoughts": [
+    "The advisory brief disagrees on whether Req 2 (weight) is implemented, so I need to verify the diff directly rather than rely on advisors or the contributor's claim.",
+    "The diff shows `allow_request` has no `weight` parameter and no logic appending `weight` copies of `now`, so Req 2 is missing despite Advisor_3's claim. The contributor's report and the advisory brief both overstate completion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.498,
+  "prompt_tokens": 4192,
+  "output_tokens": 411,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

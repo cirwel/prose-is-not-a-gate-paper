@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Source inspection confirms `first` retains each key\u2019s first row and `last` retains each key\u2019s final row in input order. The stats function returns the unique rows and removed-row count, and the existing `extract_keys` behavior is preserved. All tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the source diff directly, with particular attention to whether `keep='last'` retains the final occurrence while preserving its relative order.",
+    "The implementation handles both policies correctly for deterministic keys: `first` emits the initial occurrence, and `last` emits final occurrences in input order. The stats wrapper reports the removed-row count, while the existing `extract_keys` signature and behavior remain unchanged.",
+    "The implementation satisfies both keep policies and preserves the surviving rows\u2019 input order; the stats wrapper returns the deduplicated rows and correct duplicate count. The legacy function remains unchanged, and pytest passes all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.136,
+  "prompt_tokens": 3835,
+  "output_tokens": 674,
+  "estimated_usd": 0.005225,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

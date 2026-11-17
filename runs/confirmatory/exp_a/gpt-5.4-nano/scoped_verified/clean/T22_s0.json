@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds lru_set and lru_touch in src/lru_cap.py with correct OrderedDict recency handling and pinned-key eviction, and the updated test suite passes (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that T22 requirements are correctly implemented.",
+    "Diff shows new functions added and tests updated; need to ensure behavior matches requirements and run pytest to confirm no hidden regressions.",
+    "All tests pass and the implementation matches Req 1 and Req 2 semantics (OrderedDict recency via move_to_end; eviction skips pinned keys). No legacy signatures appear changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.186,
+  "prompt_tokens": 3090,
+  "output_tokens": 186,
+  "estimated_usd": 0.000958,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

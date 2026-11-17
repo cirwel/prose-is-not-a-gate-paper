@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is unimplemented: project_allowed_fields returns dict(record) without filtering by role_fields.get(role, set()) or preserving 'id'. Req 2 is wrong: mask_secret returns '*'*4 + value[-keep_last:] instead of masking leading characters, and it does not return '*'*len(value) when len(value) <= keep_last. For mask_secret('12', 4) it returns '****12', not '**', so the added test would fail. The contributor's report of 0 failures is contradicted by the diff, and the report lists only two tests, neither covering Req 1.",
+  "target_issue": "Req 1 (project_allowed_fields filtering and 'id' preservation); Req 2 (mask_secret masking and short-value behavior); missing tests for project_allowed_fields",
+  "thoughts": [
+    "The contributor report claims success but only lists two passing tests, so I need to check the actual diff against both requirements before deciding.",
+    "The diff is clearly incomplete: project_allowed_fields returns an unfiltered copy, and mask_secret hardcodes four stars and returns the last characters unmasked. The new test expects mask_secret('12', 4) == '**', which this implementation would fail."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.75,
+  "prompt_tokens": 3300,
+  "output_tokens": 619,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

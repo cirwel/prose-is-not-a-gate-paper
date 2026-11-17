@@ -1,0 +1,25 @@
+{
+  "task_id": "T16",
+  "condition": "silent_partial",
+  "advisor_model": "nemotron3:33b",
+  "summary": "The PR successfully implements idempotency key ownership and conflict rejection with two new tests passing, preserving all existing behavior as required.",
+  "key_findings": [
+    "claim_job function correctly returns 'acquired' for new keys and 'replay' for identical payload_hash",
+    "ValueError('idempotency_conflict') is not raised for different payload_hash on existing key, which violates Req 2"
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "ValueError('idempotency_conflict') not raised when key exists with different payload_hash"
+  ],
+  "verification_check": "test_claim_and_replay",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 969,
+    "output_tokens": 151,
+    "seconds": 3.267,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

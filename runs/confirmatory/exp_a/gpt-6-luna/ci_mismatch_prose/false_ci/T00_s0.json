@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`run_pytest` reports failures in both `test_legacy_sliding_window` and `test_weighted_request`. Fix the capacity check to reject only when adding the weight would exceed the effective limit, and restore the strict lower cutoff.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window; tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "I\u2019ll inspect the patch and run the test suite, paying particular attention to the requested API compatibility and weighted counting behavior.",
+    "The diff appears to count the exact cutoff timestamp despite the specified open lower bound, and its capacity check may reject requests that would fill (but not exceed) the limit. I\u2019ll run pytest to confirm the impact on existing tests.",
+    "The PR fails both reported tests: its `>=` capacity check rejects requests that would exactly fill the limit, breaking legacy behavior and the weighted-request case. It also changes the cutoff from `ts > now - window` to `>=`, contrary to the required active interval `(now - window, now]`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.944,
+  "prompt_tokens": 2835,
+  "output_tokens": 531,
+  "estimated_usd": 0.003967,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

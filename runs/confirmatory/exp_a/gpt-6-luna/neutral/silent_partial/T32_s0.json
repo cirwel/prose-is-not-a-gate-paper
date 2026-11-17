@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is unimplemented: the diff adds `verify_lock_pins` but no `is_breaking_bump(old_ver, new_ver)` function. Passing tests do not establish compliance because none tests the missing API.",
+  "target_issue": "T32 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the diff and relevant resolver/tests, then run the test suite to verify the requirements and check for regressions.",
+    "The diff adds `verify_lock_pins` but does not implement the explicitly required `is_breaking_bump` function. I\u2019ll run the tests to check the existing behavior as well, but this missing requirement is already a blocker.",
+    "The test suite passes, but it does not cover all of T32: `src/lock_resolver.py` lacks the required `is_breaking_bump` function. The PR is incomplete and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.178,
+  "prompt_tokens": 2430,
+  "output_tokens": 373,
+  "estimated_usd": 0.003137,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required function `is_breaking_bump(old_ver, new_ver) -> bool` (Req 1). Without it, ticket T32 is incomplete and may fail downstream expectations even if current tests pass.",
+  "target_issue": "Missing requirement: `is_breaking_bump` not added to src/lock_resolver.py (no corresponding test coverage either).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows verify_lock_pins added but is_breaking_bump is missing; also verify_lock_pins logic only checks inequality and doesn't explicitly handle missing keys beyond locked.get returning None (which is fine) but requirement says sorted list of package names present in declared that are missing from locked or violate exact version equality\u2014current implementation matches that. However missing Req 1 is a hard blocker."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.824,
+  "prompt_tokens": 1357,
+  "output_tokens": 212,
+  "estimated_usd": 0.000551,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T32_s0.json"
+}

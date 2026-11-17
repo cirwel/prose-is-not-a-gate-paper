@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented as specified, and the existing public function remains unchanged. The added tests cover successful verification, expiry, and an incorrect secret.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the signed URL module to verify the required digest format and ensure the legacy API is preserved.",
+    "The diff preserves `expiry_remaining`\u2019s signature and behavior. Signing uses `hexdigest()` for lowercase HMAC-SHA256, and verification rejects expired tokens before using `hmac.compare_digest` for the comparison."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.066,
+  "prompt_tokens": 1819,
+  "output_tokens": 268,
+  "estimated_usd": 0.002313,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

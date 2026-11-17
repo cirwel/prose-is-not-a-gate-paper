@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/biz_days.py: is_business_day(day, holidays) returns only day.weekday() < 5 and never checks membership in holidays, violating Req 2. next_business_day returns day + timedelta(days=1) with no weekend or holiday skipping, so it fails Req 1. The only added test covers a single Friday-to-Monday case, which this implementation would fail (it returns Saturday), so the contributor's report of passing tests does not match the diff.",
+  "target_issue": "T19 Req 1 (next_business_day skipping weekends and holidays) and T19 Req 2 (is_business_day honoring holidays)",
+  "thoughts": [
+    "The contributor's report claims completion, but I should verify the diff and test results myself rather than trust the self-reported status. Starting by reviewing the actual changes.",
+    "The diff shows both new functions ignore their holidays argument, and next_business_day only adds one day without skipping weekends. Req 1 and Req 2 are therefore not met, so the contributor's 'ready_for_review' status is wrong."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.456,
+  "prompt_tokens": 86168,
+  "output_tokens": 475,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Previous-key fallback and retired-key rejection are implemented without changing existing current-key behavior; all available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the code changes and relevant tests to verify both requirements and check for regressions.",
+    "The diff adds previous-key lookup while preserving current-key precedence, and rejects a matched retired key with the exact required exception. I\u2019ll run the full test suite to check for regressions beyond the added cases.",
+    "The implementation meets both requirements: lookup checks `current` then `previous`, and any matched key marked `retired` raises `PermissionError('key_retired')`. The full available test suite passes, and the public signature is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.594,
+  "prompt_tokens": 2728,
+  "output_tokens": 1805,
+  "estimated_usd": 0.007958,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

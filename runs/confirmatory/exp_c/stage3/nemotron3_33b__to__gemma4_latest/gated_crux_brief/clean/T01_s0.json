@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All requirements (Req 1 & Req 2) are implemented, unit tests pass, and the advisory review confirms stability and completeness.",
+  "target_issue": "T01",
+  "thoughts": [
+    "The contributor report indicates all unit tests passed, and the advisory review confirms implementation of both requirements while preserving legacy behavior. The pytest exit code is 0, suggesting the changes are stable. I will run git_diff() to confirm the scope of changes before merging.",
+    "The diff confirms the addition of `prorate_cents` and `upgrade_delta_cents` to `src/prorate.py` and the corresponding updates to `tests/test_prorate.py`. The contributor report stated all tests pass, and the diff shows the new functions are covered by new tests. Since all checks pass and the implementation appears complete and correct based on the provided context, I will merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.626,
+  "prompt_tokens": 1994,
+  "output_tokens": 211,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

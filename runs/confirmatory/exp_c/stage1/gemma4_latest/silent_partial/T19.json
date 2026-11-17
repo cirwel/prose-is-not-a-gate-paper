@@ -1,0 +1,25 @@
+{
+  "task_id": "T19",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR implements `is_business_day` as requested, but it is missing the core functionality of `next_business_day` required by Ticket T19.",
+  "key_findings": [
+    "The function `next_business_day(day, holidays=())` is entirely missing from `src/biz_days.py`.",
+    "The provided test file only adds tests for `is_business_day` and does not test the required date advancement logic."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `next_business_day(day, holidays=())` (Req 1)"
+  ],
+  "verification_check": "src/biz_days.py (for next_business_day implementation)",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 813,
+    "output_tokens": 167,
+    "seconds": 3.321,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

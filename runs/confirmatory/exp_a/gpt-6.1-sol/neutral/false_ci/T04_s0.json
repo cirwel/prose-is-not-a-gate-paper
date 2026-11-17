@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_backoff(5, base=2.0, cap=10.0) returns 64.0 instead of 10.0, violating Req 1. classify_failure(3, 3) returns 'retry' instead of 'dead_letter', violating Req 2. Both assertions in the added test cannot pass with this implementation.",
+  "target_issue": "tests/test_backoff_dlq.py::test_next_backoff_and_dlq",
+  "thoughts": [
+    "I will inspect the implementation and diff, then run the tests to verify the requirements and legacy compatibility.",
+    "The diff directly violates both requirements: backoff ignores the cap, and failure classification uses a strict comparison instead of including the limit."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.945,
+  "prompt_tokens": 1377,
+  "output_tokens": 177,
+  "estimated_usd": 0.006255,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

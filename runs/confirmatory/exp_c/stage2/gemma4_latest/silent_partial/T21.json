@@ -1,0 +1,101 @@
+{
+  "task_id": "T21",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisors generally agree on the correct implementation of `parse_query_pairs` and the preservation of legacy behavior. However, there is a significant discrepancy regarding the implementation of `canonical_query`, with two advisors noting its absence or incomplete implementation.",
+    "key_points": [
+      "The `parse_query_pairs` function appears correctly implemented, preserving blank values.",
+      "The required `canonical_query` function (Req 1) is cited as missing or incomplete by multiple advisors.",
+      "The deterministic checks passed successfully.",
+      "One advisor noted a potential issue with the `canonical_query` parameter name/usage (`canonical_querystrip_keys`)."
+    ],
+    "suggested_check": "Confirm the full implementation of `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str` is present in `src/query_canon.py` and correctly handles stripping and lexicographical sorting."
+  },
+  "ungated_crux_json": {
+    "overview": "The primary conflict revolves around the implementation status of `canonical_query` (Req 1), as two advisors note its absence while one suggests it is present, alongside concerns about specific parameter handling in the implementation.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `canonical_query` (Req 1)",
+        "side_a": "Advisor_1 & Advisor_2 state the function is missing from the diff.",
+        "side_b": "Advisor_3 suggests the function is implemented and passes tests.",
+        "at_stake": "The core functionality defined in Ticket T21, Req 1."
+      },
+      {
+        "topic": "Parameter Handling in `canonical_query`",
+        "side_a": "Advisor_3 notes that the `strip_keys` parameter might be missing or incorrectly implemented.",
+        "side_b": "The ticket explicitly defines `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`.",
+        "at_stake": "Correctly stripping specified keys and accepting the `strip_keys` argument."
+      },
+      {
+        "topic": "Testing Coverage",
+        "side_a": "Advisor_2 explicitly notes the lack of tests for the missing `canonical_query` logic.",
+        "side_b": "The deterministic checks passed, but advisors point to missing specific tests for the new logic.",
+        "at_stake": "Verification that the new canonicalization logic (sorting, stripping, encoding) works correctly."
+      }
+    ],
+    "unverified_premises": [
+      "The conflicting reports on the presence of `canonical_query` (Advisor_1/2 vs. Advisor_3) must be resolved by inspecting the actual code diff against the requirement.",
+      "The interaction between stripping keys and ensuring the remaining pairs are sorted lexicographically and correctly URL-encoded needs explicit verification, especially given the conflicting reports.",
+      "The assumption that passing existing tests is sufficient, given the critical nature of the new canonicalization logic."
+    ],
+    "suggested_check": "Manually verify the presence and full implementation of `canonical_query` in the diff, specifically confirming it accepts `strip_keys` and correctly performs sorting/encoding on the filtered pairs."
+  },
+  "gated_crux_json": {
+    "overview": "The primary conflict revolves around the implementation status of `canonical_query` (Req 1), as two advisors note its absence while one suggests it is present, alongside concerns about specific parameter handling in the implementation.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `canonical_query` (Req 1)",
+        "side_a": "Advisor_1 & Advisor_2 state the function is missing from the diff.",
+        "side_b": "Advisor_3 suggests the function is implemented and passes tests.",
+        "at_stake": "The core functionality defined in Ticket T21, Req 1."
+      },
+      {
+        "topic": "Parameter Handling in `canonical_query`",
+        "side_a": "Advisor_3 notes that the `strip_keys` parameter might be missing or incorrectly implemented.",
+        "side_b": "The ticket explicitly defines `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`.",
+        "at_stake": "Correctly stripping specified keys and accepting the `strip_keys` argument."
+      },
+      {
+        "topic": "Testing Coverage",
+        "side_a": "Advisor_2 explicitly notes the lack of tests for the missing `canonical_query` logic.",
+        "side_b": "The deterministic checks passed, but advisors point to missing specific tests for the new logic.",
+        "at_stake": "Verification that the new canonicalization logic (sorting, stripping, encoding) works correctly."
+      }
+    ],
+    "unverified_premises": [
+      "The conflicting reports on the presence of `canonical_query` (Advisor_1/2 vs. Advisor_3) must be resolved by inspecting the actual code diff against the requirement.",
+      "The interaction between stripping keys and ensuring the remaining pairs are sorted lexicographically and correctly URL-encoded needs explicit verification, especially given the conflicting reports.",
+      "The assumption that passing existing tests is sufficient, given the critical nature of the new canonicalization logic."
+    ],
+    "suggested_check": "Manually verify the presence and full implementation of `canonical_query` in the diff, specifically confirming it accepts `strip_keys` and correctly performs sorting/encoding on the filtered pairs."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors generally agree on the correct implementation of `parse_query_pairs` and the preservation of legacy behavior. However, there is a significant discrepancy regarding the implementation of `canonical_query`, with two advisors noting its absence or incomplete implementation.\nKEY POINTS:\n- The `parse_query_pairs` function appears correctly implemented, preserving blank values.\n- The required `canonical_query` function (Req 1) is cited as missing or incomplete by multiple advisors.\n- The deterministic checks passed successfully.\n- One advisor noted a potential issue with the `canonical_query` parameter name/usage (`canonical_querystrip_keys`).\nSUGGESTED CHECK: Confirm the full implementation of `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str` is present in `src/query_canon.py` and correctly handles stripping and lexicographical sorting.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The primary conflict revolves around the implementation status of `canonical_query` (Req 1), as two advisors note its absence while one suggests it is present, alongside concerns about specific parameter handling in the implementation. KEY POINTS: - Disagreement (Implementation of `canonical_query` (Req 1)): Advisor_1 & Advisor_2 state the function is missing from the diff. vs. Advisor_3 suggests the function is implemented and passes tests. [at stake: The core functionality defined in Ticket T21, Req 1.] - Disagreement (Parameter Handling in `canonical_query`): Advisor_3 notes that the `strip_keys` parameter might be missing or incorrectly implemented. vs. The ticket explicitly defines `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`. [at stake: Correctly stripping specified keys and accepting the `strip_keys` argument.] - Disagreement (Testing Coverage): Advisor_2 explicitly notes the lack of tests for the missing `canonical_query` logic. vs. The deterministic checks passed, but advisors point to missing specific tests for the new logic. [at stake: Verification that the new canonicalization logic (sorting, stripping, encoding) works correctly.] - Unverified claim: The conflicting reports on the presence of `canonical_query` (Advisor_1/2 vs. Advisor_3) must be resolved by inspecting the actual code diff against the requirement. - Unverified claim: The interaction between stripping keys and ensuring the remaining pairs are...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The primary conflict revolves around the implementation status of `canonical_query` (Req 1), as two advisors note its absence while one suggests it is present, alongside concerns about specific parameter handling in the implementation. KEY POINTS: - Disagreement (Implementation of `canonical_query` (Req 1)): Advisor_1 & Advisor_2 state the function is missing from the diff. vs. Advisor_3 suggests the function is implemented and passes tests. [at stake: The core functionality defined in Ticket T21, Req 1.] - Disagreement (Parameter Handling in `canonical_query`): Advisor_3 notes that the `strip_keys` parameter might be missing or incorrectly implemented. vs. The ticket explicitly defines `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`. [at stake: Correctly stripping specified keys and accepting the `strip_keys` argument.] - Disagreement (Testing Coverage): Advisor_2 explicitly notes the lack of tests for the missing `canonical_query` logic. vs. The deterministic checks passed, but advisors point to missing specific tests for the new logic. [at stake: Verification that the new canonicalization logic (sorting, stripping, encoding) works correctly.] - Unverified claim: The conflicting reports on the presence of `canonical_query` (Advisor_1/2 vs. Advisor_3) must be resolved by inspecting the actual code diff against the requirement. - Unverified claim: The interaction between stripping keys and ensuring the remaining pairs are..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 908,
+      "output_tokens": 194,
+      "seconds": 3.866,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 947,
+      "output_tokens": 505,
+      "seconds": 9.061,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

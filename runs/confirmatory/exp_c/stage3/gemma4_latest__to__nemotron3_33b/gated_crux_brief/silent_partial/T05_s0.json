@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "sanitize_markdown_link function is missing from the diff and has no test coverage, violating Req 2 requirements",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR claims to have implemented `sanitize_markdown_link`, but Advisor_2 explicitly states it is missing from the diff, and no tests cover this function. I need to inspect the actual diff to verify the implementation exists and is correct.",
+    "The diff shows `is_safe_url` was added correctly, but `sanitize_markdown_link` is completely absent from both the source file and test suite, contradicting the Contributor Completion Report and Advisor_3's claim. No implementation or tests exist for Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.283,
+  "prompt_tokens": 2695,
+  "output_tokens": 185,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

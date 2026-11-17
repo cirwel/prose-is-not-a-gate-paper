@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_query_pairs(\"??x=1\") returns [(\"x\", \"1\")] instead of [(\"?x\", \"1\")] because lstrip(\"?\") strips both characters. Remove at most one leading delimiter and add a regression test.",
+  "target_issue": "src/query_canon.py::parse_query_pairs",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run pytest to verify the contributor's report.",
+    "The diff adds a query-pair parser with blank-value preservation. I will locate the ticket requirements and repository files to check the intended behavior.",
+    "I will read the complete source file to check the implementation and any documented constraints.",
+    "The parser uses the standard library and leaves the existing function unchanged. I will read the complete tests to verify the behavior they cover.",
+    "The use of lstrip(\"?\") removes every leading question mark, potentially altering a query key that starts with a literal question mark. I will run the test suite to check its current status.",
+    "Both tests pass, but the parser removes all leading question marks rather than just the optional query delimiter. This corrupts valid query keys containing a leading literal question mark."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.698,
+  "prompt_tokens": 5315,
+  "output_tokens": 1252,
+  "estimated_usd": 0.030969,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented: apply_credit_memo returns paid_cents - credit_cents without clamping, producing -500 instead of 0 when credit exceeds paid. Req 2 not implemented: credit_with_tax_cents divides by 100 instead of 10_000, yielding 18500 instead of expected 2165.",
+  "target_issue": "tests/test_credit_memo.py::test_apply_credit_clamped; tests/test_credit_memo.py::test_credit_with_tax",
+  "thoughts": [
+    "I will inspect the diff and run the test suite in the contrib/fix branch to ensure the new T13 requirements are implemented without breaking legacy behavior.",
+    "The PR adds the requested functions but Req 1 is not implemented correctly (no clamping) and Req 2 uses the wrong divisor (100 instead of 10_000). I will run pytest to confirm failures, but the diff already indicates production regression risk.",
+    "Pytest confirms the PR is broken: apply_credit_memo does not clamp negatives and credit_with_tax_cents uses the wrong tax basis divisor. This would cause production regressions, so I will hold the PR until corrected."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.938,
+  "prompt_tokens": 2746,
+  "output_tokens": 281,
+  "estimated_usd": 0.000968,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

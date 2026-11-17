@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (deduplicate_rows with keep='first'/'last' preserving order) and Req 2 (deduplicate_rows_with_stats returning (unique_rows, duplicate_count)) without altering legacy public function signatures; pytest in contrib/fix shows 0 failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite in the PR branch to confirm T15 requirements and legacy signatures are preserved.",
+    "Diff looks complete for T15 and tests were added for first/last and stats. I will run pytest in the contrib/fix worktree to confirm no regressions and that legacy signatures remain intact.",
+    "All added tests pass and the diff preserves the existing extract_keys signature while adding the required new APIs for T15."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.973,
+  "prompt_tokens": 3270,
+  "output_tokens": 206,
+  "estimated_usd": 0.001023,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

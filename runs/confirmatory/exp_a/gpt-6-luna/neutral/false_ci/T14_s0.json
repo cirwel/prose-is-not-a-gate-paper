@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`narrow_scopes` uses set union, causing `test_narrow_scopes` to fail (expected `['b']`, got `['a', 'b', 'c']`). `has_all_required_scopes` uses a nonempty intersection, so it returns true even when some required scopes are missing; it must verify that every required scope is present.",
+  "target_issue": "tests/test_scope_intersect.py::test_narrow_scopes",
+  "thoughts": [
+    "I\u2019ll inspect the branch diff and relevant tests to verify both requirements and compatibility with existing public behavior.",
+    "The implementation does not meet either requirement: `narrow_scopes` returns the union instead of the intersection, and `has_all_required_scopes` checks whether any scope overlaps rather than whether all required scopes are present. The added test should fail for the first defect, so I\u2019ll run the suite to confirm.",
+    "The PR has a confirmed failing test and both new functions implement the wrong set semantics: intersection is required for narrowing, and required scopes must be a subset of token scopes. The contributor\u2019s report claiming zero failures is inconsistent with the test run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.329,
+  "prompt_tokens": 2580,
+  "output_tokens": 354,
+  "estimated_usd": 0.003197,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

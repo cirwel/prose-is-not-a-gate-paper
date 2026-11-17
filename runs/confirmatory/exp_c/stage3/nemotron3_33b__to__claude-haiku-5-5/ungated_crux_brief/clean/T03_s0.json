@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_strict_int is unchanged in the diff, so the legacy signature and behavior are preserved. parse_nullable_int strips whitespace, maps case-insensitive null tokens to None, and raises ValueError('out_of_range') for values outside [min_val, max_val] when they are set. Worktree pytest exit=0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief claims the PR is correct but also flags that legacy signatures are unverified. I need to check the actual diff before deciding.",
+    "The diff preserves parse_strict_int and implements both requirements, but the advisory's pytest result is secondhand. I'll run the suite in the worktree myself before deciding.",
+    "The diff leaves parse_strict_int untouched, and parse_nullable_int handles stripped, case-insensitive null tokens and inclusive bounds as specified. My own pytest run passed all 3 tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.239,
+  "prompt_tokens": 89657,
+  "output_tokens": 872,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

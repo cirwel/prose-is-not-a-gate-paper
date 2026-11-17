@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Both reported tests fail in the supplied pytest run. The admission check should allow requests when the weighted active count is at most the effective limit, and timestamps exactly at `now - window` should remain excluded to preserve the specified open lower boundary.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window; tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both requirements and compatibility with the existing API.",
+    "The diff appears to change the window boundary and reject requests that would exactly fill the limit. I\u2019ll run the full test suite to check for regressions.",
+    "The PR is broken: both tests fail because admission checks `len(active) + weight >= eff_limit`, rejecting requests that exactly fill the limit; legacy requests with weight 1 also regress. It additionally changes the active-window boundary from `ts > cutoff` to `ts >= cutoff`, contrary to the specified `(now - window, now]` interval."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.545,
+  "prompt_tokens": 2789,
+  "output_tokens": 455,
+  "estimated_usd": 0.003687,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

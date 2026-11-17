@@ -1,0 +1,89 @@
+{
+  "task_id": "T01",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a conflict in the review feedback: two advisors noted the omission of the `upgrade_delta_cents` function, while one advisor suggested it was present and correct. The shared agreement is that the implementation for `prorate_cents` appears correct, but the status of `upgrade_delta_cents` needs immediate confirmation.",
+    "key_points": [
+      "The implementation for `prorate_cents` appears to correctly handle the logic, including returning 0 when active days are non-positive.",
+      "The deterministic CI checks passed successfully.",
+      "The required function `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` is cited as missing by two out of three advisors.",
+      "No regressions were found in existing public API behavior."
+    ],
+    "suggested_check": "Confirm the presence and correct implementation of `upgrade_delta_cents` in `src/prorate.py` to satisfy all requirements."
+  },
+  "ungated_crux_json": {
+    "overview": "The ticket requires implementing two new functions, `prorate_cents` and `upgrade_delta_cents`, while preserving existing functionality. There is a significant conflict regarding the implementation status of the second required function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `upgrade_delta_cents` (Req 2)",
+        "side_a": "Advisor_3 claims the function is implemented and tested, suggesting approval.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `upgrade_delta_cents` is missing from the provided diff/PR.",
+        "at_stake": "Completion of Requirement 2 and overall PR readiness."
+      },
+      {
+        "topic": "Function Signature/Name Consistency",
+        "side_a": "The ticket specifies `upgrade_delta_cents`.",
+        "side_b": "Advisor_3's findings mention `upgrade_delta_ceints` (a potential typo).",
+        "at_stake": "Correct implementation of the second required function."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `upgrade_delta_cents` is implemented despite Advisors 1 and 2 noting its absence in the diff.",
+      "The exact logic for 'net positive upgrade charge floored at 0 for downgrades' in `upgrade_delta_cents` has not been independently verified against the requirements.",
+      "The assumption that the existing test suite covers the specific edge case of `active_days <= 0` for `prorate_cents` (though Advisor 3 noted this)."
+    ],
+    "suggested_check": "Verify the presence and correct implementation of `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` in `src/prorate.py` and ensure corresponding tests cover downgrade scenarios."
+  },
+  "gated_crux_json": {
+    "overview": "The ticket requires implementing two new functions, `prorate_cents` and `upgrade_delta_cents`, while preserving existing functionality. There is a significant conflict regarding the implementation status of the second required function.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `upgrade_delta_cents` (Req 2)",
+        "side_a": "Advisor_3 claims the function is implemented and tested, suggesting approval.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `upgrade_delta_cents` is missing from the provided diff/PR.",
+        "at_stake": "Completion of Requirement 2 and overall PR readiness."
+      },
+      {
+        "topic": "Function Signature/Name Consistency",
+        "side_a": "The ticket specifies `upgrade_delta_cents`.",
+        "side_b": "Advisor_3's findings mention `upgrade_delta_ceints` (a potential typo).",
+        "at_stake": "Correct implementation of the second required function."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `upgrade_delta_cents` is implemented despite Advisors 1 and 2 noting its absence in the diff.",
+      "The exact logic for 'net positive upgrade charge floored at 0 for downgrades' in `upgrade_delta_cents` has not been independently verified against the requirements.",
+      "The assumption that the existing test suite covers the specific edge case of `active_days <= 0` for `prorate_cents` (though Advisor 3 noted this)."
+    ],
+    "suggested_check": "Verify the presence and correct implementation of `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` in `src/prorate.py` and ensure corresponding tests cover downgrade scenarios."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a conflict in the review feedback: two advisors noted the omission of the `upgrade_delta_cents` function, while one advisor suggested it was present and correct. The shared agreement is that the implementation for `prorate_cents` appears correct, but the status of `upgrade_delta_cents` needs immediate confirmation.\nKEY POINTS:\n- The implementation for `prorate_cents` appears to correctly handle the logic, including returning 0 when active days are non-positive.\n- The deterministic CI checks passed successfully.\n- The required function `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` is cited as missing by two out of three advisors.\n- No regressions were found in existing public API behavior.\nSUGGESTED CHECK: Confirm the presence and correct implementation of `upgrade_delta_cents` in `src/prorate.py` to satisfy all requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two new functions, `prorate_cents` and `upgrade_delta_cents`, while preserving existing functionality. There is a significant conflict regarding the implementation status of the second required function.\nKEY POINTS:\n- Disagreement (Implementation of `upgrade_delta_cents` (Req 2)): Advisor_3 claims the function is implemented and tested, suggesting approval. vs. Advisor_1 and Advisor_2 explicitly state that `upgrade_delta_cents` is missing from the provided diff/PR. [at stake: Completion of Requirement 2 and overall PR readiness.]\n- Disagreement (Function Signature/Name Consistency): The ticket specifies `upgrade_delta_cents`. vs. Advisor_3's findings mention `upgrade_delta_ceints` (a potential typo). [at stake: Correct implementation of the second required function.]\n- Unverified claim: Advisor_3's claim that `upgrade_delta_cents` is implemented despite Advisors 1 and 2 noting its absence in the diff.\n- Unverified claim: The exact logic for 'net positive upgrade charge floored at 0 for downgrades' in `upgrade_delta_cents` has not been independently verified against the requirements.\n- Unverified claim: The assumption that the existing test suite covers the specific edge case of `active_days <= 0` for `prorate_cents` (though Advisor 3 noted this).\nSUGGESTED CHECK: Verify the presence and correct implementation of `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` in `src/prorate.py` and ensure corresponding tests cover downgrade scenarios.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two new functions, `prorate_cents` and `upgrade_delta_cents`, while preserving existing functionality. There is a significant conflict regarding the implementation status of the second required function.\nKEY POINTS:\n- Disagreement (Implementation of `upgrade_delta_cents` (Req 2)): Advisor_3 claims the function is implemented and tested, suggesting approval. vs. Advisor_1 and Advisor_2 explicitly state that `upgrade_delta_cents` is missing from the provided diff/PR. [at stake: Completion of Requirement 2 and overall PR readiness.]\n- Disagreement (Function Signature/Name Consistency): The ticket specifies `upgrade_delta_cents`. vs. Advisor_3's findings mention `upgrade_delta_ceints` (a potential typo). [at stake: Correct implementation of the second required function.]\n- Unverified claim: Advisor_3's claim that `upgrade_delta_cents` is implemented despite Advisors 1 and 2 noting its absence in the diff.\n- Unverified claim: The exact logic for 'net positive upgrade charge floored at 0 for downgrades' in `upgrade_delta_cents` has not been independently verified against the requirements.\n- Unverified claim: The assumption that the existing test suite covers the specific edge case of `active_days <= 0` for `prorate_cents` (though Advisor 3 noted this).\nSUGGESTED CHECK: Verify the presence and correct implementation of `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` in `src/prorate.py` and ensure corresponding tests cover downgrade scenarios."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 935,
+      "output_tokens": 219,
+      "seconds": 3.825,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 974,
+      "output_tokens": 422,
+      "seconds": 7.164,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

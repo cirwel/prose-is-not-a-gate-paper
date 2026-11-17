@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 uses math.floor instead of math.ceil, so retry_after_seconds(2.1, 2.0) returns 1 instead of 2. Req 2 lacks a lower clamp, so cap_backoff_delay(-3.0) returns -3.0 instead of 0.0. Both corresponding tests fail.",
+  "target_issue": "tests/test_retry_after.py::test_retry_after_seconds; tests/test_retry_after.py::test_cap_backoff_delay",
+  "thoughts": [
+    "I will inspect the diff and module tests to verify both requirements and preservation of legacy behavior.",
+    "The diff uses floor instead of the required ceiling and does not clamp negative backoff delays to zero. I will run the tests to confirm these defects.",
+    "The test run confirms both new functions violate the ticket requirements, despite the contributor's clean-test report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 192.695,
+  "prompt_tokens": 2756,
+  "output_tokens": 244,
+  "estimated_usd": 0.011196,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

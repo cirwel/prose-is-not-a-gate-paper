@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/ledger_round.py does not define split_cents_exact(total_cents, weights), so it provides neither integer-share allocation conserving total cents nor the required fractional-remainder distribution and index tie-breaking.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I will inspect the implementation and tests against both requirements and check for legacy behavior changes.",
+    "The diff adds reconciliation but no split function; I will confirm the full target module before deciding.",
+    "The full module confirms that reconciliation is implemented but the required exact split function is absent. Passing the reported tests does not establish completion of Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 588.824,
+  "prompt_tokens": 2204,
+  "output_tokens": 1997,
+  "estimated_usd": 0.030576,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

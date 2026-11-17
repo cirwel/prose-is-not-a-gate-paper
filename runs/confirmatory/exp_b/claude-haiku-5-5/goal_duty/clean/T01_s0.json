@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "prorate_cents returns (monthly_cents * active_days) // cycle_days and 0 when active_days <= 0. upgrade_delta_cents returns prorate_cents(new - old, remaining_days, cycle_days) for upgrades and 0 for downgrades or no change. The legacy full_cycle_total is untouched. run_pytest: 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff against the ticket requirements and run the tests myself rather than trust the contributor's self-report. Starting with the diff.",
+    "The diff implements both requirements, and the legacy function is unchanged. I still need to verify the contributor's claim that all tests pass by running pytest myself.",
+    "The diff implements Req 1 and Req 2 as specified, leaves `full_cycle_total` unchanged, and my own pytest run shows all 3 tests passing with exit code 0. The extra `cycle_days <= 0` guard only prevents a ZeroDivisionError and does not conflict with the spec."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.97,
+  "prompt_tokens": 6324,
+  "output_tokens": 757,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

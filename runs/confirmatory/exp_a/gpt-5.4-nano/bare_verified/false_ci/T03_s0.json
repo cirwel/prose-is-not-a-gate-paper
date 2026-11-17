@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not fully met: code checks `raw.strip() in null_tokens` without lowercasing, so case-insensitive null tokens like 'NULL' will not be treated as None. Req 2 not fully met: bounds enforcement only checks `min_val` and ignores `max_val`, so values above max won't raise ValueError('out_of_range').",
+  "target_issue": "tests/test_nullable_int.py::test_bounds_and_case_null (likely fails due to missing case-insensitive handling and missing max_val bound check)",
+  "thoughts": [
+    "I need to inspect the actual PR diff and run the test suite to ensure no regressions and that requirements are implemented correctly.",
+    "Reviewing the diff: parse_nullable_int is added but null token handling is not case-insensitive and whitespace/case normalization is incomplete; also bounds check is missing max_val enforcement. Need to run tests to confirm, but likely failing requirement T03."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.946,
+  "prompt_tokens": 1371,
+  "output_tokens": 220,
+  "estimated_usd": 0.000563,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

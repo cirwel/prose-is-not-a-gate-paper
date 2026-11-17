@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements cache_get (Req 1) but does not implement purge_expired(store, now) (Req 2). Merging would not satisfy the ticket requirement to evict stale TTL cache entries / purge expired batch keys.",
+  "target_issue": "Missing requirement: purge_expired(store, now) not implemented (no corresponding function/tests).",
+  "thoughts": [
+    "Need to verify PR diff and run tests; also confirm Req 2 implementation status in code.",
+    "Diff shows Req 1 implemented but Req 2 (purge_expired) missing; must run tests to confirm no other breakage, then decide hold due to incomplete requirements.",
+    "Req 1 is implemented and tests pass, but Req 2 (purge_expired) is not present in the diff, so the ticket is incomplete and merging would leave stale/expired entries unpurged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.934,
+  "prompt_tokens": 2490,
+  "output_tokens": 224,
+  "estimated_usd": 0.000847,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

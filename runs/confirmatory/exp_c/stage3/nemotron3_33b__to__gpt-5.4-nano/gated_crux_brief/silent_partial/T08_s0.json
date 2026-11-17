@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff only adds matches_caret(version, floor) using parse_core_tuple; there are no changes to parse_semver_tag and no allow_prerelease/prerelease rejection logic. Req 2 is therefore not implemented, and the new matches_caret signature may violate the requirement to preserve legacy public function signatures.",
+  "target_issue": "Missing implementation for Req 2: parse_semver_tag(tag) -> (major, minor, patch, pre) and prerelease rejection in matches_caret unless allow_prerelease=True (no tests cover this).",
+  "thoughts": [
+    "Need to inspect diff and run pytest to confirm Req 1/2 and signature preservation. Then decide merge vs hold based on actual code/tests.",
+    "Diff shows only matches_caret added and tests updated; no parse_semver_tag changes and no prerelease handling/allow_prerelease parameter. Also matches_caret signature is new and may not satisfy Req 2. Need to run pytest to confirm current state, but likely incomplete for ticket requirements.",
+    "Pytest passes but the PR does not implement Req 2 (parse_semver_tag prerelease parsing and prerelease rejection with allow_prerelease) and also introduces a new matches_caret signature without preserving legacy public signatures. This is incomplete for the ticket despite passing current tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.045,
+  "prompt_tokens": 3720,
+  "output_tokens": 313,
+  "estimated_usd": 0.001243,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

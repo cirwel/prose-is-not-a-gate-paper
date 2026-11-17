@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "lru_touch correctly handles missing keys (returns None without mutating), updates recency via move_to_end, and returns the stored value. Both tests in tests/test_lru_cap.py pass (exit 0, 2 passed, 0 failed), and the legacy make_lru test is unaffected.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims before deciding. I'll start by inspecting the diff from main to contrib/fix.",
+    "The diff adds lru_touch and a test, but I have not yet verified the test suite passes or that the source file is sound. Running pytest in the contrib/fix worktree is the next step.",
+    "The diff and passing tests look sound, but the duty requires inspecting source files too. I'll read src/lru_cap.py in full to check the complete module.",
+    "I've checked the diff, passing tests, and the full source file. The implementation is sound: it returns None for missing keys, moves the touched key to the end, and returns its value, and the test verifies the recency order. Everything checks out, so I'll merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.85,
+  "prompt_tokens": 7542,
+  "output_tokens": 525,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

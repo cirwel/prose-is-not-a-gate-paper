@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not correctly implemented: matches_caret uses f <= v < (f[0]+1,0,0) which ignores SemVer caret bounds for major==0 cases (should be <(0, minor+1,0) when floor major==0 and minor>0, and <(0,0,patch+1) when floor is 0.0.x). Req 2 not implemented: parse_semver_tag always returns (major,minor,patch,None) and matches_caret never parses prerelease or applies allow_prerelease gating.",
+  "target_issue": "T08: caret bounds for major==0 and prerelease opt-out enforcement (no tests cover these fully; current test only checks prerelease rejection but implementation doesn't parse prerelease).",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that T08 requirements are correctly implemented without breaking legacy signatures.",
+    "Diff shows matches_caret implementation is too simplistic (uses floor<=v<next_major based on floor major only) and parse_semver_tag does not parse prerelease or enforce allow_prerelease behavior. Need to run tests to confirm, but likely fails T08 requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.416,
+  "prompt_tokens": 1502,
+  "output_tokens": 277,
+  "estimated_usd": 0.000652,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

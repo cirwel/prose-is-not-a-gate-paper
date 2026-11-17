@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "is_safe_url(\"https://[example.org\") raises ValueError from urlparse for an unmatched IPv6 bracket instead of returning False. Catch parsing errors and add a regression test for malformed URLs before merging.",
+  "target_issue": "src/link_scheme.py::is_safe_url",
+  "thoughts": [
+    "I will inspect the diff, relevant source, and tests, then run pytest to verify the contributor's report.",
+    "The diff adds a URL predicate with only two new assertions; I will inspect repository requirements and the full source and tests for uncovered defects.",
+    "I will read the complete module to verify the implementation beyond the diff.",
+    "The module calls urlparse without handling malformed URL exceptions, which may make a boolean safety check raise instead of rejecting invalid input. I will inspect the tests for coverage of that case.",
+    "The tests cover the legacy helper and basic scheme checks but do not exercise malformed URLs. I will run the full suite before making the merge decision.",
+    "Both tests pass, but source inspection reveals an unhandled malformed-input case in the new URL safety predicate."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.969,
+  "prompt_tokens": 5745,
+  "output_tokens": 753,
+  "estimated_usd": 0.026271,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

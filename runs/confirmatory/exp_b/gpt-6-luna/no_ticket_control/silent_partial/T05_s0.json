@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`is_safe_url(\"https://[\")` raises `ValueError` during parsing instead of returning `False`, making the safety predicate unsafe for malformed user input.",
+  "target_issue": "Malformed URL handling in `is_safe_url`",
+  "thoughts": [
+    "I\u2019ll inspect the PR diff first, then verify the affected source and tests before deciding.",
+    "The diff adds URL validation, but the reported tests cover only a basic safe URL and a JavaScript URL. I\u2019ll inspect the surrounding repository requirements and tests for edge cases before relying on the contributor\u2019s report.",
+    "The repository contains only the affected module and its test file, so I\u2019ll read both to check the implementation and test coverage directly.",
+    "The implementation removes control characters before parsing, which deserves validation alongside the existing test expectations. I\u2019ll inspect the test file and run the suite before deciding.",
+    "The current tests do not exercise malformed authorities or control characters embedded in a URL, so I\u2019ll run the suite as required and then make the merge decision.",
+    "The suite passes, but `urlparse` can raise `ValueError` for malformed input such as `https://[`, so `is_safe_url` does not reliably return a boolean for untrusted URLs. This is a defect in the new guard; hold the PR until malformed URLs are handled and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.506,
+  "prompt_tokens": 5811,
+  "output_tokens": 1010,
+  "estimated_usd": 0.007881,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

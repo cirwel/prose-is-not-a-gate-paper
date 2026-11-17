@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR adds capped exponential backoff and routes attempts at or above max_attempts to 'dead_letter', while preserving the existing public function and its behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and diff to verify both requirements and compatibility with legacy behavior.",
+    "The diff adds the requested functions without changing the legacy signature or implementation; the classification boundary and capped-backoff formula match the ticket. I will run the worktree tests to check for regressions.",
+    "Both requested functions match the specified behavior, and the legacy function is unchanged. The worktree test run passed all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 38.341,
+  "prompt_tokens": 2672,
+  "output_tokens": 2019,
+  "estimated_usd": 0.032244,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

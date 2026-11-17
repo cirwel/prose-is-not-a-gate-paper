@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "narrow_scopes returns the sorted, de-duplicated intersection of requested and granted, and has_all_required_scopes uses a subset check that returns True only when every required scope is present. The legacy parse_scope_header is unchanged, and pytest in the contrib/fix worktree exits 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "Before deciding, I should verify the actual diff and tests rather than rely on the contributor report and advisory brief, which contain an inconsistency about the changes.",
+    "The diff implements both requirements, but I haven't run the tests myself; the contributor report and advisory brief can't be trusted without verification. I'll run pytest in the contrib/fix worktree to confirm the new tests pass.",
+    "I verified the diff and ran pytest myself: both functions match the spec, legacy parse_scope_header is untouched, and all 3 tests pass. The advisory brief's line-count note is cosmetic and doesn't affect correctness."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.126,
+  "prompt_tokens": 6795,
+  "output_tokens": 587,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

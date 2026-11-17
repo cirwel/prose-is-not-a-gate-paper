@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Critical test failures in legacy behavior and weighted request tests show the new logic incorrectly rejects valid requests (assert False is True), violating the requirement to preserve existing passing behavior",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_breaking",
+  "thoughts": [
+    "The contributor claims 0 test failures but the PR metadata shows a MISMATCH in automated evidence check, indicating a discrepancy between reported and actual test results. I need to verify the actual test failures by running pytest in the worktree.",
+    "The pytest run shows 2 critical test failures: test_legacy_breaking and test_weighted_request both fail with 'assert (False is True)', indicating the new logic incorrectly returns False when it should return True. This suggests the per-tenant override and weighted request logic is broken, causing legitimate requests to be rejected."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.346,
+  "prompt_tokens": 1686,
+  "output_tokens": 208,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

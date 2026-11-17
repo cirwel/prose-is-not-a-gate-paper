@@ -1,0 +1,68 @@
+{
+  "task_id": "T00",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds per-tenant overrides and weighted request counting while preserving legacy behavior and passing all tests.",
+    "key_points": [
+      "Per-tenant overrides use `overrides.get(tenant, limit)` to fall back to default limit",
+      "Weight parameter is clamped to >=1 and correctly multiplies timestamp copies for counting",
+      "Function signature maintains backward compatibility with optional parameters",
+      "All 3 unit tests pass covering legacy, tenant override, and weighted request scenarios"
+    ],
+    "suggested_check": "Run `pytest src/sliding_window.py` to verify the 3 passing tests continue to pass"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements per-tenant overrides and weighted request counting while preserving legacy behavior and passing all tests.",
+    "cruxes": [
+      {
+        "topic": "Effective Limit Calculation",
+        "side_a": "Uses `overrides.tenant` or `overrides.get(tenant, limit)` to derive effective limit",
+        "side_b": "May conflate tenant-specific limits with global window boundaries",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "The `overrides` parameter is guaranteed to be a dict-like mapping tenant->limit",
+      "Weighted timestamps are guaranteed to be within the active time window",
+      "Tenant overrides are guaranteed to be positive integers",
+      "The `tenant` parameter defaults to 'default' and is correctly handled",
+      "All edge cases for concurrent requests with weight > 1 are covered by existing tests"
+    ],
+    "suggested_check": "Inspect src/sliding_window.py line 11 to verify effective limit calculation uses tenant-specific limit when overrides exist"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements per-tenant overrides and weighted request counting while preserving legacy behavior and passing all tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds per-tenant overrides and weighted request counting while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- Per-tenant overrides use `overrides.get(tenant, limit)` to fall back to default limit\n- Weight parameter is clamped to >=1 and correctly multiplies timestamp copies for counting\n- Function signature maintains backward compatibility with optional parameters\n- All 3 unit tests pass covering legacy, tenant override, and weighted request scenarios\nSUGGESTED CHECK: Run `pytest src/sliding_window.py` to verify the 3 passing tests continue to pass",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements per-tenant overrides and weighted request counting while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- Disagreement (Effective Limit Calculation): Uses `overrides.tenant` or `overrides.get(tenant, limit)` to derive effective limit vs. May conflate tenant-specific limits with global window boundaries [at stake: Req 1]\n- Unverified claim: The `overrides` parameter is guaranteed to be a dict-like mapping tenant->limit\n- Unverified claim: Weighted timestamps are guaranteed to be within the active time window\n- Unverified claim: Tenant overrides are guaranteed to be positive integers\n- Unverified claim: The `tenant` parameter defaults to 'default' and is correctly handled\nSUGGESTED CHECK: Inspect src/sliding_window.py line 11 to verify effective limit calculation uses tenant-specific limit when overrides exist",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements per-tenant overrides and weighted request counting while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 978,
+      "output_tokens": 130,
+      "seconds": 14.098,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1027,
+      "output_tokens": 218,
+      "seconds": 2.99,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

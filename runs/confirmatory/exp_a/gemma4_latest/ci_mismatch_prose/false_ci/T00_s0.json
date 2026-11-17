@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed, indicating regressions in both legacy and weighted request testing, despite the contributor's report. Merging this would cause a production failure.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window, tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `pytest` failed in the worktree. I must run `pytest` to determine the actual state of the PR before making a decision.",
+    "The `run_pytest` tool confirms that the PR is broken, failing both `test_legacy_sliding_window` and `test_weighted_request`. Merging this will cause a production regression. I must hold the PR until the contributor fixes these failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.061,
+  "prompt_tokens": 1449,
+  "output_tokens": 204,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR is missing the implementation for `project_allowed_fields(record, role, role_fields)` as specified in Requirement 1 of Ticket T30. Only `mask_secret` appears to be implemented.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the status is 'ready_for_review'. I should first examine the changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even though tests passed.",
+    "The diff shows the addition of `mask_secret` to `src/field_mask.py` and the corresponding test in `tests/test_field_mask.py`. The requirements were: 1) Add `project_allowed_fields` (missing in the diff/report) and 2) Add `mask_secret`. The diff only shows `mask_secret` and does not show the implementation for `project_allowed_fields`. Since a required function (`project_allowed_fields`) is missing, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.876,
+  "prompt_tokens": 1530,
+  "output_tokens": 252,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

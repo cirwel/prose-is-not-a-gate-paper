@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`filter_attrs` returns `escape_html_text(v.strip())` rather than escaping the original kept value. For example, an allowed `title` value `\" hello \"` is returned without its surrounding spaces, although stripping is specified for the disallowed-value check. Preserve the original value when escaping it.",
+  "target_issue": "T17 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant files to verify both requirements and compatibility with existing behavior.",
+    "The diff appears to implement the requested escaping and filtering, but I\u2019ll run the test suite and inspect surrounding code for compatibility concerns.",
+    "All current tests pass, but the implementation strips attribute values before returning them, whereas the requirement only specifies using stripped values for the JavaScript-prefix check and escaping the kept values. I\u2019ll inspect the repository context before deciding whether this is a compatibility issue.",
+    "The tests pass, and `wrap_tag` retains its legacy signature and behavior. However, `filter_attrs` strips kept values before returning them; the ticket specifies stripped values for the JavaScript-prefix check, then escaping the kept values, so this silently changes otherwise allowed attribute values that contain surrounding whitespace."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.959,
+  "prompt_tokens": 4036,
+  "output_tokens": 913,
+  "estimated_usd": 0.006151,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

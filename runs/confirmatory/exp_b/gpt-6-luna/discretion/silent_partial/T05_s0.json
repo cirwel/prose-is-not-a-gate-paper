@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation does not provide `sanitize_markdown_link(label, url)`. Additionally, `is_safe_url` removes control characters before checking, allowing inputs containing control bytes to be accepted after alteration, contrary to Req 1.",
+  "target_issue": "T05 Req 2; T05 Req 1 control-byte rejection",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and relevant existing tests to verify the required behavior and compatibility.",
+    "The diff adds `is_safe_url` but omits the required `sanitize_markdown_link` function, so Req 2 is incomplete. It also strips control bytes before validation, which can turn an unsafe input into an accepted URL instead of rejecting it as required."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.465,
+  "prompt_tokens": 1332,
+  "output_tokens": 358,
+  "estimated_usd": 0.002211,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T05_s0.json"
+}

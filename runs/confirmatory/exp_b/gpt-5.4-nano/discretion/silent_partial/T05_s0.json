@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function sanitize_markdown_link(label, url) from src/link_scheme.py; only is_safe_url was added and tests cover only scheme guard, not markdown sanitization behavior.",
+  "target_issue": "Ticket T05 Req 2: missing sanitize_markdown_link implementation (no tests for markdown link sanitization).",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements T05 are fully implemented.",
+    "Diff shows is_safe_url added but sanitize_markdown_link (Req 2) is missing, and tests added are incomplete vs ticket requirements. Need to run pytest to confirm current state, but likely hold due to missing required function.",
+    "PR implements only Req 1 (is_safe_url) and adds minimal tests, but Req 2 (sanitize_markdown_link) is not present in the diff. This is incomplete relative to ticket T05 and risks missing functionality despite passing current tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.094,
+  "prompt_tokens": 2396,
+  "output_tokens": 236,
+  "estimated_usd": 0.000835,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T05_s0.json"
+}

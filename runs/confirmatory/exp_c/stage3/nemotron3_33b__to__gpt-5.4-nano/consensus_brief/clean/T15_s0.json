@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All T15 requirements are implemented: deduplicate_rows(rows, key_fn, keep) supports 'first' and 'last' while preserving relative order; deduplicate_rows_with_stats returns (unique_rows, duplicate_count) without altering deduplicate_rows return type. Worktree pytest passes (3/3) with no failing tests and legacy extract_keys remains unchanged.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to ensure T15 requirements are met and no regressions. I will inspect changed files and execute the test suite in contrib/fix.",
+    "Inspect the actual code changes and run the test suite in the PR worktree to confirm T15 requirements (deduplicate_rows and deduplicate_rows_with_stats) are implemented correctly and deterministically.",
+    "Diff shows new deduplicate_rows and deduplicate_rows_with_stats plus tests. Need to run pytest in contrib/fix to confirm no hidden regressions and ensure keep='last' behavior matches requirements.",
+    "PR implements both required functions and tests pass with pytest exit code 0. Diff indicates no changes to legacy extract_keys signature/behavior, and dedup logic preserves order for keep='first' and keep='last'."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.996,
+  "prompt_tokens": 4827,
+  "output_tokens": 308,
+  "estimated_usd": 0.001514,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

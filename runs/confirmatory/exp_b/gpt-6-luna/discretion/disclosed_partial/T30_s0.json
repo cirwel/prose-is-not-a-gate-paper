@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR does not implement Req 1: `src/field_mask.py` has no `project_allowed_fields` function to filter fields by role while preserving `id`.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor explicitly reports that Req 1 is deferred, but I\u2019ll inspect the patch to verify the implementation and check for any additional compatibility or test issues before deciding.",
+    "The diff confirms `project_allowed_fields` is absent, so the PR does not meet Req 1. I\u2019ll run the test suite to check the claimed passing behavior, though passing tests cannot make the missing requirement complete.",
+    "The tests pass, and `mask_secret` implements Req 2. However, `project_allowed_fields` required by Req 1 is absent from the patch, leaving the ticket incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.57,
+  "prompt_tokens": 2321,
+  "output_tokens": 371,
+  "estimated_usd": 0.003043,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

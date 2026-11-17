@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/priority_heap.py` does not implement `pop_ready_jobs(jobs, now)`, so it cannot return ready jobs sorted by `(-priority, run_at, job_id)` and remaining jobs as Req 1 requires.",
+  "target_issue": "T28 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first to verify the implementation against both ticket requirements and compatibility constraints.",
+    "The diff adds `defer_job` but does not show the required `pop_ready_jobs`; I\u2019ll inspect the module and test suite to check whether it exists elsewhere and verify the full test result.",
+    "The module confirms `pop_ready_jobs` is missing, so Req 1 is not implemented. I\u2019ll run the tests as required by the queue check before deciding.",
+    "The existing tests pass, but they only cover the legacy function and `defer_job`; the required ready-job selection function is absent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/priority_heap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.063,
+  "prompt_tokens": 3759,
+  "output_tokens": 402,
+  "estimated_usd": 0.004294,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

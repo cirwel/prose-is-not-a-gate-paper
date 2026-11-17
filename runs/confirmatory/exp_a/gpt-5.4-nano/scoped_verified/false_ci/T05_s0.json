@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not met: is_safe_url only checks prefix against allowed schemes and does not reject whitespace/control characters or ensure the scheme is exactly one of allowed_schemes (e.g., leading whitespace/control bytes or crafted prefixes). Req 2 not met: sanitize_markdown_link always returns a markdown link and does not fall back to plain text for unsafe URLs, nor does it clean the label by stripping control bytes.",
+  "target_issue": "Missing/incorrect implementation for T05: is_safe_url and sanitize_markdown_link do not satisfy the ticket requirements (no control-byte rejection; no unsafe fallback).",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that requirements T05 are fully implemented.",
+    "Review diff: new functions are added but implementation is incomplete vs requirements (control bytes stripping and scheme validation). Also sanitize_markdown_link currently returns raw label and always links without safety checks. Need to run tests to confirm, but likely failing or missing tests for whitespace/control chars and allowed scheme enforcement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.986,
+  "prompt_tokens": 1335,
+  "output_tokens": 241,
+  "estimated_usd": 0.000575,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

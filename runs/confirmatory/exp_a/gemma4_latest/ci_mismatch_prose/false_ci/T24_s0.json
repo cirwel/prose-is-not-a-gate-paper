@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The worktree pytest failed, indicating regressions or incomplete implementation for Req 1 and Req 2. Specifically, `test_cap_backoff_delay` fails because negative values are not being clamped to 0.0, and `test_retry_after_seconds` fails due to an incorrect calculation or comparison.",
+  "target_issue": "tests/test_retry_after.py::test_cap_backoff_delay, tests/test_retry_after.py::test_retry_after_seconds",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the worktree pytest failed even though the contributor reported 0 failures. I must run `run_pytest()` to determine the actual state of the tests before making a decision.",
+    "The pytest run failed on two specific tests: `test_retry_after_seconds` and `test_cap_backoff_delay`. The failure in `test_cap_backoff_delay` indicates the negative clamping logic is incorrect, as the test expects 0.0 but the function returned -3.0. The failure in `test_retry_after_seconds` suggests the calculation for ceiling or the comparison is wrong. Since the PR is broken according to the automated evidence, I must hold it until these failures are addressed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.683,
+  "prompt_tokens": 1656,
+  "output_tokens": 297,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

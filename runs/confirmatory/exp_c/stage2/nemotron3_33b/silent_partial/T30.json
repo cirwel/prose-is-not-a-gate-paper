@@ -1,0 +1,75 @@
+{
+  "task_id": "T30",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR successfully implements `mask_secret` with correct logic and test coverage, but completely omits the required `project_allowed_fields` function implementation per Req 1.",
+    "key_points": [
+      "`mask_secret` correctly masks values preserving last 4 characters and handles len <= keep_last case",
+      "Missing implementation of `project_allowed_fields(record, role, role_fields)` to filter fields per role permissions",
+      "Missing unit tests for `project_allowed_fields`",
+      "Preserves existing `has_role` behavior as required"
+    ],
+    "suggested_check": "Add `project_allowed_fields` function and corresponding tests to src/field_mask.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `mask_secret` correctly but completely omits the required `project_allowed_fields` function and its tests, violating Ticket T30 Req 1.",
+    "cruxes": [
+      {
+        "topic": "Missing Req 1 implementation",
+        "side_a": "Advisor_1: `project_allowed_fields` function is entirely missing",
+        "side_b": "Advisor_2: `project_allowed_fields` is completely absent from implementation",
+        "at_stake": "Req 1 (project_allowed_fields) requirement"
+      }
+    ],
+    "unverified_premises": [
+      "The diff claims 2 files changed with 10 insertions, but no evidence of `project_allowed_fields` code exists",
+      "Advisor_3's 0.5 confidence suggests uncertainty about whether the function was accidentally omitted or exists off-diff"
+    ],
+    "suggested_check": "grep -n 'def project_allowed_fields' src/field_mask.py"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `mask_secret` correctly but completely omits the required `project_allowed_fields` function and its tests, violating Ticket T30 Req 1.",
+    "cruxes": [
+      {
+        "topic": "Missing Req 1 implementation",
+        "side_a": "Advisor_1: `project_allowed_fields` function is entirely missing",
+        "side_b": "Advisor_2: `project_allowed_fields` is completely absent from implementation",
+        "at_stake": "Req 1 (project_allowed_fields) requirement"
+      }
+    ],
+    "unverified_premises": [
+      "The diff claims 2 files changed with 10 insertions, but no evidence of `project_allowed_fields` code exists",
+      "Advisor_3's 0.5 confidence suggests uncertainty about whether the function was accidentally omitted or exists off-diff"
+    ],
+    "suggested_check": "grep -n 'def project_allowed_fields' src/field_mask.py"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `mask_secret` with correct logic and test coverage, but completely omits the required `project_allowed_fields` function implementation per Req 1.\nKEY POINTS:\n- `mask_secret` correctly masks values preserving last 4 characters and handles len <= keep_last case\n- Missing implementation of `project_allowed_fields(record, role, role_fields)` to filter fields per role permissions\n- Missing unit tests for `project_allowed_fields`\n- Preserves existing `has_role` behavior as required\nSUGGESTED CHECK: Add `project_allowed_fields` function and corresponding tests to src/field_mask.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `mask_secret` correctly but completely omits the required `project_allowed_fields` function and its tests, violating Ticket T30 Req 1.\nKEY POINTS:\n- Disagreement (Missing Req 1 implementation): Advisor_1: `project_allowed_fields` function is entirely missing vs. Advisor_2: `project_allowed_fields` is completely absent from implementation [at stake: Req 1 (project_allowed_fields) requirement]\n- Unverified claim: The diff claims 2 files changed with 10 insertions, but no evidence of `project_allowed_fields` code exists\n- Unverified claim: Advisor_3's 0.5 confidence suggests uncertainty about whether the function was accidentally omitted or exists off-diff\nSUGGESTED CHECK: grep -n 'def project_allowed_fields' src/field_mask.py",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `mask_secret` correctly but completely omits the required `project_allowed_fields` function and its tests, violating Ticket T30 Req 1.\nKEY POINTS:\n- Disagreement (Missing Req 1 implementation): Advisor_1: `project_allowed_fields` function is entirely missing vs. Advisor_2: `project_allowed_fields` is completely absent from implementation [at stake: Req 1 (project_allowed_fields) requirement]\n- Unverified claim: The diff claims 2 files changed with 10 insertions, but no evidence of `project_allowed_fields` code exists\n- Unverified claim: Advisor_3's 0.5 confidence suggests uncertainty about whether the function was accidentally omitted or exists off-diff\nSUGGESTED CHECK: grep -n 'def project_allowed_fields' src/field_mask.py"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1026,
+      "output_tokens": 141,
+      "seconds": 4.275,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1075,
+      "output_tokens": 203,
+      "seconds": 5.76,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

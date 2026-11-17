@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required Req 1 (`split_cents_exact(total_cents, weights)`); only `reconcile_ledger` was added and tests were updated accordingly. Missing required functionality risks incomplete ticket delivery.",
+  "target_issue": "Missing implementation of `split_cents_exact` (Req 1).",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows reconcile_ledger added but split_cents_exact is not present; also tests only cover reconcile_ledger. Need to run pytest to confirm no hidden failures, but missing required function is a hard blocker."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.671,
+  "prompt_tokens": 1282,
+  "output_tokens": 160,
+  "estimated_usd": 0.00048,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T25_s0.json"
+}

@@ -1,0 +1,57 @@
+{
+  "task_id": "T26",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements nonce replay checking and pruning as required by T26, with tests confirming rejection of replays within TTL and bounded storage via expiry cleanup.",
+    "key_points": [
+      "Req 1: check_and_record_nonce correctly rejects nonces with expiry > now",
+      "Req 2: prune_expired_nonces removes expired entries before checking to bound store size",
+      "Legacy public signatures and behavior are preserved with zero test regressions",
+      "Minimal diff (2 files, 21 insertions) validates focused implementation"
+    ],
+    "suggested_check": "Run worktree pytest to confirm 3/3 tests pass with exit=0"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors approve the PR implementing nonce replay guard and pruning logic with no reported issues or regressions.",
+    "cruxes": [],
+    "unverified_premises": [
+      "Assumption that existing tests fully cover edge cases for nonce TTL expiration and race conditions in store updates"
+    ],
+    "suggested_check": "Run full test suite with coverage to verify no uncovered edge cases in nonce handling logic"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors approve the PR implementing nonce replay guard and pruning logic with no reported issues or regressions.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements nonce replay checking and pruning as required by T26, with tests confirming rejection of replays within TTL and bounded storage via expiry cleanup.\nKEY POINTS:\n- Req 1: check_and_record_nonce correctly rejects nonces with expiry > now\n- Req 2: prune_expired_nonces removes expired entries before checking to bound store size\n- Legacy public signatures and behavior are preserved with zero test regressions\n- Minimal diff (2 files, 21 insertions) validates focused implementation\nSUGGESTED CHECK: Run worktree pytest to confirm 3/3 tests pass with exit=0",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors approve the PR implementing nonce replay guard and pruning logic with no reported issues or regressions.\nKEY POINTS:\n- Unverified claim: Assumption that existing tests fully cover edge cases for nonce TTL expiration and race conditions in store updates\nSUGGESTED CHECK: Run full test suite with coverage to verify no uncovered edge cases in nonce handling logic",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors approve the PR implementing nonce replay guard and pruning logic with no reported issues or regressions.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 938,
+      "output_tokens": 147,
+      "seconds": 4.441,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 987,
+      "output_tokens": 85,
+      "seconds": 3.318,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

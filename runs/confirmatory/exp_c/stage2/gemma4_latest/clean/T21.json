@@ -1,0 +1,64 @@
+{
+  "task_id": "T21",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation successfully addresses both requirements: canonicalizing query strings by stripping specified keys and sorting pairs, and parsing query strings while preserving blank values. No concrete defects were cited by the advisors.",
+    "key_points": [
+      "`canonical_query` correctly strips specified keys (e.g., utm_*) and sorts remaining pairs lexicographically.",
+      "`parse_query_pairs` correctly uses `keep_blank_values=True` to preserve empty values.",
+      "The implementation maintains existing public function signatures and passes all tests.",
+      "The changes are confined to `src/query_canon.py`."
+    ],
+    "suggested_check": "Confirm that the canonicalization logic handles edge cases where all keys are stripped or where the input query string is empty."
+  },
+  "ungated_crux_json": {
+    "overview": "The changes successfully implement two core functionalities: canonicalizing query strings by sorting and stripping specific keys, and robustly parsing query strings while preserving blank values. All advisors confirm adherence to requirements and passing tests.",
+    "cruxes": [
+      {
+        "topic": "Canonicalization Sorting/Stripping",
+        "side_a": "The canonicalization must drop stripped keys AND sort remaining pairs lexicographically.",
+        "side_b": "The implementation must use `urllib.parse.urlencode` on the sorted, filtered pairs.",
+        "at_stake": "Req 1: Correctly forming the canonical string."
+      }
+    ],
+    "unverified_premises": [
+      "The advisors confirm the logic but do not explicitly test the interaction between stripping keys and the subsequent lexicographical sorting order, especially if a stripped key name is lexicographically close to a retained key name."
+    ],
+    "suggested_check": "Verify canonicalization with a test case containing both a stripped key and a retained key that would otherwise sort adjacent to each other, ensuring the stripped key's presence does not affect the sort order of the remaining keys."
+  },
+  "gated_crux_json": {
+    "overview": "The changes successfully implement two core functionalities: canonicalizing query strings by sorting and stripping specific keys, and robustly parsing query strings while preserving blank values. All advisors confirm adherence to requirements and passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation successfully addresses both requirements: canonicalizing query strings by stripping specified keys and sorting pairs, and parsing query strings while preserving blank values. No concrete defects were cited by the advisors.\nKEY POINTS:\n- `canonical_query` correctly strips specified keys (e.g., utm_*) and sorts remaining pairs lexicographically.\n- `parse_query_pairs` correctly uses `keep_blank_values=True` to preserve empty values.\n- The implementation maintains existing public function signatures and passes all tests.\n- The changes are confined to `src/query_canon.py`.\nSUGGESTED CHECK: Confirm that the canonicalization logic handles edge cases where all keys are stripped or where the input query string is empty.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes successfully implement two core functionalities: canonicalizing query strings by sorting and stripping specific keys, and robustly parsing query strings while preserving blank values. All advisors confirm adherence to requirements and passing tests.\nKEY POINTS:\n- Disagreement (Canonicalization Sorting/Stripping): The canonicalization must drop stripped keys AND sort remaining pairs lexicographically. vs. The implementation must use `urllib.parse.urlencode` on the sorted, filtered pairs. [at stake: Req 1: Correctly forming the canonical string.]\n- Unverified claim: The advisors confirm the logic but do not explicitly test the interaction between stripping keys and the subsequent lexicographical sorting order, especially if a stripped key name is lexicographically close to a retained key name.\nSUGGESTED CHECK: Verify canonicalization with a test case containing both a stripped key and a retained key that would otherwise sort adjacent to each other, ensuring the stripped key's presence does not affect the sort order of the remaining keys.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes successfully implement two core functionalities: canonicalizing query strings by sorting and stripping specific keys, and robustly parsing query strings while preserving blank values. All advisors confirm adherence to requirements and passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 933,
+      "output_tokens": 161,
+      "seconds": 3.353,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 972,
+      "output_tokens": 221,
+      "seconds": 4.338,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

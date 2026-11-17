@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The implementation validates the keep policy, retains the first or last row per hashable key in input order, and passes all repository tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the PR diff first to identify the changed behavior and requirements to verify.",
+    "The diff adds first/last deduplication; I\u2019ll inspect the surrounding source and test suite for expected semantics and edge cases.",
+    "The repository has a small focused test suite, so I\u2019ll read both files before deciding whether the new behavior is sound.",
+    "The implementation preserves input order and selects the appropriate first or last row, but I\u2019ll inspect tests and run the suite to verify behavior and catch regressions.",
+    "The tests cover basic first/last behavior and legacy compatibility; I\u2019ll run the full suite as required before making the queue decision.",
+    "The diff, source, and tests show the requested first/last deduplication while preserving the legacy helper. The full pytest suite passes, and no code defect is apparent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/dedup_rows.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_dedup_rows.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.732,
+  "prompt_tokens": 7180,
+  "output_tokens": 666,
+  "estimated_usd": 0.007876,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

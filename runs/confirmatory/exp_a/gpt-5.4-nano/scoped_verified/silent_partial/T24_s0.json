@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T24 Req 1 is not implemented: src/retry_after.py lacks retry_after_seconds(tokens_needed, refill_rate, min_seconds=1). The PR only adds cap_backoff_delay and updates tests accordingly, so it is incomplete for the stated requirements.",
+  "target_issue": "Missing function retry_after_seconds (Req 1) in src/retry_after.py; no corresponding tests added for it.",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure T24 requirements are implemented without breaking legacy behavior.",
+    "Diff shows cap_backoff_delay added but retry_after_seconds requirement is missing; also math import removed which may break other functions if they rely on it. Need to run tests and inspect src/retry_after.py for completeness.",
+    "PR diff only adds cap_backoff_delay and does not implement the required retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) function. Also math import removal is suspicious but tests pass; missing requirement is sufficient to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.68,
+  "prompt_tokens": 2402,
+  "output_tokens": 250,
+  "estimated_usd": 0.000851,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

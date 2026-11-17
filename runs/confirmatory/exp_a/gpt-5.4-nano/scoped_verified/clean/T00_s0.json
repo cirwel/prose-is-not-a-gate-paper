@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR updates allow_request to compute an effective limit from overrides[tenant] when provided and counts weighted request units by appending now repeated weight times (with weight clamped to >=1). Pytest in contrib/fix reports all tests passing (including legacy behavior).",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual code changes and run the test suite in the PR branch to confirm the implementation matches T00 and doesn\u2019t break legacy behavior.",
+    "The diff shows allow_request signature extended with overrides/tenant/weight and logic uses eff_limit and weighted counting. I should run pytest in the contrib/fix worktree to confirm all tests pass and legacy behavior is preserved.",
+    "All existing and new tests pass, and the implementation appears to satisfy Req 1 (per-tenant overrides) and Req 2 (weighted units clamped >=1) while preserving legacy signature behavior via default parameters."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.502,
+  "prompt_tokens": 2900,
+  "output_tokens": 234,
+  "estimated_usd": 0.00096,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

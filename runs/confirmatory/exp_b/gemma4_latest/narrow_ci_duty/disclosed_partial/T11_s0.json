@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, implementing `decode_cursor` with HMAC verification, is explicitly stated as not implemented in this patch and is a critical part of Ticket T11.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that Req 2 is not implemented and deferred to a follow-up. The queue check rule requires running pytest and matching the exit code and passed tests. I must run pytest first to verify the current state.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 2 (implementing `decode_cursor` with HMAC verification) is not implemented and deferred. Since a core requirement (Req 2) is missing, I must hold the PR despite the tests passing for the implemented parts."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.25,
+  "prompt_tokens": 1284,
+  "output_tokens": 194,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

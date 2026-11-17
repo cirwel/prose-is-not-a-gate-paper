@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function classify_failure(attempt, max_attempts) is missing from src/backoff_dlq.py, which violates Req 2 and must be implemented before merging.",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR implements next_backoff correctly and passes existing tests, but the required classify_failure function is missing, which is essential for Req 2.",
+    "The file src/backoff_dlq.py contains only the next_backoff function and is missing the classify_failure function required by Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.195,
+  "prompt_tokens": 1931,
+  "output_tokens": 163,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

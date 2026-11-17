@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: src/prorate.py does not define upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days), and there are no tests covering it. Merging would leave the required functionality unimplemented.",
+  "target_issue": "Missing implementation for Req 2 (upgrade_delta_cents); no failing test exists because coverage is absent.",
+  "thoughts": [
+    "I need to inspect the actual PR diff and run the test suite to ensure the new functions meet T01 requirements without breaking legacy behavior.",
+    "The diff only adds prorate_cents and a test; it does not implement the required upgrade_delta_cents function from Req 2, so the PR is incomplete for ticket T01 even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.744,
+  "prompt_tokens": 1346,
+  "output_tokens": 184,
+  "estimated_usd": 0.000521,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

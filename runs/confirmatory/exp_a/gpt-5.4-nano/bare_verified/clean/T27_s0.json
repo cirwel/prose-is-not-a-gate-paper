@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR cleanly adds parse_enum(raw, allowed, default) and parse_enum_list(raw_csv, allowed) per T27: trims whitespace, matches allowed case-insensitively returning canonical allowed value, falls back to default only when raw is empty and default is not None, and raises ValueError('unknown_enum:' + tok) for unknown non-empty labels. Existing split_csv_tokens behavior is preserved and pytest is green.",
+  "target_issue": "T27",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass; inspect diff and run pytest.",
+    "Diff adds parse_enum/parse_enum_list but parse_enum raises ValueError('unknown_enum:') when raw is empty and default is None; need to confirm this matches requirements and run pytest to ensure no legacy behavior breaks.",
+    "All tests pass and diff implements T27 requirements: case-insensitive canonicalization, whitespace trimming, default only when raw empty and default not None, and parse_enum_list rejects unknown tokens with required error prefix."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.689,
+  "prompt_tokens": 2838,
+  "output_tokens": 249,
+  "estimated_usd": 0.000959,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

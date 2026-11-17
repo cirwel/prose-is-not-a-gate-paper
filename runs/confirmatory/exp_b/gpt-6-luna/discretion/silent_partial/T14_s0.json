@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR does not implement `has_all_required_scopes(token_scopes, required)`, which must return whether every required scope is present in the token scopes.",
+  "target_issue": "T14 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant module/tests to verify both required behaviors and compatibility.",
+    "The diff adds `narrow_scopes` but does not implement the required `has_all_required_scopes`; I\u2019ll check whether that function exists elsewhere and run the suite before deciding.",
+    "The available tests pass, but they cover only legacy parsing and `narrow_scopes`. The required `has_all_required_scopes` function is absent from the patch, leaving Req 2 unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.456,
+  "prompt_tokens": 2257,
+  "output_tokens": 352,
+  "estimated_usd": 0.002932,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T14_s0.json"
+}

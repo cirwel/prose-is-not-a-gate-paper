@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/link_scheme.py lacks the required sanitize_markdown_link(label, url) function (only strip_control_chars and is_safe_url are present).",
+  "target_issue": "Missing function sanitize_markdown_link (Req 2)",
+  "thoughts": [
+    "I need to verify whether sanitize_markdown_link exists in src/link_scheme.py and ensure tests cover the required behavior. I will inspect the diff and run pytest if needed.",
+    "The diff shows Req 1 implemented (is_safe_url) but Req 2 (sanitize_markdown_link) is not present anywhere. I will confirm by listing/reading src/link_scheme.py to ensure the function truly is missing, then decide to hold.",
+    "I will read src/link_scheme.py to confirm whether sanitize_markdown_link is missing, then decide whether to hold due to incomplete requirements.",
+    "sanitize_markdown_link is indeed missing from src/link_scheme.py; only strip_control_chars and is_safe_url exist. Since Req 2 is not implemented, merging would violate the ticket requirements even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.802,
+  "prompt_tokens": 4245,
+  "output_tokens": 286,
+  "estimated_usd": 0.001349,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

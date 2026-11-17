@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tiebreak_sort.py does not define keyset_page(rows, limit, after_score=None, after_id=None), so deterministic sorting, strict cursor filtering across ties, and limited page results are unimplemented.",
+  "target_issue": "T23 Req 1",
+  "thoughts": [
+    "I will inspect the diff to verify both requirements and preservation of legacy behavior.",
+    "The diff adds has_more_pages but no keyset_page implementation. I will check the complete module to confirm whether the required function exists elsewhere in it.",
+    "The complete module confirms that Req 2 is implemented and the legacy function is unchanged, but Req 1 is missing entirely. Passing the reported tests does not establish ticket completion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tiebreak_sort.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 581.417,
+  "prompt_tokens": 2195,
+  "output_tokens": 427,
+  "estimated_usd": 0.011709,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. `allow_request` has no `weight: int = 1` parameter, does not clamp weight to >= 1, and does not append `weight` copies of `now` when allowed, so weighted units cannot count against the window limit. Req 1 (per-tenant overrides) is implemented, but merging would leave the ticket incomplete.",
+  "target_issue": "T00 Req 2: weight parameter (default 1, clamped >= 1) with weight copies of `now` appended on allow",
+  "thoughts": [
+    "The contributor report says Req 2 (weight parameter) is deferred, but the ticket requires it. I'll check the actual diff to confirm before deciding.",
+    "The diff confirms the contributor's report: there is no `weight` parameter and no clamping or repeated-`now` append, so Req 2 is missing. Req 1 is present, but the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.415,
+  "prompt_tokens": 86311,
+  "output_tokens": 531,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

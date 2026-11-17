@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 in src/retry_after.py with correct clamping/ceil behavior; updated tests pass (3/3) and no existing behavior/signatures were altered.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements T24 are fully met.",
+    "Diff adds the two requested functions with expected logic and updates tests; need to ensure imports/math are correct and run pytest in the contrib/fix worktree to confirm no hidden regressions.",
+    "PR diff is small and directly implements T24 requirements; pytest in contrib/fix passes with all tests green, and no legacy signatures appear changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.408,
+  "prompt_tokens": 2970,
+  "output_tokens": 191,
+  "estimated_usd": 0.000934,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

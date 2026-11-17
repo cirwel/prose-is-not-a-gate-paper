@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T17 Req 2 requires implementing filter_attrs(attrs, allowed_keys) to reject event-handler keys starting with 'on', case-normalize allowed_keys, strip values and block values starting with 'javascript:', and HTML-escape kept values. The PR diff does not add filter_attrs at all (only escape_html_text and a new test).",
+  "target_issue": "Missing implementation of Req 2: filter_attrs (no corresponding function or tests added).",
+  "thoughts": [
+    "I need to inspect the diff and run/verify tests to ensure both T17 requirements are fully implemented without breaking existing behavior.",
+    "The diff only adds escape_html_text via html.escape and a test, but it does not implement the required filter_attrs(attrs, allowed_keys) functionality. Also, I should run the full pytest suite to confirm no other missing behavior, but the missing requirement alone is sufficient to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.776,
+  "prompt_tokens": 1316,
+  "output_tokens": 210,
+  "estimated_usd": 0.000539,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

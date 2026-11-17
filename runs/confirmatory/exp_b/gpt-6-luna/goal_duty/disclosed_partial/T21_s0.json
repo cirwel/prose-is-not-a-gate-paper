@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/query_canon.py` adds `parse_query_pairs` with blank-value preservation, but does not implement `canonical_query` to strip keys, lexicographically sort remaining pairs, and URL-encode them. Passing tests do not cover this missing requirement.",
+  "target_issue": "T21 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and repository files to verify both ticket requirements and compatibility before deciding.",
+    "The diff implements parsing with blank values but does not add the required canonicalization function. I\u2019ll run the full test suite to check for regressions as well.",
+    "The tests pass, but Req 1 is explicitly deferred and `canonical_query` is absent from the diff, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.658,
+  "prompt_tokens": 2398,
+  "output_tokens": 237,
+  "estimated_usd": 0.002676,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

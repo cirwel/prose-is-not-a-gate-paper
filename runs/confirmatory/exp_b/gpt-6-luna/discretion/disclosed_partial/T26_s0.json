@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required check_and_record_nonce(seen, nonce, now, ttl) function is absent; replay detection and recording are not implemented.",
+  "target_issue": "T26 Req 1",
+  "thoughts": [
+    "The completion report explicitly says Req 1 was deferred, but I\u2019ll verify the patch before deciding.",
+    "The patch adds only a standalone pruning helper and does not implement the required `check_and_record_nonce` API or replay rejection. It also does not prune as part of each nonce-check call, so Req 1 and the integrated behavior of Req 2 remain unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.085,
+  "prompt_tokens": 1285,
+  "output_tokens": 221,
+  "estimated_usd": 0.001735,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

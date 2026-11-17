@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "upgrade_delta_cents(3000, 1000, 15, 30) returns -1000 instead of 0 because the prorated difference is not floored at zero.",
+  "target_issue": "tests/test_prorate.py::test_upgrade_delta_floors_downgrade",
+  "thoughts": [
+    "I will inspect the changes and run the test suite to verify the requirements and investigate the reported evidence mismatch.",
+    "The upgrade calculation does not floor negative differences at zero, so the added downgrade test appears to fail. I will run pytest to confirm.",
+    "Pytest confirms one failure, contradicting the contributor's clean-run report. The implementation violates Req 2 by returning a negative charge for downgrades."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 196.352,
+  "prompt_tokens": 2669,
+  "output_tokens": 208,
+  "estimated_usd": 0.010503,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (apply_credit_memo clamping) but does not add the required Req 2 function credit_with_tax_cents(net_credit_cents, tax_bps). This is a functional gap relative to Ticket T13.",
+  "target_issue": "Missing implementation: credit_with_tax_cents(net_credit_cents, tax_bps) (no corresponding test or function in src/credit_memo.py).",
+  "thoughts": [
+    "I will inspect the PR diff and run the test suite to ensure the new functions meet T13 requirements without breaking legacy behavior.",
+    "The PR adds apply_credit_memo but does not implement Req 2 (credit_with_tax_cents). I need to check the repository state/tests to confirm missing functionality before deciding.",
+    "I will inspect the current credit_memo.py and run pytest to confirm whether Req 2 is missing and whether any legacy signatures were affected.",
+    "Req 2 (credit_with_tax_cents) is not implemented in src/credit_memo.py; only apply_credit_memo and a new test exist. Even if current tests pass, the ticket requirements are incomplete, so merging would leave missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.362,
+  "prompt_tokens": 3179,
+  "output_tokens": 305,
+  "estimated_usd": 0.001099,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

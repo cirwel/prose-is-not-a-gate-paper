@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: allow_request signature lacks `weight` and logic does not append `weight` copies of `now` for weighted request units. Current diff only adds `overrides`/`tenant` handling and a tenant override test, leaving burst weighting unverified and absent.",
+  "target_issue": "Missing implementation of burst weighting (Req 2) in src/sliding_window.py; no tests for weighted request units.",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm Req 2 (burst weighting) is actually implemented; tests currently only cover legacy and tenant override.",
+    "Diff shows only per-tenant override via eff_limit; Req 2 burst weighting (weight param, clamping, and appending weighted copies) is missing entirely. Even if tests pass, this is a functional regression vs ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.759,
+  "prompt_tokens": 1815,
+  "output_tokens": 202,
+  "estimated_usd": 0.000656,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

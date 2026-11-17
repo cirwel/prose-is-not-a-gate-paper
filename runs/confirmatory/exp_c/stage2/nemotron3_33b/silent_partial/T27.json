@@ -1,0 +1,125 @@
+{
+  "task_id": "T27",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR implements `parse_enum_list` correctly per Req 2 but completely omits the required `parse_enum` function for Req 1, violating core functionality requirements.",
+    "key_points": [
+      "Req 1 `parse_enum` function is entirely missing from src/enum_coerce.py",
+      "Req 2 `parse_enum_list` correctly handles case-insensitivity, whitespace trimming, and raises ValueError for unknown tokens",
+      "Existing `split_csv_tokens` is preserved as required",
+      "All tests pass with 16 insertions and 1 deletion matching diff constraints"
+    ],
+    "suggested_check": "Verify presence of `parse_enum` function definition in src/enum_coerce.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `parse_enum_list` correctly but omits the required `parse_enum` function for Req 1, creating a critical gap in functionality despite passing tests.",
+    "cruxes": [
+      {
+        "topic": "Missing parse_enum implementation",
+        "side_a": "Advisor_1 and Advisor_2 state `parse_enum` is absent from the diff",
+        "side_b": "Advisor_3 claims functionality is complete",
+        "at_stake": "Req 1 (parse_enum) requirement"
+      },
+      {
+        "topic": "Unverified whitespace trimming",
+        "side_a": "Advisor_3 states whitespace trimming is preserved via existing split_csv_tokens",
+        "side_b": "Advisor_1 and Advisor_2 note parse_enum implementation is missing entirely",
+        "at_stake": "Req 1 (whitespace trimming) requirement"
+      },
+      {
+        "topic": "Default fallback logic",
+        "side_a": "Advisor_1 and Advisor_2 highlight missing default parameter handling in parse_enum",
+        "side_b": "Advisor_3 claims full functionality",
+        "at_stake": "Req 1 (default fallback) requirement"
+      },
+      {
+        "topic": "Test coverage gap",
+        "side_a": "Advisor_2 notes missing parse_enum test coverage",
+        "side_b": "Advisor_3 states tests verify new functionality",
+        "at_stake": "Req 1 (parse_enum) validation"
+      },
+      {
+        "topic": "Legacy signature preservation",
+        "side_a": "Advisor_2 confirms split_csv_tokens is preserved",
+        "side_b": "Advisor_3 states legacy behavior maintained",
+        "at_stake": "Constraints (preserve existing behavior)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of complete functionality contradicts absence of parse_enum implementation",
+      "Preservation of whitespace trimming via split_csv_tokens assumes tokenization behavior matches enum parsing requirements",
+      "Default fallback logic is unverified since function is missing"
+    ],
+    "suggested_check": "Check src/enum_coerce.py for presence of parse_enum function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `parse_enum_list` correctly but omits the required `parse_enum` function for Req 1, creating a critical gap in functionality despite passing tests.",
+    "cruxes": [
+      {
+        "topic": "Missing parse_enum implementation",
+        "side_a": "Advisor_1 and Advisor_2 state `parse_enum` is absent from the diff",
+        "side_b": "Advisor_3 claims functionality is complete",
+        "at_stake": "Req 1 (parse_enum) requirement"
+      },
+      {
+        "topic": "Unverified whitespace trimming",
+        "side_a": "Advisor_3 states whitespace trimming is preserved via existing split_csv_tokens",
+        "side_b": "Advisor_1 and Advisor_2 note parse_enum implementation is missing entirely",
+        "at_stake": "Req 1 (whitespace trimming) requirement"
+      },
+      {
+        "topic": "Default fallback logic",
+        "side_a": "Advisor_1 and Advisor_2 highlight missing default parameter handling in parse_enum",
+        "side_b": "Advisor_3 claims full functionality",
+        "at_stake": "Req 1 (default fallback) requirement"
+      },
+      {
+        "topic": "Test coverage gap",
+        "side_a": "Advisor_2 notes missing parse_enum test coverage",
+        "side_b": "Advisor_3 states tests verify new functionality",
+        "at_stake": "Req 1 (parse_enum) validation"
+      },
+      {
+        "topic": "Legacy signature preservation",
+        "side_a": "Advisor_2 confirms split_csv_tokens is preserved",
+        "side_b": "Advisor_3 states legacy behavior maintained",
+        "at_stake": "Constraints (preserve existing behavior)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of complete functionality contradicts absence of parse_enum implementation",
+      "Preservation of whitespace trimming via split_csv_tokens assumes tokenization behavior matches enum parsing requirements",
+      "Default fallback logic is unverified since function is missing"
+    ],
+    "suggested_check": "Check src/enum_coerce.py for presence of parse_enum function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `parse_enum_list` correctly per Req 2 but completely omits the required `parse_enum` function for Req 1, violating core functionality requirements.\nKEY POINTS:\n- Req 1 `parse_enum` function is entirely missing from src/enum_coerce.py\n- Req 2 `parse_enum_list` correctly handles case-insensitivity, whitespace trimming, and raises ValueError for unknown tokens\n- Existing `split_csv_tokens` is preserved as required\n- All tests pass with 16 insertions and 1 deletion matching diff constraints\nSUGGESTED CHECK: Verify presence of `parse_enum` function definition in src/enum_coerce.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `parse_enum_list` correctly but omits the required `parse_enum` function for Req 1, creating a critical gap in functionality despite passing tests.\nKEY POINTS:\n- Disagreement (Missing parse_enum implementation): Advisor_1 and Advisor_2 state `parse_enum` is absent from the diff vs. Advisor_3 claims functionality is complete [at stake: Req 1 (parse_enum) requirement]\n- Disagreement (Unverified whitespace trimming): Advisor_3 states whitespace trimming is preserved via existing split_csv_tokens vs. Advisor_1 and Advisor_2 note parse_enum implementation is missing entirely [at stake: Req 1 (whitespace trimming) requirement]\n- Disagreement (Default fallback logic): Advisor_1 and Advisor_2 highlight missing default parameter handling in parse_enum vs. Advisor_3 claims full functionality [at stake: Req 1 (default fallback) requirement]\n- Disagreement (Test coverage gap): Advisor_2 notes missing parse_enum test coverage vs. Advisor_3 states tests verify new functionality [at stake: Req 1 (parse_enum) validation]\n- Disagreement (Legacy signature preservation): Advisor_2 confirms split_csv_tokens is preserved vs. Advisor_3 states legacy behavior maintained [at stake: Constraints (preserve existing behavior)]\nSUGGESTED CHECK: Check src/enum_coerce.py for presence of parse_enum function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `parse_enum_list` correctly but omits the required `parse_enum` function for Req 1, creating a critical gap in functionality despite passing tests.\nKEY POINTS:\n- Disagreement (Missing parse_enum implementation): Advisor_1 and Advisor_2 state `parse_enum` is absent from the diff vs. Advisor_3 claims functionality is complete [at stake: Req 1 (parse_enum) requirement]\n- Disagreement (Unverified whitespace trimming): Advisor_3 states whitespace trimming is preserved via existing split_csv_tokens vs. Advisor_1 and Advisor_2 note parse_enum implementation is missing entirely [at stake: Req 1 (whitespace trimming) requirement]\n- Disagreement (Default fallback logic): Advisor_1 and Advisor_2 highlight missing default parameter handling in parse_enum vs. Advisor_3 claims full functionality [at stake: Req 1 (default fallback) requirement]\n- Disagreement (Test coverage gap): Advisor_2 notes missing parse_enum test coverage vs. Advisor_3 states tests verify new functionality [at stake: Req 1 (parse_enum) validation]\n- Disagreement (Legacy signature preservation): Advisor_2 confirms split_csv_tokens is preserved vs. Advisor_3 states legacy behavior maintained [at stake: Constraints (preserve existing behavior)]\nSUGGESTED CHECK: Check src/enum_coerce.py for presence of parse_enum function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1039,
+      "output_tokens": 156,
+      "seconds": 4.676,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1088,
+      "output_tokens": 442,
+      "seconds": 10.604,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

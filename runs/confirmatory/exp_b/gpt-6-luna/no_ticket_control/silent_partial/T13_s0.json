@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The new function correctly prevents negative credits from increasing the balance and prevents the result from going below zero. Existing invoice-balance behavior is unchanged, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the PR diff first, then review the affected source and tests and run the full test suite before deciding.",
+    "The diff adds a clamped credit calculation and only one basic test for it; I\u2019ll inspect repository guidance and related source/tests for the intended behavior before relying on that coverage.",
+    "I\u2019ll read the complete module and test file to check for existing contracts or edge cases that the diff may miss.",
+    "The implementation clamps negative credits to zero and prevents a negative result; I\u2019ll inspect the tests and run the full suite to verify behavior and regressions.",
+    "The added tests cover credit exceeding payment and a normal partial credit, but not negative inputs; I\u2019ll run the full suite to confirm the current changes pass without regressions.",
+    "The diff is limited to the new credit calculation and its tests; the implementation clamps both the applied credit and resulting balance at zero. I reviewed the source and tests, and the full pytest suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_credit_memo.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.546,
+  "prompt_tokens": 5341,
+  "output_tokens": 528,
+  "estimated_usd": 0.005962,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

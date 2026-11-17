@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key does not reject a matching key with status == 'retired'; it returns the key instead of raising PermissionError('key_retired').",
+  "target_issue": "T02 Req 2",
+  "thoughts": [
+    "The completion report explicitly says Req 2 is not implemented, so the PR does not satisfy the ticket. I\u2019ll inspect the diff and tests to confirm the missing behavior before deciding.",
+    "The diff adds previous-key fallback, but it returns matching keys regardless of status and never raises PermissionError('key_retired'). Req 2 is therefore missing, so this pull request is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.805,
+  "prompt_tokens": 1363,
+  "output_tokens": 230,
+  "estimated_usd": 0.001826,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

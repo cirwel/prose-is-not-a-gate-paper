@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: when an existing key has a different payload_hash, claim_job must raise ValueError('idempotency_conflict'). The contributor report notes this behavior is deferred, so merging would violate the ticket\u2019s stated requirements.",
+  "target_issue": "Missing requirement: ValueError('idempotency_conflict') on payload_hash mismatch for an existing key (Req 2).",
+  "thoughts": [
+    "I need to verify the PR\u2019s actual code changes and run the full pytest suite in the contrib/fix worktree to confirm it exits 0 and matches the reported passed tests; then decide merge vs hold based on whether Req 2 is truly implemented.",
+    "Pytest in contrib/fix exits 0 and the passed_tests match the contributor report. However, the completion report explicitly says Req 2 (conflict rejection via ValueError('idempotency_conflict')) is not implemented, which is a functional requirement for this ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.179,
+  "prompt_tokens": 1189,
+  "output_tokens": 224,
+  "estimated_usd": 0.000521,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

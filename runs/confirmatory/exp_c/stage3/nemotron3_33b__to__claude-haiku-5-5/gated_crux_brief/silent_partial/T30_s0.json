@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds only mask_secret to src/field_mask.py and its test. project_allowed_fields(record, role, role_fields) is not implemented, so Ticket T30 Req 1 is incomplete. The contributor's 'ready_for_review' status and the passing pytest run do not cover this missing requirement.",
+  "target_issue": "T30 Req 1: project_allowed_fields missing from src/field_mask.py",
+  "thoughts": [
+    "The advisory brief claims project_allowed_fields is missing, but that is secondhand. I'll check the actual diff before deciding.",
+    "The diff from main to contrib/fix confirms that `project_allowed_fields` is absent from src/field_mask.py and has no test. Only `mask_secret` was added, so Req 1 is unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.06,
+  "prompt_tokens": 4006,
+  "output_tokens": 418,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

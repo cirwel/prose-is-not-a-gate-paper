@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented. src/fence_escape.py has no wrap_code_fence(code, lang='') in the diff from main to contrib/fix, and no test covers it. The truncate_log_lines change is consistent with Req 2 and the existing normalize_newlines behavior is preserved, but the ticket is incomplete and the 'ready_for_review' status is inaccurate.",
+  "target_issue": "T29 Req 1: wrap_code_fence(code, lang='') missing",
+  "thoughts": [
+    "I should verify the contributor's claims rather than trust the completion report. I'll start by looking at the diff against main.",
+    "The diff adds truncate_log_lines (Req 2) but contains no wrap_code_fence function, so Req 1 is missing. The contributor's completion report does not mention it either."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.24,
+  "prompt_tokens": 86228,
+  "output_tokens": 556,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

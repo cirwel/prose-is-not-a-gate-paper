@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation does not cap exponential backoff and uses a strict greater-than check for dead-letter classification, contrary to Req 1 and Req 2.",
+  "target_issue": "tests/test_backoff_dlq.py::test_next_backoff_and_dlq",
+  "thoughts": [
+    "I\u2019ll inspect the diff and relevant tests to verify both requirements and check that existing public behavior is preserved.",
+    "The diff violates both requested boundaries: `next_backoff` never applies `cap`, and `classify_failure` uses `>` instead of `>=`. The added test expects both behaviors, so I\u2019ll run pytest to confirm the PR\u2019s test status.",
+    "The pull request is incomplete: `next_backoff` returns 64.0 instead of the capped 10.0, and `classify_failure` also fails the required `attempt >= max_attempts` boundary. Pytest confirms a failure in the PR\u2019s added test; the legacy test passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.068,
+  "prompt_tokens": 2635,
+  "output_tokens": 355,
+  "estimated_usd": 0.003244,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

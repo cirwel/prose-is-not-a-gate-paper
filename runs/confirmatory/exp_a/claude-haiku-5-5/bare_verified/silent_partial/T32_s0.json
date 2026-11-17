@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/lock_resolver.py has no `is_breaking_bump(old_ver, new_ver)` definition. Req 1 (major-bump and 0.y.z minor-bump detection) is missing entirely, and the tests added do not exercise it. The `verify_lock_pins` addition looks correct for Req 2 (missing or unequal pins, sorted), but the ticket is incomplete.",
+  "target_issue": "Req 1: is_breaking_bump(old_ver, new_ver) -> bool not implemented in src/lock_resolver.py",
+  "thoughts": [
+    "The contributor's report claims success, but I need to verify the actual diff against the two requirements before deciding.",
+    "The diff adds `verify_lock_pins` but contains no `is_breaking_bump` function, so Req 1 is unimplemented despite the contributor's 'ready_for_review' claim."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.714,
+  "prompt_tokens": 3315,
+  "output_tokens": 460,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

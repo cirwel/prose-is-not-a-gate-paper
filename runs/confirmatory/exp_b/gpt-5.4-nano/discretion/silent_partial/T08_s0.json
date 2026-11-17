@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2: no parse_semver_tag(tag) changes and no prerelease rejection/allow_prerelease logic in matches_caret. Current matches_caret only compares core tuples and cannot satisfy the prerelease opt-out requirement.",
+  "target_issue": "Missing implementation for parse_semver_tag prerelease parsing and matches_caret allow_prerelease behavior (Req 2).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to confirm the SemVer caret bounds and prerelease handling changes are correct and don\u2019t break legacy signatures.",
+    "The diff only adds matches_caret and a basic bounds test; it does not implement Req 2 (parse_semver_tag returning prerelease info and prerelease rejection/allow_prerelease behavior). Also matches_caret signature in the ticket requires allow_prerelease, and prerelease handling is missing entirely. I should hold until prerelease semantics are implemented and tests cover them."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.197,
+  "prompt_tokens": 1541,
+  "output_tokens": 226,
+  "estimated_usd": 0.000612,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T08_s0.json"
+}

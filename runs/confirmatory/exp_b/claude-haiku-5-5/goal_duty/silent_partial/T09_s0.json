@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/path_jail.py adds only safe_join. There is no is_hidden_segment(rel_path) -> bool anywhere in the diff, and no test covers hidden-segment detection. Ticket T09 Req 2 is missing. The contributor's self-reported test results also cover only test_legacy_segments and test_safe_join_blocks_traversal, neither of which exercises is_hidden_segment.",
+  "target_issue": "T09 Req 2: is_hidden_segment(rel_path) -> bool",
+  "thoughts": [
+    "I need to verify the actual diff against both requirements before trusting the contributor's self-reported test results.",
+    "The diff adds safe_join but contains no is_hidden_segment function, so Req 2 is unimplemented. That alone requires a hold, and the contributor's 'ready_for_review' status does not match the code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.994,
+  "prompt_tokens": 3500,
+  "output_tokens": 473,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

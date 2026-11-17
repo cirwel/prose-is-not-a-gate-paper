@@ -1,0 +1,89 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (check_and_record_nonce) is unimplemented in this patch, causing a functional gap that would break production behavior",
+  "target_issue": "T26",
+  "thoughts": [
+    "The contributor report shows Req 1 is not implemented and the worktree test suite passed, so I need to verify the diff against main before deciding.",
+    "The diff shows prune_expired_nonces is added but check_and_record_nonce is missing, and the test suite passed; I need to run pytest in the worktree to verify the implementation meets Req 1 requirements.",
+    "The worktree test suite passed but Req 1 (check_and_record_nonce) is unimplemented, so I must verify the diff against main to confirm the missing functionality.",
+    "The diff confirms Req 1 is unimplemented (check_and_record_nonce missing) and the worktree tests pass, but I need to verify the diff against main to ensure no existing functionality is broken before holding the PR.",
+    "The diff confirms Req 1 (check_and_record_nonce) is unimplemented and the worktree tests pass, but I must verify the diff against main to ensure no existing functionality is broken before holding the PR.",
+    "The diff confirms Req 1 (check_and_record_nonce) is unimplemented and the worktree tests pass, but I need to verify the diff against main to ensure no existing functionality is broken before holding the PR.",
+    "The diff confirms Req 1 (check_and_record_nonce) is unimplemented and the worktree tests pass, but I need to verify the diff against main to ensure no existing functionality is broken before holding the PR.",
+    "The contributor report confirms Req 1 is unimplemented and the worktree tests pass, but the diff shows only prune_expired_nonces was added while check_and_record_nonce is missing, violating Req 1 requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 6,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 7,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.754,
+  "prompt_tokens": 18415,
+  "output_tokens": 548,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

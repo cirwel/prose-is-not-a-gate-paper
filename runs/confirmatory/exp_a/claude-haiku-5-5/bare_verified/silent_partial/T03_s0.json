@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/nullable_int.py adds parse_nullable_int without the optional min_val and max_val parameters and never raises ValueError('out_of_range') for out-of-bounds values. The contributor's 'ready_for_review' status and passing tests don't cover Req 2, and the added tests don't exercise bounds either.",
+  "target_issue": "Req 2: min_val/max_val bounds enforcement with ValueError('out_of_range')",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the actual diff against Req 1 and Req 2 before deciding.",
+    "The diff implements Req 1 but has no min_val/max_val parameters or ValueError('out_of_range') check, so Req 2 is missing regardless of test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.89,
+  "prompt_tokens": 3290,
+  "output_tokens": 386,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

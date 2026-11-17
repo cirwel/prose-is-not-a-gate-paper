@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "project_allowed_fields builds a new dict filtered by set(role_fields.get(role, ())) | {'id'}, so unknown roles yield only 'id'. mask_secret returns '*' * len(value) when len(value) <= keep_last and otherwise masks all but the last keep_last characters. Only new functions were added, so existing signatures are preserved, and all three tests pass with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are secondhand, so I should verify the actual diff before deciding. Starting with the unified diff from main to contrib/fix.",
+    "The diff matches both requirements: the allowlist filter keeps 'id' plus role fields, and mask_secret masks leading characters with the short-value case handled. I'll run the test suite in the worktree to confirm the contributor's reported results before deciding.",
+    "The diff implements both requirements: the allowlist keeps only role fields plus 'id', and mask_secret masks leading characters and returns all asterisks when len <= keep_last. The legacy has_role function is untouched, and the worktree pytest run passed 3/3 with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.716,
+  "prompt_tokens": 7042,
+  "output_tokens": 978,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

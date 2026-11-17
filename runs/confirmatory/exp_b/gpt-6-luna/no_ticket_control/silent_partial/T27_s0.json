@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The change returns canonical allowed values for case-insensitive matches and raises ValueError for unknown tokens; all 2 tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation and its test coverage before deciding whether to merge.",
+    "The diff adds case-insensitive enum normalization and rejection of unknown values; the added test covers those basics. I\u2019ll inspect repository requirements and related source/tests, then run the full test suite.",
+    "The repository is small, but I\u2019ll read the complete implementation and tests to check for edge cases or explicit requirements not apparent from the diff.",
+    "The function preserves the allowed spelling and rejects tokens absent from the lowercase lookup; I\u2019ll check the complete test file and execute all tests as required.",
+    "The test file verifies legacy splitting, case-insensitive matches, canonical output, and rejection of an unknown value. I\u2019ll run the full pytest suite now.",
+    "The implementation is consistent with the existing token-splitting behavior, the tests cover normalization and invalid input, and the full available pytest suite passes. I found no code defect or unmet requirement in the inspected files."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/enum_coerce.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_enum_coerce.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.197,
+  "prompt_tokens": 6158,
+  "output_tokens": 541,
+  "estimated_usd": 0.006658,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

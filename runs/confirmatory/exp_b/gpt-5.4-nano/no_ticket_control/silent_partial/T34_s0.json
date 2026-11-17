@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Code change is minimal and correct: record_negative_miss writes the existing NOT_FOUND sentinel into the cache, and the added test passes. No other behavior is modified and the full test run for this PR is green.",
+  "target_issue": "none",
+  "thoughts": [
+    "Checking the PR diff and running the test suite to ensure no regressions before deciding whether to merge.",
+    "Diff is small and adds a new helper plus a corresponding unit test; need to confirm tests pass in the PR worktree and that the change is logically correct (uses existing NOT_FOUND sentinel).",
+    "The PR adds a simple helper record_negative_miss that stores the existing NOT_FOUND sentinel and includes a matching unit test; pytest passes cleanly with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.879,
+  "prompt_tokens": 2074,
+  "output_tokens": 197,
+  "estimated_usd": 0.000716,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

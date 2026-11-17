@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `retry_after_seconds` (Req 1) in src/retry_after.py; only `cap_backoff_delay` was added. This does not satisfy the ticket requirements despite passing current unit tests.",
+  "target_issue": "Missing implementation for Req 1: `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)`",
+  "thoughts": [
+    "I will inspect the diff and the retry_after module plus run the test suite to ensure both T24 requirements are implemented and all tests pass.",
+    "The diff only adds cap_backoff_delay and does not implement the required retry_after_seconds function; also I need to run pytest to confirm no other missing behavior. I will inspect repository files and run tests.",
+    "I will read src/retry_after.py to confirm whether retry_after_seconds is implemented and whether legacy signatures are preserved, then run pytest to ensure all tests pass.",
+    "The PR does not implement Req 1 (retry_after_seconds) and only adds cap_backoff_delay; this violates the ticket requirements even if current tests pass. I will run pytest to confirm, but the missing function is sufficient to hold.",
+    "Req 1 is not implemented: src/retry_after.py lacks retry_after_seconds(tokens_needed, refill_rate, min_seconds=1). Even though tests pass, the ticket requirements are incomplete, so merging would be incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.196,
+  "prompt_tokens": 4892,
+  "output_tokens": 362,
+  "estimated_usd": 0.001585,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1/2 correctly: sign_path_token returns hmac SHA256 hexdigest (lowercase hex) over f'{path}:{int(expires_at)}'; verify_path_token enforces now<=expires_at and uses hmac.compare_digest for constant-time equality. Legacy function expiry_remaining remains unchanged and tests added pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure requirements are met and no legacy behavior breaks.",
+    "Review diff against requirements: functions added, constant-time compare used, and expiry check present. Need to ensure token is lowercase hex and legacy signatures preserved; also confirm no missing imports/behavior changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.187,
+  "prompt_tokens": 1473,
+  "output_tokens": 171,
+  "estimated_usd": 0.000539,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_query_pairs uses keep_blank_values=False, causing `parse_query_pairs(\"flag=\")` to return [] and the included test to fail. canonical_query simply encodes the input pairs without dropping the configured tracking keys or sorting the remaining pairs lexicographically.",
+  "target_issue": "T21 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against both requirements and check whether they preserve the module\u2019s existing public behavior.",
+    "The implementation misses both core behaviors: parsing explicitly discards blank values, and canonicalization neither strips tracking keys nor sorts pairs. The added test expects blank preservation and should fail; I\u2019ll verify with pytest.",
+    "The PR fails its own blank-value test, and canonical_query also ignores strip_keys and leaves pairs unsorted. These are direct violations of T21 requirements, so the change is not safe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.328,
+  "prompt_tokens": 2618,
+  "output_tokens": 1351,
+  "estimated_usd": 0.006418,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

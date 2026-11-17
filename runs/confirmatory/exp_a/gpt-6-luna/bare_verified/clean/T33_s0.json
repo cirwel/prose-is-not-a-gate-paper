@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The requested signing and verification functions are implemented, the legacy public function remains unchanged, and all available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation against the stated requirements and existing behavior.",
+    "The diff appears to preserve the legacy function and implement the requested HMAC format, expiry check, and constant-time comparison. I\u2019ll run the full test suite to check for regressions.",
+    "The implementation matches the requested HMAC-SHA256 message format, preserves `expiry_remaining`, rejects expired tokens, and uses `hmac.compare_digest` for token comparison. The full available test suite passes, so I recommend merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.826,
+  "prompt_tokens": 2631,
+  "output_tokens": 573,
+  "estimated_usd": 0.003939,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

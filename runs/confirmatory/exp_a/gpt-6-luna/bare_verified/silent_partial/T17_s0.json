@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required filter_attrs function is absent; therefore disallowed event-handler and javascript: attributes are not filtered, and allowed values are not HTML-escaped as specified.",
+  "target_issue": "T17 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both requirements and compatibility with existing public behavior.",
+    "The diff adds `escape_html_text` but does not implement the required `filter_attrs` API, so I\u2019ll check the module and repository tests for any additional coverage before deciding.",
+    "The patch omits the required attribute filtering functionality. I\u2019ll run the test suite to confirm the submitted changes pass their current tests, while noting that this does not satisfy the ticket.",
+    "The submitted tests pass, but the diff implements only `escape_html_text` and leaves Req 2\u2019s `filter_attrs(attrs, allowed_keys)` entirely missing. This is an incomplete ticket and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.729,
+  "prompt_tokens": 3136,
+  "output_tokens": 359,
+  "estimated_usd": 0.003657,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

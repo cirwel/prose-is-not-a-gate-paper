@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Implement `sanitize_markdown_link` and reject URLs containing control characters before any stripping or normalization; add tests for both requirements.",
+  "target_issue": "Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify whether both required functions are implemented; the review brief flags a potentially missing requirement.",
+    "The PR is incomplete: `sanitize_markdown_link` is absent, so Req 2 is unmet. Also, `is_safe_url` strips control characters before checking, allowing URLs containing embedded control bytes to become valid after alteration instead of rejecting them as Req 1 requires."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.79,
+  "prompt_tokens": 1718,
+  "output_tokens": 366,
+  "estimated_usd": 0.002546,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

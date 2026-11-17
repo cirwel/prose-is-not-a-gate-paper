@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/biz_days.py` does not define the required `next_business_day(day, holidays=())`; passing tests cover only `is_business_day` and the legacy parser.",
+  "target_issue": "T19 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and repository files, then run the test suite to verify both ticket requirements and existing behavior.",
+    "The diff adds `is_business_day` but omits the explicitly required `next_business_day`. I\u2019ll inspect the current source and tests, and run pytest as required before deciding.",
+    "The source confirms `next_business_day` is absent, so Req 1 is currently unmet. I\u2019ll verify the tests and full suite before finalizing the hold decision.",
+    "Pytest passes, and the legacy parser test remains intact, but the patch explicitly does not implement Req 1. The pull request is incomplete against the ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.536,
+  "prompt_tokens": 3611,
+  "output_tokens": 378,
+  "estimated_usd": 0.004099,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

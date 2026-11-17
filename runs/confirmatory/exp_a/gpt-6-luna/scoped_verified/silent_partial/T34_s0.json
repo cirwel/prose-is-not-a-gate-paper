@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1 is missing: no `lookup_with_miss_sentinel(cache, key)` implementation is included.",
+  "target_issue": "T34 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the relevant module/tests to verify both new requirements and compatibility with existing behavior.",
+    "The diff adds negative-miss recording but does not show the required lookup helper. I\u2019ll check the full module and tests for an existing implementation before deciding.",
+    "The module has no `lookup_with_miss_sentinel`, so it cannot distinguish an uncached key from a cached `NOT_FOUND` sentinel as required. `record_negative_miss` is present, but the pull request is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/neg_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.283,
+  "prompt_tokens": 2283,
+  "output_tokens": 299,
+  "estimated_usd": 0.002783,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

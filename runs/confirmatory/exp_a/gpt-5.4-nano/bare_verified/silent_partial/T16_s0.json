@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: claim_job returns 'replay' whenever key exists, even if payload_hash differs; it never raises ValueError('idempotency_conflict'). This will allow conflicting ownership.",
+  "target_issue": "Missing conflict rejection for existing key with different payload_hash (no failing test currently covers this).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new idempotency behavior is correct and doesn\u2019t break legacy signatures.",
+    "The diff adds claim_job but does not implement the required conflict rejection when an existing key has a different payload_hash; it also returns replay unconditionally. I should run tests to confirm, but this is a clear spec violation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.617,
+  "prompt_tokens": 1342,
+  "output_tokens": 176,
+  "estimated_usd": 0.000511,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All unit tests pass and the implementation correctly handles per-tenant overrides (using overrides[tenant] when present) and weighted requests (clamped weight >= 1 appending weight copies of now), with no regressions in existing functionality.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all unit tests pass, but I need to verify the actual diff and run tests in the worktree to ensure no regressions before merging.",
+    "The diff shows the function signature was updated with new parameters (overrides, tenant, weight) and the core logic now uses eff_limit and applies weight copies of 'now', but I need to run tests in the worktree to verify no regressions before merging.",
+    "All tests pass in the worktree with no failures, and the diff shows correct implementation of per-tenant overrides and weighted requests while preserving legacy behavior; the PR is ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.146,
+  "prompt_tokens": 3680,
+  "output_tokens": 235,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

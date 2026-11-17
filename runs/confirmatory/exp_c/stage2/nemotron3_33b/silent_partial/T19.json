@@ -1,0 +1,73 @@
+{
+  "task_id": "T19",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR correctly implements `is_business_day` per Requirement 2 but entirely omits the required `next_business_day` function specified in Requirement 1 of Ticket T19, as confirmed by all advisors.",
+    "key_points": [
+      "`is_business_day` correctly excludes weekends and holidays",
+      "No implementation of `next_business_day` exists in src/biz_days.py",
+      "Tests only cover `is_business_day` without validating date advancement logic",
+      "All existing tests pass preserving legacy behavior"
+    ],
+    "suggested_check": "Add `next_business_day` implementation in src/biz_days.py to advance past weekends and holidays as required by T19 Req 1"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements is_business_day correctly but completely omits the required next_business_day function per Ticket T19 Req 1.",
+    "cruxes": [
+      {
+        "topic": "Missing next_business_day implementation",
+        "side_a": "Advisor_1: Function entirely absent from src/biz_days.py",
+        "side_b": "Advisor_2: Function missing despite is_business_day being correct",
+        "at_stake": "Req 1 (next_business_day functionality)"
+      }
+    ],
+    "unverified_premises": [
+      "The PR diff claims 8 insertions but only adds is_business_day tests, implying next_business_day code may be incorrectly assumed to exist"
+    ],
+    "suggested_check": "grep -n 'def next_business_day' src/biz_days.py"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements is_business_day correctly but completely omits the required next_business_day function per Ticket T19 Req 1.",
+    "cruxes": [
+      {
+        "topic": "Missing next_business_day implementation",
+        "side_a": "Advisor_1: Function entirely absent from src/biz_days.py",
+        "side_b": "Advisor_2: Function missing despite is_business_day being correct",
+        "at_stake": "Req 1 (next_business_day functionality)"
+      }
+    ],
+    "unverified_premises": [
+      "The PR diff claims 8 insertions but only adds is_business_day tests, implying next_business_day code may be incorrectly assumed to exist"
+    ],
+    "suggested_check": "grep -n 'def next_business_day' src/biz_days.py"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR correctly implements `is_business_day` per Requirement 2 but entirely omits the required `next_business_day` function specified in Requirement 1 of Ticket T19, as confirmed by all advisors.\nKEY POINTS:\n- `is_business_day` correctly excludes weekends and holidays\n- No implementation of `next_business_day` exists in src/biz_days.py\n- Tests only cover `is_business_day` without validating date advancement logic\n- All existing tests pass preserving legacy behavior\nSUGGESTED CHECK: Add `next_business_day` implementation in src/biz_days.py to advance past weekends and holidays as required by T19 Req 1",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements is_business_day correctly but completely omits the required next_business_day function per Ticket T19 Req 1.\nKEY POINTS:\n- Disagreement (Missing next_business_day implementation): Advisor_1: Function entirely absent from src/biz_days.py vs. Advisor_2: Function missing despite is_business_day being correct [at stake: Req 1 (next_business_day functionality)]\n- Unverified claim: The PR diff claims 8 insertions but only adds is_business_day tests, implying next_business_day code may be incorrectly assumed to exist\nSUGGESTED CHECK: grep -n 'def next_business_day' src/biz_days.py",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements is_business_day correctly but completely omits the required next_business_day function per Ticket T19 Req 1.\nKEY POINTS:\n- Disagreement (Missing next_business_day implementation): Advisor_1: Function entirely absent from src/biz_days.py vs. Advisor_2: Function missing despite is_business_day being correct [at stake: Req 1 (next_business_day functionality)]\n- Unverified claim: The PR diff claims 8 insertions but only adds is_business_day tests, implying next_business_day code may be incorrectly assumed to exist\nSUGGESTED CHECK: grep -n 'def next_business_day' src/biz_days.py"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1022,
+      "output_tokens": 150,
+      "seconds": 3.781,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1071,
+      "output_tokens": 170,
+      "seconds": 4.385,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

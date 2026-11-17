@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Malformed non-ASCII signature input can escape `decode_cursor` as `TypeError` instead of the specified `ValueError('invalid_cursor')`. Validate the signature format or handle this case before calling `compare_digest`.",
+  "target_issue": "T11 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and its surrounding implementation to verify the cursor format, HMAC validation, and compatibility with existing APIs.",
+    "The core implementation appears to use HMAC-SHA256 and constant-time comparison, but malformed Unicode signatures may make `compare_digest` raise `TypeError` instead of the required `ValueError('invalid_cursor')`. I\u2019ll check the project\u2019s expected input handling and tests before deciding.",
+    "The implementation meets the tested cases, but `decode_cursor` passes an untrusted string directly to `hmac.compare_digest`. A token with a non-ASCII signature (for example, `0:\ud83d\udca5`) makes `compare_digest` raise `TypeError`, not the required `ValueError('invalid_cursor')`; tampered cursors therefore are not rejected cleanly."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.19,
+  "prompt_tokens": 2748,
+  "output_tokens": 1085,
+  "estimated_usd": 0.005671,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

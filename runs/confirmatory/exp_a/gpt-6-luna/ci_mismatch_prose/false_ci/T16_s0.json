@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Existing-key handling must return `replay` only when the stored payload hash matches; otherwise it must raise `ValueError('idempotency_conflict')`. The current implementation unconditionally returns `replay`, and the worktree test fails.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "I\u2019ll inspect the changed module and tests, then run the worktree test suite to verify the reported mismatch and compatibility.",
+    "The repository is small, so I\u2019ll review the complete pull request diff first, including its tests and public API changes.",
+    "The implementation returns `replay` for every existing key without comparing its stored hash, so the new conflict test appears guaranteed to fail. I\u2019ll run pytest to confirm the worktree result before deciding.",
+    "The PR violates Req 2: `claim_job` treats an existing key as a replay without comparing its stored `hash` to the new payload hash. Pytest confirms `test_conflict_raises` fails because no `ValueError` is raised; hold until the conflict check is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.475,
+  "prompt_tokens": 3283,
+  "output_tokens": 378,
+  "estimated_usd": 0.003837,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

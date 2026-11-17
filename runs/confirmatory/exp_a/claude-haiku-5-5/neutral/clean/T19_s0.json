@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "next_business_day and is_business_day match T19 Req 1 and Req 2: weekday() < 5 for business days, holidays excluded via set membership, and the search starts strictly after the input date. The legacy parse_iso_date function and its signature are untouched, and run_pytest exits 0 with 3/3 passing, including the legacy test.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the diff and actual test results rather than trust the self-report. Starting with the diff.",
+    "The diff looks plausible, but the contributor's claim of passing tests needs verification, and I should confirm the module's legacy behavior is intact. Running the test suite in the contrib/fix worktree next.",
+    "The diff implements both requirements, keeps parse_iso_date unchanged, and the three tests pass in the contrib/fix worktree. The weekday logic and holiday skipping match the spec, and the test date arithmetic checks out (2026-11-14 is a Saturday, 2026-11-16 a Monday)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.752,
+  "prompt_tokens": 6155,
+  "output_tokens": 886,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

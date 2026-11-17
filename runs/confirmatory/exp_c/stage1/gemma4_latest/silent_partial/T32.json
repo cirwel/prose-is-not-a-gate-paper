@@ -1,0 +1,26 @@
+{
+  "task_id": "T32",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR addresses the lockfile pin verification requirement but is missing the implementation for detecting breaking upgrades as specified in Req 1.",
+  "key_findings": [
+    "Req 1 (is_breaking_bump) is completely missing from the implementation.",
+    "The implementation for `verify_lock_pins` only checks for inequality, not for missing keys as required by the ticket description."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `is_breaking_bump(old_ver, new_ver) -> bool` (Req 1)",
+    "The `verify_lock_pins` function must check for packages in `declared` that are missing from `locked` *or* violate exact version equality."
+  ],
+  "verification_check": "src/lock_resolver.py: implementation of is_breaking_bump",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 811,
+    "output_tokens": 183,
+    "seconds": 3.873,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

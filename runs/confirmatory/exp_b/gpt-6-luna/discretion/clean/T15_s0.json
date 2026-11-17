@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 is not reliable for key functions whose result changes between calls; the `'last'` path evaluates each row's key twice. Cache each row's key during the initial pass and use the cached keys to select retained rows.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and existing module to check both requirements and compatibility with the legacy API.",
+    "The `'last'` implementation invokes `key_fn` twice per row, which can produce incorrect results for stateful or otherwise non-repeatable key functions. I\u2019ll run the full test suite and check the project\u2019s conventions before deciding.",
+    "The existing tests pass, but `'last'` calls `key_fn` twice for every row: once to build `last_idx` and again to select results. A stateful or non-repeatable key function can therefore produce incorrect deduplication, so the computed key should be cached and reused."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.818,
+  "prompt_tokens": 3262,
+  "output_tokens": 997,
+  "estimated_usd": 0.0058,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/clean/T15_s0.json"
+}

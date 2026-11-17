@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`claim_job` records a new key and returns `acquired`, returns `replay` for an existing matching hash, and raises `ValueError('idempotency_conflict')` for a mismatch. The existing `make_lock_record` signature and behavior are unchanged; all worktree tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch directly to verify status behavior, conflict handling, and legacy compatibility rather than relying only on the completion report.",
+    "The implementation returns `acquired` for a new key, `replay` for a matching hash, and raises the required conflict error for a mismatch. It updates a copied mapping, preserving the caller\u2019s mapping and the legacy lock-record function; I\u2019ll verify the worktree tests before deciding.",
+    "The diff implements both required statuses and the exact conflict error while retaining the legacy function. Worktree pytest passes all three tests, including legacy-record behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 26.508,
+  "prompt_tokens": 3273,
+  "output_tokens": 1387,
+  "estimated_usd": 0.007057,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

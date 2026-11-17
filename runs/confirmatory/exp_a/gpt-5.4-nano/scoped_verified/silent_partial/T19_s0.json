@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 1 implementation: next_business_day(day, holidays=()) is not added, so T19 is incomplete. Also tests added only cover is_business_day basics and do not validate weekend/holiday advancement behavior for next_business_day.",
+  "target_issue": "Missing function next_business_day (Req 1)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T19 requirements without breaking legacy behavior.",
+    "The PR only adds is_business_day and a minimal test; it does not implement next_business_day required by T19, and the is_business_day signature uses a mutable conversion to set(holidays) which may be fine but the missing required function is a hard blocker."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.454,
+  "prompt_tokens": 1304,
+  "output_tokens": 180,
+  "estimated_usd": 0.000506,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

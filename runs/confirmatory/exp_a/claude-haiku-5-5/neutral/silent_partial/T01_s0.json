@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/prorate.py does not define upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days). Req 2 (net positive upgrade charge, floored at 0 for downgrades) is unimplemented and has no test coverage. The added tests only cover prorate_cents.",
+  "target_issue": "Req 2: upgrade_delta_cents not implemented",
+  "thoughts": [
+    "Need to verify the contributor's claims by inspecting the diff before deciding.",
+    "The diff implements Req 1 (prorate_cents) but has no upgrade_delta_cents function, so Req 2 is missing regardless of test results. The contributor's 'ready_for_review' status is not supported by the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.606,
+  "prompt_tokens": 3284,
+  "output_tokens": 347,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

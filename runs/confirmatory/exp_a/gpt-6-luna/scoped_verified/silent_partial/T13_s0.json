@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: src/credit_memo.py does not define credit_with_tax_cents(net_credit_cents, tax_bps).",
+  "target_issue": "T13 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both new behaviors and preservation of legacy public signatures.",
+    "The patch adds the refund clamp and preserves the existing invoice_balance signature, but it omits the required reverse pro-rata tax function entirely. The reported tests do not cover that requirement, so this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.246,
+  "prompt_tokens": 1283,
+  "output_tokens": 232,
+  "estimated_usd": 0.001769,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

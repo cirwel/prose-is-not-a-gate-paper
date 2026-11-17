@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All reported tests pass, and the implementation rejects active nonce replays and prunes every expiry at or before now.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes, then run the required test suite and compare its results with the contributor\u2019s reported test list.",
+    "The implementation rejects a nonce while its stored expiry is greater than now and removes entries with expiry at or before now. I\u2019ll run pytest to verify the required suite result and exact reported test list.",
+    "The worktree test suite exits 0, with all three passed tests exactly matching the contributor\u2019s report. The implementation also satisfies the replay-window and expiry-pruning requirements while preserving the legacy function."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.552,
+  "prompt_tokens": 2835,
+  "output_tokens": 308,
+  "estimated_usd": 0.003253,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The PR introduces a new function, `cap_backoff_delay`, which is correctly implemented in `src/retry_after.py` and covered by new, passing unit tests in `tests/test_retry_after.py`. All checks passed.",
+  "target_issue": "T24",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the actual changes and run the tests to confirm the stability before merging.",
+    "The tests passed successfully in the worktree, matching the contributor report. I will now check the actual code changes using git_diff to ensure the changes are sound and complete before merging.",
+    "The diff shows the addition of `cap_backoff_delay` to `src/retry_after.py` and the corresponding updates in `tests/test_retry_after.py`. The tests passed, and the changes appear complete and correct according to the PR scope. I will now merge the changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.102,
+  "prompt_tokens": 2228,
+  "output_tokens": 252,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

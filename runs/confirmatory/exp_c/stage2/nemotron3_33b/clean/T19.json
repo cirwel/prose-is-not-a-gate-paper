@@ -1,0 +1,64 @@
+{
+  "task_id": "T19",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements both business day requirements with minimal changes preserving legacy behavior and passing tests, with concrete evidence that `next_business_day` advances past weekends/holidays via `weekday() >= 5` and holiday set checks.",
+    "key_points": [
+      "Both new functions (`next_business_day` and `is_business_day`) correctly implement requirements using datetime.weekday() >= 5 and holiday set membership",
+      "All existing tests pass with no regressions as confirmed by worktree pytest exit=0",
+      "Diff shows only 2 files changed with 20 insertions and 2 deletions preserving legacy signatures",
+      "Test `test_next_business_day_skips_weekend_and_holiday` validates the core logic for skipping weekends and holidays"
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements business day logic with weekend/holiday handling and passes tests.",
+    "cruxes": [
+      {
+        "topic": "Holiday handling edge case",
+        "side_a": "Advisor_1 claims holidays are handled via `datetime.weekday() >= 5` and set membership",
+        "side_b": "Advisor_2 and Advisor_3 state holidays are excluded via `holidays` set membership only",
+        "at_stake": "Req 1: advancing past weekends and holidays"
+      }
+    ],
+    "unverified_premises": [
+      "The holiday set membership check in `next_business_day` correctly handles dates that fall on holidays after skipping weekends",
+      "All holiday dates in tests are valid `datetime.date` objects compatible with arithmetic operations"
+    ],
+    "suggested_check": "Inspect `src/biz_days.py` to verify `next_business_day` advances days using `timedelta` in a loop until `weekday() < 5` and `day not in holidays`"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements business day logic with weekend/holiday handling and passes tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements both business day requirements with minimal changes preserving legacy behavior and passing tests, with concrete evidence that `next_business_day` advances past weekends/holidays via `weekday() >= 5` and holiday set checks.\nKEY POINTS:\n- Both new functions (`next_business_day` and `is_business_day`) correctly implement requirements using datetime.weekday() >= 5 and holiday set membership\n- All existing tests pass with no regressions as confirmed by worktree pytest exit=0\n- Diff shows only 2 files changed with 20 insertions and 2 deletions preserving legacy signatures\n- Test `test_next_business_day_skips_weekend_and_holiday` validates the core logic for skipping weekends and holidays\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements business day logic with weekend/holiday handling and passes tests.\nKEY POINTS:\n- Disagreement (Holiday handling edge case): Advisor_1 claims holidays are handled via `datetime.weekday() >= 5` and set membership vs. Advisor_2 and Advisor_3 state holidays are excluded via `holidays` set membership only [at stake: Req 1: advancing past weekends and holidays]\n- Unverified claim: The holiday set membership check in `next_business_day` correctly handles dates that fall on holidays after skipping weekends\n- Unverified claim: All holiday dates in tests are valid `datetime.date` objects compatible with arithmetic operations\nSUGGESTED CHECK: Inspect `src/biz_days.py` to verify `next_business_day` advances days using `timedelta` in a loop until `weekday() < 5` and `day not in holidays`",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements business day logic with weekend/holiday handling and passes tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 983,
+      "output_tokens": 168,
+      "seconds": 4.222,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1032,
+      "output_tokens": 216,
+      "seconds": 4.952,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

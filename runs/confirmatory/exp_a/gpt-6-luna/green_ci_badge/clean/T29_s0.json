@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation adds both requested functions, handles code without backticks with a three-backtick fence, and appends the specified truncation marker only when lines are removed. The legacy newline helper is unchanged and all pytest tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the module and its tests, then compare the PR diff against both ticket requirements and legacy behavior.",
+    "Inspect the patch for the two requirements and compatibility before deciding.",
+    "The implementation appears to satisfy the core cases, but line splitting and newline preservation could affect truncation behavior. I\u2019ll run the suite and inspect the module\u2019s current API before deciding.",
+    "The required fence width is chosen from the longest backtick run, and truncation counts removed lines after newline normalization. Existing legacy behavior is retained, and the available test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.606,
+  "prompt_tokens": 3525,
+  "output_tokens": 2007,
+  "estimated_usd": 0.009242,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

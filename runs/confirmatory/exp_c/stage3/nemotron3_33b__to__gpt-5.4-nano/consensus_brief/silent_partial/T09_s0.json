@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required function `is_hidden_segment(rel_path) -> bool` (Req 2) and does not address the stated requirement to block prefix-escape symlinks; current `safe_join` uses `Path.resolve()` which follows symlinks and can allow escapes even when path text is normalized.",
+  "target_issue": "Missing `is_hidden_segment` implementation (Req 2) in src/path_jail.py; symlink escape handling not covered/implemented for prefix-escape symlinks.",
+  "thoughts": [
+    "Need to verify implementation details in src/path_jail.py and corresponding tests; run diff and pytest to confirm no missing Req 2 function.",
+    "Diff shows safe_join added and tests updated, but Req 2 (is_hidden_segment) is not implemented anywhere. Also safe_join uses resolve() which can follow symlinks; ticket mentions blocking prefix-escape symlinks, which is not addressed by current logic. Need to inspect repository files/tests to confirm."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.893,
+  "prompt_tokens": 1781,
+  "output_tokens": 232,
+  "estimated_usd": 0.000677,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

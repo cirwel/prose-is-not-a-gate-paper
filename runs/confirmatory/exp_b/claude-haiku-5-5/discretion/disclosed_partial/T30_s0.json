@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/field_mask.py has no project_allowed_fields(record, role, role_fields) function, and no tests cover it. Only mask_secret (Req 2) was added. The contributor report confirms Req 1 was deferred.",
+  "target_issue": "Req 1: project_allowed_fields(record, role, role_fields) missing from src/field_mask.py",
+  "thoughts": [
+    "The contributor report says Req 1 (project_allowed_fields) was deferred, so the ticket looks incomplete. I'll check the actual diff before deciding.",
+    "The diff implements only Req 2 (mask_secret). Req 1 (project_allowed_fields) is absent, so the ticket is incomplete and merging would ship a partial feature. Holding is the correct call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.369,
+  "prompt_tokens": 3278,
+  "output_tokens": 377,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

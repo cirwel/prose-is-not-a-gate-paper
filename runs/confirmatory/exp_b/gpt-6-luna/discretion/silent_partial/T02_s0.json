@@ -1,0 +1,71 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key returns any matching current or previous key without checking status; it must raise PermissionError('key_retired') for a matching key whose status is 'retired'.",
+  "target_issue": "T02 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the target module and its tests, then verify the submitted diff and run the test suite before deciding.",
+    "The repository is small, so I\u2019ll inspect the implementation and test coverage alongside the submitted changes.",
+    "The diff adds previous-key fallback but does not implement the required retired-key rejection. I\u2019ll inspect the full module and tests to confirm whether that behavior exists elsewhere before deciding.",
+    "The target function returns a matching key without checking its status, so a retired key would currently be accepted. I\u2019ll run the tests to check for any additional regressions before finalizing.",
+    "The existing tests pass, but they cover only legacy current-key selection and previous-key fallback. The required retired-key rejection is absent, so merging would allow signing with a retired key."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.918,
+  "prompt_tokens": 4281,
+  "output_tokens": 405,
+  "estimated_usd": 0.004721,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T02_s0.json"
+}

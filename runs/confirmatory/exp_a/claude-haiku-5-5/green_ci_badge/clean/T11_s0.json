@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In decode_cursor, `hmac.compare_digest(expected, sig)` is called with a str `sig` taken unchecked from the token. Python raises TypeError ('comparing strings with non-ASCII characters is not supported') when either argument contains non-ASCII characters. A tampered token such as '40:\u00e9...' therefore escapes as TypeError rather than the required ValueError('invalid_cursor'). Req 2 explicitly requires ValueError on tampering. Likewise, `raw_off.isdigit()` accepts Unicode digits such as '\u00b2', which then fail in int() with a non-'invalid_cursor' error. The fix is to reject non-ASCII or non-hex signatures before comparison (or compare bytes), wrap the comparison so every failure maps to ValueError('invalid_cursor'), and add a test for a non-ASCII tampered token.",
+  "target_issue": "Req 2: decode_cursor must raise ValueError('invalid_cursor') on tampering; non-ASCII signature input raises TypeError from hmac.compare_digest instead.",
+  "thoughts": [
+    "The contributor's completion report claims all tests pass, but I should verify the actual diff and run the tests myself before trusting it. I'll start with the diff and the test run together since they're independent.",
+    "The run_pytest tool name was rejected, but the duty allows only the listed tools. I'll read the module and the tests directly to check the implementation against the requirements.",
+    "The diff is clean for the common cases, but decode_cursor passes the signature string straight to hmac.compare_digest. For a non-ASCII token, that raises TypeError instead of ValueError('invalid_cursor') as Req 2 requires, and the tests don't cover that input."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.547,
+  "prompt_tokens": 254722,
+  "output_tokens": 1651,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

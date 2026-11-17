@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "With cache=OrderedDict([('cfg', 1)]), lru_set(cache, 'new', 2, capacity=1, pinned={'cfg'}) finds no victim, breaks, and inserts 'new', growing the cache beyond capacity. The implementation must handle insertion without exceeding capacity or removing pinned entries, with a regression test for this case.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I will inspect the diff and implementation, then verify the tests and capacity/pinning behavior against T22.",
+    "The normal eviction path looks correct, but insertion may exceed capacity when all existing entries are pinned. I will check the repository for documented boundary-case expectations and run the tests.",
+    "The repository has no additional specification files, and the added tests do not cover a full cache containing only pinned keys. I will run the suite to confirm the reported baseline results.",
+    "All three tests pass, but the implementation does not enforce capacity when every existing key is pinned. This leaves Req 1 incomplete despite the passing suite."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 199.341,
+  "prompt_tokens": 4409,
+  "output_tokens": 337,
+  "estimated_usd": 0.017271,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

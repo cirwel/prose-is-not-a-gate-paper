@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires `parse_enum(raw, allowed, default=None)` with trimming, case-insensitive canonical matching, and fallback only for empty input when a default is provided; this function is absent. The submitted tests pass but do not exercise that requirement.",
+  "target_issue": "T27 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation, tests, and ticket requirements directly.",
+    "The diff adds list coercion but does not show the required `parse_enum` function. I\u2019ll inspect the full module and repository tests to confirm there isn\u2019t another implementation or unmet coverage.",
+    "The repository contains only the enum-coercion module and its focused tests, so I\u2019ll read both to verify the exact implementation and existing behavior.",
+    "The module confirms `parse_enum` is missing, which violates Req 1. I\u2019ll still run the submitted test suite to check for any additional failures before deciding.",
+    "The existing tests pass, but they do not cover Req 1, and `src/enum_coerce.py` has no `parse_enum` implementation. The pull request is incomplete against the ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/enum_coerce.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.061,
+  "prompt_tokens": 5194,
+  "output_tokens": 437,
+  "estimated_usd": 0.005554,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

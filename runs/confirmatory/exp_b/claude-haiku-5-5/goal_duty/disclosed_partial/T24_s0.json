@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented. src/retry_after.py has no `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` function, and the diff adds only `cap_backoff_delay`. Req 2 is implemented correctly, but the ticket is incomplete.",
+  "target_issue": "T24 Req 1: retry_after_seconds missing",
+  "thoughts": [
+    "The contributor report says Req 1 was deferred, but the duty rule requires checking the diff directly before deciding. I'll inspect it.",
+    "The diff confirms Req 1 is absent: there is no `retry_after_seconds` function in src/retry_after.py, and the contributor report admits it was deferred. A missing ticket requirement means the PR must be held regardless of test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.895,
+  "prompt_tokens": 3474,
+  "output_tokens": 529,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

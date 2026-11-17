@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "src/cursor_hmac.py implements encode_cursor as 'offset:sig' with HMAC-SHA256 and decode_cursor verifies with hmac.compare_digest, raising ValueError('invalid_cursor') on bad signatures or negative offsets. The legacy clamp_limit signature and behavior are unchanged, and the new tests cover round-trip and tamper rejection. Minor follow-up: use an ASCII-only digit check (e.g. re.fullmatch(r'[0-9]+')) so non-ASCII digits also raise 'invalid_cursor'; the offset<0 check in decode is unreachable but harmless.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are summaries, so I need to verify the actual code change before deciding. Starting with the diff.",
+    "I reviewed the actual diff rather than relying on the summaries. The HMAC uses hmac.compare_digest, tampered and negative offsets raise ValueError('invalid_cursor'), and the legacy clamp_limit is untouched. The only gap is that str.isdigit accepts some non-ASCII digits (e.g. '\u00b2'), which would raise a different ValueError message; that is a non-blocking edge case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.726,
+  "prompt_tokens": 4438,
+  "output_tokens": 1200,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

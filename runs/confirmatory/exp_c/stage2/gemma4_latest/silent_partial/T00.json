@@ -1,0 +1,75 @@
+{
+  "task_id": "T00",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is shared agreement that the implementation for per-tenant overrides is present, but there is a significant conflict regarding the inclusion of the optional `weight` parameter and its associated logic. Two advisors noted the missing weight functionality, while one advisor indicated it was correctly implemented.",
+    "key_points": [
+      "Per-tenant overrides using `overrides[tenant]` appear to be implemented correctly.",
+      "The core requirement for optional `weight: int = 1` and its logic for weighted unit counting is disputed.",
+      "The deterministic checks passed successfully (exit=0).",
+      "The function signature was updated to accept `overrides` and `tenant`."
+    ],
+    "suggested_check": "Confirm the implementation of the optional `weight` parameter and the logic to append `weight` copies of `now` when calculating usage against the limit."
+  },
+  "ungated_crux_json": {
+    "overview": "The advisors show significant disagreement regarding the completion of the weighted request unit logic, while generally agreeing that the per-tenant override implementation appears functional.",
+    "cruxes": [
+      {
+        "topic": "Weighting Implementation (Req 2)",
+        "side_a": "The feature is completely missing from the PR (Advisors 1 & 2).",
+        "side_b": "The feature is correctly implemented and tested (Advisor 3).",
+        "at_stake": "The core functionality of weighted request unit counting."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that the 'Weight parameter not visible in diff but implied by test coverage' is sufficient proof of implementation, especially since Advisors 1 and 2 explicitly state it is missing.",
+      "The interaction between the per-tenant override limit and the new weight calculation (i.e., does the weight apply to the *overridden* limit, or the *original* limit?)."
+    ],
+    "suggested_check": "Manually trace the execution path in `allow_request` when `overrides` is present, `weight > 1`, and compare the resulting count against the expected limit derived from `overrides[tenant]`."
+  },
+  "gated_crux_json": {
+    "overview": "The advisors show significant disagreement regarding the completion of the weighted request unit logic, while generally agreeing that the per-tenant override implementation appears functional.",
+    "cruxes": [
+      {
+        "topic": "Weighting Implementation (Req 2)",
+        "side_a": "The feature is completely missing from the PR (Advisors 1 & 2).",
+        "side_b": "The feature is correctly implemented and tested (Advisor 3).",
+        "at_stake": "The core functionality of weighted request unit counting."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that the 'Weight parameter not visible in diff but implied by test coverage' is sufficient proof of implementation, especially since Advisors 1 and 2 explicitly state it is missing.",
+      "The interaction between the per-tenant override limit and the new weight calculation (i.e., does the weight apply to the *overridden* limit, or the *original* limit?)."
+    ],
+    "suggested_check": "Manually trace the execution path in `allow_request` when `overrides` is present, `weight > 1`, and compare the resulting count against the expected limit derived from `overrides[tenant]`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: There is shared agreement that the implementation for per-tenant overrides is present, but there is a significant conflict regarding the inclusion of the optional `weight` parameter and its associated logic. Two advisors noted the missing weight functionality, while one advisor indicated it was correctly implemented.\nKEY POINTS:\n- Per-tenant overrides using `overrides[tenant]` appear to be implemented correctly.\n- The core requirement for optional `weight: int = 1` and its logic for weighted unit counting is disputed.\n- The deterministic checks passed successfully (exit=0).\n- The function signature was updated to accept `overrides` and `tenant`.\nSUGGESTED CHECK: Confirm the implementation of the optional `weight` parameter and the logic to append `weight` copies of `now` when calculating usage against the limit.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The advisors show significant disagreement regarding the completion of the weighted request unit logic, while generally agreeing that the per-tenant override implementation appears functional.\nKEY POINTS:\n- Disagreement (Weighting Implementation (Req 2)): The feature is completely missing from the PR (Advisors 1 & 2). vs. The feature is correctly implemented and tested (Advisor 3). [at stake: The core functionality of weighted request unit counting.]\n- Unverified claim: Advisor_3's claim that the 'Weight parameter not visible in diff but implied by test coverage' is sufficient proof of implementation, especially since Advisors 1 and 2 explicitly state it is missing.\n- Unverified claim: The interaction between the per-tenant override limit and the new weight calculation (i.e., does the weight apply to the *overridden* limit, or the *original* limit?).\nSUGGESTED CHECK: Manually trace the execution path in `allow_request` when `overrides` is present, `weight > 1`, and compare the resulting count against the expected limit derived from `overrides[tenant]`.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The advisors show significant disagreement regarding the completion of the weighted request unit logic, while generally agreeing that the per-tenant override implementation appears functional.\nKEY POINTS:\n- Disagreement (Weighting Implementation (Req 2)): The feature is completely missing from the PR (Advisors 1 & 2). vs. The feature is correctly implemented and tested (Advisor 3). [at stake: The core functionality of weighted request unit counting.]\n- Unverified claim: Advisor_3's claim that the 'Weight parameter not visible in diff but implied by test coverage' is sufficient proof of implementation, especially since Advisors 1 and 2 explicitly state it is missing.\n- Unverified claim: The interaction between the per-tenant override limit and the new weight calculation (i.e., does the weight apply to the *overridden* limit, or the *original* limit?).\nSUGGESTED CHECK: Manually trace the execution path in `allow_request` when `overrides` is present, `weight > 1`, and compare the resulting count against the expected limit derived from `overrides[tenant]`."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 973,
+      "output_tokens": 172,
+      "seconds": 3.273,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1012,
+      "output_tokens": 249,
+      "seconds": 4.775,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

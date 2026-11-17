@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket Req 2 is not implemented: src/dedup_rows.py lacks deduplicate_rows_with_stats(rows, key_fn, keep='first') returning (unique_rows, duplicate_count). Only Req 1 tests were added, so requirements are incomplete.",
+  "target_issue": "Missing function deduplicate_rows_with_stats; no tests covering duplicate_count behavior.",
+  "thoughts": [
+    "Need to verify diff and tests; ensure both Req1 and Req2 are implemented and all tests pass before merging.",
+    "Diff shows Req 1 implemented, but Req 2 (deduplicate_rows_with_stats returning (unique_rows, duplicate_count)) is missing. Tests added only cover Req 1; no tests for Req 2. Must hold until Req 2 is implemented and passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.997,
+  "prompt_tokens": 1607,
+  "output_tokens": 185,
+  "estimated_usd": 0.000587,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

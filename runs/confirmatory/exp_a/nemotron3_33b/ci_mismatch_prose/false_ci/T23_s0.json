@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The failed test demonstrates the keyset pagination implementation does not correctly handle tie preservation after the cursor (after_score, after_id), violating Requirement 1's filtering requirement.",
+  "target_issue": "test_keyset_preserves_ties_and_exact",
+  "thoughts": [
+    "The contributor reports 0 failed tests and claims the worktree pytest ran cleanly, but the PR metadata shows an automated evidence check mismatch. I need to verify the actual test results in the worktree.",
+    "The worktree pytest shows 1 failed test (test_keyset_preserves_ties_and_exact) despite the contributor's report of 0 failures, confirming the evidence mismatch. The failure indicates the keyset pagination is incorrectly returning empty results when it should preserve ties and return 'b'."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.568,
+  "prompt_tokens": 1707,
+  "output_tokens": 194,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

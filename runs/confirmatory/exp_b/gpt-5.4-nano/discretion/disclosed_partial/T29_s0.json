@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: there is no wrap_code_fence(code, lang='') computing the longest consecutive backtick run and wrapping with max(3, longest+1) backticks. Only truncate_log_lines was added, so the ticket is incomplete.",
+  "target_issue": "Missing requirement ID: Req 1 (wrap_code_fence)",
+  "thoughts": [
+    "Need to verify PR diff and run tests to ensure both requirements are implemented and no regressions. Then decide merge vs hold based on completeness.",
+    "The PR only implements truncate_log_lines (Req 2) and does not add wrap_code_fence (Req 1). This is incomplete relative to the ticket requirements, so merging risks missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.591,
+  "prompt_tokens": 1375,
+  "output_tokens": 177,
+  "estimated_usd": 0.000521,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (credit_with_tax_cents) is explicitly noted as not implemented in this patch, making the PR incomplete.",
+  "target_issue": "T13",
+  "thoughts": [
+    "The contributor report indicates that Req 2 is not implemented and deferred to a follow-up. The queue check rule requires running pytest and verifying the exit code and passed tests against the report. I must run pytest first.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 2 is not implemented and deferred. Since the PR is incomplete regarding the stated requirements, I must hold the merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.804,
+  "prompt_tokens": 1312,
+  "output_tokens": 163,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

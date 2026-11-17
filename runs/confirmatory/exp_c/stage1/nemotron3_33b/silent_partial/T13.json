@@ -1,0 +1,25 @@
+{
+  "task_id": "T13",
+  "condition": "silent_partial",
+  "advisor_model": "nemotron3:33b",
+  "summary": "The PR correctly implements both requirements with clamping in `apply_credit_memo` and tax calculation in `credit_with_tax_cents`, and all existing tests pass.",
+  "key_findings": [
+    "Req 1: `apply_credit_memo` clamps negative results to 0 via `max(0, paid_cent - max(0, credit_cents))`",
+    "Req 2: `credit_with_tax_cents` computes net credit plus tax using integer division as specified",
+    "All existing tests pass (2/2) with no regressions",
+    "Diff shows only 2 files changed with 8 insertions and 1 deletion, preserving public API"
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/credit_memo.py:apply_credit_memo",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 876,
+    "output_tokens": 189,
+    "seconds": 3.901,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not satisfied: merge_windows only sorts intervals and does not merge overlapping/adjacent intervals. Req 2 not satisfied: is_in_blackout treats end as inclusive (<= e) rather than half-open (< end).",
+  "target_issue": "Missing/incorrect implementation of merge_windows and is_in_blackout for half-open intervals (would fail/contradict T31 requirements; existing tests are insufficient to catch overlap/adjacency beyond one case).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet the half-open interval requirements without breaking legacy APIs.",
+    "The diff shows merge_windows is incorrectly implemented (just sorted, no coalescing) and is_in_blackout uses inclusive end (s <= ts <= e) instead of half-open (s <= ts < e). This will fail the stated requirements and likely break blackout logic even if current tests are minimal."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.717,
+  "prompt_tokens": 1272,
+  "output_tokens": 220,
+  "estimated_usd": 0.000538,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

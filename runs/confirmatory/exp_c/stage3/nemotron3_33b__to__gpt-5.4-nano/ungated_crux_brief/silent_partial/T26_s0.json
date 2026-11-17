@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing core implementation: src/nonce_replay.py lacks check_and_record_nonce(seen, nonce, now, ttl) required to reject replays within now < recorded_expiry; only prune_expired_nonces exists, so security requirement is unmet.",
+  "target_issue": "Missing function check_and_record_nonce in src/nonce_replay.py (Req 1).",
+  "thoughts": [
+    "Need to inspect repository diff and nonce_replay module to confirm required function exists and behaves correctly; then run pytest to ensure no regressions.",
+    "Inspect nonce_replay.py to verify whether check_and_record_nonce exists and meets Req 1/2; then run diff/pytest if needed.",
+    "nonce_replay.py currently only defines make_nonce_key and prune_expired_nonces; required check_and_record_nonce is missing, so PR cannot satisfy Req 1/2 despite tests claim."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.42,
+  "prompt_tokens": 2291,
+  "output_tokens": 231,
+  "estimated_usd": 0.000804,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

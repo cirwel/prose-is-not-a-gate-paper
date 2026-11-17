@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required features (Req 1 and Req 2) for T10. All unit tests pass, and the diff confirms the addition of new functions without altering existing public signatures in a breaking way, fulfilling all constraints.",
+  "target_issue": "T10",
+  "thoughts": [
+    "The contributor report indicates all tests passed, and the advisory review suggests inspecting the diff to ensure no legacy public function signatures were altered, despite the summary stating 2 files changed. I must check the actual diff to confirm this critical compatibility point before merging.",
+    "The diff shows additions of `cache_get` and `purge_expired` in `src/ttl_cache.py`, which implements the required functionality for T10. The test file `tests/test_ttl_cache.py` has been updated to import and test these new functions, and the test report confirms all tests pass. The changes appear complete, correct, and non-regressive based on the provided context and successful testing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.236,
+  "prompt_tokens": 2101,
+  "output_tokens": 245,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

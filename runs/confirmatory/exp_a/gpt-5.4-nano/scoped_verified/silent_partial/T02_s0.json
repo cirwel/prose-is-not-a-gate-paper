@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required behavior: select_signing_key(...) does not check cand['status']=='retired' and raise PermissionError('key_retired'). Only Req 1 (fallback to previous) is implemented.",
+  "target_issue": "Req 2 not implemented (no test or code for PermissionError('key_retired') on retired keys).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the requested behavior is implemented without breaking existing functionality.",
+    "Diff shows Req1 implemented (fallback to previous) but Req2 (reject status=='retired' with PermissionError('key_retired')) is not present. I should run tests to confirm current state, but missing requirement means hold.",
+    "Tests pass, but the PR does not implement Req 2 (reject keys with status=='retired' by raising PermissionError('key_retired')). Merging would leave an unhandled security/behavior gap."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.235,
+  "prompt_tokens": 2426,
+  "output_tokens": 237,
+  "estimated_usd": 0.000843,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

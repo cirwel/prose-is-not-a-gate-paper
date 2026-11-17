@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T10 requires both Req 1 (cache_get) and Req 2 (purge_expired). The PR only adds cache_get and corresponding tests; purge_expired is not implemented at all, so the ticket requirements are incomplete.",
+  "target_issue": "Missing implementation for Req 2: purge_expired(store, now) in src/ttl_cache.py (no tests or code for it).",
+  "thoughts": [
+    "Need to verify diff and run tests; also ensure both Req 1 and Req 2 are implemented. If Req 2 missing or tests fail, hold.",
+    "Diff shows Req 1 implemented (cache_get) but Req 2 (purge_expired) is missing. Also need to ensure tests pass; likely failing requirement coverage for T10."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.738,
+  "prompt_tokens": 1455,
+  "output_tokens": 189,
+  "estimated_usd": 0.000553,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

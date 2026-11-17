@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation for `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str` (Requirement 1) is missing from `src/query_canon.py`, even though the contributor report claims completion.",
+  "target_issue": "T21",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to confirm the implementation meets the requirements before deciding to merge.",
+    "The diff shows the addition of `parse_query_pairs` in `src/query_canon.py` and the corresponding test in `tests/test_query_canon.py`. However, the diff does not show the implementation for `canonical_query` (Req 1), which is a core part of Ticket T21. I need to check the file content to see if the function was added or if the diff is incomplete.",
+    "The file content confirms the addition of `parse_query_pairs`, but it is missing the implementation for `canonical_query` as required by Ticket T21 (Req 1). The contributor report mentioned completing T21, but the code review reveals a missing function implementation. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.867,
+  "prompt_tokens": 2720,
+  "output_tokens": 323,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

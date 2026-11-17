@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "At the required boundary, an entry is expired when `expires_at == now`, but `cache_get` only rejects `expires_at < now`. `purge_expired` is a stub returning 0 without removing expired keys, so Req 2 is unimplemented.",
+  "target_issue": "T10 Req 1 expiry boundary; T10 Req 2 purge expired entries",
+  "thoughts": [
+    "I\u2019ll review the submitted diff first, focusing on expiration semantics and compatibility with the legacy API.",
+    "The implementation violates both ticket requirements: `cache_get` treats an entry expiring exactly at `now` as valid, and `purge_expired` never removes entries or reports evictions. The added boundary test would expose these defects, while the modified legacy test also drops its prior `expires_at` assertion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.65,
+  "prompt_tokens": 1437,
+  "output_tokens": 1083,
+  "estimated_usd": 0.004615,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

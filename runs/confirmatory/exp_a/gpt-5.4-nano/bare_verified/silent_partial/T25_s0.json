@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (`split_cents_exact(total_cents, weights)`) and only adds `reconcile_ledger` plus a minimal test; therefore Ticket T25 is not fully satisfied.",
+  "target_issue": "Missing implementation of `split_cents_exact` (Req 1).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new requirements are implemented correctly and no legacy behavior regresses.",
+    "The diff only adds reconcile_ledger and a test; it does not implement the required split_cents_exact function or any tests for penny-drift behavior. This is incomplete relative to Ticket T25 requirements, so merging risks missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.162,
+  "prompt_tokens": 1273,
+  "output_tokens": 173,
+  "estimated_usd": 0.000491,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

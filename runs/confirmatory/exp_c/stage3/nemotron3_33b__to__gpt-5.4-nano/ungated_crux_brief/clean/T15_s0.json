@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds deduplicate_rows(rows, key_fn, keep) and deduplicate_rows_with_stats(...) per T15; keep='first' preserves first occurrence order and keep='last' preserves last occurrences. Existing legacy function extract_keys is unchanged and all pytest tests pass (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify implementation details in src/dedup_rows.py for keep='last' and ensure signatures/behavior preserved; run diff and inspect file, then run pytest if needed.",
+    "Inspecting diff shows deduplicate_rows keep='last' uses last_idx and filters by recomputing key_fn per row; this is correct if key_fn is deterministic but could be problematic if key_fn has side effects or non-determinism. Also ensure legacy signatures preserved; extract_keys unchanged. Run pytest to confirm.",
+    "All tests pass and diff implements required functions with correct keep='first' and keep='last' behavior; legacy extract_keys remains unchanged and signatures are preserved. No production regression risk indicated by current suite."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.755,
+  "prompt_tokens": 3862,
+  "output_tokens": 261,
+  "estimated_usd": 0.001226,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

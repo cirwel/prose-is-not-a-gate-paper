@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2: parse_nullable_int has no min_val/max_val parameters and no out-of-range ValueError('out_of_range') logic. Merging would leave ticket T03 incomplete.",
+  "target_issue": "Missing requirement ID: Req 2 (bounds enforcement)",
+  "thoughts": [
+    "Need to verify implementation completeness and run tests; metadata claims Req2 missing, so likely hold unless code actually includes bounds enforcement.",
+    "Diff shows Req 1 implemented but Req 2 (min_val/max_val bounds with ValueError('out_of_range')) is entirely missing. Also parse_nullable_int signature lacks min_val/max_val, so cannot satisfy ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.485,
+  "prompt_tokens": 1340,
+  "output_tokens": 165,
+  "estimated_usd": 0.0005,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

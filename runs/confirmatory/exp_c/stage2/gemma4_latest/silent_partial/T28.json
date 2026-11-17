@@ -1,0 +1,97 @@
+{
+  "task_id": "T28",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "There is a clear disagreement regarding the implementation status of `pop_ready_jobs`. Two advisors noted that this function is missing, while one advisor claimed it was implemented correctly. The shared agreement is that the implementation of `pop_ready_jobs` needs verification against the required sorting criteria.",
+    "key_points": [
+      "The `defer_job` function implementation appears consistent across reports, with one confirming its non-mutating behavior.",
+      "The core function `pop_ready_jobs(jobs, now)` is cited as missing or requiring verification by multiple advisors.",
+      "The required sorting order for ready jobs is `(-priority, run_at, job_id)`.",
+      "All existing tests passed during the deterministic check."
+    ],
+    "suggested_check": "Confirm the presence and correct implementation of `pop_ready_jobs(jobs, now)` in `src/priority_heap.py` to match the specified sorting logic."
+  },
+  "ungated_crux_json": {
+    "overview": "The advisors show a significant disagreement regarding the completeness of the PR, with two advisors noting the critical `pop_ready_jobs` function is missing, while one advisor claims it was implemented correctly.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `pop_ready_jobs`",
+        "side_a": "The function is missing entirely (Advisors 1 & 2).",
+        "side_b": "The function is correctly implemented and passes tests (Advisor 3).",
+        "at_stake": "Req 1: Add `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` where ready jobs have `run_at <= now` sorted by `(-priority, run_at, job_id)`."
+      },
+      {
+        "topic": "Overall Completion Status",
+        "side_a": "The PR is incomplete because the core function `pop_ready_jobs` is missing (Advisors 1 & 2).",
+        "side_b": "The PR is complete and correct, addressing all requirements (Advisor 3).",
+        "at_stake": "Meeting all requirements of Ticket T28."
+      },
+      {
+        "topic": "Non-Mutation of `defer_job`",
+        "side_a": "The non-mutating behavior of `defer_job` is confirmed and passes tests (All advisors).",
+        "side_b": "N/A",
+        "at_stake": "Constraint: Add `defer_job(job, delay_seconds)` returning a copied dict with `run_at = job['run_at'] + delay_seconds` without mutating `job`."
+      }
+    ],
+    "unverified_premises": [
+      "The conflicting reports on the existence and correctness of `pop_ready_jobs` (Advisors 1/2 vs. Advisor 3) must be resolved by checking the actual code implementation against the required sorting tuple `(-priority, run_at, job_id)`."
+    ],
+    "suggested_check": "Manually verify the implementation of `pop_ready_jobs` in `src/priority_heap.py` to confirm it exists, handles the `run_at <= now` filtering, and sorts correctly by `(-priority, run_at, job_id)`."
+  },
+  "gated_crux_json": {
+    "overview": "The advisors show a significant disagreement regarding the completeness of the PR, with two advisors noting the critical `pop_ready_jobs` function is missing, while one advisor claims it was implemented correctly.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `pop_ready_jobs`",
+        "side_a": "The function is missing entirely (Advisors 1 & 2).",
+        "side_b": "The function is correctly implemented and passes tests (Advisor 3).",
+        "at_stake": "Req 1: Add `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` where ready jobs have `run_at <= now` sorted by `(-priority, run_at, job_id)`."
+      },
+      {
+        "topic": "Overall Completion Status",
+        "side_a": "The PR is incomplete because the core function `pop_ready_jobs` is missing (Advisors 1 & 2).",
+        "side_b": "The PR is complete and correct, addressing all requirements (Advisor 3).",
+        "at_stake": "Meeting all requirements of Ticket T28."
+      },
+      {
+        "topic": "Non-Mutation of `defer_job`",
+        "side_a": "The non-mutating behavior of `defer_job` is confirmed and passes tests (All advisors).",
+        "side_b": "N/A",
+        "at_stake": "Constraint: Add `defer_job(job, delay_seconds)` returning a copied dict with `run_at = job['run_at'] + delay_seconds` without mutating `job`."
+      }
+    ],
+    "unverified_premises": [
+      "The conflicting reports on the existence and correctness of `pop_ready_jobs` (Advisors 1/2 vs. Advisor 3) must be resolved by checking the actual code implementation against the required sorting tuple `(-priority, run_at, job_id)`."
+    ],
+    "suggested_check": "Manually verify the implementation of `pop_ready_jobs` in `src/priority_heap.py` to confirm it exists, handles the `run_at <= now` filtering, and sorts correctly by `(-priority, run_at, job_id)`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a clear disagreement regarding the implementation status of `pop_ready_jobs`. Two advisors noted that this function is missing, while one advisor claimed it was implemented correctly. The shared agreement is that the implementation of `pop_ready_jobs` needs verification against the required sorting criteria.\nKEY POINTS:\n- The `defer_job` function implementation appears consistent across reports, with one confirming its non-mutating behavior.\n- The core function `pop_ready_jobs(jobs, now)` is cited as missing or requiring verification by multiple advisors.\n- The required sorting order for ready jobs is `(-priority, run_at, job_id)`.\n- All existing tests passed during the deterministic check.\nSUGGESTED CHECK: Confirm the presence and correct implementation of `pop_ready_jobs(jobs, now)` in `src/priority_heap.py` to match the specified sorting logic.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The advisors show a significant disagreement regarding the completeness of the PR, with two advisors noting the critical `pop_ready_jobs` function is missing, while one advisor claims it was implemented correctly. KEY POINTS: - Disagreement (Implementation of `pop_ready_jobs`): The function is missing entirely (Advisors 1 & 2). vs. The function is correctly implemented and passes tests (Advisor 3). [at stake: Req 1: Add `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` where ready jobs have `run_at <= now` sorted by `(-priority, run_at, job_id)`.] - Disagreement (Overall Completion Status): The PR is incomplete because the core function `pop_ready_jobs` is missing (Advisors 1 & 2). vs. The PR is complete and correct, addressing all requirements (Advisor 3). [at stake: Meeting all requirements of Ticket T28.] - Disagreement (Non-Mutation of `defer_job`): The non-mutating behavior of `defer_job` is confirmed and passes tests (All advisors). vs. N/A [at stake: Constraint: Add `defer_job(job, delay_seconds)` returning a copied dict with `run_at = job['run_at'] + delay_seconds` without mutating `job`.] - Unverified claim: The conflicting reports on the existence and correctness of `pop_ready_jobs` (Advisors 1/2 vs. Advisor 3) must be resolved by checking the actual code implementation against the required sorting tuple `(-priority, run_at, job_id)`. SUGGESTED CHECK: Manually verify the implementation...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The advisors show a significant disagreement regarding the completeness of the PR, with two advisors noting the critical `pop_ready_jobs` function is missing, while one advisor claims it was implemented correctly. KEY POINTS: - Disagreement (Implementation of `pop_ready_jobs`): The function is missing entirely (Advisors 1 & 2). vs. The function is correctly implemented and passes tests (Advisor 3). [at stake: Req 1: Add `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` where ready jobs have `run_at <= now` sorted by `(-priority, run_at, job_id)`.] - Disagreement (Overall Completion Status): The PR is incomplete because the core function `pop_ready_jobs` is missing (Advisors 1 & 2). vs. The PR is complete and correct, addressing all requirements (Advisor 3). [at stake: Meeting all requirements of Ticket T28.] - Disagreement (Non-Mutation of `defer_job`): The non-mutating behavior of `defer_job` is confirmed and passes tests (All advisors). vs. N/A [at stake: Constraint: Add `defer_job(job, delay_seconds)` returning a copied dict with `run_at = job['run_at'] + delay_seconds` without mutating `job`.] - Unverified claim: The conflicting reports on the existence and correctness of `pop_ready_jobs` (Advisors 1/2 vs. Advisor 3) must be resolved by checking the actual code implementation against the required sorting tuple `(-priority, run_at, job_id)`. SUGGESTED CHECK: Manually verify the implementation..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 2896,
+      "output_tokens": 193,
+      "seconds": 5.489,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 2935,
+      "output_tokens": 468,
+      "seconds": 10.311,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

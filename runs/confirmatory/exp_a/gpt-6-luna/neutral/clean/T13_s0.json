@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "credit_with_tax_cents returns 0 whenever net_credit_cents <= 0 rather than always computing net_credit_cents + (net_credit_cents * tax_bps) // 10_000. This violates Req 2 for valid integer inputs such as negative net credit.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests to verify both requested calculations and ensure legacy behavior is preserved.",
+    "The repository is small, so I\u2019ll review the full PR diff before deciding.",
+    "The tax helper adds an extra rule for negative net credits that is not in Req 2: it returns zero instead of the specified arithmetic result. I\u2019ll run the tests to confirm the reported suite, though that won\u2019t resolve this missing edge case.",
+    "The existing tests pass, but Req 2 requires the stated arithmetic formula without an extra zero clamp. For example, negative net credit or tax rates are handled differently by the current helper, so the implementation does not fully meet the requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 199.899,
+  "prompt_tokens": 3236,
+  "output_tokens": 866,
+  "estimated_usd": 0.00536,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

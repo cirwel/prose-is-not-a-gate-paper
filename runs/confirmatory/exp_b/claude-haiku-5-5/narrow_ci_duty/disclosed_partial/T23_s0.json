@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The worktree suite passes (exit 0, 2/2 tests match the contributor report), but Req 1 is not implemented: keyset_page(rows, limit, after_score, after_id) is absent from src/tiebreak_sort.py, so T23 is incomplete. Only Req 2 (has_more_pages) is present. Hold until keyset_page is added and tested.",
+  "target_issue": "T23 Req 1: keyset_page(rows, limit, after_score=None, after_id=None) not implemented",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll call run_pytest to verify the exit code and compare against the contributor's reported passed_tests.",
+    "Tests exit 0 and match the reported passed_tests, but the contributor explicitly deferred Req 1 (keyset_page), which T23 requires. Merging would ship an incomplete ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.568,
+  "prompt_tokens": 3127,
+  "output_tokens": 577,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

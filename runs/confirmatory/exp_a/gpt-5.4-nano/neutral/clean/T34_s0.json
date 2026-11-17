@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds lookup_with_miss_sentinel(cache,key) that returns (False,None) for uncached keys and (True,None) for cached NOT_FOUND sentinel, plus record_negative_miss(cache,key) storing the exact NOT_FOUND object. Existing legacy functions/signatures remain unchanged and pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass; inspect diff and run pytest to ensure no regressions.",
+    "Diff is small and matches the requested API additions; run pytest to confirm no regressions and ensure legacy behavior remains intact.",
+    "All tests pass and the added functions meet Req 1/Req 2 without changing existing signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.751,
+  "prompt_tokens": 2538,
+  "output_tokens": 186,
+  "estimated_usd": 0.00082,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

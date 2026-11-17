@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2: missing `credit_with_tax_cents(net_credit_cents, tax_bps)` in src/credit_memo.py; only Req 1 is present and tests cover only clamping behavior.",
+  "target_issue": "Missing requirement Req 2 (no `credit_with_tax_cents` function); no failing test exists because Req 2 is unimplemented.",
+  "thoughts": [
+    "Need to verify PR diff and run tests; also confirm Req 2 implementation status in code. If Req 2 missing, hold to avoid incomplete feature.",
+    "Diff shows only Req 1 implemented (apply_credit_memo) and no Req 2 (credit_with_tax_cents). Tests added cover only Req 1. Merging would leave missing required functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.507,
+  "prompt_tokens": 1300,
+  "output_tokens": 189,
+  "estimated_usd": 0.000514,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

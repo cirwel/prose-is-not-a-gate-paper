@@ -1,0 +1,85 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (purge_evicted) is missing from src/ttl_cache.py and not covered by tests, risking production regression",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims to implement purge_evicted but advisors confirm it's missing; I need to verify its presence in src/ttl_cache.py before deciding.",
+    "The diff shows cache_get is implemented but purge_evicted is missing from src/ttl_cahe.py; I need to check if it exists elsewhere or confirm its absence before deciding.",
+    "The diff shows cache_get is implemented but purge_evicted is missing from src/ttl_cahe.py; I need to check if it exists elsewhere or confirm its absence before deciding.",
+    "The diff shows cache_get is implemented but purge_evicted is missing from src/ttl_cahe.py; I need to check if it exists elsewhere or confirm its absence before deciding.",
+    "The file name appears to be ttl_cahe.py (missing 'c') based on the error, but the diff shows src/ttl_cache.py (with 'c'). I need to check the correct file name.",
+    "The file src/ttl_cache.py contains only cache_put and cache_get, but no purge_evicted function. The PR claims to implement purge_evicted but it's missing, and the test suite lacks tests for it. This violates Req 2 and the constraint to preserve existing behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_flie",
+      "args": {},
+      "ok": false
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cahe.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 5,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.75,
+  "prompt_tokens": 10325,
+  "output_tokens": 466,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

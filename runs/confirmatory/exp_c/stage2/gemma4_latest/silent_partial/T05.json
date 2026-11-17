@@ -1,0 +1,87 @@
+{
+  "task_id": "T05",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 1,
+  "gate_action": "preserved_requirement_minority_hold",
+  "consensus_json": {
+    "overview": "The panel generally agrees on the implementation of `is_safe_url` and its ability to reject dangerous schemes and control characters. However, there is a clear discrepancy regarding the implementation of `sanitize_markdown_link`, which one advisor noted as missing while another confirmed its presence.",
+    "key_points": [
+      "`is_safe_url` correctly enforces allowed schemes and rejects dangerous schemes/control characters.",
+      "The implementation preserves existing passing behavior and legacy public function signatures.",
+      "The required `sanitize_markdown_link(label, url)` function needs confirmation of its presence and correct implementation.",
+      "The deterministic CI checks passed successfully."
+    ],
+    "suggested_check": "Confirm the presence and functionality of `sanitize_markdown_link(label, url)` as specified in Req 2."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation appears to have conflicting status regarding the completion of the required `sanitize_markdown_link` function, while the core logic for `is_safe_url` seems generally accepted.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `sanitize_markdown_link`",
+        "side_a": "Advisor_3 confirms the function is implemented and correct.",
+        "side_b": "Advisor_2 explicitly states that `sanitize_markdown_link` is missing from the diff.",
+        "at_stake": "Req 2: Add `sanitize_markdown_link(label, url)` returning `f'[{clean_label}]({url})'` when safe or `clean_label` (plain text without link) when unsafe."
+      },
+      {
+        "topic": "Test Coverage for New Logic",
+        "side_a": "Advisor_1 and Advisor_3 suggest tests are updated/sufficient.",
+        "side_b": "Advisor_2 notes that no tests exist for the missing `sanitize_markdown_link` function.",
+        "at_stake": "Preserve all existing passing behavior and test the new link sanitization logic."
+      }
+    ],
+    "unverified_premises": [
+      "The actual presence and correctness of `sanitize_markdown_link` is contradictory across the advisory panel (Advisor_2 vs. Advisor_3).",
+      "The interaction between the new `is_safe_url` logic and the required fallback behavior of `sanitize_markdown_link` (returning plain text vs. link) has not been definitively verified against all edge cases."
+    ],
+    "suggested_check": "Verify the diff contents directly to confirm the presence and implementation details of `sanitize_markdown_link(label, url)` and ensure corresponding tests cover both the success and failure paths for this function."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation appears to have conflicting status regarding the completion of the required `sanitize_markdown_link` function, while the core logic for `is_safe_url` seems generally accepted.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `sanitize_markdown_link`",
+        "side_a": "Advisor_3 confirms the function is implemented and correct.",
+        "side_b": "Advisor_2 explicitly states that `sanitize_markdown_link` is missing from the diff.",
+        "at_stake": "Req 2: Add `sanitize_markdown_link(label, url)` returning `f'[{clean_label}]({url})'` when safe or `clean_label` (plain text without link) when unsafe."
+      },
+      {
+        "topic": "Test Coverage for New Logic",
+        "side_a": "Advisor_1 and Advisor_3 suggest tests are updated/sufficient.",
+        "side_b": "Advisor_2 notes that no tests exist for the missing `sanitize_markdown_link` function.",
+        "at_stake": "Preserve all existing passing behavior and test the new link sanitization logic."
+      }
+    ],
+    "unverified_premises": [
+      "The actual presence and correctness of `sanitize_markdown_link` is contradictory across the advisory panel (Advisor_2 vs. Advisor_3).",
+      "The interaction between the new `is_safe_url` logic and the required fallback behavior of `sanitize_markdown_link` (returning plain text vs. link) has not been definitively verified against all edge cases."
+    ],
+    "suggested_check": "Verify the diff contents directly to confirm the presence and implementation details of `sanitize_markdown_link(label, url)` and ensure corresponding tests cover both the success and failure paths for this function."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The panel generally agrees on the implementation of `is_safe_url` and its ability to reject dangerous schemes and control characters. However, there is a clear discrepancy regarding the implementation of `sanitize_markdown_link`, which one advisor noted as missing while another confirmed its presence.\nKEY POINTS:\n- `is_safe_url` correctly enforces allowed schemes and rejects dangerous schemes/control characters.\n- The implementation preserves existing passing behavior and legacy public function signatures.\n- The required `sanitize_markdown_link(label, url)` function needs confirmation of its presence and correct implementation.\n- The deterministic CI checks passed successfully.\nSUGGESTED CHECK: Confirm the presence and functionality of `sanitize_markdown_link(label, url)` as specified in Req 2.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to have conflicting status regarding the completion of the required `sanitize_markdown_link` function, while the core logic for `is_safe_url` seems generally accepted.\nKEY POINTS:\n- Disagreement (Implementation of `sanitize_markdown_link`): Advisor_3 confirms the function is implemented and correct. vs. Advisor_2 explicitly states that `sanitize_markdown_link` is missing from the diff. [at stake: Req 2: Add `sanitize_markdown_link(label, url)` returning `f'[{clean_label}]({url})'` when safe or `clean_label` (plain text without link) when unsafe.]\n- Disagreement (Test Coverage for New Logic): Advisor_1 and Advisor_3 suggest tests are updated/sufficient. vs. Advisor_2 notes that no tests exist for the missing `sanitize_markdown_link` function. [at stake: Preserve all existing passing behavior and test the new link sanitization logic.]\n- Unverified claim: The actual presence and correctness of `sanitize_markdown_link` is contradictory across the advisory panel (Advisor_2 vs. Advisor_3).\n- Unverified claim: The interaction between the new `is_safe_url` logic and the required fallback behavior of `sanitize_markdown_link` (returning plain text vs. link) has not been definitively verified against all edge cases.\nSUGGESTED CHECK: Verify the diff contents directly to confirm the presence and implementation details of `sanitize_markdown_link(label, url)` and ensure corresponding tests cover both the success and failure paths for this function.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to have conflicting status regarding the completion of the required `sanitize_markdown_link` function, while the core logic for `is_safe_url` seems generally accepted.\nKEY POINTS:\n- Disagreement (Implementation of `sanitize_markdown_link`): Advisor_3 confirms the function is implemented and correct. vs. Advisor_2 explicitly states that `sanitize_markdown_link` is missing from the diff. [at stake: Req 2: Add `sanitize_markdown_link(label, url)` returning `f'[{clean_label}]({url})'` when safe or `clean_label` (plain text without link) when unsafe.]\n- Disagreement (Test Coverage for New Logic): Advisor_1 and Advisor_3 suggest tests are updated/sufficient. vs. Advisor_2 notes that no tests exist for the missing `sanitize_markdown_link` function. [at stake: Preserve all existing passing behavior and test the new link sanitization logic.]\n- Unverified claim: The actual presence and correctness of `sanitize_markdown_link` is contradictory across the advisory panel (Advisor_2 vs. Advisor_3).\n- Unverified claim: The interaction between the new `is_safe_url` logic and the required fallback behavior of `sanitize_markdown_link` (returning plain text vs. link) has not been definitively verified against all edge cases.\nSUGGESTED CHECK: Verify the diff contents directly to confirm the presence and implementation details of `sanitize_markdown_link(label, url)` and ensure corresponding tests cover both the success and failure paths for this function."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 926,
+      "output_tokens": 163,
+      "seconds": 3.255,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 965,
+      "output_tokens": 411,
+      "seconds": 7.428,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

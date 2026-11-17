@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: split_cents_exact only uses floor division and never distributes the remainder pennies, so shares may sum to less than total_cents (e.g., 100 with equal weights returns [33,33,33]=99).",
+  "target_issue": "tests/test_ledger_round.py::test_split_conserves_cents",
+  "thoughts": [
+    "Need to inspect the PR diff and run pytest to confirm the reported mismatch; then decide merge vs hold based on correctness and test results.",
+    "The PR diff shows split_cents_exact uses floor division only and does not implement remainder penny distribution; also reconcile_ledger seems fine but split violates Req 1. Need to run pytest to confirm failing tests.",
+    "Pytest fails: split_cents_exact does not conserve total cents (99 vs 100) and does not implement the required remainder penny distribution logic. This is a correctness regression for Req 1, so must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.047,
+  "prompt_tokens": 2597,
+  "output_tokens": 247,
+  "estimated_usd": 0.000895,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

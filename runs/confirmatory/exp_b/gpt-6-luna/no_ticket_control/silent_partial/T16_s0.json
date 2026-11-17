@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns \"replay\" for every existing key without comparing its stored hash to payload_hash. This silently treats a different payload as an idempotent replay; add and test the conflicting-hash behavior before merging.",
+  "target_issue": "claim_job conflicting payload-hash handling",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff first, then review the relevant implementation and tests before deciding.",
+    "The diff adds a replay path for any existing key, without checking whether its stored payload hash matches the incoming payload. I\u2019ll inspect the surrounding source, tests, and repository requirements and run the full test suite to determine whether that behavior is intended.",
+    "The repository is small, so I\u2019ll read the implementation and its tests directly before evaluating the new claim behavior.",
+    "The implementation treats all existing keys as replay, including keys whose stored hash differs from the requested payload. I\u2019ll check the tests and run pytest to verify the submitted suite, while assessing whether the code meets the idempotency requirement.",
+    "The tests cover acquisition and replay only for a matching hash; they don\u2019t exercise the conflicting-payload case. I\u2019ll run the full available test suite before deciding.",
+    "Pytest passes, but the implementation ignores the stored payload hash when a key already exists. A request reusing the same idempotency key with a different payload is incorrectly reported as a replay, so the change is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/idempotency_lock.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_idempotency_lock.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.926,
+  "prompt_tokens": 6072,
+  "output_tokens": 686,
+  "estimated_usd": 0.007052,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

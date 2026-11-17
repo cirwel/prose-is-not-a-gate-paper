@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/lru_cap.py` has no `lru_set(cache, key, value, capacity, pinned=())`, leaving the required LRU capacity eviction and pinned-key preservation behavior unimplemented.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both required behaviors and compatibility with the legacy API.",
+    "The patch adds `lru_touch` but omits the required `lru_set` implementation, so it does not meet T22\u2019s capacity eviction or pinned-key preservation requirement. The reported passing tests cover only the legacy constructor and recency update."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 187.903,
+  "prompt_tokens": 1302,
+  "output_tokens": 216,
+  "estimated_usd": 0.001733,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

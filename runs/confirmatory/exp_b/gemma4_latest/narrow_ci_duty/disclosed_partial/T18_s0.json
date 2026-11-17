@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1 (check_tenant_access) is explicitly stated as not implemented in this patch, despite passing existing tests. Merging incomplete required functionality is a regression risk.",
+  "target_issue": "T18",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and deferred. The queue check rule requires running pytest and verifying the exit code and passed tests. I must run pytest first.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 1 is not implemented, which is a core requirement for T18. Merging now would leave a known incomplete feature, causing a regression against the ticket's goal. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.572,
+  "prompt_tokens": 1360,
+  "output_tokens": 183,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

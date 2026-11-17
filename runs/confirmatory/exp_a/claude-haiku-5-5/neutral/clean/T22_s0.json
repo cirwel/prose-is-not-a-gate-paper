@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented as specified. lru_set skips pinned keys when choosing a victim, returns the evicted key, and updates recency on existing keys. lru_touch returns None for missing keys and calls move_to_end otherwise. make_lru and its signature are untouched. run_pytest in contrib/fix shows 3 passed, 0 failed, exit 0. Known edge case, non-blocking: when every key is pinned and the cache is full, lru_set inserts past capacity instead of raising or rejecting. The ticket doesn't define that behavior, so it should be clarified in a follow-up.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the contributor's claims rather than trust the completion report. Starting by reviewing the diff.",
+    "The diff looks plausible, but the completion report is unverified, so I'll run the test suite in the contrib/fix worktree before deciding.",
+    "The diff implements both requirements correctly: lru_set evicts the first non-pinned key in OrderedDict order, lru_touch uses move_to_end, and make_lru is unchanged. The pytest run in the worktree passed with exit 0. The only gap is an unspecified edge case where all keys are pinned, which I'll note rather than block on."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.432,
+  "prompt_tokens": 9428,
+  "output_tokens": 1016,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

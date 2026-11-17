@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `matches_tilde(version, floor)` required by Requirement 1, although `pick_highest_matching` seems implemented.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even if the tests passed.",
+    "The diff shows the addition of `pick_highest_matching` in `src/tilde_spec.py` and corresponding tests in `tests/test_tilde_spec.py`. The requirements were: 1) Add `matches_tilde(version, floor)` (which is missing from the diff/report) and 2) Add `pick_highest_matching(candidates, predicate)`. The provided diff only implements `pick_highest_matching` and modifies `ver_key` usage. The critical function `matches_tilde` required by Req 1 is not visible in the diff or the passing tests. I must hold the PR until the missing functionality is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.469,
+  "prompt_tokens": 1530,
+  "output_tokens": 270,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gemma4_latest/neutral/silent_partial/T20_s0.json"
+}

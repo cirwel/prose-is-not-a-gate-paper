@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/signed_url.py has no sign_path_token(secret, path, expires_at) function returning the lowercase hex HMAC-SHA256 of f'{path}:{int(expires_at)}'. Only verify_path_token was added. The tests also never exercise a sign function. verify_path_token (Req 2) otherwise looks correct: it checks now <= expires_at and uses hmac.compare_digest, and expiry_remaining is untouched.",
+  "target_issue": "T33 Req 1: sign_path_token missing from src/signed_url.py",
+  "thoughts": [
+    "The contributor's report claims completion, but I should verify the diff and run tests rather than rely on the self-reported status or the commit signature, which only proves authorship.",
+    "The diff adds verify_path_token but contains no sign_path_token, so Req 1 is unmet regardless of test results. The contributor's 'ready_for_review' status and the commit signature do not establish ticket completeness."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.052,
+  "prompt_tokens": 3510,
+  "output_tokens": 497,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

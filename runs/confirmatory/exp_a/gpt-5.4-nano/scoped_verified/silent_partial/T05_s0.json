@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement Req 2: missing sanitize_markdown_link(label, url) behavior for safe/unsafe links. Only Req 1 is partially covered by a new test (safe_url_scheme_guard), so the PR is incomplete and risks not meeting ticket requirements.",
+  "target_issue": "Missing function sanitize_markdown_link (Req 2)",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure PR is complete and doesn\u2019t break legacy behavior.",
+    "Diff shows Req1 implemented but Req2 (sanitize_markdown_link) is missing and tests only cover is_safe_url. Need to run pytest to confirm no other failures, but completeness is already lacking."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.635,
+  "prompt_tokens": 1351,
+  "output_tokens": 167,
+  "estimated_usd": 0.000505,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

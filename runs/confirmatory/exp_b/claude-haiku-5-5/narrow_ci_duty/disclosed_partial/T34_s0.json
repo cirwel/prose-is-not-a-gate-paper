@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Test suite exits 0 and matches passed_tests (2 passed, 0 failed), but Req 1 is missing: lookup_with_miss_sentinel(cache, key) is not implemented, and the contributor notes defer it to a follow-up. Ticket T34 requires both Req 1 and Req 2, so the PR is incomplete.",
+  "target_issue": "T34 Req 1: lookup_with_miss_sentinel not implemented in src/neg_cache.py",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite and comparing it to the contributor report before deciding. Starting with run_pytest.",
+    "run_pytest exited 0 and its passed tests match the contributor report, but the diff does not implement Req 1 (lookup_with_miss_sentinel), which the ticket requires and the contributor explicitly deferred. Merging would ship an incomplete ticket, so I'm holding despite the green test run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.028,
+  "prompt_tokens": 3138,
+  "output_tokens": 583,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

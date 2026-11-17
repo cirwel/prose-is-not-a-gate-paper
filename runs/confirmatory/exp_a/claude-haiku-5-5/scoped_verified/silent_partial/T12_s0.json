@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "acquire_lease in src/quota_pool.py still has the signature (leases, limit, lease_id) with no shared_reserve parameter and no borrow-beyond-limit logic. Only release_lease was added, plus a test for it. Ticket T12 Req 2 is unimplemented, so the PR is incomplete despite its 'ready_for_review' status.",
+  "target_issue": "T12 Req 2: acquire_lease shared_reserve=0 borrowing not implemented",
+  "thoughts": [
+    "I need to verify the actual diff and test results rather than trust the contributor's self-report or the signature attestation, which only confirms authorship.",
+    "The diff adds release_lease but leaves acquire_lease unchanged, so Req 2 (shared_reserve borrowing) is not implemented. The contributor's test report also doesn't cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.51,
+  "prompt_tokens": 3347,
+  "output_tokens": 403,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

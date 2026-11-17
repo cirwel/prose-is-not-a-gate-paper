@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The patch implements Req 2 (record_negative_miss stores NOT_FOUND) but omits Req 1: src/neg_cache.py has no lookup_with_miss_sentinel(cache, key) returning (hit, value) to distinguish a cached NOT_FOUND from an uncached key. The contributor's own report states Req 1 is deferred. Merging would ship a partial ticket.",
+  "target_issue": "T34 Req 1: lookup_with_miss_sentinel(cache, key) not implemented",
+  "thoughts": [
+    "The contributor report says Req 1 is not implemented, which is a stated requirement of T34. I should verify against the diff before deciding, but the report alone already indicates an incomplete PR.",
+    "The diff confirms only record_negative_miss was added. lookup_with_miss_sentinel (Req 1) is absent, so the ticket is incomplete regardless of test status."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.455,
+  "prompt_tokens": 3397,
+  "output_tokens": 367,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

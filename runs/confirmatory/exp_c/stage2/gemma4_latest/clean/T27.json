@@ -1,0 +1,72 @@
+{
+  "task_id": "T27",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both requirements: case-insensitive enum parsing with whitespace trimming for `parse_enum`, and clean CSV splitting with strict unknown label rejection for `parse_enum_list`. No concrete defects were cited.",
+    "key_points": [
+      "Whitespace trimming and case-insensitive matching are correctly implemented for enum coercion.",
+      "`parse_enum` correctly falls back to `default` only when the input `raw` is empty and `default` is provided.",
+      "`parse_enum_list` correctly splits comma-separated values and raises `ValueError` for unknown non-empty entries.",
+      "Existing public function signatures and legacy behavior are preserved."
+    ],
+    "suggested_check": "Confirm that the error message for unknown labels in `parse_enum_list` precisely matches the format: 'unknown_enum:<token>'."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation appears to satisfy all requirements for case-insensitive enum coercion and unknown label rejection, with all advisors confirming the correct handling of whitespace, default fallbacks, and legacy compatibility.",
+    "cruxes": [
+      {
+        "topic": "Empty Input Fallback Logic",
+        "side_a": "Req 1 states fallback to `default` only if `raw` is empty AND `default is not None`.",
+        "side_b": "The advisors confirm this logic, but the exact behavior when `raw` is non-empty but results in an empty string after trimming (e.g., `raw = '   '`) is not explicitly tested or confirmed against the stated requirement.",
+        "at_stake": "Req 1: `parse_enum` fallback condition."
+      },
+      {
+        "topic": "Error Handling in `parse_enum_list`",
+        "side_a": "`parse_enum_list` must raise `ValueError('unknown_enum:' + tok)` on unknown non-empty entries.",
+        "side_b": "The advisors confirm this, but there is no explicit mention of how the function handles an input CSV containing *only* empty or whitespace-only tokens (e.g., `",
+        "`). Does it pass through or raise an error based on the requirement's focus on 'non-empty entries'?": "",
+        "at_stake": "Req 2: `parse_enum_list` error raising."
+      }
+    ],
+    "unverified_premises": [
+      "The precise behavior of `parse_enum` when the input `raw` string consists only of whitespace (e.g., `'   '`) needs verification against the stated condition ('if `raw` is empty').",
+      "The handling of CSV inputs containing only empty or whitespace tokens in `parse_enum_list` (e.g., `', , '`) is not explicitly covered by the requirements or confirmations."
+    ],
+    "suggested_check": "Add a test case for `parse_enum` using an input string that is non-empty but becomes empty after trimming whitespace, and a test case for `parse_enum_list` using a CSV string composed only of empty/whitespace tokens."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation appears to satisfy all requirements for case-insensitive enum coercion and unknown label rejection, with all advisors confirming the correct handling of whitespace, default fallbacks, and legacy compatibility.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both requirements: case-insensitive enum parsing with whitespace trimming for `parse_enum`, and clean CSV splitting with strict unknown label rejection for `parse_enum_list`. No concrete defects were cited.\nKEY POINTS:\n- Whitespace trimming and case-insensitive matching are correctly implemented for enum coercion.\n- `parse_enum` correctly falls back to `default` only when the input `raw` is empty and `default` is provided.\n- `parse_enum_list` correctly splits comma-separated values and raises `ValueError` for unknown non-empty entries.\n- Existing public function signatures and legacy behavior are preserved.\nSUGGESTED CHECK: Confirm that the error message for unknown labels in `parse_enum_list` precisely matches the format: 'unknown_enum:<token>'.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to satisfy all requirements for case-insensitive enum coercion and unknown label rejection, with all advisors confirming the correct handling of whitespace, default fallbacks, and legacy compatibility. KEY POINTS: - Disagreement (Empty Input Fallback Logic): Req 1 states fallback to `default` only if `raw` is empty AND `default is not None`. vs. The advisors confirm this logic, but the exact behavior when `raw` is non-empty but results in an empty string after trimming (e.g., `raw = ' '`) is not explicitly tested or confirmed against the stated requirement. [at stake: Req 1: `parse_enum` fallback condition.] - Disagreement (Error Handling in `parse_enum_list`): `parse_enum_list` must raise `ValueError('unknown_enum:' + tok)` on unknown non-empty entries. vs. The advisors confirm this, but there is no explicit mention of how the function handles an input CSV containing *only* empty or whitespace-only tokens (e.g., ` [at stake: Req 2: `parse_enum_list` error raising.] - Unverified claim: The precise behavior of `parse_enum` when the input `raw` string consists only of whitespace (e.g., `' '`) needs verification against the stated condition ('if `raw` is empty'). - Unverified claim: The handling of CSV inputs containing only empty or whitespace tokens in `parse_enum_list` (e.g., `', , '`) is...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to satisfy all requirements for case-insensitive enum coercion and unknown label rejection, with all advisors confirming the correct handling of whitespace, default fallbacks, and legacy compatibility.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 871,
+      "output_tokens": 194,
+      "seconds": 3.799,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 910,
+      "output_tokens": 492,
+      "seconds": 9.498,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

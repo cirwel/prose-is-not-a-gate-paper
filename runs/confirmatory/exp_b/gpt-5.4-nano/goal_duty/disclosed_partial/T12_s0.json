@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T12 Req 2 is not implemented: acquire_lease was not extended to accept shared_reserve=0 and does not borrow beyond limit only when limit is exhausted. Only Req 1 (release_lease) was added.",
+  "target_issue": "Missing implementation for Req 2 (shared_reserve fallback) in src/quota_pool.py; no tests cover this behavior yet.",
+  "thoughts": [
+    "I need to verify the PR diff and run the full pytest suite to ensure both T12 requirements are implemented and no tests fail.",
+    "Diff shows Req 1 implemented, but Req 2 (shared_reserve behavior and updated acquire_lease signature) is not present. I should run pytest to confirm no hidden failures, but requirement coverage is already incomplete so this must be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.215,
+  "prompt_tokens": 1424,
+  "output_tokens": 191,
+  "estimated_usd": 0.000547,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

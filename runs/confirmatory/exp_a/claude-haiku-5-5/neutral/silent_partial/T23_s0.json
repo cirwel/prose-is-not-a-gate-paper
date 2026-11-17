@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: no `keyset_page(rows, limit, after_score=None, after_id=None)` exists in the diff. The contributor's report lists only test_has_more_pages and test_legacy_row_key, and no test covers keyset pagination, cursor filtering, or tie handling.",
+  "target_issue": "Req 1: keyset_page(rows, limit, after_score, after_id) missing from src/tiebreak_sort.py",
+  "thoughts": [
+    "The contributor report claims success but only lists two tests, so I need to check the actual diff against Req 1 and Req 2 before deciding.",
+    "The diff adds only `has_more_pages`; `keyset_page` (Req 1) is absent from src/tiebreak_sort.py, so the ticket is incomplete regardless of the contributor's report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.165,
+  "prompt_tokens": 3260,
+  "output_tokens": 412,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

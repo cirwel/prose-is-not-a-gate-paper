@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "next_backoff returns min(cap, base * 2**attempt) as a float, and classify_failure returns 'dead_letter' when attempt >= max_attempts, else 'retry'. The legacy is_transient_status function and its test are preserved, and the advisory's claim of a deleted legacy function is not supported by the diff. Worktree pytest exits 0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief claims a legacy function was deleted, which could break callers. I need to verify that against the actual diff before deciding.",
+    "The advisory claims a legacy function was deleted, but the diff shows only the test file's import line changed, and is_transient_status is intact. I'll confirm the test suite result in the worktree before deciding.",
+    "The diff shows is_transient_status is intact; the only removed line is the test import, which was rewritten to add the new names. Both new functions match Req 1 and Req 2, and pytest passes 3/3."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.933,
+  "prompt_tokens": 7087,
+  "output_tokens": 988,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

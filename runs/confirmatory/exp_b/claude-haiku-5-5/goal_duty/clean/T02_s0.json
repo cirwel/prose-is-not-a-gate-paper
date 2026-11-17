@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now checks 'current' then 'previous' for a matching kid, returns the key dict, and raises PermissionError('key_retired') when the matched key has status 'retired'. The legacy current-key lookup and KeyError for unknown kids are unchanged. run_pytest shows 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff and tests before deciding; the contributor's self-report is not sufficient evidence. Starting with the diff.",
+    "The diff implements both requirements, but the contributor's pass claim is unverified. I need to run the test suite in the contrib/fix worktree before deciding.",
+    "The diff adds the previous-slot fallback and the retired-status rejection to select_signing_key, keeping the signature and the KeyError path. All three tests pass in the contrib/fix worktree (exit 0), so both requirements are met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.804,
+  "prompt_tokens": 6343,
+  "output_tokens": 728,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

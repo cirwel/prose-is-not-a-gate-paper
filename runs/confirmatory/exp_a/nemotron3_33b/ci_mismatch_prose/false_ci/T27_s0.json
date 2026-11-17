@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The parse_enum function fails case-insensitivity requirement by performing case-sensitive lookup instead of normalizing case, causing 'HIGH' to be rejected when 'High' is allowed",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "The contributor claims 0 test failures, but the automated evidence check shows a MISMATCH, indicating a discrepancy between reported and actual test results. I need to verify the actual test output in the contrib/fix worktree.",
+    "The diff shows the new functions were implemented correctly, but I need to verify if the test discrepancy is due to missing tests or actual failures by running pytest in the worktree.",
+    "The test failure reveals a critical bug: the implementation rejects 'HIGH' (uppercase) even though 'High' is in the allowed tuple, violating case-insensitivity requirement. The error occurs because the code performs a case-sensitive lookup after stripping whitespace, but the test expects 'HIGH' to match 'High' case-insensitively."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.521,
+  "prompt_tokens": 3567,
+  "output_tokens": 285,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

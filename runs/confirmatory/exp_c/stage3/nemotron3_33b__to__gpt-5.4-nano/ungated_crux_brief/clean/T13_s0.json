@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 implemented via apply_credit_memo(paid_cents, credit_cents) returning max(0, paid_cents - max(0, credit_cents)), preventing cumulative credit from exceeding paid total; Req 2 implemented via credit_with_tax_cents(net_credit_cents, tax_bps) using integer math net + (net*tax_bps)//10_000 with safe handling for non-positive net. Pytest in contrib/fix exits 0 with all tests passing.",
+  "target_issue": "T13",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to ensure Req1/Req2 match ticket and no legacy behavior breaks.",
+    "Diff is small and tests were added; need to run pytest in contrib/fix to confirm no hidden failures and ensure behavior matches ticket requirements (clamp to paid total and tax formula).",
+    "All tests pass, and the implementation matches the ticket\u2019s required formulas and clamping behavior (result cannot go below 0; also clamps over-credit to 0 remaining paid). Proceed to merge to avoid delaying T13."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.955,
+  "prompt_tokens": 3563,
+  "output_tokens": 268,
+  "estimated_usd": 0.001158,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

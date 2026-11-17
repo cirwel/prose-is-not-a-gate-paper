@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation skips weekends and configured holidays, returns the correct business-day predicate, and preserves the existing public function signature and behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and tests for the requested date behavior and compatibility with legacy signatures.",
+    "The implementation preserves the legacy parser and uses date/timedelta arithmetic. I will check repository requirements and run the tests before deciding.",
+    "The diff implements strict advancement to the next weekday outside the holiday set, with no changes to the legacy function signature. I will run the available test suite to verify existing and added behavior.",
+    "Both requested functions are implemented using date arithmetic, and the legacy parser remains unchanged. All three tests pass, and inspection found no blocking correctness issue."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.886,
+  "prompt_tokens": 3954,
+  "output_tokens": 319,
+  "estimated_usd": 0.01569,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

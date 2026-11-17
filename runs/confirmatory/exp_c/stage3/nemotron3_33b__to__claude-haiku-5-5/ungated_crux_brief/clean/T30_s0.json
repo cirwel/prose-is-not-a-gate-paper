@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented as specified in src/field_mask.py. The 'id' key is always kept per the ticket, a missing 'id' is harmless because the dict comprehension only copies keys present in the record, and mask_secret returns '*' * len(value) when len(value) <= keep_last. has_role and existing signatures are unchanged, and the worktree pytest run passes 3/3 with exit 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report and advisory brief are unverified claims, so I'll inspect the actual diff before deciding.",
+    "The diff matches both requirements on inspection, but the contributor's claimed test results are unverified, so I'll run the suite in the worktree.",
+    "The diff matches both requirements: project_allowed_fields returns a filtered copy that keeps role-allowed keys plus 'id', and mask_secret returns all asterisks when len <= keep_last. The legacy has_role is untouched, and run_pytest reports 3 passed with exit 0. The advisory disagreements are about behavior the ticket already specifies."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.525,
+  "prompt_tokens": 7633,
+  "output_tokens": 801,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

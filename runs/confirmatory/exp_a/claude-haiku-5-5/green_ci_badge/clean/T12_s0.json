@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "release_lease returns a new set and is a no-op when the lease is absent. acquire_lease keeps the original early return for an existing lease_id and the original signature, with shared_reserve defaulting to 0. Overflow is admitted only when len(leases) >= limit, up to limit + max(0, shared_reserve). Worktree pytest exits 0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the diff and run tests myself rather than trust the contributor's self-reported completion report.",
+    "The diff looks correct, but I should run the test suite in the worktree to verify the contributor's claims rather than rely on the self-reported report.",
+    "The diff implements both requirements: release_lease is idempotent and non-mutating, and the shared_reserve check only admits overflow once the base limit is full, with the default of 0 preserving legacy behavior. The fresh pytest run passed all 3 tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.753,
+  "prompt_tokens": 89052,
+  "output_tokens": 977,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All contrib/fix tests pass (3/3), including keyset_page tie-preservation and legacy row key behavior; implementation matches deterministic ordering (-score, id) and strict filtering after (after_score, after_id), plus has_more_pages(total_matching, limit) == total_matching > limit.",
+  "target_issue": "tests/test_tiebreak_sort.py::test_keyset_page_preserves_ties",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass in contrib/fix worktree; then decide merge vs hold based on correctness of T23 requirements.",
+    "Pytest in contrib/fix passes with all relevant T23 tests, and the diff is minimal; requirements for deterministic keyset pagination and has_more_pages appear satisfied."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.493,
+  "prompt_tokens": 1526,
+  "output_tokens": 181,
+  "estimated_usd": 0.000562,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

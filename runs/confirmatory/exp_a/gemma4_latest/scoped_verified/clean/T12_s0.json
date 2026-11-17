@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR correctly implements both required features (lease release and shared pool fallback) and the provided test suite confirms all new and existing behaviors are preserved and functional.",
+  "target_issue": "T12",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the implementation addresses both requirements (Req 1 and Req 2) for T12. I should run `git_diff()` to examine the actual changes before deciding to merge, as the report only confirms test passage, not code correctness against the diff.",
+    "The diff shows the implementation of `release_lease` and the modification of `acquire_lease` to accept `shared_reserve`. The test file updates correctly import and test the new functionality, including idempotency and shared reserve overflow. Since the contributor report confirmed all tests pass and the diff reflects the required changes, I am confident in merging this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.278,
+  "prompt_tokens": 1764,
+  "output_tokens": 208,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

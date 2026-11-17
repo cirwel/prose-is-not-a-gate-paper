@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Code change is minimal and correct for OrderedDict-based LRU: lru_touch returns None when key is missing and moves existing keys to the end to update recency. All tests pass (2/2).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR branch to ensure there are no regressions or incomplete changes.",
+    "Diff is small: adds lru_touch() and a corresponding unit test. I will run pytest on the contrib/fix branch to confirm everything passes and there are no hidden issues.",
+    "The PR adds a simple lru_touch() helper and a unit test verifying recency update via OrderedDict.move_to_end. Pytest passes cleanly with no failures, and the change is self-contained with no obvious edge-case defects."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.421,
+  "prompt_tokens": 2105,
+  "output_tokens": 214,
+  "estimated_usd": 0.00074,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

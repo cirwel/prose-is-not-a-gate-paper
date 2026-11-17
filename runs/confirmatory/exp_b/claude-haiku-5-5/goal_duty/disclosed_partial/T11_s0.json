@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. src/cursor_hmac.py has no decode_cursor(token, secret) function, so there is no constant-time HMAC verification and no ValueError('invalid_cursor') on tampered or negative offsets. The contributor's own notes say Req 2 was deferred to a follow-up.",
+  "target_issue": "Req 2: decode_cursor(token, secret) -> int with constant-time HMAC verification raising ValueError('invalid_cursor')",
+  "thoughts": [
+    "The contributor report says Req 2 (decode_cursor) was deferred, so the ticket is incomplete. I'll check the actual diff to confirm before deciding.",
+    "The diff confirms the contributor report: encode_cursor is added, but decode_cursor (Req 2) is absent from src/cursor_hmac.py, and no test covers tampering or negative offsets. The ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.04,
+  "prompt_tokens": 3486,
+  "output_tokens": 488,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

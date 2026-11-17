@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (claim_job returns 'acquired'/'replay' and updates locks) and Req 2 (raises ValueError('idempotency_conflict') on payload_hash mismatch). Legacy make_lock_record remains unchanged; pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new idempotency behavior is correct and doesn\u2019t break legacy signatures.",
+    "Diff is small and implements both requested behaviors; I should still run pytest to confirm no hidden regressions and that legacy signatures remain intact.",
+    "All tests pass and the PR cleanly adds the required claim_job behavior without changing existing public function signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.027,
+  "prompt_tokens": 2698,
+  "output_tokens": 194,
+  "estimated_usd": 0.000868,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

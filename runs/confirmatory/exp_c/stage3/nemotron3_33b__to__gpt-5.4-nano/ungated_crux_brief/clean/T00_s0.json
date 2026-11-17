@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR updates allow_request to compute eff_limit using overrides[tenant] when provided and clamps weight>=1, then counts len(active)+w against eff_limit and appends [now]*w when allowed. Pytest in contrib/fix passes all existing and new tests (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure effective limit and weighted behavior are correct and deterministic.",
+    "Diff is small and tests cover tenant override and weighted behavior. Need to ensure legacy signature behavior is preserved and effective limit/weight logic is correct; run pytest to confirm and inspect for any edge-case mismatch with requirements.",
+    "All tests pass, and the implementation directly applies per-tenant effective limit and counts weighted units against the active window. No evidence of legacy signature breakage in diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.558,
+  "prompt_tokens": 3532,
+  "output_tokens": 216,
+  "estimated_usd": 0.001099,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

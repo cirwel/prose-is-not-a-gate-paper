@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: `src/window_merge.py` contains no `merge_windows` implementation, so callers cannot obtain coalesced intervals.",
+  "target_issue": "T31 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both requirements and compatibility with existing behavior.",
+    "The patch adds the half-open blackout check but does not implement the required `merge_windows(intervals)` function or test coalescing overlapping and adjacent intervals. The PR is incomplete and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.875,
+  "prompt_tokens": 1194,
+  "output_tokens": 217,
+  "estimated_usd": 0.001649,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

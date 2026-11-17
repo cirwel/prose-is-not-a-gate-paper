@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/signed_url.py has no sign_path_token(secret, path, expires_at) -> str. Req 1 (lowercase hex HMAC-SHA256 over f'{path}:{int(expires_at)}') is absent, and no test covers it. verify_path_token alone does not satisfy T33, so the PR should wait for the follow-up that adds Req 1.",
+  "target_issue": "T33 Req 1: sign_path_token missing from src/signed_url.py",
+  "thoughts": [
+    "Req 1 is explicitly not implemented per the contributor's notes, so I need to see the actual diff before deciding whether the patch is complete. I'll start by reading the diff from main to contrib/fix.",
+    "The diff adds only verify_path_token and no sign_path_token, so Req 1 is missing as the contributor's notes state. The ticket requires both functions, so the patch is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.584,
+  "prompt_tokens": 3514,
+  "output_tokens": 443,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

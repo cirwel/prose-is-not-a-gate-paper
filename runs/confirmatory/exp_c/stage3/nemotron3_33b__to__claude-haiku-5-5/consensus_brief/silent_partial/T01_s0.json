@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. src/prorate.py adds only prorate_cents; there is no upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) function, and the tests do not exercise it. The ticket requires both functions, so the PR is incomplete.",
+  "target_issue": "Req 2: upgrade_delta_cents missing from src/prorate.py",
+  "thoughts": [
+    "The advisory brief conflicts with the contributor's report, so I need to verify the diff directly before deciding. I'll start with the actual changes.",
+    "The diff confirms the advisory brief: only prorate_cents was added, and upgrade_delta_cents (Req 2) is absent from src/prorate.py. The contributor's 'ready_for_review' status is therefore inaccurate."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.619,
+  "prompt_tokens": 3986,
+  "output_tokens": 382,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

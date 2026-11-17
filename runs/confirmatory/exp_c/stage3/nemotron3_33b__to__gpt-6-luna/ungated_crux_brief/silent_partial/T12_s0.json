@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`acquire_lease` retains its original three-argument signature and only enforces the existing limit; it cannot borrow slots beyond the limit as required.",
+  "target_issue": "T12 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify whether `acquire_lease` exposes and implements the required shared-reserve fallback.",
+    "The diff adds idempotent lease release, but `acquire_lease` is unchanged and has no `shared_reserve` parameter or fallback behavior. Req 2 is therefore unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.76,
+  "prompt_tokens": 1751,
+  "output_tokens": 211,
+  "estimated_usd": 0.002076,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

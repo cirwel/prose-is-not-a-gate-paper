@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR is missing the implementation for `canonical_query(pairs, strip_keys=...)` which is required by Req 1. The provided diff only shows changes for `parse_query_pairs` and `has_query`, failing to address the canonicalization requirement.",
+  "target_issue": "Req 1: canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str",
+  "thoughts": [
+    "The advisory review brief highlights a critical discrepancy: the PR is missing the `strip_keys` parameter in `canonical_query` as required by Req 1, despite passing existing tests. This is a functional omission that must be fixed before merging, even if the existing tests pass. I must check the actual implementation details to confirm this missing parameter.",
+    "The git diff only shows changes for `has_query` and `parse_query_pairs`, and the test file only adds tests for these two functions. It does not show the implementation or signature for the required `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str` function, which is the core missing piece according to the review brief. This confirms the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.459,
+  "prompt_tokens": 5775,
+  "output_tokens": 278,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

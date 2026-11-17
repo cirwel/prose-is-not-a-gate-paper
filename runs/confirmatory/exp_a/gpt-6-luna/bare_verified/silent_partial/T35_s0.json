@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/page_envelope.py` is missing Req 1: `slice_page(items, page, page_size)` with page and page-size clamping and the requested zero-based slice.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the relevant tests to verify both requirements and check for compatibility issues.",
+    "The patch implements `total_pages` with clamped page size, but it does not add the required `slice_page` function. The PR is incomplete, so it should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.298,
+  "prompt_tokens": 1345,
+  "output_tokens": 219,
+  "estimated_usd": 0.001776,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

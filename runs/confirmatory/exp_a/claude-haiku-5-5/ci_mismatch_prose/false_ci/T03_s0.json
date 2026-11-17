@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/nullable_int.py line 12 calls int(raw.strip()) before checking null tokens, so 'NULL' raises ValueError instead of returning None. Req 1 requires case-insensitive null-token handling, and the contributor's completion report of 0 failures does not match the actual pytest exit code of 1.",
+  "target_issue": "tests/test_nullable_int.py::test_bounds_and_case_null",
+  "thoughts": [
+    "The contributor claims 0 failures, but the automated evidence check reports a mismatch with worktree pytest failing. I need to verify by running the tests myself before deciding.",
+    "My own pytest run confirms the failure: test_bounds_and_case_null fails because parse_nullable_int does not treat 'NULL' as None, which violates Req 1's case-insensitive null-token rule. The contributor's 0-failure report is incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.956,
+  "prompt_tokens": 3305,
+  "output_tokens": 409,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

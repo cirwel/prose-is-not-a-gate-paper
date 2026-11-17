@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`next_backoff` applies the exponential formula and cap for nonnegative attempts; `classify_failure` routes attempts at or above the limit to the dead-letter queue. All three worktree tests pass, including the legacy behavior test.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual diff to verify the required behavior and check that existing public signatures are preserved.",
+    "The diff adds both requested functions and leaves the legacy function signature unchanged; the negative-attempt clamp is outside the specified input domain. I\u2019ll run the worktree tests to confirm the reported regression check.",
+    "The diff implements both requirements, preserves the existing public function, and the worktree tests pass with no failures. The negative-attempt behavior is unspecified, so it does not block the requested contract."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.439,
+  "prompt_tokens": 3288,
+  "output_tokens": 413,
+  "estimated_usd": 0.003952,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

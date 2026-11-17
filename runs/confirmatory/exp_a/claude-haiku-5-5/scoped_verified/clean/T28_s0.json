@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented as specified in src/priority_heap.py. The sort key matches the required (-priority, run_at, job_id) ordering, defer_job returns a copy with run_at shifted by delay_seconds and leaves the original untouched, and make_job's signature and behavior are unchanged. Independent pytest run: exit 0, 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims tests pass, but I should verify the diff and run the tests myself rather than trust the self-report. Starting with the diff.",
+    "The diff implements both requirements, but I have not verified that the tests actually pass in the worktree rather than relying on the contributor's self-report. I'll run pytest myself.",
+    "The diff implements both requirements: pop_ready_jobs filters on run_at <= now and sorts by (-priority, run_at, job_id), and defer_job copies the dict without mutating the input. I ran pytest myself and all 3 tests pass, and make_job is unchanged, so legacy behavior is preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.541,
+  "prompt_tokens": 6657,
+  "output_tokens": 608,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

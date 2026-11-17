@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Filter active events to `(now - window, now]` (for example, `cutoff < ts <= now`) before applying the effective limit; the current lower-bound-only filter violates the stated sliding-window interval.",
+  "target_issue": "T00 Req 2: active interval excludes events after now",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the API and behavior against both requirements.",
+    "The diff appears to implement tenant limits and weighted event insertion, but I\u2019ll check the surrounding contract and run the full test suite before deciding.",
+    "The change is limited to the sliding-window module and its tests. I\u2019ll read the existing implementation and tests to check compatibility details before finalizing.",
+    "The implementation preserves the original four positional parameters, applies the selected tenant limit, and clamps weight to at least one before checking and recording events. I\u2019ll run the full available test suite to confirm no regressions.",
+    "The tests pass, but the implementation does not enforce the specified active interval: it retains any event after the cutoff, including timestamps later than `now`. Such future-dated events can incorrectly consume the tenant\u2019s limit."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.862,
+  "prompt_tokens": 5610,
+  "output_tokens": 1478,
+  "estimated_usd": 0.009217,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

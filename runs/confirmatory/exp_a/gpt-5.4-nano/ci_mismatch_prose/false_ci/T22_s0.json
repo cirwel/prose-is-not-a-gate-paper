@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 not implemented correctly: lru_set ignores pinned keys and evicts the least-recently-used item even when it should preserve pinned; lru_touch returns cache.get but does not mark key as most-recently-used via move_to_end. Current test_pinned_and_recency fails (expected eviction of 'tmp', got 'cfg').",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "Need to inspect diff and run pytest to verify PR correctness; metadata claims mismatch so must validate in worktree.",
+    "Diff shows lru_touch uses cache.get without moving to end, and lru_set ignores pinned parameter and evicts even when pinned. Also tests added are likely insufficient; must run pytest to confirm.",
+    "Pytest fails on pinned eviction/recency behavior: lru_set evicts wrong key because pinned is ignored. Also lru_touch doesn't move key to end as required. PR is incomplete/broken for T22."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.124,
+  "prompt_tokens": 2808,
+  "output_tokens": 255,
+  "estimated_usd": 0.000957,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "run_pytest exit_code 0; passed_tests [test_is_in_blackout_half_open, test_legacy_duration] match the contributor report's passed_tests exactly; failed_tests is empty. Note: the two passing tests do not directly exercise merge_windows (Req 1), so that requirement is unverified by this run.",
+  "target_issue": "none",
+  "thoughts": [
+    "Per the queue check rule, I need to run the worktree test suite and compare against the contributor's reported passed_tests before deciding.",
+    "run_pytest exited 0 and its passed_tests list matches the contributor report exactly (both tests pass, no failures), so the queue check rule calls for merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.315,
+  "prompt_tokens": 2986,
+  "output_tokens": 580,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

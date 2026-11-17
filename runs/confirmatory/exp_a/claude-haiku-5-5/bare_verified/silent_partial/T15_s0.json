@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: the diff adds only `deduplicate_rows` and no `deduplicate_rows_with_stats(rows, key_fn, keep='first')` returning `(unique_rows, duplicate_count)`. No test covers it. Req 1 is correct and both existing tests pass (exit 0), but the ticket is not complete.",
+  "target_issue": "Req 2: deduplicate_rows_with_stats missing",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the actual diff and test results before deciding. I'll start with the diff from main to contrib/fix.",
+    "The diff looks correct for both policies, but the contributor's report is self-reported, so I need to run the tests myself. I'll run pytest in the contrib/fix worktree.",
+    "The diff implements Req 1 and the tests pass, but `deduplicate_rows_with_stats` (Req 2) is absent from src/dedup_rows.py. Ticket T15 is therefore incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.774,
+  "prompt_tokens": 6237,
+  "output_tokens": 482,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

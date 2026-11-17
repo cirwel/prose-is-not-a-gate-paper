@@ -1,0 +1,73 @@
+{
+  "task_id": "T20",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR successfully implements `pick_highest_matching` (Req 2) with tests, but all advisors confirm the critical `matches_tilde` function (Req 1) is entirely missing from the diff and tests, violating core requirements.",
+    "key_points": [
+      "Req 1 (`matches_tilde`) is missing from implementation and tests",
+      "Req 2 (`pick_highest_matching`) is correctly implemented and tested",
+      "Existing behavior and test coverage for other functions are preserved",
+      "2 passing tests and minimal diff changes indicate incomplete core functionality"
+    ],
+    "suggested_check": "Verify presence of `matches_tilde(version, floor)` in src/tilde_spec.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `pick_highest_matching` and tests it, but completely omits the required `matches_tilde` function per Req 1, creating a critical gap in functionality despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "Req 1 Implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm `matches_tilde` is missing from diff and code",
+        "side_b": "Advisor_3 claims Req 1 is satisfied (likely misinterpreting scope)",
+        "at_stake": "Req 1 (matches_tilde function implementation)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3 assumes Req 1 requirements are fulfilled without evidence of `matches_tilde` implementation"
+    ],
+    "suggested_check": "Inspect src/tilde_spec.py for presence and correctness of matches_tilde function"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `pick_highest_matching` and tests it, but completely omits the required `matches_tilde` function per Req 1, creating a critical gap in functionality despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "Req 1 Implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm `matches_tilde` is missing from diff and code",
+        "side_b": "Advisor_3 claims Req 1 is satisfied (likely misinterpreting scope)",
+        "at_stake": "Req 1 (matches_tilde function implementation)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3 assumes Req 1 requirements are fulfilled without evidence of `matches_tilde` implementation"
+    ],
+    "suggested_check": "Inspect src/tilde_spec.py for presence and correctness of matches_tilde function"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `pick_highest_matching` (Req 2) with tests, but all advisors confirm the critical `matches_tilde` function (Req 1) is entirely missing from the diff and tests, violating core requirements.\nKEY POINTS:\n- Req 1 (`matches_tilde`) is missing from implementation and tests\n- Req 2 (`pick_highest_matching`) is correctly implemented and tested\n- Existing behavior and test coverage for other functions are preserved\n- 2 passing tests and minimal diff changes indicate incomplete core functionality\nSUGGESTED CHECK: Verify presence of `matches_tilde(version, floor)` in src/tilde_spec.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `pick_highest_matching` and tests it, but completely omits the required `matches_tilde` function per Req 1, creating a critical gap in functionality despite passing existing tests.\nKEY POINTS:\n- Disagreement (Req 1 Implementation): Advisor_1 and Advisor_2 confirm `matches_tilde` is missing from diff and code vs. Advisor_3 claims Req 1 is satisfied (likely misinterpreting scope) [at stake: Req 1 (matches_tilde function implementation)]\n- Unverified claim: Advisor_3 assumes Req 1 requirements are fulfilled without evidence of `matches_tilde` implementation\nSUGGESTED CHECK: Inspect src/tilde_spec.py for presence and correctness of matches_tilde function",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `pick_highest_matching` and tests it, but completely omits the required `matches_tilde` function per Req 1, creating a critical gap in functionality despite passing existing tests.\nKEY POINTS:\n- Disagreement (Req 1 Implementation): Advisor_1 and Advisor_2 confirm `matches_tilde` is missing from diff and code vs. Advisor_3 claims Req 1 is satisfied (likely misinterpreting scope) [at stake: Req 1 (matches_tilde function implementation)]\n- Unverified claim: Advisor_3 assumes Req 1 requirements are fulfilled without evidence of `matches_tilde` implementation\nSUGGESTED CHECK: Inspect src/tilde_spec.py for presence and correctness of matches_tilde function"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1008,
+      "output_tokens": 148,
+      "seconds": 3.985,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1057,
+      "output_tokens": 190,
+      "seconds": 4.849,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

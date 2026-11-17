@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 partially (safe_join) but does not add required Req 2 function is_hidden_segment(rel_path) and adds only minimal tests; additionally safe_join uses resolve() without explicitly blocking prefix-escape symlinks as requested, so behavior may be incomplete for the security requirement.",
+  "target_issue": "Missing requirement ID: Req 2 (is_hidden_segment) not implemented; no tests for hidden segments or symlink prefix-escape.",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure requirements are implemented without breaking legacy APIs.",
+    "Diff shows safe_join added but Req 2 (is_hidden_segment) is missing, and safe_join implementation uses Path.resolve() which may not match required behavior for symlink escape blocking; also no tests for hidden segments or symlink prefix-escape. Need to inspect repository and run pytest to confirm completeness."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.306,
+  "prompt_tokens": 1362,
+  "output_tokens": 211,
+  "estimated_usd": 0.000551,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

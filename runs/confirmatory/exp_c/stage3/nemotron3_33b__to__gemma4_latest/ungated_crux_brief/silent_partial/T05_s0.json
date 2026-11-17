@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, implementing `sanitize_markdown_link(label, url)`, is completely missing from the provided source file content, despite the contributor report claiming completion.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, and the advisory review confirms the worktree pytest exit code is 0. However, the review overview explicitly states that `sanitize_markdown_link` (Req 2) is missing, despite conflicting claims. I must verify the presence of this function using `grep` as suggested to confirm the missing requirement.",
+    "I have read `src/link_scheme.py`. The content confirms that `sanitize_markdown_link` is indeed missing, as the file only contains `strip_control_chars` and `is_safe_url`. This directly violates Requirement 2, regardless of the conflicting claims in the advisory brief. Therefore, I must place the PR on hold until this function is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.743,
+  "prompt_tokens": 1693,
+  "output_tokens": 236,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

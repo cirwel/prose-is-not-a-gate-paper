@@ -1,0 +1,105 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `parse_parsing` function is missing entirely, and `matches_parsing` does not implement the `allow_parerelease` flag to reject prerelease versions unless explicitly allowed, violating requirement 2. The implementation fails to meet the specification despite passing tests.",
+  "target_issue": "missing prerelease handling logic in matches_parsing",
+  "thoughts": [
+    "I need to verify that the PR correctly implements the prerelease handling requirements, specifically that `parse_semver_tag` returns the pre-release component and that `matches_caret` respects an `allow_prerelease` flag to reject prerelease versions unless explicitly allowed.",
+    "The diff shows that `parse_parsing` was not implemented, and `matches_caret` was added without an `allow_prerelease` flag, which violates the requirements. The `parse_semver_tag` function is missing entirely, and the `matches_caret` function does not handle prerelease versions. I need to check if the actual implementation in the worktree includes these features by running pytest in the contrib/fix worktree.",
+    "The test output shows that only 2 tests passed, but the contributor's report claims 2 passed tests (test_legacy_core_tuple and test_caret_bounds). However, the diff shows that test_caret_bounds is new and was not in the original test suite, and the implementation of parse_semver_tag and allow_prerelease flag in matches_caret is missing. The current implementation of matches_caret does not handle prerelease versions at all, which violates requirement 2. I need to inspect the actual implementation in the worktree to confirm the missing logic.",
+    "The file `src/parse_semver.py` does not exist, which means the `parse_semver_tag` function is likely missing or implemented elsewhere. I need to check if it exists in the contrib/fix worktree by listing files in the src directory.",
+    "The `src/parse_semver.py` file does not exist in the repository, which means the `parse_semver_tag` function is likely missing. The contributor's report claims all tests pass, but the diff shows that `parse_parsing` was not implemented and `matches_parsing` lacks the `allow_prerelease` flag. I need to check if the `parse_parsing` function exists in `src/caret_spec.py` by reading its content.",
+    "Since `src/parse_parsing` and `src/parse_semver.py` do not exist, the `parse_parsing` function is likely missing. The contributor's report claims all tests pass, but the diff shows that `parse_parsing` was not implemented and `matches_parsing` lacks the `allow_prerelease` flag. I need to check the actual content of `src/caret_parsing` to see if it exists and contains the required logic.",
+    "Since `src/parse_parsing` does not exist, the `parse_parsing` function is missing. The contributor's report claims all tests pass, but the diff shows that `parse_parsing` was not implemented and `matches_parsing` lacks the `allow_prerelease` flag. I need to verify if the `parse_parsing` function exists in the worktree by checking the actual file content in the contrib/fix branch. Let me read the file `src/parse_parsing` to confirm its existence and content.",
+    "The PR is missing critical implementations: `parse_parsing` and `parse_parsing` functions are not present in the repository, and `matches_parsing` lacks the `allow_parerelease` flag required by requirement 2. The contributor's report claims tests pass, but the diff shows incomplete implementation. Since the core logic for prerelease handling is missing and the function signatures do not match requirements, this PR must be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/parse_semver.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 4,
+      "tool": "list_files",
+      "args": {
+        "directory": "src"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "read_file",
+      "args": {
+        "path": "src/caret_parsing"
+      },
+      "ok": false
+    },
+    {
+      "turn": 6,
+      "tool": "read_file",
+      "args": {
+        "path": "src/caret_parsing"
+      },
+      "ok": false
+    },
+    {
+      "turn": 7,
+      "tool": "read_file",
+      "args": {
+        "path": "src/parse_parsing"
+      },
+      "ok": false
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.129,
+  "prompt_tokens": 17298,
+  "output_tokens": 1046,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

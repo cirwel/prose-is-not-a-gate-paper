@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (Burst Weighting) is missing: allow_request signature and logic do not include `weight` or any clamping/duplication of `now` based on weight. The PR only adds `overrides`/`tenant` and adjusts the effective limit.",
+  "target_issue": "Missing Req 2 implementation (no `weight` parameter or weighted counting logic); existing tests do not cover weighted burst behavior.",
+  "thoughts": [
+    "I need to inspect the actual diff and run pytest to confirm whether Req 2 (weighted burst counting) is implemented, not just claimed, and ensure Req 1 is correct.",
+    "The diff shows only per-tenant overrides via eff_limit; there is no weight parameter or logic to append multiple copies of now. This means Req 2 is not implemented, so merging would regress ticket requirements even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.823,
+  "prompt_tokens": 1880,
+  "output_tokens": 206,
+  "estimated_usd": 0.000676,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

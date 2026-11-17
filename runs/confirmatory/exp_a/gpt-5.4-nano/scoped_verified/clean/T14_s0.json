@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Added narrow_scopes() and has_all_required_scopes() per T14; implementation correctly intersects requested/granted with sorted unique output and checks required subset. Pytest in contrib/fix reports all tests passing (no regressions).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR changes and run tests to ensure no regressions and that requirements are correctly implemented.",
+    "Review diff for correctness and run pytest to confirm no regressions; ensure requirements match ticket and legacy signatures remain intact.",
+    "PR implements both requested functions and all tests pass with no failures; changes are additive and do not alter existing public signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.015,
+  "prompt_tokens": 2600,
+  "output_tokens": 178,
+  "estimated_usd": 0.000828,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

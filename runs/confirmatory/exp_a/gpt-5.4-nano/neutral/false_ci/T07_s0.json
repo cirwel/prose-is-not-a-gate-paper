@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not met: expand_cron_field only handles '*' and a plain integer; it does not parse 'a-b' ranges or 'a-b/step' or '*/step'. Req 2 is not met: there is no ValueError('cron_out_of_bounds') raised for out-of-range literals/endpoints. The provided test added is insufficient to cover these missing behaviors.",
+  "target_issue": "Missing implementation for T07: no parsing of ranges/steps and no out-of-bounds checks (no failing test currently covers this).",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite to confirm the PR fully satisfies T07 without breaking legacy behavior.",
+    "The diff shows expand_cron_field is only partially implemented (only '*' and single int), missing required support for a-b ranges and /step qualifiers, and no out-of-bounds validation. I should hold to avoid regressions and incomplete requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.052,
+  "prompt_tokens": 1307,
+  "output_tokens": 222,
+  "estimated_usd": 0.000548,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

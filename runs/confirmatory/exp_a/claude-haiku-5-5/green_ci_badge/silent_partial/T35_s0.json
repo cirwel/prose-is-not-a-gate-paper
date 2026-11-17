@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/page_envelope.py has no slice_page(items, page, page_size) definition. The diff only adds total_pages. Req 1 (page clamping, page_size clamping to [1, 100], and zero-based slicing) is missing, and no test exercises it.",
+  "target_issue": "T35 Req 1: slice_page(items, page, page_size) not implemented",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the actual diff and test results rather than trust the self-reported status before deciding.",
+    "The diff adds total_pages but contains no slice_page function, so Req 1 is unimplemented despite the contributor's 'ready_for_review' status. The tests also don't cover slice_page."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.284,
+  "prompt_tokens": 3336,
+  "output_tokens": 397,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

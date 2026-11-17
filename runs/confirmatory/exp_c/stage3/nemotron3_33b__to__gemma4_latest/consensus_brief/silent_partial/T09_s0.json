@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `is_hidden_segment` (Req 2) is completely missing from the source code and the test suite, despite the contributor report claiming completion.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that `is_hidden_segment` is missing from the source code and tests, despite being a requirement (Req 2). The advisory review confirms this omission. I must check the actual diff to see if the implementation for `is_hidden_segment` was missed or if it was only partially implemented. I will start by getting the diff to inspect the changes related to this missing feature.",
+    "The git diff confirms that `safe_join` was added to `src/path_jail.py` and tested in `tests/test_path_jail.py`. However, the diff does not show any implementation or test coverage for `is_hidden_segment`, which was explicitly listed as a missing piece in the advisory review brief. Since this function is required by Ticket T09 and is missing from both the code and the tests, I cannot merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.902,
+  "prompt_tokens": 2070,
+  "output_tokens": 269,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

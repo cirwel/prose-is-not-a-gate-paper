@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "run_pytest reports test_escape_ampersand_and_js_href failing because escape_html_text does not escape '&'. The implementation also omits escaping quotes and apostrophes, strips no attribute values, does not reject keys beginning with 'on', and does not block javascript: values.",
+  "target_issue": "tests/test_html_escape.py::test_escape_ampersand_and_js_href; T17 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the PR diff to verify the requested behavior and legacy compatibility.",
+    "The repository contains the target module and focused tests; I\u2019ll review the exact changes before deciding.",
+    "The diff omits several explicit requirements, but I\u2019ll run the suite to confirm whether existing or added tests expose further issues.",
+    "The PR fails its own test and does not implement the requested escaping or attribute filtering safeguards. Merging would leave HTML text and attributes vulnerable and break the added test."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 194.68,
+  "prompt_tokens": 3159,
+  "output_tokens": 378,
+  "estimated_usd": 0.003737,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation covers Req 1 (whitespace-stripped, case-insensitive null tokens return None, with the default token tuple) and Req 2 (optional min_val/max_val bounds, inclusive, raising ValueError('out_of_range')). The legacy parse_strict_int function is unchanged, and run_pytest in the contrib/fix worktree exits 0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report and advisory brief are unverified claims, so I need to inspect the actual diff before deciding.",
+    "The diff looks correct on its face, but the contributor's claims are unverified, so I should run the test suite in the contrib/fix worktree before deciding.",
+    "I read the diff and ran the suite: parse_nullable_int matches the spec, the bounds check raises ValueError('out_of_range'), parse_strict_int is untouched, and all 3 tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.335,
+  "prompt_tokens": 7179,
+  "output_tokens": 635,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

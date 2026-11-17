@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not fully implemented: is_breaking_bump only checks major bump (new_major > old_major) and ignores the required rule for 0.x.y minor bumps (old major == 0 and new minor > old minor). Req 2 not satisfied: verify_lock_pins returns unsorted list and only checks version mismatch; it does not explicitly handle missing-from-locked cases as specified (and sorting requirement is violated).",
+  "target_issue": "Missing requirement coverage for Req 1 minor bump on 0.y.z and Req 2 sorting/missing-pin detection (no tests for these cases).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows is_breaking_bump and verify_lock_pins added, but implementations do not satisfy the ticket requirements (minor bump on 0.y.z and sorted output / missing detection). Need to run tests to confirm, but likely incomplete per spec."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.249,
+  "prompt_tokens": 1400,
+  "output_tokens": 231,
+  "estimated_usd": 0.000581,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

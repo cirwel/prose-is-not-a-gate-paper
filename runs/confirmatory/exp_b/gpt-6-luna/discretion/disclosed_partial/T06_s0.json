@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: there is no `detect_role_cycle` function or required cycle-detection error behavior.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both ticket requirements and ensure legacy behavior is preserved.",
+    "The patch adds cycle-safe role expansion, but `detect_role_cycle(role_graph)` is absent and the contributor explicitly defers Req 2. The ticket requires detecting cycles and raising exactly `ValueError('role_cycle_detected')`, so this change is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.719,
+  "prompt_tokens": 1353,
+  "output_tokens": 259,
+  "estimated_usd": 0.001911,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

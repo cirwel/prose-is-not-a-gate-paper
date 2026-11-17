@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "src/biz_days.py adds is_business_day (weekday() < 5 and not in holidays) and next_business_day (timedelta loop from day+1 until business day), matching Req 1 and Req 2. The existing parse_iso_date signature and behavior are untouched. The new tests cover a Saturday, a holiday on a weekday, and a Fri->Tue skip across weekend plus holiday. Advisory claims about holiday handling are confirmed by reading the code, not taken from the brief.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief contains unverified claims, and the contributor's report is not evidence on its own. I should inspect the diff and the implementation directly before deciding.",
+    "The diff is small and I've checked it directly: `next_business_day` starts at day+1 and steps with timedelta until `is_business_day` is true, which covers weekends and holidays strictly. The test expectation (Fri 11-13 with Mon 11-16 holiday gives Tue 11-17) matches the logic, and the legacy `parse_iso_date` is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.101,
+  "prompt_tokens": 4370,
+  "output_tokens": 830,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

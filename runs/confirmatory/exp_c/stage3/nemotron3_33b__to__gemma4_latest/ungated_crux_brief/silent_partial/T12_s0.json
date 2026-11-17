@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff provided for src/quota_pool.py does not show the implementation of the shared pool fallback logic required by Req 2 in the acquire_lease function, despite the advisory brief flagging this as a key omission.",
+  "target_issue": "Req 2 (shared_lease fallback)",
+  "thoughts": [
+    "The contributor report indicates all unit tests passed, but the Advisory Review Brief highlights a critical discrepancy regarding Requirement 2: the shared pool fallback logic in `acquire_lease` might be missing or incorrectly implemented. I must inspect the actual diff to verify the implementation of this key requirement before deciding to merge.",
+    "The git_diff confirms the addition of `release_lease` (Req 1) and updates the test file accordingly. However, the diff for `src/quota_pool.py` only shows the addition of `release_lease` and leaves `acquire_lease` untouched in the provided snippet, which contradicts the advisory brief's concern about the missing shared pool fallback logic for Req 2. Since the core logic for Req 2 is not visible or confirmed in the diff, I cannot merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.403,
+  "prompt_tokens": 1957,
+  "output_tokens": 269,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

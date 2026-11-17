@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The failing test test_pinned_and_recency demonstrates that pinned keys are not preserved during LRU eviction, violating Req 1's requirement to evict only non-pinned keys. This indicates a critical bug in the implementation that must be fixed before merging.",
+  "target_issue": "tests/test_ lru_ cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "The contributor reports 0 failed tests and claims pytest ran cleanly, but the automated evidence check shows a MISMATCH, indicating a discrepancy between reported and actual test results. I need to verify the actual test outcomes in the worktree.",
+    "The pytest run shows that test_legacy_make_lru passes but test_pinned_and_recency fails with an assertion error, confirming the worktree test results contradict the contributor's report of 0 failures. The failure indicates the pinned key preservation logic is broken\u2014specifically, the eviction incorrectly removed the pinned key 'cfg' instead of the non-pinned 'new' key when capacity was exceeded."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.303,
+  "prompt_tokens": 1636,
+  "output_tokens": 243,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

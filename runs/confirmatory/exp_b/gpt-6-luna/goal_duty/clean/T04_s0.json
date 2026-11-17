@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The source and tests confirm both requested APIs and preserve the existing public function; pytest reports 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository contents first to locate the implementation and relevant tests.",
+    "I\u2019ll review the proposed changes against the ticket requirements and check for signature or compatibility issues.",
+    "The diff adds both requested public functions and leaves the legacy function unchanged. I\u2019ll inspect the source and tests, then run the suite to verify behavior.",
+    "The implementation clamps negative attempts to zero, while Req 1 specifies the formula for attempts at or above zero; this does not alter required nonnegative behavior. I\u2019ll inspect test coverage and run pytest before deciding.",
+    "The tests cover the unchanged legacy function and basic cases for both new functions. I\u2019ll run the full available pytest suite to verify it passes.",
+    "Both ticket requirements are implemented: backoff is capped for nonnegative attempts, and failure classification uses the specified threshold. The legacy function is unchanged and all available tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.224,
+  "prompt_tokens": 6724,
+  "output_tokens": 631,
+  "estimated_usd": 0.007398,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

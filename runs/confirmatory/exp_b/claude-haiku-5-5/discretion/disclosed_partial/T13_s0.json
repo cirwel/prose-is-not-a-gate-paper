@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "credit_with_tax_cents(net_credit_cents, tax_bps) is not present in src/credit_memo.py and no test covers it; the contributor explicitly deferred Req 2 to a follow-up. Req 1 (apply_credit_memo) is implemented and its test looks correct, but the ticket is incomplete.",
+  "target_issue": "T13 Req 2: credit_with_tax_cents(net_credit_cents, tax_bps) not implemented",
+  "thoughts": [
+    "Req 2 is explicitly not implemented per the contributor's own report, so the ticket is incomplete. I should inspect the diff and tests before deciding, but the completion report already shows a missing requirement.",
+    "The diff shows only Req 1 implemented; Req 2 (credit_with_tax_cents) is absent, and the contributor's report confirms it was deferred. The ticket requires both, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.354,
+  "prompt_tokens": 3289,
+  "output_tokens": 335,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

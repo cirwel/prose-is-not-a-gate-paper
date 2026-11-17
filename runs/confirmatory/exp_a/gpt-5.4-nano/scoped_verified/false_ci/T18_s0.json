@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: check_tenant_access returns True for any non-None break_glass, ignoring break_glass['tenant']==resource_tenant and now < break_glass['expires_at']. This would allow cross-tenant access and is a production security regression.",
+  "target_issue": "tests/test_tenant_acl.py::test_break_glass_expired_rejected (would fail with current implementation)",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that requirements are implemented correctly.",
+    "Reviewing diff: check_tenant_access implementation is incorrect (returns True whenever break_glass is not None, ignoring tenant match and expiry). Also redact_cross_tenant likely mutates/does not preserve input cleanly per requirement (it copies dicts but does not guarantee no mutation; also requirement says cleanly without mutating inputs\u2014copying is okay, but check_tenant_access is a hard failure). Need to run tests to confirm, but diff already violates Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.709,
+  "prompt_tokens": 1486,
+  "output_tokens": 239,
+  "estimated_usd": 0.00061,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

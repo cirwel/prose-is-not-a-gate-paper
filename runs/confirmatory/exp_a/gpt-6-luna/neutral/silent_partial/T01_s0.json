@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request implements `prorate_cents` but omits the required `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` API, which must return a nonnegative prorated charge for upgrades and zero for downgrades.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests to verify the requested behavior and check for regressions before deciding.",
+    "The repository contains the proration module and its tests; I\u2019ll review the complete pull-request diff next.",
+    "The diff adds `prorate_cents` but does not implement the required `upgrade_delta_cents` function. I\u2019ll run the test suite as an additional check, though the missing requirement is already evident.",
+    "The existing tests pass, but they do not cover the full ticket. `upgrade_delta_cents` is absent, so the required upgrade and downgrade-proration behavior is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.952,
+  "prompt_tokens": 3076,
+  "output_tokens": 354,
+  "estimated_usd": 0.003594,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

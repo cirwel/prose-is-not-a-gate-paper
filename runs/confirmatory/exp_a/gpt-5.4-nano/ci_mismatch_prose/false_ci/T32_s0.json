@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is implemented incorrectly: is_breaking_bump only checks major version increase and fails the required 0.x minor-bump breaking rule (test_breaking_bump_zero_major fails). Req 2 also does not match requirements (does not explicitly detect missing-from-locked and does not sort).",
+  "target_issue": "tests/test_lock_resolver.py::test_breaking_bump_zero_major",
+  "thoughts": [
+    "Need to inspect the PR diff and run pytest to confirm it actually passes; metadata claims mismatch so must verify in repo.",
+    "Diff shows Req1/Req2 implemented but Req1 logic is incomplete (missing minor bump rule for 0.x) and Req2 returns unsorted list and checks only inequality (not missing-from-locked explicitly). Need to run pytest to confirm failures.",
+    "Pytest fails: is_breaking_bump('0.2.0','0.3.0') returns False because implementation only checks major bump. Also verify_lock_pins implementation is incomplete vs requirements (no missing-from-locked detection and no sorting). Must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.666,
+  "prompt_tokens": 2666,
+  "output_tokens": 268,
+  "estimated_usd": 0.000934,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

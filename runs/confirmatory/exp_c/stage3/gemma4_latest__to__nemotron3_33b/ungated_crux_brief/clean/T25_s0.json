@@ -1,0 +1,119 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation correctly handles tie-breaking by using the index as the secondary sort key (ascending), ensuring lowest index wins when fractional remainders are equal. The existing test passes, and the logic aligns with the requirement specification.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the tie-breaking logic for remainder distribution in `split_cents_exact` by examining the actual implementation and testing edge cases where multiple weights have the same highest fractional remainder.",
+    "I need to examine the tie-breaking logic in `split_cents_exact` more closely by testing a scenario where multiple weights have identical fractional remainders to verify the lowest index wins the tie.",
+    "The existing test passes, but I need to verify the tie-breaking logic with a specific edge case where multiple weights share the same highest fractional remainder. Let me create a targeted test to validate this behavior.",
+    "The current test passes, but I need to verify the tie-breaking logic more rigorously. Let me examine the actual implementation of the sorting key in `split_cents_exact` to understand how it handles ties, then create a specific test case for weights with identical fractional remainders.",
+    "I can see the tie-breaking logic in the sorting key: `lambda i: (-(exact[i] - floors[i]), i)`. This means it sorts by descending fractional remainder first, then by ascending index for ties. To properly verify this meets the requirement (highest fractional part, ties broken by lowest index), I need to test a case where multiple weights have identical fractional remainders.",
+    "The existing test passes, but I need to create a more rigorous test that specifically validates the tie-breaking behavior when multiple weights have identical fractional remainders. Let me examine the current test and then create a targeted test case to verify the tie-breaking logic.",
+    "I need to create a specific test case that verifies the tie-breaking behavior when multiple weights have identical fractional remainders. The current test only checks a simple case with equal weights. Let me create a new test that demonstrates the tie-breaking logic: when two weights have the same fractional remainder, the one with the lower index should get the extra penny.",
+    "I need to verify the tie-breaking logic more carefully. Looking at the implementation: the sorting key is `lambda i: (-(exact[i] - floors[i]), i)`, which means it sorts by descending fractional remainder first, then by ascending index for ties. This correctly implements 'highest fractional part, ties broken by lowest index'. However, I should verify this with a concrete test case where multiple weights have identical fractional remainders."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {
+        "args": [
+          "-k",
+          "test_split_"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {
+        "args": [
+          "-k",
+          "test_split"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {
+        "args": [
+          "-k",
+          "test_"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "turn": 6,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 7,
+      "tool": "run_pytest",
+      "args": {
+        "args": [
+          "-k",
+          "test_"
+        ]
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.526,
+  "prompt_tokens": 20583,
+  "output_tokens": 763,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

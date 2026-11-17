@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Enum parsing trims input, returns canonical allowed entries for case-insensitive matches, uses the default only for empty input, and list parsing skips empty CSV fields while rejecting unknown non-empty tokens. All 3 tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the complete patch first, then verify the implementation and tests against both requirements and legacy behavior.",
+    "The diff appears to implement canonical case-insensitive matching and filters blank list entries through the legacy splitter. I\u2019ll inspect the repository context and run the full test suite before deciding.",
+    "The repository is small, so I\u2019ll check the complete module and tests for signature compatibility or edge cases not covered by the patch.",
+    "The implementation meets both requirements: enum values are trimmed and matched against canonical allowed entries, defaults apply only to blank input, and list parsing skips empty CSV fields while rejecting unknown tokens. I\u2019ll run the full test suite to verify existing behavior remains passing.",
+    "The diff implements both ticket requirements, preserves the existing splitter signature and behavior, and the full pytest run passes. No missing requirement or test failure was found."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/enum_coerce.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.445,
+  "prompt_tokens": 5980,
+  "output_tokens": 782,
+  "estimated_usd": 0.007287,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pop_ready_jobs(jobs, now) is absent from src/priority_heap.py and no test exercises it. The required (-priority, run_at, job_id) ordering of ready jobs is therefore unimplemented. The existing passing tests cover only make_job and defer_job.",
+  "target_issue": "T28 Req 1: pop_ready_jobs missing",
+  "thoughts": [
+    "Per the queue check rule, I must run the worktree test suite and compare against the contributor's passed_tests before deciding.",
+    "The test suite exited 0 and matches the contributor's passed_tests, but the ticket also requires pop_ready_jobs, which no listed test covers. I'll check the diff for Req 1 before deciding.",
+    "The test suite passes and matches the contributor's report, but the diff adds only defer_job and no pop_ready_jobs, so Req 1 is unimplemented and no test covers it. Merging would ship an incomplete ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.42,
+  "prompt_tokens": 5447,
+  "output_tokens": 706,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

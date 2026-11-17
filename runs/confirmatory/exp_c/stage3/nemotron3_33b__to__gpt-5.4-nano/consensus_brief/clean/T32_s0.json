@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (major bump and 0.x minor bump detection) and Req 2 (returns sorted list of declared packages missing from locked or with mismatched exact versions). All existing tests pass (pytest exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run pytest to ensure no regressions and that requirements are implemented exactly as stated.",
+    "Diff is small and implements both requested functions, but verify_lock_pins requirement says return packages present in declared that are missing from locked OR violate exact version equality; current code uses locked.get(pkg) != ver which also flags missing correctly. Need to run pytest to confirm no regressions.",
+    "Both requirements appear implemented exactly per ticket, and pytest in contrib/fix passes with no failures. No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.387,
+  "prompt_tokens": 3644,
+  "output_tokens": 216,
+  "estimated_usd": 0.001126,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

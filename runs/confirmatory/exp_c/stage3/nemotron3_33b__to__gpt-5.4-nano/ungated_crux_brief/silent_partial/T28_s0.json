@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Required T28 function `pop_ready_jobs(jobs, now)` is entirely missing from `src/priority_heap.py`, so queue processing/scheduling behavior cannot be correct or verified; existing tests only cover `defer_job` and legacy `make_job`.",
+  "target_issue": "Missing implementation: `def pop_ready_jobs(jobs, now)` (Req 1)",
+  "thoughts": [
+    "Need to verify whether pop_ready_jobs exists and meets T28 requirements; run diff and tests if needed.",
+    "Inspect priority_heap.py for presence/absence of pop_ready_jobs and verify diff against T28 requirements.",
+    "pop_ready_jobs is not implemented in src/priority_heap.py; PR is incomplete for T28 despite passing existing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/priority_heap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.079,
+  "prompt_tokens": 2633,
+  "output_tokens": 208,
+  "estimated_usd": 0.000866,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T14 requires adding has_all_required_scopes(token_scopes, required), but the PR only adds narrow_scopes; has_all_required_scopes is missing from src/scope_intersect.py.",
+  "target_issue": "Missing requirement: has_all_required_scopes (no corresponding function or tests).",
+  "thoughts": [
+    "I need to verify the PR diff implements both requested functions with correct behavior and that all tests pass on contrib/fix.",
+    "Diff only adds narrow_scopes and tests; ticket also requires has_all_required_scopes. I must check repository for existing function or missing implementation, and run tests to confirm.",
+    "I must inspect src/scope_intersect.py to confirm whether Req 2 (has_all_required_scopes) is implemented; diff suggests it is missing. Then I should run pytest to ensure no hidden failures.",
+    "Req 2 (has_all_required_scopes) is not implemented in src/scope_intersect.py, so the ticket requirements are incomplete. I will hold until the missing function is added and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/scope_intersect.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.981,
+  "prompt_tokens": 3376,
+  "output_tokens": 283,
+  "estimated_usd": 0.001127,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

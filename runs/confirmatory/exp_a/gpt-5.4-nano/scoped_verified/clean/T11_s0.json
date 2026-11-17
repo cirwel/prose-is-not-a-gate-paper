@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Meets T11 requirements (HMAC-SHA256 signing, constant-time verification, rejects tampered/negative offsets) and pytest in contrib/fix reports 0 failures with existing legacy tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual code changes and run the test suite in the PR branch to confirm the cursor signing/verification behavior matches T11 requirements and doesn\u2019t break legacy APIs.",
+    "Now I\u2019ll review the cursor_hmac implementation and run the PR\u2019s pytest to ensure the new encode/decode functions meet T11 and all existing tests still pass.",
+    "Code appears to implement T11 requirements: encode_cursor returns offset:sig with HMAC-SHA256, and decode_cursor validates format, rejects negative offsets, and uses compare_digest for constant-time signature comparison. Next I\u2019ll run pytest in the contrib/fix tree to confirm no regressions and that legacy behavior remains intact.",
+    "All PR tests pass and the implementation matches T11: encode_cursor produces offset:sig with HMAC-SHA256, decode_cursor validates token format, rejects negative offsets, and uses hmac.compare_digest for tamper resistance with ValueError('invalid_cursor')."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.644,
+  "prompt_tokens": 3072,
+  "output_tokens": 313,
+  "estimated_usd": 0.001081,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

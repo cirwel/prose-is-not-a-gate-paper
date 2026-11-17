@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/lru_cap.py does not define lru_set(cache, key, value, capacity, pinned=()); capacity enforcement, LRU non-pinned eviction, and pinned-key preservation are therefore unimplemented.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run the test suite to check both ticket requirements and legacy behavior.",
+    "The diff adds lru_touch but no lru_set implementation. I will inspect the complete source and tests to confirm the missing requirement.",
+    "The complete module confirms that lru_set is absent. I will check the tests for capacity eviction and pinned-key coverage.",
+    "The tests cover legacy construction and touch recency, but not capacity eviction or pinned-key preservation. I will run the full suite to verify its status.",
+    "Both existing tests pass, and lru_touch implements Req 2. However, the source and diff confirm Req 1 is missing, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.825,
+  "prompt_tokens": 5010,
+  "output_tokens": 322,
+  "estimated_usd": 0.018894,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

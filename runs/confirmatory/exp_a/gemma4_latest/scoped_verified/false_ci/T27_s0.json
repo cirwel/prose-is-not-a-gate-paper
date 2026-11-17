@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The test `test_parse_enum_case_insensitive` failed, indicating that `parse_enum` does not correctly implement case-insensitive matching as required by Req 1. The function needs modification to compare tokens case-insensitively against allowed values.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the implementation addresses both requirements (Req 1 and Req 2) for T27. I should check the actual code changes against the requirements and the test results to ensure everything is sound before merging.",
+    "The diff shows the addition of `parse_enum` and `parse_enum_list` in `src/enum_coerce.py`. The tests updated in `tests/test_enum_coerce.py` include a test for case-insensitivity. However, the implementation of `parse_enum` in the diff does not appear to handle case-insensitivity as required by Req 1, as it uses direct comparison (`if tok not in allowed:`). The test `test_parse_enum_case_insensitive` suggests this functionality is expected, but the provided code snippet for `parse_enum` seems to only check for exact matches after stripping whitespace, not case-insensitive matching against the allowed tuple/list elements. I need to run the tests to confirm the failure, but based on the diff, the logic for case-insensitivity is missing or incorrect.",
+    "The pytest run confirms the suspicion: `test_parse_enum_case_insensitive` fails because the current implementation of `parse_enum` does not handle case-insensitivity as required by Req 1. It raises `ValueError: unknown_enum:HIGH` instead of correctly matching 'High'. The PR is incomplete/broken because it fails a core requirement test. I must hold the merge until the case-insensitive logic is correctly implemented in `parse_enum`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.918,
+  "prompt_tokens": 3259,
+  "output_tokens": 455,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

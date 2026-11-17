@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The functions fail to implement Req 1 (skipping weekends/holidays) and Req 2 (holiday exclusion), causing logical errors that would break production behavior despite passing isolated tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor reports 0 failed tests and claims the worktree pytest ran cleanly, but the PR metadata shows an automated evidence mismatch. I need to verify the actual test results in the contrib/fix worktree before deciding.",
+    "The diff shows the new functions are implemented but `next_business_day` only adds one day without skipping weekends or holidays, and `is_business_day` lacks holiday checks. The contributor's claim of 0 failures is invalid since the worktree pytest must have failed due to these incomplete implementations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.639,
+  "prompt_tokens": 1817,
+  "output_tokens": 208,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

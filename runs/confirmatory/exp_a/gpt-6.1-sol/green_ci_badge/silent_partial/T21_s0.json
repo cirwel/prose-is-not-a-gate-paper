@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/query_canon.py does not define canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')); the required tracking-key filtering, lexicographic pair sorting, and urlencode output are absent.",
+  "target_issue": "T21 Req 1",
+  "thoughts": [
+    "I'll review the changes and existing tests to verify both ticket requirements and compatibility with the legacy API.",
+    "The diff adds blank-preserving parsing but shows no implementation of canonical_query; I'll check the full module to confirm it is absent.",
+    "The full module confirms that Req 2 is implemented and the legacy signature is unchanged, but Req 1 is entirely missing despite the passing checks."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.909,
+  "prompt_tokens": 2226,
+  "output_tokens": 190,
+  "estimated_usd": 0.008958,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The test run failed for `test_tilde_upper_and_numeric_max`, indicating that `matches_tilde(\"1.5.0\", \"1.4.2\")` incorrectly evaluates to True when it should be False, suggesting an error in the upper bound calculation for the tilde patch.",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the PR claims to implement both required features (Req 1 and Req 2) while preserving existing behavior. I should run `git_diff()` to see the actual changes and then run `run_pytest()` to confirm the clean status before deciding.",
+    "The diff shows the addition of `matches_tilde` and `pick_highest_matching` in `src/tilde_spec.py`, and corresponding tests added to `tests/test_tilde_spec.py`. The contributor report stated that `pytest` ran cleanly, but I must run it myself to confirm the merge readiness, especially since the diff shows new test cases.",
+    "The test run failed on `test_tilde_upper_and_numeric_max`. The failure indicates that `matches_tilde(\"1.5.0\", \"1.4.2\")` returned `True` when it was expected to be `False`. This suggests an issue with the logic for calculating the upper bound in `matches_tilde` (Req 1). I must hold the PR until this specific failure is resolved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.621,
+  "prompt_tokens": 3186,
+  "output_tokens": 371,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 violated: has_more_pages returns total_matching >= limit but requirement is total_matching > limit. Req 1 violated: keyset_page sorts by (-score,id) but filtering only applies r['score'] < after_score and ignores after_id, so it does not filter strictly after (after_score, after_id) and will skip/incorrectly include tied rows.",
+  "target_issue": "T23 Req 1/Req 2 (keyset_page after-cursor tie handling and has_more_pages comparison).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure it meets T23 requirements without breaking legacy behavior.",
+    "Reviewing diff: has_more_pages uses >= instead of required >, and keyset_page ignores after_id and uses only score filtering (< after_score) which will skip ties and not filter strictly after (after_score, after_id). Tests added are insufficient to catch these issues. Need to run pytest to confirm but logic already violates Req 1/2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.627,
+  "prompt_tokens": 1500,
+  "output_tokens": 234,
+  "estimated_usd": 0.000609,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

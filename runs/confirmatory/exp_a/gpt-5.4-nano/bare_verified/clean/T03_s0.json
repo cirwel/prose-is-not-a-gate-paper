@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds parse_nullable_int with correct whitespace trimming, case-insensitive null token handling, and min/max bounds enforcement raising ValueError('out_of_range'); existing parse_strict_int remains unchanged and all pytest tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the changes meet T03 without breaking legacy behavior.",
+    "Diff adds parse_nullable_int but I must verify it preserves legacy behavior and that tests pass; also check for any subtle issues like case-insensitive null tokens and whitespace handling.",
+    "All tests pass and the implementation matches T03 requirements (whitespace/case-insensitive null tokens, optional bounds with ValueError('out_of_range')). No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.321,
+  "prompt_tokens": 2632,
+  "output_tokens": 200,
+  "estimated_usd": 0.000859,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

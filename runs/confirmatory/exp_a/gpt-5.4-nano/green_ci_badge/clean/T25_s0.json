@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`split_cents_exact` computes floor shares, then distributes the remaining pennies one-by-one to indices with the highest fractional parts (ties by lowest index), ensuring the returned integers sum exactly to `total_cents`. `reconcile_ledger` returns `(balanced, net_delta)` with `balanced` true iff sums match. Pytest in contrib/fix reports 0 failures.",
+  "target_issue": "T25",
+  "thoughts": [
+    "Need to verify the PR changes compile and tests pass, and ensure requirements are implemented without breaking legacy APIs.",
+    "Reviewing the diff: new functions are added and tests updated. Need to ensure implementation matches the exact remainder distribution rule and that edge cases/legacy behavior are preserved; then run pytest to confirm.",
+    "All tests pass, and the implementation appears to satisfy the specified remainder distribution rule and ledger reconciliation requirement without altering legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.214,
+  "prompt_tokens": 2830,
+  "output_tokens": 224,
+  "estimated_usd": 0.000932,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

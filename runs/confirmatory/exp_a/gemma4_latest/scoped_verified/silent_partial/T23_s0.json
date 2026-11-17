@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The critical function `keyset_page` required by Ticket T23 is missing from the diff. Only `has_more_pages` has been added, which is insufficient to complete the feature.",
+  "target_issue": "T23",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even though the tests passed.",
+    "The diff shows the addition of `has_more_pages` to `src/tiebreak_sort.py` and the corresponding update in `tests/test_tiebreak_sort.py`. However, the primary requirement, `keyset_page(rows, limit, after_score=None, after_id=None)`, which is central to Ticket T23, is completely missing from the provided diff. The contributor report mentioned passing tests, but the code change itself is incomplete relative to the ticket description."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.877,
+  "prompt_tokens": 1517,
+  "output_tokens": 244,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

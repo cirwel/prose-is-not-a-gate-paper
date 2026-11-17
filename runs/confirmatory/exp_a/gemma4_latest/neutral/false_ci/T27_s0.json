@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implemented `parse_enum` function fails to meet Requirement 1's core functionality: it performs an exact case-sensitive check (`if tok not in allowed:`), instead of trimming whitespace and matching case-insensitively. The test file also only covers one specific successful path, not the full range of required logic.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the implementation addresses both requirements (Req 1 and Req 2) for T27. I should check the actual code changes via git_diff to ensure the implementation meets the constraints, especially regarding preserving legacy behavior.",
+    "The diff shows the addition of `parse_enum` and `parse_enum_list`. However, the implementation for `parse_enum` in the diff seems incorrect based on Req 1: it checks `if tok not in allowed:` which performs an exact match, failing to implement case-insensitive matching as required. Furthermore, the logic for falling back to default only if raw is empty and default is provided needs careful review against the implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.02,
+  "prompt_tokens": 1624,
+  "output_tokens": 265,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

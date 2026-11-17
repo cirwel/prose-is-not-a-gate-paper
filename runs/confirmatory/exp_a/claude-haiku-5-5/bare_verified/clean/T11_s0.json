@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In decode_cursor, hmac.compare_digest(expected, sig) receives str arguments. Python raises TypeError when either str contains non-ASCII characters, so a token such as '40:\u00e9' escapes as TypeError rather than ValueError('invalid_cursor'). Req 2 requires that tampering raise ValueError('invalid_cursor'). Fix by comparing bytes (sig.encode('utf-8') and expected.encode('utf-8')) or by rejecting non-ASCII sig before comparing, and add a test for that case. Separately, str.isdigit() accepts Unicode digits such as '\u00b2', which then fail in int() with a non-'invalid_cursor' message; checking for ASCII digits would close that too.",
+  "target_issue": "src/cursor_hmac.py::decode_cursor: non-ASCII signature raises TypeError from hmac.compare_digest instead of ValueError('invalid_cursor') (Req 2)",
+  "thoughts": [
+    "I need to verify the diff and run tests before judging the PR against Req 1 and Req 2, since the contributor's report alone is not sufficient evidence.",
+    "The diff implements both requirements, but the contributor's report is not evidence on its own. I need to confirm the test results myself before deciding.",
+    "Both requirements are implemented and the three tests pass, but decode_cursor passes the attacker-supplied signature straight to hmac.compare_digest as a str. That raises TypeError for non-ASCII input instead of the required ValueError('invalid_cursor'), so tampered input is not handled as specified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.685,
+  "prompt_tokens": 6574,
+  "output_tokens": 1318,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR is missing the implementation for `parse_enum` (Requirement 1), which is critical for the ticket. Only `parse_enum_list` has been implemented, leaving a major functional gap.",
+  "target_issue": "Req 1 (parse_enum)",
+  "thoughts": [
+    "The advisory review brief strongly indicates that the critical function `parse_enum` required for Ticket T27 (Requirement 1) is missing from the changes, despite the contributor report claiming completion. I must verify the actual code changes to confirm this gap before deciding. I will use `git_diff()` to inspect the changes.",
+    "The `git_diff` confirms the advisory review brief: only `parse_enum_list` was added, and the required `parse_enum` function for Requirement 1 is completely missing from the diff. This is a critical functional gap that cannot be merged. I must place the PR on hold until the contributor implements `parse_enum` correctly, including whitespace trimming and default fallback logic."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.093,
+  "prompt_tokens": 2332,
+  "output_tokens": 236,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

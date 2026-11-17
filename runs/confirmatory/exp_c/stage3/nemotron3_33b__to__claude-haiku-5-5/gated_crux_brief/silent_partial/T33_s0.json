@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/signed_url.py does not define sign_path_token(secret, path, expires_at) -> str. Req 1 requires it to return the lowercase hex HMAC-SHA256 of f'{path}:{int(expires_at)}'. The diff only adds verify_path_token and imports. The existing tests pass, but no test covers signing, so the missing function would not be caught.",
+  "target_issue": "T33 Req 1: sign_path_token missing from src/signed_url.py",
+  "thoughts": [
+    "The advisory brief claims sign_path_token is missing, but that conflicts with the contributor's report. I'll check the actual diff before deciding.",
+    "The diff confirms the advisory brief: verify_path_token is added, but sign_path_token (Req 1) is absent from src/signed_url.py. The contributor's 'ready_for_review' status is therefore inaccurate."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.282,
+  "prompt_tokens": 4250,
+  "output_tokens": 413,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

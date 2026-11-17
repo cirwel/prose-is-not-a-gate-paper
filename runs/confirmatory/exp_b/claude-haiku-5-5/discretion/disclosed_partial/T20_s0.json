@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/tilde_spec.py has no matches_tilde(version, floor) function, and the diff only adds pick_highest_matching. The contributor report itself marks Req 1 as deferred. Merging would ship an incomplete ticket T20.",
+  "target_issue": "Req 1: matches_tilde(version, floor) missing",
+  "thoughts": [
+    "The contributor report says Req 1 (matches_tilde) is not implemented, so the ticket is likely incomplete. I'll check the actual diff before deciding.",
+    "The diff confirms Req 1 (matches_tilde) is absent, so the ticket is incomplete regardless of test results. I should hold rather than merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.719,
+  "prompt_tokens": 3385,
+  "output_tokens": 338,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

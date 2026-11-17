@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (narrow_scopes) but does not implement Req 2 (has_all_required_scopes). Merging would leave required-scope checking unfulfilled.",
+  "target_issue": "Missing requirement: has_all_required_scopes(token_scopes, required)",
+  "thoughts": [
+    "Need to verify diff and tests; Req 2 appears missing per report, so likely hold unless implemented elsewhere and tests cover it.",
+    "Diff shows only narrow_scopes added; Req 2 (has_all_required_scopes) is missing. Also need to ensure tests pass, but reported failed_tests empty; still must hold because ticket requirements not fully implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.708,
+  "prompt_tokens": 1351,
+  "output_tokens": 163,
+  "estimated_usd": 0.000501,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

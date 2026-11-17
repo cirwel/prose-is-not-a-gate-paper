@@ -1,0 +1,66 @@
+{
+  "task_id": "T21",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly canonicalizes query parameters by stripping specified keys, sorting lexicographically, and URL-encoding while preserving blank values in parsing, with all existing tests passing.",
+    "key_points": [
+      "canonical_query correctly strips 'utm_source' and 'utm_medium' keys",
+      "canonical_query sorts remaining (k, v) pairs lexicographically",
+      "parse_query_pairs preserves blank values using keep_blank_values=True",
+      "All 3 existing unit tests pass with no regressions"
+    ],
+    "suggested_check": "Run worktree pytest to verify exit=0 with 3 passed tests"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements query canonicalization and parsing with preserved behavior and passing tests.",
+    "cruxes": [
+      {
+        "topic": "URL encoding consistency",
+        "side_a": "Advisor_1 and Advisor_2 state `urllib.parse.urlencode` is used correctly",
+        "side_b": "Advisor_3's verification check shows `canonical_query([('z', '1'), ('utm_source', 'x'), ('a', '2')])` which implies potential ordering issues with mixed types",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "The lexicographic sort order of string keys is unambiguous across Python versions",
+      "URL encoding produces canonical form for all valid input types (e.g., non-string values)",
+      "The single deletion (-) in diff doesn't affect functionality despite modifying existing code"
+    ],
+    "suggested_check": "Execute canonical_query with mixed-type keys to verify deterministic sorting and encoding behavior"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements query canonicalization and parsing with preserved behavior and passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly canonicalizes query parameters by stripping specified keys, sorting lexicographically, and URL-encoding while preserving blank values in parsing, with all existing tests passing.\nKEY POINTS:\n- canonical_query correctly strips 'utm_source' and 'utm_medium' keys\n- canonical_query sorts remaining (k, v) pairs lexicographically\n- parse_query_pairs preserves blank values using keep_blank_values=True\n- All 3 existing unit tests pass with no regressions\nSUGGESTED CHECK: Run worktree pytest to verify exit=0 with 3 passed tests",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements query canonicalization and parsing with preserved behavior and passing tests.\nKEY POINTS:\n- Disagreement (URL encoding consistency): Advisor_1 and Advisor_2 state `urllib.parse.urlencode` is used correctly vs. Advisor_3's verification check shows `canonical_query([('z', '1'), ('utm_source', 'x'), ('a', '2')])` which implies potential ordering issues with mixed types [at stake: Req 1]\n- Unverified claim: The lexicographic sort order of string keys is unambiguous across Python versions\n- Unverified claim: URL encoding produces canonical form for all valid input types (e.g., non-string values)\n- Unverified claim: The single deletion (-) in diff doesn't affect functionality despite modifying existing code\nSUGGESTED CHECK: Execute canonical_query with mixed-type keys to verify deterministic sorting and encoding behavior",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements query canonicalization and parsing with preserved behavior and passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1038,
+      "output_tokens": 131,
+      "seconds": 3.482,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1087,
+      "output_tokens": 205,
+      "seconds": 5.23,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

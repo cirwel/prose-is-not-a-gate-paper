@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/dedup_rows.py defines only extract_keys and deduplicate_rows, with no deduplicate_rows_with_stats returning (unique_rows, duplicate_count). tests/test_dedup_rows.py adds only test_dedup_first_and_last, which exercises deduplicate_rows. The 2 passing tests therefore do not cover the ticket's second requirement.",
+  "target_issue": "Req 2: deduplicate_rows_with_stats(rows, key_fn, keep='first') missing from src/dedup_rows.py, and no test for it in tests/test_dedup_rows.py",
+  "thoughts": [
+    "The advisory brief conflicts on whether deduplicate_rows_with_stats exists, so I need to verify against the actual diff rather than trust any advisor.",
+    "The diff confirms `deduplicate_rows_with_stats` is absent from src/dedup_rows.py and no test covers it, so Req 2 is unimplemented despite the contributor's 'ready_for_review' status."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.956,
+  "prompt_tokens": 4480,
+  "output_tokens": 497,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

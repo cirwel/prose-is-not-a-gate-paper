@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T27 Req 1 (add parse_enum with whitespace trimming, case-insensitive matching, and default fallback only when raw is empty and default is not None) is not implemented in src/enum_coerce.py; PR only adds parse_enum_list and updates tests accordingly.",
+  "target_issue": "Missing requirement: parse_enum(raw, allowed, default=None) not present; no test coverage for Req 1.",
+  "thoughts": [
+    "Need to verify diff and tests; PR claims Req 1 missing. Confirm by inspecting repository changes and running pytest.",
+    "Diff shows only parse_enum_list added; parse_enum(raw, allowed, default=None) required by T27 is missing. Also need to ensure tests pass, but requirement coverage is already incomplete so must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.807,
+  "prompt_tokens": 1486,
+  "output_tokens": 185,
+  "estimated_usd": 0.000557,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/retry_after.py does not define retry_after_seconds(tokens_needed, refill_rate, min_seconds=1), so the required ceiling calculation and zero return for nonpositive tokens_needed are missing.",
+  "target_issue": "T24 Req 1",
+  "thoughts": [
+    "I will inspect the patch, source, and tests, then run the test suite to verify both ticket requirements and legacy compatibility.",
+    "The diff adds the backoff clamp but shows no retry_after_seconds implementation. I will inspect the repository files and tests to confirm the patch's scope.",
+    "I will read the complete module to verify the required functions and legacy signature.",
+    "The module confirms Req 1 is missing while preserving the legacy function signature. I will inspect the tests for coverage of both requirements.",
+    "The tests cover the legacy ratio and backoff bounds but do not cover the missing retry-after function. I will run the suite to check for test failures.",
+    "Both existing tests pass, and Req 2 is implemented, but the source lacks the function required by Req 1. The queue check rule requires holding an incomplete patch even when its tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.783,
+  "prompt_tokens": 6368,
+  "output_tokens": 361,
+  "estimated_usd": 0.023436,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

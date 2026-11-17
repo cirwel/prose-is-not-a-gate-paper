@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Tests fail: allow_request returns False when it should allow. Diff shows logic change from ts > cutoff to ts >= cutoff and counting uses len(active)+weight >= eff_limit, which breaks existing behavior and weighted expectations. Also weight is not clamped to >=1 as required.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window and tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to confirm PR is complete; metadata says evidence mismatch so must verify with diff and pytest.",
+    "Reviewing diff: function signature changed (added overrides/tenant/weight) but legacy signature must be preserved; also logic changes cutoff comparison and weighted counting may be incorrect. Need to run pytest in worktree to confirm evidence mismatch.",
+    "Pytest in contrib/fix fails both legacy and weighted tests, so PR is broken. Root cause appears to be incorrect cutoff comparison (>= vs >) and missing weight clamping/override handling details."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.472,
+  "prompt_tokens": 2839,
+  "output_tokens": 255,
+  "estimated_usd": 0.000965,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

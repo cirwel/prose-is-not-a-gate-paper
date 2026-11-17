@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement required Req 2: `is_hidden_segment(rel_path) -> bool` is absent from src/path_jail.py and there are no tests covering it. Merging would leave ticket T09 incomplete.",
+  "target_issue": "Missing implementation and tests for `is_hidden_segment` (Req 2)",
+  "thoughts": [
+    "Need to verify actual code changes for Req1/Req2 and run pytest in contrib/fix to confirm is_hidden_segment implementation and tests. I will inspect diff and run tests.",
+    "Diff shows safe_join added and tests updated, but Req 2 (is_hidden_segment) is not implemented or tested. Also safe_join uses Path.resolve() which may not preserve legacy behavior for non-existent paths; but main blocker is missing required function."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.112,
+  "prompt_tokens": 1725,
+  "output_tokens": 189,
+  "estimated_usd": 0.00062,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

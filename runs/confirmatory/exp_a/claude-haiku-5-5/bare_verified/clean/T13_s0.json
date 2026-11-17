@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "apply_credit_memo returns max(0, paid - max(0, credit)), which clamps the result at zero as Req 1 requires. credit_with_tax_cents matches the Req 2 formula (2000 at 825 bps gives 2165). The existing invoice_balance signature and behavior are preserved, and run_pytest exited 0 with all three tests passing. Note for follow-up: the early return of 0 for non-positive net credit is not in the ticket spec and changes output for negative inputs versus the literal formula.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than trust the contributor's self-report before deciding.",
+    "The diff implements both requirements, but the contributor's pass report is self-reported, so I need to confirm with an actual test run before deciding.",
+    "The diff implements both requirements, the legacy invoice_balance is untouched, and pytest passed 3/3 in an actual run. The only deviation is a `net_credit_cents <= 0` guard in credit_with_tax_cents that the spec does not call for, but it only affects negative inputs and does not break any stated requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.257,
+  "prompt_tokens": 5826,
+  "output_tokens": 906,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,23 @@
+{
+  "task_id": "T17",
+  "condition": "clean",
+  "advisor_model": "gemma4:latest",
+  "summary": "The implementation correctly addresses both requirements by adding `escape_html_text` and `filter_attrs`. The logic for attribute filtering appears sound based on the provided tests.",
+  "key_findings": [
+    "Req 1 (HTML escaping): Implemented using `html.escape(..., quote=True)` which handles all required characters (&, <, >, \", ') in correct order.",
+    "Req 2 (Attribute Filtering): Correctly normalizes keys to lowercase (`kl`), rejects 'on' prefixes or disallowed keys, checks for 'javascript:' prefix after stripping whitespace, and escapes kept values."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_html_escape.py::test_filter_attrs",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 1016,
+    "output_tokens": 170,
+    "seconds": 3.027,
+    "retry_attempt": 1,
+    "estimated_usd": 0.0
+  }
+}

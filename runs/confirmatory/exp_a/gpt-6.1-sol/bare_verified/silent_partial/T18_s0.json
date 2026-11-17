@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tenant_acl.py is missing check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0), so the required tenant-access and temporary break-glass expiry checks are unavailable.",
+  "target_issue": "T18 Req 1",
+  "thoughts": [
+    "I will inspect the changes and relevant tests, then verify tenant isolation and break-glass expiry against the ticket requirements.",
+    "The diff adds redaction but no tenant-access check. I will inspect the module to confirm that the required function is absent.",
+    "The module confirms that Req 1 is entirely unimplemented; the reported passing tests cover only legacy ownership and redaction."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tenant_acl.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.388,
+  "prompt_tokens": 2384,
+  "output_tokens": 213,
+  "estimated_usd": 0.009708,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

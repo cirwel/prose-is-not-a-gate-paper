@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function filter_attrs(attrs, allowed_keys) entirely (Req 2 not implemented). Also escape_html_text uses html.escape without enforcing the specified entity order (&amp; first), which may fail hidden tests checking exact escaping sequence.",
+  "target_issue": "Ticket T17 Req 2 (filter_attrs) missing; potential hidden test for Req 1 entity ordering in escape_html_text.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T17 requirements without breaking legacy behavior.",
+    "The diff only adds escape_html_text using html.escape and a test; it does not implement filter_attrs from Req 2, and the escape ordering requirement is not guaranteed by html.escape. I should run pytest to confirm current state, but likely must hold due to missing required functionality.",
+    "PR tests pass, but the implementation is incomplete vs Ticket T17: it only adds escape_html_text and does not add filter_attrs, and escape_html_text relies on html.escape which may not satisfy the explicit entity ordering requirement (&amp; first). This risks failing hidden tests for Req 2 and ordering semantics."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.727,
+  "prompt_tokens": 2276,
+  "output_tokens": 278,
+  "estimated_usd": 0.000847,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented as specified in src/idempotency_lock.py. The legacy `make_lock_record` signature and behavior are preserved, and the existing test still passes. Run in the contrib/fix worktree, pytest reported 3 passed, 0 failed, matching the contributor's report. The PR is attested as verified.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the actual diff and test results rather than trust the contributor's self-report. Starting with the diff.",
+    "The diff implements both requirements and the tests match the claims, but I haven't confirmed the suite actually passes. I'll run pytest in the contrib/fix worktree rather than rely on the self-report.",
+    "The diff implements both requirements: `claim_job` returns 'acquired' or 'replay', and raises `ValueError('idempotency_conflict')` on a hash mismatch. `make_lock_record` is unchanged, and pytest ran in the worktree with all 3 tests passing (exit 0)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 26.092,
+  "prompt_tokens": 91860,
+  "output_tokens": 689,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

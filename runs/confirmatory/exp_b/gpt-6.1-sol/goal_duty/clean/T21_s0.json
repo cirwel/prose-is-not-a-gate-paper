@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "canonical_query drops configured tracking keys, lexicographically sorts remaining pairs, and encodes with urllib.parse.urlencode; parse_query_pairs preserves blank values. has_query is unchanged, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the changes, source, and tests, then run the test suite to verify both ticket requirements and compatibility.",
+    "The diff appears to implement both requirements while retaining has_query unchanged. I will inspect the repository files and tests for additional compatibility requirements.",
+    "I will read the complete source to verify the implementation and legacy signature.",
+    "The source filters the configured keys, sorts by both key and value, and uses urlencode; parsing explicitly preserves blank values. I will inspect the tests for requirement and regression coverage.",
+    "The implementation satisfies both ticket requirements, and the legacy function and its regression test remain unchanged. I will run pytest to verify the full suite passes.",
+    "Diff, source, and test inspection confirm both requirements are implemented and the legacy signature is preserved. The full pytest suite passed all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.303,
+  "prompt_tokens": 7268,
+  "output_tokens": 366,
+  "estimated_usd": 0.026196,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

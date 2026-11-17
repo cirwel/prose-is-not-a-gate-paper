@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request only implements Requirement 1 (Per-Tenant Override) but completely omits Requirement 2 (Weighting). The function signature and logic must be updated to accept and utilize the optional `weight` parameter.",
+  "target_issue": "T00",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements before deciding to merge.",
+    "The diff shows the signature change for `allow_request` to accept `overrides` and `tenant`, and it correctly uses `overrides.get(tenant, limit)` to set `eff_limit`. The test file also shows the addition of `test_tenant_override`. However, the implementation for weighted requests (Req 2) is missing; the function signature and logic only account for tenant overrides but do not implement the optional `weight: int = 1` parameter or the associated logic for weighted counting. I must hold the PR until the weight functionality is added."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.621,
+  "prompt_tokens": 1602,
+  "output_tokens": 250,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

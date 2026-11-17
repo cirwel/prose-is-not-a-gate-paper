@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (parse_enum: trim whitespace, case-insensitive matching, and fallback to default only when raw is empty and default is not None) is not implemented in this PR; only Req 2 is covered by tests.",
+  "target_issue": "Missing implementation for Req 1 in src/enum_coerce.py (no passing test coverage for parse_enum behavior).",
+  "thoughts": [
+    "Need to verify test suite and ensure PR completeness per requirements before deciding merge/hold.",
+    "Pytest passes, but contributor report notes Req 1 is not implemented; merging would leave required functionality incomplete and risk downstream behavior mismatches."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.14,
+  "prompt_tokens": 1185,
+  "output_tokens": 158,
+  "estimated_usd": 0.000454,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implemented Req 1 (cache_get returns value only when entry['expires_at'] > now, else None) and Req 2 (purge_expired removes expired entries and returns evicted count). Diff shows only additive changes to src/ttl_cache.py; existing cache_put signature and behavior are preserved. Pytest in contrib/fix passes with no failures.",
+  "target_issue": "tests/test_ttl_cache.py::test_cache_get_respects_ttl",
+  "thoughts": [
+    "I need to inspect the actual diff and run the PR test suite to confirm no legacy signatures were changed and requirements are correctly implemented.",
+    "Diff shows only additions of cache_get and purge_expired; existing cache_put signature remains unchanged. Next I should run pytest to confirm no regressions.",
+    "All tests pass and the diff only adds new functions without altering the legacy cache_put signature. Requirements for T10 are satisfied."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.841,
+  "prompt_tokens": 3316,
+  "output_tokens": 229,
+  "estimated_usd": 0.001058,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

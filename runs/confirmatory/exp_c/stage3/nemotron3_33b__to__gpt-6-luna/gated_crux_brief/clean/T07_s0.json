@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Negative out-of-bounds literals (and ranges with negative endpoints) are not handled as bounds violations; splitting on `-` leads to an empty string being passed to `int()`, so the required `cron_out_of_bounds` error is not raised.",
+  "target_issue": "Req 2: negative literal/range endpoint out-of-bounds handling",
+  "thoughts": [
+    "I\u2019ll inspect the patch directly, focusing on the wildcard and bounds-validation logic called out in the review brief.",
+    "Wildcard and range expansion are implemented, but the parser silently ignores `/step` on a single integer (for example, `5/2` returns only `[5]` instead of expanding the step-qualified field). This leaves the stated step-qualifier requirement incomplete despite the reported tests passing.",
+    "The provided tests pass, but the implementation does not meet the clean out-of-bounds error requirement for negative literals: `expand_cron_field(\"-1\", 0, 59)` is parsed as a range and raises an integer-parsing error instead of `ValueError(\"cron_out_of_bounds\")`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.4,
+  "prompt_tokens": 3842,
+  "output_tokens": 1282,
+  "estimated_usd": 0.007176,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

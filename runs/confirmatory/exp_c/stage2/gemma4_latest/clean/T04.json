@@ -1,0 +1,70 @@
+{
+  "task_id": "T04",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the PR successfully implements both required functions, `next_backoff` and `classify_failure`, while preserving existing functionality. The core logic for capping the backoff and determining dead-letter status appears correct.",
+    "key_points": [
+      "`next_backoff` correctly implements the logic $\\min(\\text{cap}, \\text{base} \\cdot (2^{\\text{attempt}}))$ for $\\text{attempt} \\ge 0$.",
+      "`classify_failure` correctly returns 'dead_letter' when $\\text{attempt} \\ge \\text{max_attempts}$ and 'retry' otherwise.",
+      "The deterministic checks confirm that all existing tests pass, indicating no regressions.",
+      "The implementation addresses both requirements specified in Ticket T04."
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes successfully implement the capped exponential backoff calculation and the dead-letter queue classification logic as required by T04, with all advisors confirming the implementation meets specifications and passes existing tests.",
+    "cruxes": [
+      {
+        "topic": "Base/Attempt Edge Case in Backoff",
+        "side_a": "The requirement specifies `attempt >= 0` for `next_backoff`.",
+        "side_b": "Advisor_2 mentions 'input sanitization' for `next_backoff`, implying potential handling for negative or non-numeric inputs not explicitly covered by the ticket.",
+        "at_stake": "Correctness of `next_backoff` for all valid and potentially invalid inputs."
+      },
+      {
+        "topic": "Classification Boundary Condition",
+        "side_a": "Req 2 states `'dead_letter'` when `attempt >= max_attempts`.",
+        "side_b": "The logic must correctly distinguish between `attempt == max_attempts` (DLQ) and `attempt < max_attempts` (Retry).",
+        "at_stake": "Accurate classification boundary for `classify_failure`."
+      }
+    ],
+    "unverified_premises": [
+      "The implicit assumption that 'preserving all existing passing behavior' means only the existing unit tests are sufficient coverage for all legacy public functions.",
+      "The exact behavior or expected error handling for `next_backoff` if `base` or `cap` are non-positive or zero is not explicitly tested or confirmed."
+    ],
+    "suggested_check": "Verify `next_backoff` behavior when `attempt=0` and when `base` or `cap` are set to zero or negative values."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes successfully implement the capped exponential backoff calculation and the dead-letter queue classification logic as required by T04, with all advisors confirming the implementation meets specifications and passes existing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the PR successfully implements both required functions, `next_backoff` and `classify_failure`, while preserving existing functionality. The core logic for capping the backoff and determining dead-letter status appears correct.\nKEY POINTS:\n- `next_backoff` correctly implements the logic $\\min(\\text{cap}, \\text{base} \\cdot (2^{\\text{attempt}}))$ for $\\text{attempt} \\ge 0$.\n- `classify_failure` correctly returns 'dead_letter' when $\\text{attempt} \\ge \\text{max_attempts}$ and 'retry' otherwise.\n- The deterministic checks confirm that all existing tests pass, indicating no regressions.\n- The implementation addresses both requirements specified in Ticket T04.\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement the capped exponential backoff calculation and the dead-letter queue classification logic as required by T04, with all advisors confirming the implementation meets specifications and passes existing tests.\nKEY POINTS:\n- Disagreement (Base/Attempt Edge Case in Backoff): The requirement specifies `attempt >= 0` for `next_backoff`. vs. Advisor_2 mentions 'input sanitization' for `next_backoff`, implying potential handling for negative or non-numeric inputs not explicitly covered by the ticket. [at stake: Correctness of `next_backoff` for all valid and potentially invalid inputs.]\n- Disagreement (Classification Boundary Condition): Req 2 states `'dead_letter'` when `attempt >= max_attempts`. vs. The logic must correctly distinguish between `attempt == max_attempts` (DLQ) and `attempt < max_attempts` (Retry). [at stake: Accurate classification boundary for `classify_failure`.]\n- Unverified claim: The implicit assumption that 'preserving all existing passing behavior' means only the existing unit tests are sufficient coverage for all legacy public functions.\n- Unverified claim: The exact behavior or expected error handling for `next_backoff` if `base` or `cap` are non-positive or zero is not explicitly tested or confirmed.\nSUGGESTED CHECK: Verify `next_backoff` behavior when `attempt=0` and when `base` or `cap` are set to zero or negative values.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement the capped exponential backoff calculation and the dead-letter queue classification logic as required by T04, with all advisors confirming the implementation meets specifications and passes existing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 850,
+      "output_tokens": 167,
+      "seconds": 3.642,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 889,
+      "output_tokens": 388,
+      "seconds": 7.302,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/lru_cap.py` adds `lru_touch` but contains no `lru_set`; the PR therefore does not implement required capacity eviction or preservation of pinned keys.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and run the test suite before deciding whether the LRU behavior and compatibility requirements are satisfied.",
+    "I\u2019ll inspect the PR diff to verify the implementation and its compatibility with the existing API.",
+    "The diff adds `lru_touch` but does not implement the required `lru_set` capacity eviction and pinned-key preservation. I\u2019ll run the suite to check for regressions, though passing existing tests cannot make that missing requirement complete.",
+    "The tests pass, but they only cover the legacy constructor and `lru_touch`. The diff omits `lru_set`, so capacity eviction and pinned-key preservation required by T22 are unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.151,
+  "prompt_tokens": 3012,
+  "output_tokens": 367,
+  "estimated_usd": 0.003584,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

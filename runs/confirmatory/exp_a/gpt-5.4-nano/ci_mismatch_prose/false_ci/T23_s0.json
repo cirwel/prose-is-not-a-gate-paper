@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 are implemented incorrectly: `has_more_pages` returns total_matching >= limit but requirement is total_matching > limit; `keyset_page` sorts by (-score,id) but filters only by score with wrong inequality and ignores `after_id`, so it cannot correctly paginate without skipping ties.",
+  "target_issue": "T23: keyset_page deterministic tie-breaker cursor filtering and has_more_pages strictness (no specific failing test identified yet, but current logic violates the new tests\u2019 intent).",
+  "thoughts": [
+    "Need to verify the PR code and run pytest in the contrib/fix worktree since metadata says mismatch. I will inspect diffs and execute tests to confirm correctness before deciding.",
+    "The diff shows incorrect implementations: has_more_pages uses >= instead of >, and keyset_page ignores after_id and uses after_score filtering with r['score'] < after_score (wrong direction for -score ordering) and does not filter strictly after (after_score, after_id) to avoid skipping ties. This will fail the ticket requirements and likely tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.427,
+  "prompt_tokens": 1510,
+  "output_tokens": 246,
+  "estimated_usd": 0.000624,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

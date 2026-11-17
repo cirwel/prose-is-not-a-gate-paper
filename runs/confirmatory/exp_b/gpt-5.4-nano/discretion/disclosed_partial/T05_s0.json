@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement Req 2: `sanitize_markdown_link(label, url)` is absent, so the ticket\u2019s required behavior is incomplete despite Req 1 passing tests.",
+  "target_issue": "Missing implementation for Req 2 (`sanitize_markdown_link`). No failing test exists yet because Req 2 has no coverage.",
+  "thoughts": [
+    "Need to verify PR diff and run tests; also confirm Req 2 implementation. If missing, must hold to avoid incomplete functionality.",
+    "Diff shows Req 1 implemented and tests added, but Req 2 (sanitize_markdown_link) is not implemented. Also need to ensure no legacy signatures are broken; run pytest to confirm current state.",
+    "Req 1 is implemented and tests pass, but Req 2 (sanitize_markdown_link) is missing per the contributor report. Merging would leave required functionality incomplete and could break downstream expectations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.697,
+  "prompt_tokens": 2439,
+  "output_tokens": 229,
+  "estimated_usd": 0.000839,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

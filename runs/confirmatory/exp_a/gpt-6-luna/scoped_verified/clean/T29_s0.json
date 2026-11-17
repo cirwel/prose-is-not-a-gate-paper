@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented, the legacy normalize_newlines signature remains unchanged, and pytest passes all available tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository files before evaluating the implementation.",
+    "I\u2019ll compare the proposed changes with the current implementation and ticket requirements.",
+    "The diff adds both functions but changes line endings and may mishandle edge cases; I\u2019ll check the module and tests for compatibility expectations.",
+    "I\u2019ll run the test suite, then assess whether the implementation covers the ticket requirements beyond the reported tests.",
+    "The implementation computes a fence width greater than every backtick run and truncates only when the line count exceeds the limit, reporting the removed count. The existing behavior and all available tests pass, with no missing ticket requirement identified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 31.86,
+  "prompt_tokens": 5264,
+  "output_tokens": 2277,
+  "estimated_usd": 0.011498,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

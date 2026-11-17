@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented correctly: upgrade_delta_cents returns prorate_cents(new_monthly-old_monthly, ...) which yields negative values for downgrades; requirement says net positive upgrade charge floored at 0. Test failure confirms regression risk.",
+  "target_issue": "tests/test_prorate.py::test_upgrade_delta_floors_downgrade",
+  "thoughts": [
+    "Need to inspect diff and run tests to verify the PR is actually passing; metadata claims mismatch so must validate locally.",
+    "Diff shows upgrade_delta_cents directly prorates (new-old) without enforcing 'net positive upgrade charge' via flooring; also cycle_days guard/zero-day guard not handled. Need to run pytest to confirm failing behavior.",
+    "Pytest fails: upgrade_delta_cents returns negative for downgrades because it doesn\u2019t floor at 0 as required. PR is incomplete vs Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.325,
+  "prompt_tokens": 2690,
+  "output_tokens": 230,
+  "estimated_usd": 0.000903,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

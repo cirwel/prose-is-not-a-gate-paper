@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The critical function `matches_tilde` required by Ticket T20 (Req 1) is missing from src/tilde_spec.py, despite the contributor claiming completion.",
+  "target_issue": "Req 1 (matches_tilde function implementation)",
+  "thoughts": [
+    "The contributor report indicates that while existing tests pass, the critical function `matches_tilde` required by Ticket T20 (Req 1) is missing, as noted by the Advisory Review Brief. I must inspect `src/tilde_spec.py` to confirm this gap before deciding to merge or hold.",
+    "I have read `src/tilde_spec.py`. The content confirms the Advisory Review Brief: the function `matches_tilde` required by Req 1 is entirely absent from the file. The PR is incomplete and cannot be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tilde_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.001,
+  "prompt_tokens": 1634,
+  "output_tokens": 207,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

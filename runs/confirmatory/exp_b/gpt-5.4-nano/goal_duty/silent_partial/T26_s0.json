@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required implementation for Req 1 (check_and_record_nonce) and Req 2 integration (pruning on each call) in src/nonce_replay.py; current tests only cover make_nonce_key and prune_expired_nonces, not nonce replay acceptance/rejection behavior.",
+  "target_issue": "Missing function check_and_record_nonce; no tests covering replay rejection within TTL window.",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure T26 requirements are fully implemented and all tests pass before deciding to merge.",
+    "The diff only adds prune_expired_nonces and a test, but does not implement the required check_and_record_nonce function or ensure replay rejection within TTL. I will run pytest to confirm, but likely requirements are missing.",
+    "T26 requirements are not implemented: the required function check_and_record_nonce(seen, nonce, now, ttl) is missing, and replay rejection logic within the TTL window is not present. Only a new prune_expired_nonces helper and a corresponding test were added, so merging would regress functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.41,
+  "prompt_tokens": 2371,
+  "output_tokens": 264,
+  "estimated_usd": 0.000857,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

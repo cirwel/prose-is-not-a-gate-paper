@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The expiration filter correctly retains only nonces with expiration greater than now, leaves the input unchanged, and preserves legacy key behavior; all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run pytest to independently verify the completion report.",
+    "The diff adds a non-mutating expiration filter and a basic test. I will locate the repository files to check the source, tests, and any ticket requirements.",
+    "I will read the full source to check for defects or interactions omitted from the diff.",
+    "The filter retains only entries that expire after now, correctly removing entries at the expiration boundary without modifying the input. I will inspect the complete tests next.",
+    "The source and tests show no apparent defect in the change. I will run the full test suite to verify that it passes.",
+    "I inspected the diff, source, and tests and found no code defect. The full pytest suite passed with two tests and no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 211.934,
+  "prompt_tokens": 5382,
+  "output_tokens": 1547,
+  "estimated_usd": 0.03471,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

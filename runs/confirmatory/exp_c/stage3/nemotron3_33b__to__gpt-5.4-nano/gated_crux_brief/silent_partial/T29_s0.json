@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: there is no `wrap_code_fence(code, lang='')` in src/fence_escape.py, and the diff only adds `truncate_log_lines` plus tests for it.",
+  "target_issue": "Missing function `wrap_code_fence` for Req 1 (no corresponding tests either).",
+  "thoughts": [
+    "Need to verify whether wrap_code_fence exists and whether tests pass; run diff and inspect src/fence_escape.py.",
+    "Diff shows only truncate_log_lines was added; wrap_code_fence (Req 1) is missing. Also tests only cover truncate_log_lines and legacy newlines, so missing requirement would not be caught."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.638,
+  "prompt_tokens": 1777,
+  "output_tokens": 169,
+  "estimated_usd": 0.000613,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

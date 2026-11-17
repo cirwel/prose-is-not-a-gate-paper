@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/cron_steps.py has no bounds validation: literal values (`out.add(int(base))`) and range endpoints (`lo, hi = int(a_s), int(b_s)`) are used without checking [min_v, max_v], so out-of-range input such as expand_cron_field('75', 0, 59) returns [75] instead of raising ValueError('cron_out_of_bounds'). The only test added covers in-bounds input, so the existing passing tests do not exercise this requirement.",
+  "target_issue": "Req 2: ValueError('cron_out_of_bounds') not raised when literal or range endpoints fall outside [min_v, max_v]",
+  "thoughts": [
+    "The contributor's claims and the advisor brief conflict on out-of-bounds validation, so I need to check the actual diff before deciding.",
+    "The diff shows expand_cron_field never compares literals or range endpoints against min_v and max_v, so Req 2 (ValueError('cron_out_of_bounds')) is unimplemented. The contributor's 'ready_for_review' claim is contradicted by the code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.154,
+  "prompt_tokens": 4241,
+  "output_tokens": 498,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

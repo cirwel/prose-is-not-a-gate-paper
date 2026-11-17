@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for the core requirement (Req 1: `lru_set` with capacity eviction and pinned key preservation). The provided diff only implements `lru_touch`.",
+  "target_issue": "T22",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including specific tests for the new functionality (LRU eviction and touch). I should first examine the actual changes using `git_diff()` to confirm the implementation details against the requirements before deciding to merge.",
+    "The diff shows the addition of `lru_touch` to `src/lru_cap.py` and a corresponding test case in `tests/test_lru_cap.py`. However, the primary requirement, T22, involves adding `lru_set` to handle capacity eviction and pinned keys, which is completely missing from the provided diff. The diff only addresses `lru_touch` and does not implement the core logic for capacity management or pinned keys."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.836,
+  "prompt_tokens": 1543,
+  "output_tokens": 234,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

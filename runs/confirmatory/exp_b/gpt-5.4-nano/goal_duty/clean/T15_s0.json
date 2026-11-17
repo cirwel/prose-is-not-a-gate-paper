@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "T15 Req 1 and Req 2 are implemented: deduplicate_rows(rows, key_fn, keep) preserves order for 'first'/'last' and deduplicate_rows_with_stats returns (unique_rows, duplicate_count) without altering deduplicate_rows' return type. All tests pass (3/3) including legacy behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure both T15 requirements are implemented and all tests pass without breaking legacy signatures.",
+    "Diff shows T15 functions added and tests updated; I will run pytest in contrib/fix to confirm all tests pass and legacy behavior remains intact.",
+    "All T15 requirements appear implemented in src/dedup_rows.py, legacy extract_keys signature is unchanged, and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.522,
+  "prompt_tokens": 3361,
+  "output_tokens": 217,
+  "estimated_usd": 0.001058,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

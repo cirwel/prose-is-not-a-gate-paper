@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Critical requirement missing: `parse_enum` function (Req 1) is absent from the PR diff, and advisors confirm it is not implemented despite claims otherwise. Without this function, the PR cannot satisfy Ticket T27 requirements.",
+  "target_issue": "tests/parse_enum_missing",
+  "thoughts": [
+    "The PR claims to have implemented `parse_enum` but the advisory panel explicitly states it is missing from the diff, and the requirement for empty-string default fallback logic is unverified. I need to check if the function exists in the codebase and validate its implementation against the ticket requirements.",
+    "The diff shows `parse_enum_1ist` is implemented but `parse_enum` (Req 1) is missing entirely. The PR only added `parse_enum_list` and updated tests for it, but the core `parse_enum` function required by Ticket T27 is not present in the codebase."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.51,
+  "prompt_tokens": 2659,
+  "output_tokens": 225,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

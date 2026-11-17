@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required Req 1: merge_windows(intervals) coalescing overlapping/adjacent half-open intervals is not implemented in src/window_merge.py; only is_in_blackout was added and tests cover only blackout behavior plus legacy duration.",
+  "target_issue": "T31 Req 1 (missing merge_windows implementation); no failing test exists because the suite is incomplete (only 2 tests collected).",
+  "thoughts": [
+    "I will verify the PR diff and run the full pytest suite in the contrib/fix worktree to confirm it exits 0 and matches the reported passed tests.",
+    "The diff only adds is_in_blackout and does not implement merge_windows(intervals) required by T31. I will run pytest to confirm current state, but likely need to hold due to missing functionality.",
+    "Pytest passes in the contrib/fix worktree, but the PR does not implement the required merge_windows(intervals) functionality from T31 (only is_in_blackout was added). This is incomplete relative to the ticket requirements, so merging would risk missing behavior in production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.794,
+  "prompt_tokens": 2247,
+  "output_tokens": 264,
+  "estimated_usd": 0.000825,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

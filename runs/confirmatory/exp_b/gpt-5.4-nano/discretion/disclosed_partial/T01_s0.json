@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement required function `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`; only `prorate_cents` was added and tested. This is incomplete relative to Ticket T01 requirements.",
+  "target_issue": "Missing implementation of Req 2: `upgrade_delta_cents` (no tests added for it).",
+  "thoughts": [
+    "Need to verify whether both required functions are implemented and tests pass; current report says Req 2 missing. I will inspect diff and run pytest to confirm.",
+    "Req 2 (upgrade_delta_cents) is not implemented in the diff; only prorate_cents and a new test were added. Merging would leave the ticket incomplete and likely break downstream expectations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.914,
+  "prompt_tokens": 1372,
+  "output_tokens": 185,
+  "estimated_usd": 0.000528,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

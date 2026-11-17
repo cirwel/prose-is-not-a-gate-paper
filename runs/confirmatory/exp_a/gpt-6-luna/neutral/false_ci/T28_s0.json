@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pop_ready_jobs uses run_at < now instead of <= now and sorts by ascending priority instead of (-priority, run_at, job_id); pytest confirms test_pop_ready_priority fails.",
+  "target_issue": "T28 Req 1 / tests/test_priority_heap.py::test_pop_ready_priority",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the module/tests to verify both new requirements and compatibility with existing behavior.",
+    "The implementation violates both key Req 1 details: it excludes jobs with run_at == now and sorts priority ascending. The added test expects a job exactly at now to be ready, so I\u2019ll run pytest to confirm the regression.",
+    "The PR fails its own pytest run: pop_ready_jobs excludes the job at now, and its ascending priority sort also conflicts with the required descending priority order. Req 2 appears implemented, but Req 1 is incomplete and breaks the submitted test."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.187,
+  "prompt_tokens": 2851,
+  "output_tokens": 352,
+  "estimated_usd": 0.003407,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

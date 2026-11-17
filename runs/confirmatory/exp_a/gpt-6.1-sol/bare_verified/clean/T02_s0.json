@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The selector falls back to a matching previous key and raises PermissionError('key_retired') for a matching retired key in either slot, while preserving legacy behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the changes and surrounding implementation, then run the tests to verify the ticket requirements and compatibility.",
+    "The diff preserves current-key precedence and rejects a matching retired key in either slot. I will inspect the repository context for additional requirements or compatibility concerns.",
+    "I will read the complete module to confirm the diff covers its full implementation and public interface.",
+    "The implementation retains the public signature and unknown-key error while adding the required fallback and retirement check. I will run the test suite to verify the reported results.",
+    "Code inspection confirms both requirements are implemented, and all three tests pass. The public signature, current-key precedence, and unknown-key behavior are preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 202.0,
+  "prompt_tokens": 5250,
+  "output_tokens": 281,
+  "estimated_usd": 0.019122,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

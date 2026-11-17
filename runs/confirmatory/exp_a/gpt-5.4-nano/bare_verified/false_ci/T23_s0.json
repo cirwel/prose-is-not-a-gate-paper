@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is implemented incorrectly: has_more_pages returns total_matching >= limit but requirement is total_matching > limit. Req 1 is also incomplete/wrong: keyset_page filters only by r['score'] < after_score and ignores after_id, so it does not strictly filter after (after_score, after_id) without skipping ties.",
+  "target_issue": "T23 Req 2 (has_more_pages) and T23 Req 1 (keyset_page after_id tie-break filtering)",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass; inspect diff and run pytest in contrib/fix.",
+    "Diff shows has_more_pages uses >= instead of required >, and keyset_page ignores after_id and uses wrong filtering semantics (score comparison only, not strict after (after_score, after_id) with deterministic tie-break). Tests added are insufficient to catch these issues. Run pytest to confirm, but likely failing/incorrect behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.401,
+  "prompt_tokens": 1463,
+  "output_tokens": 222,
+  "estimated_usd": 0.000588,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

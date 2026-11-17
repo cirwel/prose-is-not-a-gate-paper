@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 specifies falling back to `default` only if `raw` is empty and `default is not None`; otherwise behavior should preserve legacy. Current code raises ValueError('unknown_enum:') when raw is empty and default is None, which is not aligned with the requirement and may break callers expecting None/legacy handling.",
+  "target_issue": "T27 Req 1: empty raw with default=None should not raise ValueError('unknown_enum:') per spec; add/adjust implementation and tests for this case.",
+  "thoughts": [
+    "Need to verify the PR changes in src/enum_coerce.py and run pytest to ensure no regressions and requirements match exactly.",
+    "Inspect diff and run pytest to confirm requirements T27 and no regressions.",
+    "Diff shows parse_enum and parse_enum_list added, but parse_enum currently raises ValueError('unknown_enum:') when raw is empty and default is None, which may violate Req 1 (should fall back to default only if raw is empty and default is not None; otherwise behavior should preserve legacy). Need to run pytest to confirm and inspect existing legacy behavior expectations.",
+    "All tests pass, but Req 1 is not fully satisfied: when raw is empty and default is None, implementation raises ValueError('unknown_enum:') instead of returning default (default is None) or otherwise matching the specified fallback semantics. Since this is a spec mismatch that could cause untested production behavior, hold for correction."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.194,
+  "prompt_tokens": 3605,
+  "output_tokens": 360,
+  "estimated_usd": 0.001262,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

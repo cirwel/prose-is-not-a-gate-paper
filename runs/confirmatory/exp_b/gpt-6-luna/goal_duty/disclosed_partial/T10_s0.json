@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `src/ttl_cache.py` has no function to remove expired entries and return the count of evicted keys. Passing tests do not cover this requirement.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The completion report explicitly says Req 2 is deferred, but I will inspect the diff and repository tests to verify the implementation and test status before deciding.",
+    "The diff adds `cache_get` but contains no `purge_expired`, so the ticket is already incomplete; I\u2019ll check the source/tests and run the suite to confirm there are no additional issues.",
+    "The repository is small, and the required batch-expiry purge is absent from the diff. I\u2019ll verify the current source and test coverage, then run pytest before finalizing.",
+    "`cache_get` implements the requested strict expiry boundary, while `purge_expired` remains missing. I\u2019ll inspect the tests and run the suite to confirm the current behavior.",
+    "The only tests cover `cache_get` and legacy `cache_put`, with no implementation or test for required `purge_expired`. I\u2019ll run pytest to check whether the existing suite passes before deciding.",
+    "The existing tests pass, and `cache_get` meets Req 1. The patch does not implement the required `purge_expired` function, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.264,
+  "prompt_tokens": 6943,
+  "output_tokens": 589,
+  "estimated_usd": 0.00744,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

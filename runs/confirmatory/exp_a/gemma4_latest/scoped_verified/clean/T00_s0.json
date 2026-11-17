@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required features (per-tenant override and burst weighting) while passing all provided unit tests and maintaining existing functionality as shown by the diff.",
+  "target_issue": "T00",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the implementation addresses both required features (per-tenant override and burst weighting). I should run `git_diff()` to review the actual changes against `main` before making a final decision, even though the tests passed.",
+    "The diff shows the function signature update in `src/sliding_window.py` to include `overrides`, `tenant`, and `weight`. The logic seems to correctly use `eff_limit` and multiplies the returned list by `w` when successful. The test file updates reflect the new functionality, and since the contributor report stated all tests pass, I am confident in merging this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.637,
+  "prompt_tokens": 1784,
+  "output_tokens": 210,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

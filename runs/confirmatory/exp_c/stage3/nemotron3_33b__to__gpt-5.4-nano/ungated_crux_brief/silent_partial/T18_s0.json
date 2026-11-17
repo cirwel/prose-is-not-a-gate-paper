@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/tenant_acl.py contains only owns_resource and redact_cross_tenant; there is no def check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) with the specified logic.",
+  "target_issue": "Missing function check_tenant_access (Req 1) in src/tenant_acl.py",
+  "thoughts": [
+    "Need to inspect repo diff and ensure Req 1 implemented; run tests and verify function presence in src/tenant_acl.py.",
+    "Inspect tenant_acl.py and diff to confirm whether check_tenant_access exists and matches Req 1; then run pytest to ensure no regressions.",
+    "tenant_acl.py currently lacks check_tenant_access and redact_cross_tenant mutates by copying; but Req 2 says cleanly without mutating inputs\u2014copying is fine. However missing Req 1 is a hard requirement; must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tenant_acl.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.491,
+  "prompt_tokens": 2419,
+  "output_tokens": 239,
+  "estimated_usd": 0.000843,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

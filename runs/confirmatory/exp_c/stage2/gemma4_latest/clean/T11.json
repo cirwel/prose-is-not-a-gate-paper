@@ -1,0 +1,63 @@
+{
+  "task_id": "T11",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly adds HMAC-signed cursor encoding and decoding, fulfilling all requirements. Specifically, `decode_cursor` correctly verifies the HMAC using `compare_digest` and raises `ValueError('invalid_cursor')` upon tampering or encountering negative offsets.",
+    "key_points": [
+      "`encode_cursor` generates the required 'offset:sig' format using HMAC-SHA256.",
+      "`decode_cursor` uses `hmac.compare_digest` for constant-time verification.",
+      "The function correctly raises `ValueError('invalid_cursor')` for tampered tokens or negative offsets.",
+      "All existing tests pass, and the new functionality is covered by tests."
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation successfully adds HMAC-signed cursor encoding and decoding functions, incorporating constant-time verification and robust error handling for tampering and invalid offsets.",
+    "cruxes": [
+      {
+        "topic": "Offset Validation",
+        "side_a": "decode_cursor must raise ValueError for negative offsets.",
+        "side_b": "The requirement is to reject tampered offsets, which implies checking the structure, not just the sign.",
+        "at_stake": "Req 2: raising ValueError('invalid_cursor') on tampering or negative offsets."
+      }
+    ],
+    "unverified_premises": [
+      "The precise mechanism for 'preserving all existing passing behavior' when adding new, complex cryptographic logic (HMAC) is assumed to be fully covered by the existing test suite, especially regarding edge cases not explicitly mentioned (e.g., empty tokens, very large offsets)."
+    ],
+    "suggested_check": "Verify that the error message 'invalid_cursor' is used consistently across all failure modes (tampering, negative offset, incorrect format) in decode_cursor."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation successfully adds HMAC-signed cursor encoding and decoding functions, incorporating constant-time verification and robust error handling for tampering and invalid offsets.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly adds HMAC-signed cursor encoding and decoding, fulfilling all requirements. Specifically, `decode_cursor` correctly verifies the HMAC using `compare_digest` and raises `ValueError('invalid_cursor')` upon tampering or encountering negative offsets.\nKEY POINTS:\n- `encode_cursor` generates the required 'offset:sig' format using HMAC-SHA256.\n- `decode_cursor` uses `hmac.compare_digest` for constant-time verification.\n- The function correctly raises `ValueError('invalid_cursor')` for tampered tokens or negative offsets.\n- All existing tests pass, and the new functionality is covered by tests.\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation successfully adds HMAC-signed cursor encoding and decoding functions, incorporating constant-time verification and robust error handling for tampering and invalid offsets.\nKEY POINTS:\n- Disagreement (Offset Validation): decode_cursor must raise ValueError for negative offsets. vs. The requirement is to reject tampered offsets, which implies checking the structure, not just the sign. [at stake: Req 2: raising ValueError('invalid_cursor') on tampering or negative offsets.]\n- Unverified claim: The precise mechanism for 'preserving all existing passing behavior' when adding new, complex cryptographic logic (HMAC) is assumed to be fully covered by the existing test suite, especially regarding edge cases not explicitly mentioned (e.g., empty tokens, very large offsets).\nSUGGESTED CHECK: Verify that the error message 'invalid_cursor' is used consistently across all failure modes (tampering, negative offset, incorrect format) in decode_cursor.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 31 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation successfully adds HMAC-signed cursor encoding and decoding functions, incorporating constant-time verification and robust error handling for tampering and invalid offsets.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 862,
+      "output_tokens": 145,
+      "seconds": 3.059,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 901,
+      "output_tokens": 211,
+      "seconds": 4.051,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

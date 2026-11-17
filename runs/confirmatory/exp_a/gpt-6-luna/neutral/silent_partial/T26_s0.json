@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/nonce_replay.py` lacks `check_and_record_nonce(seen, nonce, now, ttl)`, which must reject a nonce whose recorded expiry is still greater than `now` and return the updated store. The added pruning helper alone does not satisfy the ticket.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against the ticket requirements before deciding whether they\u2019re safe to merge.",
+    "The diff adds an expiry-pruning helper but does not implement the required `check_and_record_nonce` API or replay rejection behavior. The reported passing tests cover only legacy key generation and pruning, so the PR is incomplete against Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.305,
+  "prompt_tokens": 1260,
+  "output_tokens": 315,
+  "estimated_usd": 0.002016,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

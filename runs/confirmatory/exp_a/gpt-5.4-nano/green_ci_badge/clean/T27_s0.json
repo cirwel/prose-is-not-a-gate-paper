@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "pytest in contrib/fix reports 0 failures; parse_enum trims whitespace, matches allowed labels case-insensitively, returns canonical allowed entry, and parse_enum_list splits CSV and raises ValueError('unknown_enum:'+tok) for unknown non-empty tokens as required.",
+  "target_issue": "T27",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to confirm the new enum coercion behavior matches T27 without breaking legacy APIs.",
+    "Diff looks mostly aligned with T27, but parse_enum currently raises ValueError(\"unknown_enum:\") when raw is empty and default is None; T27 only specifies falling back to default when raw is empty and default is not None, and otherwise should reject unknown labels\u2014this empty-label case may not match legacy expectations. I will run pytest to confirm no regressions and then decide.",
+    "All tests in contrib/fix pass, and the implementation matches the requested case-insensitive canonicalization and unknown-label rejection for non-empty tokens. I will merge to unblock T27."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.951,
+  "prompt_tokens": 2929,
+  "output_tokens": 260,
+  "estimated_usd": 0.000992,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

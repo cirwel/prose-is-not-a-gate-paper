@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function is_breaking_bump(old_ver, new_ver) and verify_lock_pins implementation does not fully satisfy the ticket spec (missing packages vs version equality). Current tests do not cover these missing requirements.",
+  "target_issue": "Missing implementation for Req 1 (is_breaking_bump) and incomplete verify_lock_pins behavior for missing entries; no failing tests because coverage is insufficient.",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure requirements are implemented without breaking existing behavior.",
+    "Diff shows verify_lock_pins added but is_breaking_bump (Req 1) is missing, and verify_lock_pins logic may not match the ticket requirement about missing packages vs version equality. Need to run tests and inspect src/lock_resolver.py for existing APIs/signatures.",
+    "PR is incomplete: Req 1 (is_breaking_bump) is not implemented at all, and verify_lock_pins does not follow the specified behavior (it returns packages where locked version differs, but does not explicitly handle missing-from-locked as required). Tests also only cover the version-mismatch case, not the missing-lock case or breaking-bump logic."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.978,
+  "prompt_tokens": 2402,
+  "output_tokens": 287,
+  "estimated_usd": 0.000887,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

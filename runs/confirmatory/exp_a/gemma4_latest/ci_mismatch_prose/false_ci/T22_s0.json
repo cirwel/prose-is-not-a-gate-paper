@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed on 'tests/test_lru_cap.py::test_pinned_and_recency', indicating a regression or incomplete implementation regarding pinned key preservation during eviction.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the worktree pytest failed even though the contributor reported 0 failures. I must run `run_pytest()` to determine the actual state of the PR before making a decision.",
+    "The pytest run failed, specifically `tests/test_lru_cap.py::test_pinned_and_recency` failed with an `AssertionError`. This indicates the PR is broken and cannot be merged until this test passes, regardless of the contributor's report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.289,
+  "prompt_tokens": 1433,
+  "output_tokens": 201,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

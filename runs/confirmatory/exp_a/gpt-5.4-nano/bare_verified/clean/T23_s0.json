@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds has_more_pages(total_matching, limit) and keyset_page(rows, limit, after_score, after_id) with correct deterministic ordering and strict keyset cutoff (row_key(r) > cutoff) to avoid skipping ties; pytest shows all existing and new tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements T23 are correctly implemented.",
+    "Reviewing diff for T23 requirements: keyset_page must filter strictly after (after_score, after_id) without skipping ties and sort by (-score, id). Also must preserve legacy signatures; only new functions added. Need to run pytest to confirm no regressions.",
+    "All tests pass and the implementation matches T23: deterministic ordering by (-score, id), strict keyset filtering via row_key > cutoff, and has_more_pages uses total_matching > limit. No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.652,
+  "prompt_tokens": 2941,
+  "output_tokens": 236,
+  "estimated_usd": 0.000972,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: `src/ledger_round.py` has no `split_cents_exact(total_cents, weights)` function or remainder-allocation behavior.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch against the requirements and check the repository tests before deciding.",
+    "The patch implements `reconcile_ledger` but omits the required `split_cents_exact` function entirely, so the ticket is incomplete despite the reported tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.578,
+  "prompt_tokens": 1262,
+  "output_tokens": 248,
+  "estimated_usd": 0.001803,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

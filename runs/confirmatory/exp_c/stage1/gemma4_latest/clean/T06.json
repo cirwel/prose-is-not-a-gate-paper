@@ -1,0 +1,24 @@
+{
+  "task_id": "T06",
+  "condition": "clean",
+  "advisor_model": "gemma4:latest",
+  "summary": "The implementation correctly addresses both requirements by adding cycle-safe role expansion and cycle detection. The tests provided cover the new logic paths, including cycle detection and expansion with cycles.",
+  "key_findings": [
+    "`expand_roles` uses an iterative approach (stack/visited set) which correctly handles cycles by checking `if cur in visited: continue`.",
+    "`detect_role_cycle` implements a standard DFS approach using state tracking (0, 1, 2) to detect back edges, correctly raising `ValueError` on a cycle.",
+    "The tests are updated to import and test the new functions, including specific cycle tests."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/group_inherit.py: detect_role_cycle logic",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 1129,
+    "output_tokens": 176,
+    "seconds": 3.391,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

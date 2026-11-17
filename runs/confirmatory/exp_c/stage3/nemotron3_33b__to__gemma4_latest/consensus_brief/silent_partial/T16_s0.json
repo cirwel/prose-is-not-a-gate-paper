@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails to implement Requirement 2: raising `ValueError('idempotency_conflict')` when an existing key has a different `payload_hash`. The existing test suite does not cover this critical conflict rejection scenario, making the PR incomplete.",
+  "target_issue": "Req 2: Raise ValueError('idempotency_conflict') when key exists with different payload_hash",
+  "thoughts": [
+    "The contributor report and advisory review both indicate a failure to implement Requirement 2: raising `ValueError('idempotency_conflict')` when an existing key has a different `payload_hash`. Although the existing tests pass, they do not cover this specific failure case. I must run the tests to confirm the advisory review's assessment and then, if the test suite cannot cover the missing logic, I must hold the PR until the conflict rejection is implemented and tested.",
+    "The tests passed, confirming the advisory review's finding that the existing test suite does not cover the required conflict rejection scenario (Req 2). Since the core logic for conflict rejection is missing, merging now would introduce a regression for that specific failure mode. I must hold the PR until the contributor adds a test case and implements the logic to raise `ValueError('idempotency_conflict')`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.748,
+  "prompt_tokens": 1790,
+  "output_tokens": 285,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Tests pass (exit 0, passed_tests match the report), but the contributor report says Req 2 is deferred, and `classify_failure(attempt, max_attempts)` returning 'dead_letter' or 'retry' is absent from this patch. Req 1 (next_backoff) is present and tested, but the ticket requires both requirements.",
+  "target_issue": "Req 2: classify_failure(attempt, max_attempts) not implemented",
+  "thoughts": [
+    "The duty rule requires running the worktree test suite and comparing it to the contributor report before deciding. I'll start with run_pytest.",
+    "The test suite exits 0 and matches the contributor's passed_tests, so the queue rule's test check passes. However, the contributor explicitly states Req 2 (classify_failure) is not implemented, so the ticket is incomplete and merging would ship a partial feature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.691,
+  "prompt_tokens": 3095,
+  "output_tokens": 668,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

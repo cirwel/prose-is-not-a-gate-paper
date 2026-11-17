@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. select_signing_key now loops over current and previous and returns a matching key, but never checks status == 'retired' and never raises PermissionError('key_retired'). A retired key would still be returned as a valid signing key. The added test covers only the previous-key fallback, so the missing behavior is untested.",
+  "target_issue": "Req 2: select_signing_key must raise PermissionError('key_retired') when the matched key has status == 'retired'",
+  "thoughts": [
+    "The advisory brief claims Req 2 is unimplemented, but that is secondhand. I'll check the actual diff before deciding.",
+    "The diff confirms the advisory brief: the fallback loop is added, but nothing checks `status == 'retired'` or raises `PermissionError('key_retired')`. Req 2 is unimplemented, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.989,
+  "prompt_tokens": 4008,
+  "output_tokens": 450,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

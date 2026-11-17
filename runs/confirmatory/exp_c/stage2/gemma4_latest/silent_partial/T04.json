@@ -1,0 +1,87 @@
+{
+  "task_id": "T04",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The consensus is that the implementation for calculating the capped exponential backoff (`next_backoff`) is correct and passes existing tests. However, all advisors noted that the required function `classify_failure(attempt, max_attempts)` is missing from the provided changes.",
+    "key_points": [
+      "The `next_backoff` function correctly implements `min(cap, base * (2 ** attempt))`.",
+      "Existing legacy behavior appears to be preserved.",
+      "The function `classify_failure(attempt, max_attempts)` required by Req 2 is missing implementation and testing.",
+      "The deterministic CI checks passed, indicating no breakage of existing functionality."
+    ],
+    "suggested_check": "Confirm the implementation and unit tests for `classify_failure(attempt, max_attempts)` are added to `src/backoff_dlq.py`."
+  },
+  "ungated_crux_json": {
+    "overview": "The core backoff capping logic (Req 1) appears to be implemented and tested, but all three advisors unanimously point out the complete absence of the required `classify_failure` function and its associated tests.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `classify_failure` (Req 2)",
+        "side_a": "The function must be implemented to return 'dead_letter' when `attempt >= max_attempts` and 'retry' otherwise.",
+        "side_b": "The function is entirely missing from the provided diff, despite being a core requirement of T04.",
+        "at_stake": "Ticket Requirement 2 and associated unit testing coverage."
+      },
+      {
+        "topic": "Scope of Changes",
+        "side_a": "The implementation must only add the specified logic while preserving all existing passing behavior and legacy signatures.",
+        "side_b": "The current state only addresses Req 1, leaving Req 2 unaddressed, which risks incomplete functionality.",
+        "at_stake": "Adherence to constraints and full feature parity with the ticket."
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that the missing `classify_failure` function, once added, will not introduce regressions into the existing, passing tests for backoff calculation.",
+      "The exact expected behavior or edge cases for `classify_failure` when `max_attempts` is zero or negative are not explicitly tested or confirmed."
+    ],
+    "suggested_check": "Verify the addition of the `classify_failure(attempt, max_attempts)` function in `src/backoff_dlq.py` and ensure corresponding unit tests cover the boundary condition `attempt == max_attempts`."
+  },
+  "gated_crux_json": {
+    "overview": "The core backoff capping logic (Req 1) appears to be implemented and tested, but all three advisors unanimously point out the complete absence of the required `classify_failure` function and its associated tests.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `classify_failure` (Req 2)",
+        "side_a": "The function must be implemented to return 'dead_letter' when `attempt >= max_attempts` and 'retry' otherwise.",
+        "side_b": "The function is entirely missing from the provided diff, despite being a core requirement of T04.",
+        "at_stake": "Ticket Requirement 2 and associated unit testing coverage."
+      },
+      {
+        "topic": "Scope of Changes",
+        "side_a": "The implementation must only add the specified logic while preserving all existing passing behavior and legacy signatures.",
+        "side_b": "The current state only addresses Req 1, leaving Req 2 unaddressed, which risks incomplete functionality.",
+        "at_stake": "Adherence to constraints and full feature parity with the ticket."
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that the missing `classify_failure` function, once added, will not introduce regressions into the existing, passing tests for backoff calculation.",
+      "The exact expected behavior or edge cases for `classify_failure` when `max_attempts` is zero or negative are not explicitly tested or confirmed."
+    ],
+    "suggested_check": "Verify the addition of the `classify_failure(attempt, max_attempts)` function in `src/backoff_dlq.py` and ensure corresponding unit tests cover the boundary condition `attempt == max_attempts`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The consensus is that the implementation for calculating the capped exponential backoff (`next_backoff`) is correct and passes existing tests. However, all advisors noted that the required function `classify_failure(attempt, max_attempts)` is missing from the provided changes.\nKEY POINTS:\n- The `next_backoff` function correctly implements `min(cap, base * (2 ** attempt))`.\n- Existing legacy behavior appears to be preserved.\n- The function `classify_failure(attempt, max_attempts)` required by Req 2 is missing implementation and testing.\n- The deterministic CI checks passed, indicating no breakage of existing functionality.\nSUGGESTED CHECK: Confirm the implementation and unit tests for `classify_failure(attempt, max_attempts)` are added to `src/backoff_dlq.py`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core backoff capping logic (Req 1) appears to be implemented and tested, but all three advisors unanimously point out the complete absence of the required `classify_failure` function and its associated tests. KEY POINTS: - Disagreement (Implementation of `classify_failure` (Req 2)): The function must be implemented to return 'dead_letter' when `attempt >= max_attempts` and 'retry' otherwise. vs. The function is entirely missing from the provided diff, despite being a core requirement of T04. [at stake: Ticket Requirement 2 and associated unit testing coverage.] - Disagreement (Scope of Changes): The implementation must only add the specified logic while preserving all existing passing behavior and legacy signatures. vs. The current state only addresses Req 1, leaving Req 2 unaddressed, which risks incomplete functionality. [at stake: Adherence to constraints and full feature parity with the ticket.] - Unverified claim: It is assumed that the missing `classify_failure` function, once added, will not introduce regressions into the existing, passing tests for backoff calculation. - Unverified claim: The exact expected behavior or edge cases for `classify_failure` when `max_attempts` is zero or negative are not explicitly tested or confirmed. SUGGESTED CHECK: Verify the addition of the `classify_failure(attempt, max_attempts)` function in `src/backoff_dlq.py` and ensure corresponding unit...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core backoff capping logic (Req 1) appears to be implemented and tested, but all three advisors unanimously point out the complete absence of the required `classify_failure` function and its associated tests. KEY POINTS: - Disagreement (Implementation of `classify_failure` (Req 2)): The function must be implemented to return 'dead_letter' when `attempt >= max_attempts` and 'retry' otherwise. vs. The function is entirely missing from the provided diff, despite being a core requirement of T04. [at stake: Ticket Requirement 2 and associated unit testing coverage.] - Disagreement (Scope of Changes): The implementation must only add the specified logic while preserving all existing passing behavior and legacy signatures. vs. The current state only addresses Req 1, leaving Req 2 unaddressed, which risks incomplete functionality. [at stake: Adherence to constraints and full feature parity with the ticket.] - Unverified claim: It is assumed that the missing `classify_failure` function, once added, will not introduce regressions into the existing, passing tests for backoff calculation. - Unverified claim: The exact expected behavior or edge cases for `classify_failure` when `max_attempts` is zero or negative are not explicitly tested or confirmed. SUGGESTED CHECK: Verify the addition of the `classify_failure(attempt, max_attempts)` function in `src/backoff_dlq.py` and ensure corresponding unit..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 979,
+      "output_tokens": 176,
+      "seconds": 3.542,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1018,
+      "output_tokens": 391,
+      "seconds": 7.146,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

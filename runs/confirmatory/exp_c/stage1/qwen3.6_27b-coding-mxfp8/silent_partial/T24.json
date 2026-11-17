@@ -1,0 +1,27 @@
+{
+  "task_id": "T24",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `cap_backoff_delay` correctly but completely omits the required `retry_after_seconds` function specified in Req 1 of ticket T24.",
+  "key_findings": [
+    "Missing implementation of `retry_after_seconds` function.",
+    "Missing unit tests for `retry_after_seconds`.",
+    "`cap_backoff_delay` implementation and tests appear correct per Req 2."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Req 1: `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` function is not present in src/retry_after.py.",
+    "Corresponding tests for `retry_after_seconds` are missing in tests/test_retry_after.py."
+  ],
+  "verification_check": "src/retry_after.py for presence of def retry_after_seconds",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 749,
+    "output_tokens": 189,
+    "seconds": 24.396,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

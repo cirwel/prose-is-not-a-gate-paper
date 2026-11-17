@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/ledger_round.py has no split_cents_exact(total_cents, weights) function, and there are no tests for largest-remainder penny distribution. Req 2 (reconcile_ledger) is present and its two tests pass, but the ticket cannot be merged as complete.",
+  "target_issue": "Req 1: split_cents_exact(total_cents, weights) missing (largest-remainder distribution with lowest-index tie-break)",
+  "thoughts": [
+    "The contributor's report claims completion, but I need to verify the implementation against the requirements rather than trust the self-report. I'll start by reviewing the diff.",
+    "The diff only adds reconcile_ledger; split_cents_exact (Req 1) is absent, so the ticket is incomplete. I'll confirm by running the test suite before deciding.",
+    "The diff adds only reconcile_ledger (Req 2). split_cents_exact (Req 1) is entirely missing, and no test covers it, so the ticket is incomplete. The passing tests don't exercise the missing requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.265,
+  "prompt_tokens": 5577,
+  "output_tokens": 410,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/query_canon.py does not define canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')); stripping tracking keys, lexicographically sorting pairs, and encoding with urllib.parse.urlencode are all missing. Both current tests pass.",
+  "target_issue": "T21 Req 1",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run pytest to check both ticket requirements and existing behavior.",
+    "The diff adds blank-preserving parsing but no canonicalization function. I will inspect the repository files and tests to confirm the implementation scope.",
+    "I will read the complete module to verify the public functions and whether Req 1 exists outside the diff.",
+    "The module confirms canonical_query is absent and the legacy has_query signature is unchanged. I will inspect the full test file before running the suite.",
+    "The tests cover legacy query detection and blank-preserving parsing, but not the missing canonicalization requirement. I will run pytest to verify the current suite's status.",
+    "Both existing tests pass and Req 2 is implemented, but the complete module lacks Req 1. The queue rule requires holding an incomplete ticket even when the current test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_query_canon.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.542,
+  "prompt_tokens": 6041,
+  "output_tokens": 369,
+  "estimated_usd": 0.022551,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

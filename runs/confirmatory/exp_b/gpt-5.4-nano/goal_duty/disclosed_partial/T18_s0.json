@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented: src/tenant_acl.py lacks check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) with break-glass expiry logic. Current diff only adds redact_cross_tenant and a corresponding test.",
+  "target_issue": "Missing implementation for Req 1 (check_tenant_access)",
+  "thoughts": [
+    "Need to verify diff/tests and ensure both Req 1 and Req 2 are implemented and all tests pass before merging.",
+    "Diff shows only redact_cross_tenant added; required check_tenant_access for Req 1 is missing. Even if tests pass, ticket requirements are not fully implemented, so merging would violate T18."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.96,
+  "prompt_tokens": 1465,
+  "output_tokens": 172,
+  "estimated_usd": 0.000538,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

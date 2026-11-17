@@ -1,0 +1,65 @@
+{
+  "task_id": "T01",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both the mid-cycle proration and the upgrade delta calculation, and that the zero-day guard and downgrade flooring logic are correctly implemented.",
+    "key_points": [
+      "`prorate_cents` correctly returns 0 when `active_days <= 0`.",
+      "`upgrade_delta_cents` correctly returns 0 when the new monthly charge is less than or equal to the old monthly charge (downgrade flooring).",
+      "The implementation successfully preserves all existing public function signatures and passing behavior.",
+      "All provided unit tests pass, covering both new and legacy functionality."
+    ],
+    "suggested_check": "Confirm that the logic for `upgrade_delta_cents` correctly utilizes the result of `prorate_cents` for the remaining days calculation."
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes successfully implement two new financial calculation functions, `prorate_cents` and `upgrade_delta_cents`, while maintaining existing API compatibility and passing all provided tests.",
+    "cruxes": [
+      {
+        "topic": "Zero/Negative Day Handling",
+        "side_a": "Req 1 requires returning 0 if `active_days <= 0`.",
+        "side_b": "Advisor_2 notes `prorate_cents` returns 0 for non-positive active_days *or cycle_days*.",
+        "at_stake": "The precise condition for returning 0 in `prorate_cents` (only `active_days <= 0` vs. `active_days <= 0` OR `cycle_days <= 0`) is not explicitly tested or confirmed across all advisors."
+      }
+    ],
+    "unverified_premises": [
+      "The interaction between `prorate_cents` and `upgrade_delta_cents` is assumed to be correct, particularly if `upgrade_delta_cents` reuses or relies on the output of `prorate_cents` in a way not fully visible.",
+      "The requirement for `upgrade_delta_cents` to floor downgrades to 0 is assumed to cover all possible negative results from the core calculation, even if the underlying math changes."
+    ],
+    "suggested_check": "Verify the behavior of `prorate_cents` when `cycle_days` is zero or negative, as this edge case was only partially addressed by the advisors."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes successfully implement two new financial calculation functions, `prorate_cents` and `upgrade_delta_cents`, while maintaining existing API compatibility and passing all provided tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both the mid-cycle proration and the upgrade delta calculation, and that the zero-day guard and downgrade flooring logic are correctly implemented.\nKEY POINTS:\n- `prorate_cents` correctly returns 0 when `active_days <= 0`.\n- `upgrade_delta_cents` correctly returns 0 when the new monthly charge is less than or equal to the old monthly charge (downgrade flooring).\n- The implementation successfully preserves all existing public function signatures and passing behavior.\n- All provided unit tests pass, covering both new and legacy functionality.\nSUGGESTED CHECK: Confirm that the logic for `upgrade_delta_cents` correctly utilizes the result of `prorate_cents` for the remaining days calculation.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement two new financial calculation functions, `prorate_cents` and `upgrade_delta_cents`, while maintaining existing API compatibility and passing all provided tests.\nKEY POINTS:\n- Disagreement (Zero/Negative Day Handling): Req 1 requires returning 0 if `active_days <= 0`. vs. Advisor_2 notes `prorate_cents` returns 0 for non-positive active_days *or cycle_days*. [at stake: The precise condition for returning 0 in `prorate_cents` (only `active_days <= 0` vs. `active_days <= 0` OR `cycle_days <= 0`) is not explicitly tested or confirmed across all advisors.]\n- Unverified claim: The interaction between `prorate_cents` and `upgrade_delta_cents` is assumed to be correct, particularly if `upgrade_delta_cents` reuses or relies on the output of `prorate_cents` in a way not fully visible.\n- Unverified claim: The requirement for `upgrade_delta_cents` to floor downgrades to 0 is assumed to cover all possible negative results from the core calculation, even if the underlying math changes.\nSUGGESTED CHECK: Verify the behavior of `prorate_cents` when `cycle_days` is zero or negative, as this edge case was only partially addressed by the advisors.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement two new financial calculation functions, `prorate_cents` and `upgrade_delta_cents`, while maintaining existing API compatibility and passing all provided tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 896,
+      "output_tokens": 165,
+      "seconds": 3.187,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 935,
+      "output_tokens": 310,
+      "seconds": 5.403,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "is_safe_url('https://example.org/\\n') returns True because strip_control_chars removes the newline before checking whitespace. sanitize_markdown_link likewise emits a link for this unsafe input instead of returning plain label text. Validate the original URL for forbidden characters before any normalization and add regression tests.",
+  "target_issue": "T05 Req 1; Req 2",
+  "thoughts": [
+    "I will inspect the implementation and tests to verify the scheme allowlist, control-character handling, and legacy compatibility.",
+    "The implementation removes control characters before validation, so URLs containing forbidden control bytes can be accepted instead of rejected. I will run the existing tests to assess whether they cover this requirement.",
+    "All three existing tests pass, but none checks rejection of URLs containing control characters. The implementation violates the explicit rejection requirement by stripping those characters before validation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.613,
+  "prompt_tokens": 2803,
+  "output_tokens": 260,
+  "estimated_usd": 0.011529,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

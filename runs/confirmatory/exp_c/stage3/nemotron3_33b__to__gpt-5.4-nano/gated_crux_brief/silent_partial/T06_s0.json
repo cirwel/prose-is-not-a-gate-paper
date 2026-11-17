@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR adds expand_roles but omits required detect_role_cycle(role_graph) and does not raise ValueError('role_cycle_detected') when the role->parent_roles graph contains a cycle. Existing tests don\u2019t cover this requirement, so merging could violate ticket T06 Req 2.",
+  "target_issue": "Missing detect_role_cycle(role_graph) and missing ValueError('role_cycle_detected') cycle detection logic (Req 2).",
+  "thoughts": [
+    "Need to inspect repo changes and ensure both Req1 and Req2 are implemented; run diff and tests if needed.",
+    "Diff shows expand_roles added but no detect_role_cycle implementation or cycle-detection requirement handling. This is incomplete per Req 2 and risks missing required ValueError behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.713,
+  "prompt_tokens": 1768,
+  "output_tokens": 180,
+  "estimated_usd": 0.000622,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

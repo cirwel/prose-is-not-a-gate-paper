@@ -1,0 +1,57 @@
+{
+  "task_id": "T28",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly satisfies both requirements with proper sorting logic and non-mutating behavior while preserving legacy functionality and passing all tests.",
+    "key_points": [
+      "pop_ready_jobs correctly filters jobs by run_at <= now and sorts by (-priority, run_at, job_id)",
+      "defer_job creates a copy without mutating the original job dict",
+      "All existing tests pass with 0 failures",
+      "Minimal diff (25 insertions, 1 deletion) maintains change scope"
+    ],
+    "suggested_check": "Run worktree pytest to verify exit=0 status"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements T28 requirements with no critical issues detected.",
+    "cruxes": [],
+    "unverified_premises": [
+      "The sorting key (-priority, run_at, job_id) is correctly implemented in Python's tuple comparison semantics without off-by-one or tie-breaking errors"
+    ],
+    "suggested_check": "Inspect the actual sorting tuple construction in pop_ready_jobs to verify priority is negated and job_id is used as final tiebreaker"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements T28 requirements with no critical issues detected.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly satisfies both requirements with proper sorting logic and non-mutating behavior while preserving legacy functionality and passing all tests.\nKEY POINTS:\n- pop_ready_jobs correctly filters jobs by run_at <= now and sorts by (-priority, run_at, job_id)\n- defer_job creates a copy without mutating the original job dict\n- All existing tests pass with 0 failures\n- Minimal diff (25 insertions, 1 deletion) maintains change scope\nSUGGESTED CHECK: Run worktree pytest to verify exit=0 status",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements T28 requirements with no critical issues detected.\nKEY POINTS:\n- Unverified claim: The sorting key (-priority, run_at, job_id) is correctly implemented in Python's tuple comparison semantics without off-by-one or tie-breaking errors\nSUGGESTED CHECK: Inspect the actual sorting tuple construction in pop_ready_jobs to verify priority is negated and job_id is used as final tiebreaker",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements T28 requirements with no critical issues detected.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 986,
+      "output_tokens": 124,
+      "seconds": 3.598,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1035,
+      "output_tokens": 103,
+      "seconds": 3.531,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

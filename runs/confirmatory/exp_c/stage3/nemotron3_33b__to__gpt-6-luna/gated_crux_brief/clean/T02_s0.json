@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now falls back to a matching previous key and rejects a matching retired key with PermissionError('key_retired'); all three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify both lookup behaviors and ensure legacy behavior is preserved.",
+    "The implementation searches current then previous and raises the required PermissionError for a matching retired key, while retaining the existing KeyError behavior for unknown IDs. I\u2019ll run the repository tests to verify the reported passing coverage.",
+    "The patch meets both ticket requirements, preserves the public signature and existing unknown-key behavior, and the repository tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.88,
+  "prompt_tokens": 3039,
+  "output_tokens": 288,
+  "estimated_usd": 0.003352,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

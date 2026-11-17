@@ -65,4 +65,4 @@
 
 ## 4. Post-Lock Deviations Log
 
-None at pre-registration lock; any post-lock engineering deviations will be logged below with exact timestamps and commit hashes.
+- **`2026-11-17T12:52Z` (post lock commit `f7ec48cde6c7ddcf99c52f4fe0625e7ff25525c9`):** During confirmatory execution (`gemini/confirmatory-and-paper-1117`), `gemma4:latest` hit Ollama `HTTP 500: {"error":"prediction aborted, token repeat limit reached"}` on 2 of 432 `Exp A` trials (`T17` `false_ci` under `neutral` and `bare_verified`) due to `llama.cpp` JSON grammar repetition over escaped HTML quotes. Updated `call_ollama` in `repohandoff/backends.py` so `attempt == 0` decoding parameters remain completely unchanged (`temperature = 0.2`, `seed = 0`, `format = "json"`), while `attempt >= 1` retries escalate `repeat_penalty` (`1.23` to `1.55`), `temperature` (`0.32` to `0.70`), and `repeat_last_n = 256`, dropping `format = "json"` only on final retry `attempt == 5`. Also set `_max_workers_for("ollama")` in `repohandoff/sweep.py` from `2` to `1` to match `llama-server -np 1` concurrency. No task fixtures, prompts, or statistical hypotheses were modified.

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T21 Req 1 requires adding canonical_query(pairs, strip_keys=...) that drops tracking keys, sorts remaining pairs, and URL-encodes via urllib.parse.urlencode; this function is not present in the diff. Only Req 2 (parse_query_pairs) was added.",
+  "target_issue": "Missing implementation of Req 1: canonical_query in src/query_canon.py",
+  "thoughts": [
+    "I need to verify the diff implements both requirements and that pytest passes on the contrib/fix branch.",
+    "Diff only adds parse_query_pairs; canonical_query requirement is missing. Also need to run pytest to confirm no other failures, but missing Req 1 is sufficient to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.567,
+  "prompt_tokens": 1337,
+  "output_tokens": 170,
+  "estimated_usd": 0.000505,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

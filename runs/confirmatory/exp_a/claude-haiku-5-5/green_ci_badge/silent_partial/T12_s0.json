@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: `acquire_lease` in src/quota_pool.py still has the signature `(leases, limit, lease_id)` with no `shared_reserve` parameter and no borrowing beyond `limit`. The contributor's passing tests only cover the legacy limit behavior and `release_lease`, so the green checks do not show that the ticket is complete.",
+  "target_issue": "Req 2: Extend acquire_lease(leases, limit, lease_id, shared_reserve=0) to borrow up to shared_reserve slots beyond limit only when limit is exhausted",
+  "thoughts": [
+    "I should inspect the actual diff and test results rather than rely on the contributor's self-report, since the report only lists two passing tests and does not show coverage of Req 2.",
+    "The diff adds `release_lease` but leaves `acquire_lease` unchanged, so it has no `shared_reserve` parameter and no shared-pool borrowing. Req 2 is missing, which is enough to hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.164,
+  "prompt_tokens": 3320,
+  "output_tokens": 457,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

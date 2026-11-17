@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 in src/neg_cache.py by storing the existing NOT_FOUND sentinel and providing lookup_with_miss_sentinel that distinguishes cached NOT_FOUND (hit=True,value=None) from uncached keys (hit=False,value=None). Existing functions/signatures are unchanged; pytest passes.",
+  "target_issue": "T34 (tests/test_neg_cache.py::test_negative_miss_sentinel)",
+  "thoughts": [
+    "I need to inspect the PR changes and run the test suite to ensure no regressions and that the new APIs meet T34 requirements.",
+    "Diff is small and appears to add the two required functions without changing existing ones; I should still run pytest to confirm no hidden regressions.",
+    "All tests pass and the PR adds exactly the two requested APIs while preserving existing legacy behavior/signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.328,
+  "prompt_tokens": 2527,
+  "output_tokens": 214,
+  "estimated_usd": 0.000846,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

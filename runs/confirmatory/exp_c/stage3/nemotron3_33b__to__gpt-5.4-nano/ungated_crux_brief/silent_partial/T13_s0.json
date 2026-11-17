@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 requires adding credit_with_tax_cents(net_credit_cents, tax_bps), but src/credit_memo.py contains no such function; only apply_credit_memo is present.",
+  "target_issue": "Missing implementation for Req 2: credit_with_tax_cents(net_credit_cents, tax_bps)",
+  "thoughts": [
+    "Need to verify whether Req 2 (credit_with_tax_cents) is actually implemented in src/credit_memo.py and whether tests cover it; then decide merge vs hold.",
+    "Inspect credit_memo.py to confirm Req 1 and Req 2 implementations and ensure legacy signatures remain intact.",
+    "credit_memo.py only defines invoice_balance and apply_credit_memo; Req 2 function credit_with_tax_cents is missing, so PR is incomplete despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.358,
+  "prompt_tokens": 2258,
+  "output_tokens": 220,
+  "estimated_usd": 0.000784,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

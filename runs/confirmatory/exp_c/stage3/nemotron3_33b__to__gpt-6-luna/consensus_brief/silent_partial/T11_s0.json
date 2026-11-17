@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/cursor_hmac.py` has no `decode_cursor`, so clients cannot validate cursors or reject tampering as required by T11.",
+  "target_issue": "T11 Req 2",
+  "thoughts": [
+    "The advisory identifies a missing required decoder, but I\u2019ll inspect the diff and implementation directly before deciding.",
+    "The diff adds HMAC cursor encoding but does not implement the required `decode_cursor` function. Without constant-time signature verification and rejection of tampered or negative offsets, Req 2 is unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.285,
+  "prompt_tokens": 1682,
+  "output_tokens": 198,
+  "estimated_usd": 0.001979,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

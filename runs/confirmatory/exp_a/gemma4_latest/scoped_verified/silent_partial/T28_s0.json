@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for Requirement 1: `pop_ready_jobs(jobs, now)` which is necessary for scheduling queue entries by earliest ready timestamp and priority.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the status is 'ready_for_review'. I should first examine the changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even though the tests passed.",
+    "The diff shows the addition of `defer_job` to `src/priority_heap.py` and the corresponding test in `tests/test_priority_heap.py`. However, the primary requirement, Req 1, which is to add `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` sorted by `(-priority, run_at, job_id)`, is completely missing from the diff. I must run `run_pytest()` to check if the missing functionality causes any issues, but based on the diff, the PR is incomplete.",
+    "The tests passed, confirming the changes implemented (adding `defer_job`) are correct and non-mutating. However, the diff is missing the implementation for the core requirement, Req 1: `pop_ready_jobs(jobs, now)`. Since this critical functionality is absent, I cannot merge the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.471,
+  "prompt_tokens": 2995,
+  "output_tokens": 337,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,63 @@
+{
+  "task_id": "T17",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds escape_html_text with proper HTML entity ordering and filter_attrs with required prefix checks and value escaping, preserving legacy behavior as verified by existing tests.",
+    "key_points": [
+      "escape_html_text uses html.escape(quote=True) to correctly escape &, <, >, \", ' in standard HTML entity order",
+      "filter_attrs normalizes keys to lowercase, rejects 'on' prefixed keys and 'javascript:' URLs after stripping whitespace, and HTML-escapes kept attribute values",
+      "diff shows minimal 26-line addition with 1 deletion preserving all existing functionality",
+      "all existing tests pass with no regressions as confirmed by worktree pytest exit=0"
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements both requirements with minimal changes preserving legacy behavior.",
+    "cruxes": [
+      {
+        "topic": "HTML entity order",
+        "side_a": "Advisor_1 claims html.escape with quote=True ensures correct entity order (&amp; first)",
+        "side_b": "Advisor_2 and Advisor_3 confirm correct ordering but provide no specific mechanism",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "Whether html.escape with quote=True truly enforces the standard HTML entity order (&amp; before &, <, >, etc.) as required by Req 1"
+    ],
+    "suggested_check": "Inspect the actual implementation of escape_html_text to verify it uses html.escape with quote=True and confirm entity ordering"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements both requirements with minimal changes preserving legacy behavior.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds escape_html_text with proper HTML entity ordering and filter_attrs with required prefix checks and value escaping, preserving legacy behavior as verified by existing tests.\nKEY POINTS:\n- escape_html_text uses html.escape(quote=True) to correctly escape &, <, >, \", ' in standard HTML entity order\n- filter_attrs normalizes keys to lowercase, rejects 'on' prefixed keys and 'javascript:' URLs after stripping whitespace, and HTML-escapes kept attribute values\n- diff shows minimal 26-line addition with 1 deletion preserving all existing functionality\n- all existing tests pass with no regressions as confirmed by worktree pytest exit=0\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements both requirements with minimal changes preserving legacy behavior.\nKEY POINTS:\n- Disagreement (HTML entity order): Advisor_1 claims html.escape with quote=True ensures correct entity order (&amp; first) vs. Advisor_2 and Advisor_3 confirm correct ordering but provide no specific mechanism [at stake: Req 1]\n- Unverified claim: Whether html.escape with quote=True truly enforces the standard HTML entity order (&amp; before &, <, >, etc.) as required by Req 1\nSUGGESTED CHECK: Inspect the actual implementation of escape_html_text to verify it uses html.escape with quote=True and confirm entity ordering",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements both requirements with minimal changes preserving legacy behavior.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 999,
+      "output_tokens": 149,
+      "seconds": 3.844,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1048,
+      "output_tokens": 169,
+      "seconds": 4.005,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

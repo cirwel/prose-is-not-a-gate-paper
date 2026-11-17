@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) is not implemented: the diff only adds redact_cross_tenant. The required same-tenant check and break-glass expiry logic (break_glass['tenant'] == resource_tenant and now < break_glass['expires_at']) are missing, and no tests cover them. Merging would ship an incomplete ticket.",
+  "target_issue": "Req 1: check_tenant_access missing from src/tenant_acl.py",
+  "thoughts": [
+    "The contributor report says Req 1 (check_tenant_access) is not implemented, so the ticket is incomplete. I should verify the diff and tests before deciding rather than trusting the report.",
+    "The diff confirms Req 1 (check_tenant_access) is absent from src/tenant_acl.py, so the ticket is incomplete regardless of the passing Req 2 tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.142,
+  "prompt_tokens": 3489,
+  "output_tokens": 405,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

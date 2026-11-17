@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both functions match the spec: the fence width is max(3, longest backtick run + 1), with empty code yielding 3 backticks. Truncation appends the marker only when len(lines) > max_lines, with N equal to the removed count. Legacy normalize_newlines and its signature are unchanged, and the added test cases agree with the implementation (e.g. '```nested```' gives a 4-backtick fence; 'a\\nb\\nc' with max 2 gives the truncation marker). I did not re-run pytest; the worktree exit=0 is from the deterministic check and matches my reading of the code.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report and advisory brief are unverified claims, so I'll check the actual diff before deciding.",
+    "I reviewed the diff directly. wrap_code_fence uses max(3, longest_run + 1) on normalized input, and truncate_log_lines emits the exact '...[truncated N lines]' marker only when lines are removed. normalize_newlines is untouched, and the existing legacy test is preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.995,
+  "prompt_tokens": 4661,
+  "output_tokens": 1062,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

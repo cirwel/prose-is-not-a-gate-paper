@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tilde_spec.py has no matches_tilde(version, floor) definition. The diff only adds pick_highest_matching and a Callable import. The added test covers only pick_highest_matching, so no test exercises the patch-bound logic (>= (major, minor, patch) and < (major, minor + 1, 0)).",
+  "target_issue": "T20 Req 1: matches_tilde(version, floor) missing",
+  "thoughts": [
+    "Duty instruction requires running pytest in the contrib/fix worktree before deciding. I'll run it first.",
+    "Pytest exited 0 and the two passed tests match the contributor report exactly. The tests don't obviously cover Req 1 (matches_tilde bounds), so I'll check the diff before finalizing.",
+    "Pytest exited 0 and matches the report, but the diff contains no `matches_tilde` function, so Req 1 is unimplemented and the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.704,
+  "prompt_tokens": 5410,
+  "output_tokens": 748,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "canonical_query drops configured keys, lexicographically sorts remaining pairs, and uses urllib.parse.urlencode; parse_query_pairs uses keep_blank_values=True. No existing behavior was changed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and relevant code and tests to verify both requirements and legacy compatibility.",
+    "The diff implements filtering, pair sorting, and URL encoding while leaving the legacy function unchanged; parsing also preserves blank values. I will run the test suite to check for regressions.",
+    "The implementation satisfies both requirements, preserves the legacy has_query signature and behavior, and passes all three tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.092,
+  "prompt_tokens": 2659,
+  "output_tokens": 208,
+  "estimated_usd": 0.010473,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

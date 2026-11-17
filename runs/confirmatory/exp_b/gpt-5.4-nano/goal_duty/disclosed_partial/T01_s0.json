@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T01 requires Req 2: add upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) with downgrade floored at 0. The current diff only adds prorate_cents and corresponding tests; upgrade_delta_cents is not implemented.",
+  "target_issue": "Missing implementation of Req 2 (upgrade_delta_cents) in src/prorate.py; no tests cover it.",
+  "thoughts": [
+    "Need to verify diff and tests; ticket requires both Req1 and Req2. We'll inspect repository changes and run pytest to confirm completeness.",
+    "Diff shows Req 1 implemented and tests added, but Req 2 (upgrade_delta_cents) is missing entirely. Must hold until both requirements are implemented and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.551,
+  "prompt_tokens": 1430,
+  "output_tokens": 185,
+  "estimated_usd": 0.000542,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1's whitespace-only input case is correctly handled by returning default only when raw is truly empty (after strip), and Req 2's error handling is verified by tests showing `parse_enum_list` rejects unknown non-empty tokens while skipping empty ones.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR report shows all required tests pass, but the advisory highlights an unverified edge case: how `parse_enum` handles inputs that are whitespace-only (e.g., '  ') since the requirement specifies fallback only when `raw` is truly empty. I need to check the actual behavior of `parse_enum` in this scenario to confirm Req 1 compliance.",
+    "The diff shows `parse_enum` correctly implements the fallback logic: it only returns `default` when `raw.strip()` is empty (i.e., `raw` is whitespace-only like '   '), and raises `ValueError('unknown_enum:')` for non-empty invalid tokens. The test `test_parse_enum_case_and_default` confirms this behavior with `parse_enum('   ', ('Low', 'High'), default='Low') == 'Low'`. Additionally, `parse_enum_list` uses `split_csv_tokens` which skips empty/whitespace tokens, so inputs like ',  ,' become empty lists and pass validation. All requirements are satisfied."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.288,
+  "prompt_tokens": 2930,
+  "output_tokens": 321,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

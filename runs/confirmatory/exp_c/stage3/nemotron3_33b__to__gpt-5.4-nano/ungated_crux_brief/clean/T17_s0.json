@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR implements Req 1 and Req 2 in src/html_escape.py with preserved legacy signatures and behavior; pytest in contrib/fix passes (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect implementation to confirm HTML entity ordering and attribute filtering logic; then run tests if needed.",
+    "Inspect src/html_escape.py to verify escape_html_text entity order and filter_attrs behavior matches requirements; then run pytest to confirm no regressions.",
+    "Implementation matches required escaping and filtering logic; however entity order requirement must be verified against html.escape behavior. Run pytest to ensure tests cover ordering and no regressions.",
+    "escape_html_text uses html.escape(text, quote=True) and filter_attrs rejects keys starting with 'on', normalizes allowed keys case-insensitively, strips values, blocks javascript: prefixes, and escapes kept values. All pytest tests pass; no missing requirements or failing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.074,
+  "prompt_tokens": 3539,
+  "output_tokens": 255,
+  "estimated_usd": 0.001141,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

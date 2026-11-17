@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`parse_nullable_int` has no `min_val`/`max_val` arguments and cannot raise `ValueError('out_of_range')` for out-of-range values, leaving required Req 2 unimplemented.",
+  "target_issue": "T03 Req 2",
+  "thoughts": [
+    "Req 2 is explicitly required, and the contributor reports it was deferred. I\u2019ll inspect the patch and tests to confirm whether bounds enforcement is present despite that report.",
+    "The diff adds nullable-token parsing but does not add `min_val` or `max_val` parameters or any bounds check, so Req 2 is missing. This is incomplete against the ticket and should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.135,
+  "prompt_tokens": 1348,
+  "output_tokens": 282,
+  "estimated_usd": 0.001981,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

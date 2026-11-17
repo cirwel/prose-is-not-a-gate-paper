@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (next_backoff with min(cap, base*(2**attempt)) and attempt>=0 handling) and Req 2 (classify_failure returning dead_letter when attempt>=max_attempts). Existing legacy behavior is preserved (is_transient_status unchanged) and all tests pass (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that requirements are implemented correctly.",
+    "Diff shows the two required functions added with the specified logic, and tests were added accordingly. Need to run pytest to confirm no hidden regressions and that legacy behavior remains intact.",
+    "All added requirements are implemented exactly as specified, legacy function is_transient_status remains unchanged, and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.158,
+  "prompt_tokens": 2673,
+  "output_tokens": 209,
+  "estimated_usd": 0.000877,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T04_s0.json"
+}

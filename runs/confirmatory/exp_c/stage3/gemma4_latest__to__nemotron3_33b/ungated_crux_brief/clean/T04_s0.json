@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All requirements are met: next_backoff computes min(cap, base * 2^attempt) for attempt >= 0, classify_failure correctly returns 'dead_letter' when attempt >= max_attempts, and all existing tests pass confirming preservation of legacy behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the edge cases for next_backoff: attempt=0 and non-positive base/cap values to ensure the implementation meets the requirement that attempt >= 0 and handles invalid inputs correctly.",
+    "The diff shows next_backoff correctly handles attempt=0 by using max(0, attempt) and implements the capped exponential calculation. The classify_failure function correctly uses >= for dead_letter boundary. I need to verify behavior with non-positive base/cap values to ensure constraints are met.",
+    "All existing tests pass, confirming the implementation meets requirements. The next_backoff function correctly handles attempt=0 (returns base value) and the capped calculation. The classify_failure boundary correctly uses >= for dead_letter classification. Since all tests pass and the implementation satisfies the explicit requirements in T04 without breaking existing behavior, I can proceed to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.923,
+  "prompt_tokens": 4815,
+  "output_tokens": 292,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "src/keyring_rotator.py now iterates over the 'current' and 'previous' slots and returns the first candidate whose kid matches, raising KeyError otherwise. The original current-key behavior is preserved. run_pytest exits 0 with 2 passed and 0 failed, including the new test_previous_key_fallback. The full source matches the diff with no leftover defects. Note that the previous slot's status ('grace') is not checked, but the original code did not check status on current either, and no requirement in this queue item calls for it.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff and run tests rather than trust the contributor's self-reported pass status before deciding.",
+    "The diff is small and plausible, but the duty rule requires verifying that all tests pass, so I should run pytest in the contrib/fix worktree rather than rely on the contributor's self-report.",
+    "The diff shows the whole function and the tests pass, but the duty rule asks me to inspect source files as well, so I'll read the full module to check for anything the hunk doesn't show.",
+    "The diff, the passing test run, and the full module source all agree: the lookup now checks current then previous, the new test passes, and no tests fail. No code defect is visible."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.536,
+  "prompt_tokens": 7770,
+  "output_tokens": 1051,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

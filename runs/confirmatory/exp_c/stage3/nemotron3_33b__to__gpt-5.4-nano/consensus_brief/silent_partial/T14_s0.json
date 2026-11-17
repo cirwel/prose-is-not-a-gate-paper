@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T14 requires adding `has_all_required_scopes(token_scopes, required)` (Req 2), but the PR only implements `narrow_scopes` and adds a single test; there is no implementation or test for Req 2.",
+  "target_issue": "Missing requirement: `has_all_required_scopes` (Req 2) not implemented or covered by tests.",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm whether Req 2 is missing; then decide merge or hold based on completeness.",
+    "Diff shows only narrow_scopes added; has_all_required_scopes from Req 2 is missing entirely. Even though tests pass, PR is incomplete vs ticket requirements, so merging risks missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.461,
+  "prompt_tokens": 1630,
+  "output_tokens": 179,
+  "estimated_usd": 0.000586,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "T00",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR partially addresses the ticket by implementing per-tenant overrides for the limit check, but it completely misses the requirement to add optional `weight` functionality for weighted request units.",
+  "key_findings": [
+    "The function signature is updated to accept `overrides` and `tenant`.",
+    "The effective limit (`eff_limit`) correctly uses `overrides.get(tenant, limit)`.",
+    "The weight calculation and application to the limit check are entirely missing.",
+    "The existing test `test_tenant_override` only verifies the limit change, not the weight functionality."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of optional `weight: int = 1` parameter and logic to count weighted units against the limit."
+  ],
+  "verification_check": "src/sliding_window.py: `allow_request` function body for weight calculation",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 893,
+    "output_tokens": 191,
+    "seconds": 3.959,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

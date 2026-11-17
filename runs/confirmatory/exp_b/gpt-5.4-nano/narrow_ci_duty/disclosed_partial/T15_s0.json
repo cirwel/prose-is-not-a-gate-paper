@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: deduplicate_rows_with_stats(rows, key_fn, keep='first') returning (unique_rows, duplicate_count) is missing/deferred, so the PR does not fully satisfy Ticket T15 requirements.",
+  "target_issue": "Missing implementation for Req 2 (deduplicate_rows_with_stats)",
+  "thoughts": [
+    "Need to verify test suite and that passed_tests match; also confirm Req 2 implementation status in code diff.",
+    "Pytest exits 0 and passed_tests match the contributor report. However, the PR explicitly does not implement Req 2 (deduplicate_rows_with_stats), which is a missing required change for this ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.52,
+  "prompt_tokens": 1168,
+  "output_tokens": 166,
+  "estimated_usd": 0.000458,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

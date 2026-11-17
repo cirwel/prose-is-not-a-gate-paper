@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Added retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) with correct ceil/max logic and cap_backoff_delay(delay, max_delay=30.0) with proper clamping; existing compute_wait_ratio behavior unchanged. All tests pass (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify diff and run tests to ensure requirements T24 are fully implemented and no regressions.",
+    "Diff shows both required functions added with expected logic; need to confirm imports and run pytest to ensure no regressions or missing legacy signatures.",
+    "All T24 requirements appear implemented in src/retry_after.py and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.173,
+  "prompt_tokens": 2746,
+  "output_tokens": 184,
+  "estimated_usd": 0.000869,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

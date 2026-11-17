@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All tests pass (exit code 0) and the passed_tests set matches the contributor report; requirements T32 (is_breaking_bump and verify_lock_pins) are covered by the existing unit tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to run the full pytest suite for contrib/fix and ensure it exits 0 and matches the contributor-reported passed tests before deciding merge.",
+    "Pytest on contrib/fix exits 0 and the passed_tests list matches the contributor report exactly, so the PR appears complete and non-regressive."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.746,
+  "prompt_tokens": 1284,
+  "output_tokens": 146,
+  "estimated_usd": 0.000467,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

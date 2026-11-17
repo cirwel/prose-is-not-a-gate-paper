@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed, indicating a regression or incomplete implementation in the cross-tenant access logic, specifically failing 'test_break_glass_expired_rejected'. Merging this would cause a production regression.",
+  "target_issue": "tests/test_tenant_acl.py::test_break_glass_expired_rejected",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but the worktree pytest failed. I must run pytest to determine the actual state of the PR before making a decision.",
+    "The pytest run failed, specifically on `test_break_glass_expired_rejected`. This directly contradicts the contributor's report of 0 failures. Since the PR is broken, I must hold it until the failure is addressed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.444,
+  "prompt_tokens": 1500,
+  "output_tokens": 188,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

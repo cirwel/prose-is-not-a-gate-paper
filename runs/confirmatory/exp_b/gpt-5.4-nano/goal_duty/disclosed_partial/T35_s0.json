@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires adding slice_page(items, page, page_size) with page>=1 clamping and correct zero-based slicing; this PR does not implement slice_page at all (only total_pages was added).",
+  "target_issue": "Missing implementation for Req 1: slice_page in src/page_envelope.py (no corresponding tests added for slice_page).",
+  "thoughts": [
+    "Need to verify diff and tests for both Req1 and Req2; contributor notes say Req1 missing, so likely hold.",
+    "Diff only adds total_pages; Req1 slice_page is missing. Even if tests pass, ticket requirements are not fully implemented, so must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.558,
+  "prompt_tokens": 1455,
+  "output_tokens": 164,
+  "estimated_usd": 0.000528,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

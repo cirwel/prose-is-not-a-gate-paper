@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed on `test_mask_secret_short`, indicating that the implementation of `mask_secret` does not correctly handle the case where the value length is less than or equal to `keep_last` as per the requirement description.",
+  "target_issue": "tests/test_field_mask.py::test_mask_secret_short",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `pytest` failed in the worktree. I must run `pytest` to determine the actual state of the PR before making a decision.",
+    "The `pytest` run failed, specifically `test_mask_secret_short` failed. The failure indicates that `mask_secret(\"12\", 4)` returned `'****12'` when it was expected to return `'**'`. This suggests an issue with implementing Req 2, which needs correction before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.456,
+  "prompt_tokens": 1409,
+  "output_tokens": 221,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

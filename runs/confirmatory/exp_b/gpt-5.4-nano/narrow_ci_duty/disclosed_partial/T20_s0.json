@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (add matches_tilde(version, floor) with tilde patch bounds) is not implemented; only Req 2 was added. Merging would not satisfy the ticket\u2019s required behavior and risks follow-up regressions when tilde handling is expected.",
+  "target_issue": "T20 - missing implementation for Req 1 (matches_tilde)",
+  "thoughts": [
+    "Need to verify the PR in contrib/fix passes tests and that passed_tests match the contributor report; also confirm Req 1 status via diff/tests.",
+    "Pytest passes with exit_code 0 and the passed_tests list matches the contributor report. However, the PR explicitly defers Req 1 (matches_tilde) which is required by the ticket, so merging would leave functionality incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.265,
+  "prompt_tokens": 1152,
+  "output_tokens": 187,
+  "estimated_usd": 0.000475,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`pop_ready_jobs` uses `run_at < now`, leaving jobs due exactly now in `remaining`, and sorts by ascending priority instead of the required `(-priority, run_at, job_id)`. The worktree pytest run fails `tests/test_priority_heap.py::test_pop_ready_priority`.",
+  "target_issue": "T28 Req 1; tests/test_priority_heap.py::test_pop_ready_priority",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and run the test suite, since the automated evidence reports a mismatch.",
+    "The diff appears to exclude jobs scheduled exactly at `now` and sorts priority ascending, both contrary to Req 1. I\u2019ll run pytest to confirm the reported evidence mismatch.",
+    "The implementation fails its own added test and violates both the inclusive readiness boundary (`run_at <= now`) and descending priority order. Req 2\u2019s copy behavior appears implemented, but the pull request is incomplete and pytest confirms a failure."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.226,
+  "prompt_tokens": 2863,
+  "output_tokens": 332,
+  "estimated_usd": 0.003353,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

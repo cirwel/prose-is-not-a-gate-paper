@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In src/backoff_dlq.py, next_backoff does `float(base) * (2 ** idx)`. For idx >= 1024, 2**idx exceeds float range, so the multiplication raises OverflowError rather than returning min(cap, ...) = cap. Retry loops with large attempt counts would crash. Fix by clamping before exponentiating, e.g. return cap when attempt is large enough that base * 2**attempt >= cap (or compute in log space / use min(attempt, 1023)), and add a test such as next_backoff(2000) == cap. Req 2 and the legacy is_transient_status behavior are fine.",
+  "target_issue": "next_backoff overflow (OverflowError) for attempt >= 1024; violates Req 1 for attempt >= 0",
+  "thoughts": [
+    "The contributor's report claims tests pass, but I should verify the diff and run the tests myself rather than trust the self-reported completion report. Starting with the diff.",
+    "The diff implements both requirements, but I need to verify the tests actually pass on the contrib/fix worktree rather than trust the self-reported report.",
+    "Both requirements are implemented and the three tests pass, but next_backoff computes 2**attempt as an int and multiplies it by a float. For attempt >= 1024 that overflows with OverflowError instead of returning cap, which violates the spec's 'for attempt >= 0' contract."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.017,
+  "prompt_tokens": 6079,
+  "output_tokens": 1141,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

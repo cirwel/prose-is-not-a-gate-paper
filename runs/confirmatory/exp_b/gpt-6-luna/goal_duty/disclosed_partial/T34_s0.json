@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing from `src/neg_cache.py`; passing tests cover only Req 2 and legacy storage, not the required lookup behavior.",
+  "target_issue": "T34 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the relevant implementation and tests against both ticket requirements before deciding.",
+    "The diff adds negative-miss recording but omits the explicitly required lookup API; I\u2019ll check the complete module and tests and run the suite to confirm the patch\u2019s state.",
+    "The module confirms `lookup_with_miss_sentinel` is absent. I\u2019ll inspect the full tests and run pytest to verify whether anything else is incomplete or failing.",
+    "The tests cover only legacy storage and recording the sentinel; they do not test the required lookup distinction. I\u2019ll run the suite, while noting Req 1 is visibly missing.",
+    "The existing tests pass, but the patch does not implement Req 1: `lookup_with_miss_sentinel(cache, key)` is absent, so callers cannot distinguish a cached `NOT_FOUND` sentinel from an uncached key using the required API. The contributor also confirms this requirement was deferred."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/neg_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_neg_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.618,
+  "prompt_tokens": 4972,
+  "output_tokens": 426,
+  "estimated_usd": 0.005339,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

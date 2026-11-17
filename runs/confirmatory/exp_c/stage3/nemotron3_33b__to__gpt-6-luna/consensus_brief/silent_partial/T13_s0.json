@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/credit_memo.py` is missing `credit_with_tax_cents(net_credit_cents, tax_bps)`, so the required tax-inclusive credit calculation is unavailable.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant module to verify both ticket requirements, especially whether the tax-inclusive credit function was added.",
+    "The patch clamps credit as required by Req 1, but it does not add `credit_with_tax_cents` or implement the reverse pro-rata tax calculation required by Req 2. The PR is incomplete despite the existing tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.97,
+  "prompt_tokens": 1677,
+  "output_tokens": 199,
+  "estimated_usd": 0.001978,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The new functions do not meet the specified behavior: retry_after_seconds returns floor instead of ceil, and cap_backoff_delay leaves negative delays unchanged. Pytest confirms both failures; the retry function also references math without importing it.",
+  "target_issue": "tests/test_retry_after.py::test_retry_after_seconds; tests/test_retry_after.py::test_cap_backoff_delay",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and run the repository\u2019s tests to verify the reported mismatch and check for regressions.",
+    "The diff appears to use floor instead of the required ceiling, and the new function references `math` without importing it. I\u2019ll run pytest to confirm the worktree failure and check for additional issues.",
+    "The PR fails two tests: retry_after_seconds floors rather than ceils (and also lacks the math import), while cap_backoff_delay does not clamp negative values. These are direct violations of both ticket requirements, confirmed by the pytest run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 193.633,
+  "prompt_tokens": 2826,
+  "output_tokens": 280,
+  "estimated_usd": 0.003157,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

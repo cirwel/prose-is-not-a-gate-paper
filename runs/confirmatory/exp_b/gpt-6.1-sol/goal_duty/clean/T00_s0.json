@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "src/sliding_window.py filters events only with ts > cutoff, so future timestamps incorrectly consume capacity. For example, events=[6.0], now=5.0, window=10.0, limit=1 rejects a request even though (\u22125.0, 5.0] contains no events. Filter with cutoff < ts <= now and add boundary coverage.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff adds overrides and weighted admission, but the active-window filter needs checking against the specified upper bound. I will inspect the repository files and tests.",
+    "I will read the complete source to verify its public signature and active-window handling.",
+    "The source counts timestamps after now as active, although Req 2 specifies the interval (now - window, now]. I will check whether the tests cover this case and the other required behavior.",
+    "The three tests cover legacy calls, a tenant override, and rejection of an overweight request, but not future timestamps. I will run the suite to confirm its actual status.",
+    "All three tests pass, but the implementation does not enforce the active interval's upper bound required by Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.66,
+  "prompt_tokens": 7824,
+  "output_tokens": 407,
+  "estimated_usd": 0.028356,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

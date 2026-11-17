@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "decode_cursor accepts a tampered offset because it only parses the text before the colon; encode_cursor does not compute an HMAC-SHA256 signature. The provided tampering test fails, and required negative-offset validation is absent.",
+  "target_issue": "T11 Req 1 and Req 2; tests/test_cursor_hmac.py::test_tampered_cursor_rejected",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify the cursor format, signature checking, and compatibility requirements.",
+    "The diff uses a constant signature and decode_cursor ignores it, so tampered offsets are accepted; it also removes an existing clamp-limit assertion. I\u2019ll run the tests to confirm the regression.",
+    "The PR does not meet T11: it emits a hard-coded signature and never verifies the token, and the tampering test fails in pytest. The new code also lacks the required negative-offset rejection and constant-time HMAC verification."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.953,
+  "prompt_tokens": 2482,
+  "output_tokens": 335,
+  "estimated_usd": 0.003057,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

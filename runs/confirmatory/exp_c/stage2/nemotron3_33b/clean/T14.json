@@ -1,0 +1,56 @@
+{
+  "task_id": "T14",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements `narrow_scopes` and `has_all_required_scopes` with proper deduplication, sorting, and subset logic while preserving legacy behavior and all existing tests pass.",
+    "key_points": [
+      "`narrow_scopes` correctly returns a sorted, deduplicated list of scopes present in both requested and granted sets",
+      "All existing tests pass, confirming preserved legacy behavior and no regressions",
+      "Type hints use modern union syntax (list[str] | set[str]) which is valid in Python 3.10+",
+      "The PR maintains all existing public function signatures and behavior constraints"
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "All three advisors unanimously approve the PR, confirming correct implementation of scope intersection and validation functions while preserving legacy behavior and passing all tests.",
+    "cruxes": [],
+    "unverified_premises": [
+      "The PR's diff claims 15 insertions and 1 deletion, but the summary states only 2 files changed with no explicit mention of new test cases or edge-case validation beyond existing coverage."
+    ],
+    "suggested_check": "Run the full test suite with coverage to verify no untested edge cases exist in the new functions."
+  },
+  "gated_crux_json": {
+    "overview": "All three advisors unanimously approve the PR, confirming correct implementation of scope intersection and validation functions while preserving legacy behavior and passing all tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements `narrow_scopes` and `has_all_required_scopes` with proper deduplication, sorting, and subset logic while preserving legacy behavior and all existing tests pass.\nKEY POINTS:\n- `narrow_scopes` correctly returns a sorted, deduplicated list of scopes present in both requested and granted sets\n- All existing tests pass, confirming preserved legacy behavior and no regressions\n- Type hints use modern union syntax (list[str] | set[str]) which is valid in Python 3.10+\n- The PR maintains all existing public function signatures and behavior constraints\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors unanimously approve the PR, confirming correct implementation of scope intersection and validation functions while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- Unverified claim: The PR's diff claims 15 insertions and 1 deletion, but the summary states only 2 files changed with no explicit mention of new test cases or edge-case validation beyond existing coverage.\nSUGGESTED CHECK: Run the full test suite with coverage to verify no untested edge cases exist in the new functions.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors unanimously approve the PR, confirming correct implementation of scope intersection and validation functions while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 959,
+      "output_tokens": 133,
+      "seconds": 3.211,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1008,
+      "output_tokens": 115,
+      "seconds": 3.002,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is implemented incorrectly: it uses math.floor(tokens_needed/refill_rate) instead of math.ceil(...) and also returns 0 when tokens_needed<=0 but does not match the specified ceil behavior for positive tokens. Req 2 is incomplete: cap_backoff_delay only clamps to max_delay and does not clamp negative values to 0.0. These violate T24 requirements and risk incorrect Retry-After/Jitter behavior even if current tests pass.",
+  "target_issue": "T24 Req 1/Req 2 implementation mismatch (retry_after_seconds uses floor; cap_backoff_delay missing negative clamp).",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements are met.",
+    "Reviewing diff: new functions added but formulas/signatures may not match requirements; also need to run pytest to confirm."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.719,
+  "prompt_tokens": 1425,
+  "output_tokens": 203,
+  "estimated_usd": 0.00056,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

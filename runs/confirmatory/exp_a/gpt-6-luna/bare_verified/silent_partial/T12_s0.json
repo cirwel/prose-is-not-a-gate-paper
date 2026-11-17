@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: acquire_lease retains its old signature and rejects leases whenever len(leases) >= limit instead of allowing up to shared_reserve additional leases. The passing tests do not exercise this requirement.",
+  "target_issue": "T12 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the lease API and fallback behavior against T12 and the compatibility constraint.",
+    "The patch adds idempotent release, but it does not extend `acquire_lease` with the required `shared_reserve` parameter or implement borrowing beyond the limit. I\u2019ll check the full module and test suite before deciding.",
+    "The full module confirms `acquire_lease` still rejects every new lease once `limit` is reached and has no `shared_reserve` argument. I\u2019ll run the suite to check for any additional compatibility or correctness issues.",
+    "The existing tests pass, but they only cover the legacy limit and release behavior; they do not cover the required shared-pool fallback. `acquire_lease` lacks the `shared_reserve` parameter and still refuses all new leases at the limit, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/quota_pool.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.401,
+  "prompt_tokens": 3658,
+  "output_tokens": 370,
+  "estimated_usd": 0.004111,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

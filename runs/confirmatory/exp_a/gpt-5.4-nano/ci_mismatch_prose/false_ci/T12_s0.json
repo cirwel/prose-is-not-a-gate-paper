@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "release_lease(leases, lease_id) uses out.remove(lease_id), which throws KeyError when lease_id is absent; Req 1 requires no error if absent. This will fail the idempotent test and can cause production regressions.",
+  "target_issue": "tests/test_quota_pool.py::test_release_lease_idempotent",
+  "thoughts": [
+    "Need to inspect repo changes and run tests in contrib/fix to verify the PR is actually passing; metadata claims mismatch.",
+    "The PR diff shows release_lease uses set.remove which raises KeyError when lease_id is absent, violating Req 1. Also acquire_lease capacity logic appears incorrect for shared_reserve semantics. Need to run tests to confirm, but the code is clearly broken."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.857,
+  "prompt_tokens": 1434,
+  "output_tokens": 184,
+  "estimated_usd": 0.000543,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

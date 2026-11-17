@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required `parse_semver_tag(tag)` returning a core tuple plus prerelease field is absent, and `matches_caret` has no `allow_prerelease` option or logic to reject prerelease versions by default. Passing tests do not exercise these ticket requirements.",
+  "target_issue": "T08 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and its tests to verify the caret bounds, prerelease handling, and compatibility with existing public signatures.",
+    "The patch adds basic core-tuple bounds, but it does not implement the required `parse_semver_tag` API or prerelease rejection/opt-in behavior. I\u2019ll check the project tests and module context before deciding whether this is a release-blocking omission.",
+    "The diff already shows required functionality missing, but I\u2019ll run the repository tests to check for regressions and whether the existing test suite covers the stated requirements.",
+    "The current tests pass, but they cover only basic bounds and the legacy parser. The patch omits `parse_semver_tag` and prerelease handling, and `matches_caret` also derives the upper bound from the floor without rejecting versions below it as a SemVer caret check should; Req 1 requires the lower bound to be enforced, which it does, but Req 2 is unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.029,
+  "prompt_tokens": 3932,
+  "output_tokens": 459,
+  "estimated_usd": 0.004614,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

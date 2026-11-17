@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "matches_caret(\"1.3.0-alpha\", \"1.2.0\") incorrectly returns true by stripping the prerelease suffix. The patch also lacks parse_semver_tag(tag) returning four components and support for allow_prerelease=True.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The completion report explicitly defers Req 2; I will inspect the diff to verify whether the required prerelease support is missing.",
+    "The diff confirms Req 2 is unimplemented: prerelease suffixes are discarded, and no prerelease-aware parser or opt-in parameter is provided."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.171,
+  "prompt_tokens": 1558,
+  "output_tokens": 169,
+  "estimated_usd": 0.006702,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

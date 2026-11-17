@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Each call removes stored entries with expiry <= now, rejects nonces whose recorded expiry is still in the future, and records accepted nonces with expiry now + ttl. The legacy make_nonce_key function is unchanged.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and tests against both requirements and check legacy compatibility.",
+    "The implementation prunes entries before checking for replay, so expiry equality permits reuse and rejected calls still return a pruned store. I will run the test suite to check for regressions.",
+    "The diff satisfies both ticket requirements, preserves the legacy function signature, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.788,
+  "prompt_tokens": 2756,
+  "output_tokens": 206,
+  "estimated_usd": 0.01074,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

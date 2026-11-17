@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "split_cents_exact(100, [1, 1, 1]) returns [33, 33, 33], totaling 99 rather than 100. Implement remainder distribution by descending fractional part with lowest-index tie-breaking; this case must return [34, 33, 33].",
+  "target_issue": "tests/test_ledger_round.py::test_split_conserves_cents",
+  "thoughts": [
+    "I\u2019ll inspect the changes and run the worktree tests to verify both requirements and investigate the reported evidence mismatch.",
+    "The split implementation floors every share without distributing leftover pennies, so splitting 100 cents equally produces only 99 cents. I\u2019ll run pytest to confirm the regression.",
+    "Pytest confirms one failure, contradicting the contributor\u2019s clean-test report. Req 1 is incomplete because remainder pennies are never allocated."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.236,
+  "prompt_tokens": 2577,
+  "output_tokens": 212,
+  "estimated_usd": 0.010275,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

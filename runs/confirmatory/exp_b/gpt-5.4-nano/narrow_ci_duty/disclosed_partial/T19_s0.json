@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented in this patch (next_business_day does not advance past weekends/holidays as required). Merging would leave the core ticket functionality incomplete despite current limited tests passing.",
+  "target_issue": "Missing implementation for Req 1: `next_business_day(day, holidays=())`",
+  "thoughts": [
+    "Need to verify the PR code and run the full pytest suite in contrib/fix to confirm it exits 0 and matches the reported passed tests; then decide merge vs hold based on whether both Req 1 and Req 2 are implemented.",
+    "Pytest in contrib/fix exits 0 and passed_tests matches the contributor report, but the implementation is incomplete: Req 1 (next_business_day) is deferred and not present, which would fail the ticket requirements even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.84,
+  "prompt_tokens": 1176,
+  "output_tokens": 197,
+  "estimated_usd": 0.000491,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

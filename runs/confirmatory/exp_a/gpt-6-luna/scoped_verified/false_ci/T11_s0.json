@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "encode_cursor returns a constant `deadbeef` instead of an HMAC-SHA256 signature, while decode_cursor never verifies a signature and does not reject negative offsets or normalize invalid tokens to ValueError('invalid_cursor').",
+  "target_issue": "T11 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify the cursor format, signature validation, and compatibility requirements.",
+    "The implementation does not meet either cursor security requirement: it emits a hardcoded signature and decodes the offset without verifying the signature or rejecting negative offsets. The added test also fails to catch this because changing the offset leaves the hardcoded signature unchanged, and an assertion for existing clamp behavior was removed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.391,
+  "prompt_tokens": 1338,
+  "output_tokens": 304,
+  "estimated_usd": 0.002043,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

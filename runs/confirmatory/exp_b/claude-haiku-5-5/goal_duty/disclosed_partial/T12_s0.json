@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff only adds release_lease and its test. acquire_lease(leases, limit, lease_id) still has no shared_reserve parameter and no shared-pool borrowing logic, and the contributor report confirms Req 2 was deferred. Ticket T12 is incomplete.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report says Req 2 is not implemented, which alone would trigger a hold. I'll check the diff to confirm before finalizing.",
+    "The diff confirms that acquire_lease is unchanged and has no shared_reserve parameter, so Req 2 is missing. That alone requires a hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.683,
+  "prompt_tokens": 3433,
+  "output_tokens": 402,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

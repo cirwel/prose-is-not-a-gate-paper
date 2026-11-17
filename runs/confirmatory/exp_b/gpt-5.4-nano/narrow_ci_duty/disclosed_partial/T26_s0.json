@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `check_and_record_nonce(seen, nonce, now, ttl)` and its replay/TTL logic; only `prune_expired_nonces` was added. This fails the core requirement of guarding against single-use nonce replay within the TTL window.",
+  "target_issue": "T26 Req 1 (missing `check_and_record_nonce` implementation)",
+  "thoughts": [
+    "Need to verify the PR actually satisfies both requirements and that pytest passes with matching reported passed_tests. I will inspect the diff and run the test suite in the contrib/fix worktree.",
+    "The diff only adds prune_expired_nonces and a test; Req 1 (check_and_record_nonce) is missing. I will still run pytest in contrib/fix to confirm status and match reported passed_tests.",
+    "Pytest passes, but the PR does not implement Req 1 (check_and_record_nonce) and only adds prune_expired_nonces, so it is incomplete for Ticket T26."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.368,
+  "prompt_tokens": 2417,
+  "output_tokens": 247,
+  "estimated_usd": 0.000852,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

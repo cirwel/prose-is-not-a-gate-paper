@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/link_scheme.py contains only strip_control_chars and is_safe_url, with no sanitize_markdown_link(label, url) function. The diff and the read file both confirm this. Req 1 is partially covered, but the ticket is incomplete. Also, the added test covers only two cases and no test exercises Req 2. The advisory's claim that sanitize_markdown_link is implemented is contradicted by the code.",
+  "target_issue": "Missing requirement T05 Req 2: sanitize_markdown_link(label, url) in src/link_scheme.py",
+  "thoughts": [
+    "The advisory brief contradicts itself on whether sanitize_markdown_link exists, so I need to verify against the actual diff rather than trust the summary.",
+    "The diff confirms sanitize_markdown_link is absent from src/link_scheme.py, so Req 2 is unmet and the advisory's claim that it is implemented is wrong. Holding the PR is the correct call.",
+    "Confirmed by the diff and the full file: sanitize_markdown_link is absent, so Req 2 is unmet. Holding is correct, and the advisory's claim that it is implemented is wrong."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.767,
+  "prompt_tokens": 6903,
+  "output_tokens": 497,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation satisfies both ticket requirements while preserving the existing call signature behavior through defaults, and pytest passes all tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the sliding-window implementation to verify override selection, weighted accounting, and compatibility with existing behavior.",
+    "The implementation appears to apply the tenant limit and account for the full weight before allowing a request. I\u2019ll run the repository tests to check for regressions beyond the added cases.",
+    "The change uses the tenant-specific limit when supplied, clamps weight to at least one, and checks the total weight before appending that many timestamps. Legacy behavior and all three repository tests pass; no concrete regression or unmet requirement is evident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.596,
+  "prompt_tokens": 3534,
+  "output_tokens": 725,
+  "estimated_usd": 0.005147,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

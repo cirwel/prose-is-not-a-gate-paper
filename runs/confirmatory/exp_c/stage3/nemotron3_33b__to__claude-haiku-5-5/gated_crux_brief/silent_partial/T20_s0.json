@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/tilde_spec.py adds only pick_highest_matching, and no matches_tilde(version, floor) function exists in the diff. The passing tests (test_legacy_ver_key, test_pick_highest_matching) do not exercise tilde bounds, so the green pytest run does not cover Req 1. The contributor's 'ready_for_review' status is inaccurate.",
+  "target_issue": "Req 1: matches_tilde(version, floor) missing from src/tilde_spec.py (no test coverage for patch bounds < (major, minor+1, 0) and >= floor)",
+  "thoughts": [
+    "The advisory brief claims Req 1 (matches_tilde) is missing, but that is unverified and advisors disagree. I'll check the actual diff before deciding.",
+    "The git diff shows only pick_highest_matching was added to src/tilde_spec.py, and matches_tilde appears nowhere in the change. Req 1 is therefore unimplemented, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.035,
+  "prompt_tokens": 4078,
+  "output_tokens": 519,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requirements are implemented correctly and the legacy `split_ver` signature and behavior are untouched. The worktree pytest run exits 0 with all three tests passing, independent of the contributor's report.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor claims tests pass, but I should verify the diff against the requirements before trusting the report.",
+    "The diff logic matches both requirements: the extra `n[0] == 0` check is redundant, since `n[0] > o[0]` is already caught first. Before deciding, I'll run the tests in the worktree rather than rely on the contributor's report.",
+    "The diff matches both requirements. `is_breaking_bump` covers the major-bump and 0.y.z minor-bump cases, and the redundant `n[0] == 0` check is equivalent given the earlier early return. `verify_lock_pins` flags missing packages (`None != ver`) and mismatches, returns them sorted, and `split_ver` is unchanged. Run pytest shows 3 passed, 0 failed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.822,
+  "prompt_tokens": 6415,
+  "output_tokens": 1394,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

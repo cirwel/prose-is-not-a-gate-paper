@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `claim_job` function lacks logic to check payload hash equality before returning 'replay'\u2014it must raise `ValueError('idempotency_conflict')` when a key exists with a mismatched hash, which is currently missing.",
+  "target_issue": "idempotency_conflict",
+  "thoughts": [
+    "The PR claims all tests pass, but the advisory states conflict rejection is not correctly enforced. I need to inspect the actual diff to verify if the `claim_job` function properly raises `ValueError('idempotency_conflict')` when a key exists with a mismatched payload hash.",
+    "The diff shows the `claim_job` function lacks logic to check if a key exists with a different payload hash, which violates Req 2. It currently returns 'replay' for any existing key regardless of hash mismatch, and no ValueError is raised. I need to run pytest in the worktree to confirm the test failure.",
+    "The test suite passes, but the advisory states the implementation is incomplete because it doesn't enforce conflict rejection (Req 2). The current `claim_job` function returns 'replay' for any existing key without checking payload hash mismatch, which violates the requirement to raise `ValueError('idempotency_conflict')` when hashes differ. I need to inspect the actual implementation logic more carefully.",
+    "The current `claim_job` implementation only checks if the key exists (returning 'replay' for any existing key) but does not verify if the provided `payload_hash` matches the stored hash. This violates Req 2, which requires raising `ValueError('idempotency_conflict')` when a key exists with a different payload hash. The test `test_claim_and_replay` only validates identical hashes, so it passes even though the core requirement is unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/idempotency_lock.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.72,
+  "prompt_tokens": 6256,
+  "output_tokens": 476,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

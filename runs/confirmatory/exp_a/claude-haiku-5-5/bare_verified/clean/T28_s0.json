@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "pop_ready_jobs splits on run_at <= now and sorts ready jobs by (-priority, run_at, job_id) as Req 1 specifies; defer_job copies the dict and adds delay_seconds to run_at without mutating the input (Req 2); make_job's signature and behavior are unchanged; run_pytest reports 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims by inspecting the actual diff and running tests before deciding.",
+    "The diff implements both requirements, but the contributor's claimed test results are unverified, so I should run the test suite before deciding.",
+    "The diff implements both requirements with the specified sort key and non-mutating copy, legacy make_job is untouched, and the test suite passes (3/3, exit 0), so the contributor's claims check out."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.75,
+  "prompt_tokens": 6512,
+  "output_tokens": 504,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

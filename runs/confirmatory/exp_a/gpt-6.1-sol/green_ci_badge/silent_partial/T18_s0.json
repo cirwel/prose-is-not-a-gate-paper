@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tenant_acl.py is missing check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0), so the required tenant authorization and temporary-access expiry behavior are not implemented.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I will inspect the diff and relevant tests to verify tenant isolation, expiry boundaries, and preservation of legacy behavior.",
+    "The diff adds tenant filtering but does not implement the required access-check function; the passing tests cover neither cross-tenant authorization nor break-glass expiry."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.626,
+  "prompt_tokens": 1379,
+  "output_tokens": 154,
+  "estimated_usd": 0.005985,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

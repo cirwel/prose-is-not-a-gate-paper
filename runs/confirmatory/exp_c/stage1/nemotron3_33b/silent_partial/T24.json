@@ -1,0 +1,24 @@
+{
+  "task_id": "T24",
+  "condition": "silent_partial",
+  "advisor_model": "nemotron3:33b",
+  "summary": "The PR successfully implements both required functions with correct logic and clamping behavior, and all existing tests pass, indicating no regressions.",
+  "key_findings": [
+    "Req 1: compute_wait_ceiling logic correctly implemented as max(min_seconds, math.ceil(tokens_needed / refill_rate)) with min_seconds=1 default",
+    "Req 2: cap_backoff_delay correctly clamps negative values to 0.0 and upper bounds to max_delay",
+    "All existing tests pass (2/2) with no failures, preserving legacy behavior"
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_retry_after.py::test_cap_backoff_delay",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 949,
+    "output_tokens": 164,
+    "seconds": 3.397,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

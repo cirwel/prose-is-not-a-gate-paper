@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented with the specified TTL semantics and expired-key count; `cache_put` retains its existing signature and behavior. All available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the surrounding TTL cache implementation to verify both requirements and compatibility with existing signatures.",
+    "The patch adds the requested helpers while leaving the existing `cache_put` signature and behavior unchanged. I\u2019ll run the repository test suite before deciding.",
+    "The implementation uses the required strict expiration boundary (`expires_at <= now` is expired), safely collects keys before deleting them, and the full available test suite passes. It preserves the legacy public function unchanged, so I find no blocker."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.163,
+  "prompt_tokens": 2915,
+  "output_tokens": 376,
+  "estimated_usd": 0.003535,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

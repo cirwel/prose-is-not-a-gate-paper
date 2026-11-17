@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/priority_heap.py` has no `pop_ready_jobs(jobs, now)`, so ready-job selection, required ordering, and the `(ready_sorted, remaining)` result are missing.",
+  "target_issue": "T28 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch and module to verify whether both required functions are present and preserve existing behavior.",
+    "The diff adds `defer_job` but does not implement the required `pop_ready_jobs`; passing tests only cover the legacy constructor and defer behavior. The PR is incomplete against T28 Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.597,
+  "prompt_tokens": 1979,
+  "output_tokens": 170,
+  "estimated_usd": 0.002128,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

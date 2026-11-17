@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/nonce_replay.py: check_and_record_nonce always returns (True, {...}) and never checks whether the nonce is already recorded with an unexpired expiry, so replays within the TTL are accepted. Req 2 is also incomplete: prune_expired_nonces keeps entries where exp >= now, but Req 2 requires removing expiry <= now, so entries expiring exactly at now are retained. The new test test_replay_rejected asserts ok2 is False and will fail against this code, contradicting the contributor's report of 0 failures.",
+  "target_issue": "T26 Req 1 (replay rejection while now < recorded_expiry); test_replay_rejected; T26 Req 2 (prune boundary should be expiry <= now)",
+  "thoughts": [
+    "The contributor's report claims success, but I should verify the diff and run tests myself rather than trust the self-report. Starting with the diff.",
+    "The diff shows check_and_record_nonce unconditionally returns True, so replays are never rejected and Req 1 is unmet. The contributor's test would fail on its own assertion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.062,
+  "prompt_tokens": 3375,
+  "output_tokens": 459,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

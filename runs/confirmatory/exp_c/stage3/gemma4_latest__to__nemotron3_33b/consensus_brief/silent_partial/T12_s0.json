@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "acquire_lease function signature does not accept shared_reserve parameter and contains no logic to borrow beyond limit when shared reserve is specified, violating Req 2 requirements",
+  "target_issue": "T12",
+  "thoughts": [
+    "The PR claims to address ticket T12, but advisors confirm the shared pool fallback logic (Req 2) is missing or incorrect in acquire_lease, and the contributor's report shows no tests for this functionality. I need to inspect the actual code changes to verify the implementation.",
+    "The diff shows release_lease was correctly implemented (Req 1), but acquire_lease signature still lacks shared_lease_id parameter and has no shared reserve logic; the added test only covers release_lease, not the missing shared reserve functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.746,
+  "prompt_tokens": 2237,
+  "output_tokens": 185,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

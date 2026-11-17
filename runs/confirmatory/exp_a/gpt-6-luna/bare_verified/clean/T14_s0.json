@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented with the required set semantics, the existing public function signature is preserved, and pytest reports all tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff and run the test suite to verify both requirements and existing behavior.",
+    "The diff implements both operations using set intersection/subset semantics, and the existing parser signature is unchanged. I\u2019ll run the suite to check for regressions beyond the added unit cases.",
+    "The implementation satisfies both requirements: narrowing returns a sorted, duplicate-free intersection, and the required-scope check tests subset membership. The legacy parser remains unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.087,
+  "prompt_tokens": 2555,
+  "output_tokens": 337,
+  "estimated_usd": 0.003122,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`active` includes events with `ts > now`, which are outside the ticket\u2019s specified `(now - window, now]` interval and can incorrectly consume the limit.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation and tests against both ticket requirements and compatibility constraints.",
+    "The diff adds tenant overrides and weighted event insertion, but I need to check the module\u2019s surrounding contract and run the full test suite before deciding.",
+    "The repository is small, so I\u2019ll read the complete source and test files to check compatibility and edge cases in context.",
+    "The source implements both requested behaviors, and the added parameters preserve the existing four-argument call form. I\u2019ll inspect the tests and run the full suite to verify no regression.",
+    "The function retains future timestamps because it only filters by the lower cutoff, but the ticket explicitly defines the active interval as `(now - window, now]`. I\u2019ll run the tests, then decide whether that requirement gap warrants holding the PR.",
+    "The full test suite passes, but the implementation filters only timestamps greater than `now - window` and does not exclude future timestamps, so it does not enforce the required active interval `(now - window, now]`. The tests do not cover this boundary, so the requirement is not fully verified or implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.601,
+  "prompt_tokens": 7857,
+  "output_tokens": 1001,
+  "estimated_usd": 0.009489,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

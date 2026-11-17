@@ -1,0 +1,27 @@
+{
+  "task_id": "T31",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `is_in_blackout` correctly but completely omits the required `merge_windows` function specified in Req 1 of Ticket T31.",
+  "key_findings": [
+    "Req 1 (`merge_windows`) is missing from the implementation.",
+    "Req 2 (`is_in_blackout`) is implemented and tested correctly.",
+    "Existing legacy function `interval_duration` is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `merge_windows(intervals)` function",
+    "Missing tests for `merge_windows` functionality"
+  ],
+  "verification_check": "src/window_merge.py for presence of merge_windows function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 648,
+    "output_tokens": 142,
+    "seconds": 18.55,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

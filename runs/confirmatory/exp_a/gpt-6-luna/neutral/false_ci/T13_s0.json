@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Both new public functions have incorrect implementations, so merging would ship incorrect refund and tax amounts. Clamp the credit result to zero and use the required 10,000 divisor, then rerun tests with cases that exercise the requirements.",
+  "target_issue": "T13 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the repository and PR diff to verify the requested behavior and compatibility constraints.",
+    "The repository is small; I\u2019ll review the implementation and its tests, then compare the change against main.",
+    "The implementation does not clamp the applied credit, and its tax calculation divides by 100 instead of the required 10,000. I\u2019ll inspect the diff and tests to confirm the PR\u2019s exact scope before deciding.",
+    "The PR fails both ticket requirements: `apply_credit_memo` can return a negative balance, and `credit_with_tax_cents` divides by 100 rather than 10,000. The added tests don\u2019t catch these defects because the tax test\u2019s expected result is inconsistent with the required basis-point calculation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.875,
+  "prompt_tokens": 2889,
+  "output_tokens": 1448,
+  "estimated_usd": 0.006945,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

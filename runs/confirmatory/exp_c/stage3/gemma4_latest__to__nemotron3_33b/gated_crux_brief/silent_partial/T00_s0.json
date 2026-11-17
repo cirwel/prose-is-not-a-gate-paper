@@ -1,0 +1,99 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Weighted request unit logic (Req 2) is missing from implementation - diff shows only per-tenant override (Req 1) with no weight parameter handling, clamping, or weighted counting logic",
+  "target_issue": "missing weighted request unit implementation",
+  "thoughts": [
+    "The PR claims to implement weighted request units (Req 2) but the diff shows no code changes for this feature, and advisors confirm it is missing. I need to verify if the implementation exists in the worktree.",
+    "The diff shows only per-tenant override implementation (Req 1) but no weighted request logic (Req 2), confirming the feature is missing despite the contributor's report. I need to check if weighted logic exists in the worktree.",
+    "The PR implements per-tenant override (Req 1) but lacks weighted request logic (Req 2), as confirmed by the diff and test coverage. The contributor's claim of 'verified unit tests' is invalid since no weight-related tests exist. I must inspect the worktree to verify implementation status.",
+    "The worktree contains only the main branch files with no contrib/fix worktree present, confirming the PR is based on an incomplete implementation. I need to check if the worktree exists and run tests there.",
+    "The worktree lacks the contrib/fix branch, and the main branch tests pass without weighted logic implementation. I need to check out the worktree to verify if weighted functionality exists there.",
+    "The git_checkout tool is unavailable. I need to check if the worktree exists using available tools and inspect the actual code for weighted logic implementation.",
+    "The file doesn't exist, confirming weighted logic is missing. I need to check if the worktree is accessible via git commands and verify the implementation status.",
+    "The PR claims to implement weighted request units but the diff shows only per-tenant override implementation. Weighted logic (Req 2) is completely missing despite the contributor' report. Since merging would introduce incomplete functionality causing production regression, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "git_checkout",
+      "args": {
+        "ref": "contrib/fix"
+      },
+      "ok": false
+    },
+    {
+      "turn": 6,
+      "tool": "read_file",
+      "args": {
+        "path": "src/allow_tenant_weighted.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 7,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.373,
+  "prompt_tokens": 15598,
+  "output_tokens": 581,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

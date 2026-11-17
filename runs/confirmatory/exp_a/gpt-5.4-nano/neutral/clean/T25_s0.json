@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "split_cents_exact computes exact shares using floats ((total_cents * w) / total_w) and then derives fractional parts from float differences; this can misorder remainder penny allocation under large totals/weights, breaking the \u201cdistribute remainder pennies one-by-one from the highest fractional part (ties by lowest index)\u201d requirement.",
+  "target_issue": "T25 Req 1 (split_cents_exact) implementation uses float arithmetic; needs exact integer-based fractional comparison to guarantee no penny drift.",
+  "thoughts": [
+    "I will inspect the diff and run the test suite in the contrib/fix branch to ensure the new requirements are implemented correctly and legacy behavior is preserved.",
+    "Diff shows new functions added, but split_cents_exact uses float arithmetic which can cause penny drift for large totals/weights; I will run pytest to confirm and inspect for potential edge-case failures.",
+    "All tests pass, but I need to ensure the implementation meets the exact remainder-penny distribution rule without float drift; I will inspect ledger_round.py for existing legacy signatures and confirm no other constraints are violated.",
+    "The PR adds the required functions and tests pass, but split_cents_exact uses floating-point arithmetic to compute exact shares and fractional parts; this can violate the strict remainder penny distribution rule for large values due to float rounding (penny drift risk). I will hold until the implementation is changed to use exact integer math (e.g., floor via integer division and remainder allocation based on cross-multiplication)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.796,
+  "prompt_tokens": 4437,
+  "output_tokens": 370,
+  "estimated_usd": 0.001479,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

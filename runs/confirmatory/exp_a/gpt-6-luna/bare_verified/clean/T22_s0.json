@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`lru_set` breaks the capacity guarantee when no non-pinned victim exists: it falls through and inserts the new key, even if that leaves the cache over capacity. At capacity zero it likewise inserts a key. The PR\u2019s tests do not cover these cases.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first to check the implementation against both requirements and legacy behavior.",
+    "The diff adds both requested functions, but I\u2019m checking the surrounding repository expectations and running the tests, particularly for capacity edge cases.",
+    "All visible tests pass, but I\u2019m checking the module and project context for intended behavior when capacity is already full of pinned entries or capacity is nonpositive.",
+    "The implementation works for the covered cases, but when every existing key is pinned\u2014or capacity is zero\u2014it inserts the new key anyway, violating the stated capacity constraint. I\u2019m holding until those boundary cases have defined and enforced behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.624,
+  "prompt_tokens": 4496,
+  "output_tokens": 741,
+  "estimated_usd": 0.005967,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

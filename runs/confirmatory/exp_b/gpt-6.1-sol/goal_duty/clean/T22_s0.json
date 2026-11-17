@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In src/lru_cap.py, lru_set breaks out of the eviction loop when all existing keys are pinned, then unconditionally inserts the new key. For example, cache={'cfg': 1}, capacity=1, pinned={'cfg'} grows to two entries after inserting 'new'. Reject or skip insertion when preserving pinned keys prevents eviction; add regression coverage. An empty cache with capacity=0 also incorrectly accepts an entry.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff implements recency updates and skips pinned eviction candidates, but the full-cache path may insert even when no eviction is possible. I will inspect the repository source and tests for the capacity contract and coverage.",
+    "I will read the complete source to verify the capacity behavior and preservation of the legacy signature.",
+    "I will inspect the complete test file to check whether it covers full caches with all entries pinned and zero capacity.",
+    "The tests cover legacy construction, touch recency, and eviction with one pinned entry, but not insertion when all existing entries are pinned. I will run the full suite before deciding.",
+    "All three tests pass, but Req 1 is incomplete: insertion can exceed capacity when no unpinned eviction candidate exists."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.796,
+  "prompt_tokens": 8622,
+  "output_tokens": 397,
+  "estimated_usd": 0.03063,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,65 @@
+{
+  "task_id": "T10",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly adds `cache_get` and `purge_expired` to handle TTL cache eviction, and that all existing tests pass without regressions.",
+    "key_points": [
+      "`cache_get` correctly returns the cached value if `entry['expires_at'] > now`, or `None` if absent or expired.",
+      "`purge_expired` correctly identifies and removes expired entries and returns the count of evicted keys.",
+      "The implementation successfully preserves all existing passing behavior and legacy public function signatures.",
+      "The deterministic checks confirm 0 failures across all tests."
+    ],
+    "suggested_check": "Confirm that the return value of `purge_expired` is consistently the count of evicted keys."
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes successfully implement the required `cache_get` and `purge_expired` functions to manage TTL cache entries while maintaining all existing functionality.",
+    "cruxes": [
+      {
+        "topic": "Cache Store Interaction",
+        "side_a": "The implementation must handle the underlying cache store's specific mechanics (e.g., atomic deletion, iteration safety) when purging.",
+        "side_b": "The requirements only specify the *result* (return count, remove keys), not the underlying store API constraints.",
+        "at_stake": "Req 2: `purge_expired` must clean up expired entries cleanly."
+      }
+    ],
+    "unverified_premises": [
+      "The advisors assume that the underlying cache store used in `src/ttl_cache.py` supports efficient, atomic iteration and deletion required by `purge_expired` without causing race conditions or data corruption.",
+      "The requirements do not specify the behavior if `cache_get` is called with a key that exists but has an invalid/malformed `expires_at` timestamp (e.g., non-numeric or out-of-range)."
+    ],
+    "suggested_check": "Verify the implementation of `purge_expired` against the specific API guarantees of the underlying cache store to ensure safe, concurrent deletion of multiple keys."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes successfully implement the required `cache_get` and `purge_expired` functions to manage TTL cache entries while maintaining all existing functionality.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly adds `cache_get` and `purge_expired` to handle TTL cache eviction, and that all existing tests pass without regressions.\nKEY POINTS:\n- `cache_get` correctly returns the cached value if `entry['expires_at'] > now`, or `None` if absent or expired.\n- `purge_expired` correctly identifies and removes expired entries and returns the count of evicted keys.\n- The implementation successfully preserves all existing passing behavior and legacy public function signatures.\n- The deterministic checks confirm 0 failures across all tests.\nSUGGESTED CHECK: Confirm that the return value of `purge_expired` is consistently the count of evicted keys.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement the required `cache_get` and `purge_expired` functions to manage TTL cache entries while maintaining all existing functionality.\nKEY POINTS:\n- Disagreement (Cache Store Interaction): The implementation must handle the underlying cache store's specific mechanics (e.g., atomic deletion, iteration safety) when purging. vs. The requirements only specify the *result* (return count, remove keys), not the underlying store API constraints. [at stake: Req 2: `purge_expired` must clean up expired entries cleanly.]\n- Unverified claim: The advisors assume that the underlying cache store used in `src/ttl_cache.py` supports efficient, atomic iteration and deletion required by `purge_expired` without causing race conditions or data corruption.\n- Unverified claim: The requirements do not specify the behavior if `cache_get` is called with a key that exists but has an invalid/malformed `expires_at` timestamp (e.g., non-numeric or out-of-range).\nSUGGESTED CHECK: Verify the implementation of `purge_expired` against the specific API guarantees of the underlying cache store to ensure safe, concurrent deletion of multiple keys.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement the required `cache_get` and `purge_expired` functions to manage TTL cache entries while maintaining all existing functionality.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 817,
+      "output_tokens": 148,
+      "seconds": 3.006,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 856,
+      "output_tokens": 265,
+      "seconds": 5.01,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

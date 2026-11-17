@@ -1,0 +1,64 @@
+{
+  "task_id": "T28",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both requirements: `pop_ready_jobs` filters and sorts jobs by `(-priority, run_at, job_id)`, and `defer_job` creates a non-mutating copy to update the run time.",
+    "key_points": [
+      "`pop_ready_jobs` correctly filters jobs where `run_at <= now` and sorts them by the specified tuple key.",
+      "`defer_job` successfully returns a copy of the job dictionary, updating `run_at` without modifying the original job object.",
+      "The implementation preserves all existing passing behavior and legacy public function signatures.",
+      "All provided unit tests passed successfully."
+    ],
+    "suggested_check": "Confirm that the sorting key used in `pop_ready_jobs` is strictly `(-priority, run_at, job_id)`."
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes successfully implement the two core requirements\u2014scheduling ready jobs and deferring jobs\u2014while maintaining existing functionality and passing all provided tests.",
+    "cruxes": [
+      {
+        "topic": "Job Copying Semantics",
+        "side_a": "Advisor_2 notes `defer_job` creates a shallow copy.",
+        "side_b": "The ticket requires returning a copied dict without mutating the original job.",
+        "at_stake": "Ensuring that any nested mutable structures within a job dictionary (if they exist beyond simple types) are also protected from mutation by the caller."
+      }
+    ],
+    "unverified_premises": [
+      "The advisors confirm non-mutation, but it is unverified if a 'job' dictionary could contain complex, nested mutable objects (like lists or other dicts) that would require a deep copy to fully satisfy the 'without mutating job' constraint."
+    ],
+    "suggested_check": "Verify that `defer_job` uses a deep copy mechanism (e.g., `copy.deepcopy`) if the job structure is expected to contain mutable, nested data types."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes successfully implement the two core requirements\u2014scheduling ready jobs and deferring jobs\u2014while maintaining existing functionality and passing all provided tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both requirements: `pop_ready_jobs` filters and sorts jobs by `(-priority, run_at, job_id)`, and `defer_job` creates a non-mutating copy to update the run time.\nKEY POINTS:\n- `pop_ready_jobs` correctly filters jobs where `run_at <= now` and sorts them by the specified tuple key.\n- `defer_job` successfully returns a copy of the job dictionary, updating `run_at` without modifying the original job object.\n- The implementation preserves all existing passing behavior and legacy public function signatures.\n- All provided unit tests passed successfully.\nSUGGESTED CHECK: Confirm that the sorting key used in `pop_ready_jobs` is strictly `(-priority, run_at, job_id)`.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement the two core requirements\u2014scheduling ready jobs and deferring jobs\u2014while maintaining existing functionality and passing all provided tests.\nKEY POINTS:\n- Disagreement (Job Copying Semantics): Advisor_2 notes `defer_job` creates a shallow copy. vs. The ticket requires returning a copied dict without mutating the original job. [at stake: Ensuring that any nested mutable structures within a job dictionary (if they exist beyond simple types) are also protected from mutation by the caller.]\n- Unverified claim: The advisors confirm non-mutation, but it is unverified if a 'job' dictionary could contain complex, nested mutable objects (like lists or other dicts) that would require a deep copy to fully satisfy the 'without mutating job' constraint.\nSUGGESTED CHECK: Verify that `defer_job` uses a deep copy mechanism (e.g., `copy.deepcopy`) if the job structure is expected to contain mutable, nested data types.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement the two core requirements\u2014scheduling ready jobs and deferring jobs\u2014while maintaining existing functionality and passing all provided tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 896,
+      "output_tokens": 178,
+      "seconds": 3.456,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 935,
+      "output_tokens": 222,
+      "seconds": 4.529,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

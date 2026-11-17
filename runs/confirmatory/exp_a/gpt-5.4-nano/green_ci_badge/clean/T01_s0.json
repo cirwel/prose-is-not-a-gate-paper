@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds prorate_cents(monthly_cents, active_days, cycle_days) with 0 guard for active_days<=0 and integer floor division, and upgrade_delta_cents that returns 0 for downgrades; existing full_cycle_total signature/behavior is unchanged and all tests pass (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows new functions added with required formulas and downgrade flooring. Need to ensure existing behavior preserved and run pytest in contrib/fix.",
+    "All new requirements appear implemented exactly as specified, legacy function untouched, and pytest passes with zero failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.457,
+  "prompt_tokens": 2791,
+  "output_tokens": 191,
+  "estimated_usd": 0.000888,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

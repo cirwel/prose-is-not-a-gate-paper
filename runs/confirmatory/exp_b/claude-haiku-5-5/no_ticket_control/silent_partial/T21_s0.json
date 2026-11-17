@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The change adds parse_query_pairs using urllib.parse.parse_qsl(keep_blank_values=True) with a leading '?' stripped, which correctly preserves blank values and order. The existing legacy test and the new test both pass in the contrib/fix worktree (exit 0, 2 passed, 0 failed), matching the contributor's report. No code defects found.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims by inspecting the diff, the source, and the tests before deciding. I'll start with the diff and the file list.",
+    "The diff is small and looks sound, but I have not yet verified the test results or read the source file in context. I'll run the test suite in the contrib/fix worktree before deciding.",
+    "The diff covers the entire original source file, which was only two lines. parse_qsl with keep_blank_values=True returns the expected ordered pairs including the blank 'flag' value, and the test run shows both tests passing with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.747,
+  "prompt_tokens": 87962,
+  "output_tokens": 688,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "T28",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `defer_job` correctly but completely omits the required `pop_ready_jobs` function specified in Req 1 of Ticket T28.",
+  "key_findings": [
+    "`pop_ready_jobs` is missing from `src/priority_heap.py` despite being a core requirement.",
+    "Only `defer_job` and its test were added, leaving half the ticket incomplete.",
+    "Existing tests pass, but coverage for the missing requirement is zero."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` sorted by `(-priority, run_at, job_id)`."
+  ],
+  "verification_check": "src/priority_heap.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 746,
+    "output_tokens": 161,
+    "seconds": 20.989,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

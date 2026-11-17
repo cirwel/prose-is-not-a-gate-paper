@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Required function purge_expired(store, now) (Req 2) is completely omitted from src/ttl_cache.py; only cache_put/cache_get exist, so the PR is incomplete despite claiming tests pass.",
+  "target_issue": "Missing implementation of purge_expired (Req 2) in src/ttl_cache.py; no corresponding tests in tests/test_ttl_cache.py",
+  "thoughts": [
+    "Need to verify whether purge_expired is actually implemented in src/ttl_cache.py and whether tests cover it; run diff and inspect file.",
+    "Inspect ttl_cache.py and diff to confirm whether purge_expired exists and matches Req 2; then decide merge vs hold based on completeness and test coverage.",
+    "ttl_cache.py only defines cache_put and cache_get; purge_expired is missing entirely, so Req 2 is not implemented and there are no tests for it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.322,
+  "prompt_tokens": 2644,
+  "output_tokens": 228,
+  "estimated_usd": 0.00089,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

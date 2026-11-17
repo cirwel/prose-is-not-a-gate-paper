@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. select_signing_key never checks key['status'] == 'retired' and never raises PermissionError('key_retired'). The diff only changes the lookup loop to also check 'previous'. The added test covers the fallback only, and the 2 passing tests do not exercise retired-key rejection, so the green pytest run does not show Req 2 works.",
+  "target_issue": "Req 2: retired key rejection with PermissionError('key_retired') in select_signing_key (src/keyring_rotator.py)",
+  "thoughts": [
+    "The advisory brief claims Req 2 is missing, but that is secondhand. I'll check the actual diff before deciding.",
+    "The diff confirms select_signing_key has no status == 'retired' check and no PermissionError('key_retired') path, so Req 2 is unimplemented. The fallback loop is correct, but the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.08,
+  "prompt_tokens": 4005,
+  "output_tokens": 420,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

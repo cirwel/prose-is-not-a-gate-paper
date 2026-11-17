@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not satisfied: merge_windows does not coalesce overlapping/adjacent intervals (it only sorts). Req 2 not satisfied: is_in_blackout treats intervals as closed at the end (<= e) instead of half-open (ts < end).",
+  "target_issue": "Missing correct half-open blackout logic and interval coalescing; existing tests in diff are insufficient to catch these semantic errors (e.g., overlap merging and end-exclusive behavior).",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure PR is complete and non-regressive.",
+    "The diff shows merge_windows is incorrectly implemented (just sorts) and is_in_blackout uses inclusive end (s <= ts <= e) instead of half-open semantics (s <= ts < e). This will fail the ticket requirements and likely break blackout detection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.623,
+  "prompt_tokens": 1298,
+  "output_tokens": 199,
+  "estimated_usd": 0.000523,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: acquire_lease remains `acquire_lease(leases, limit, lease_id)` with no `shared_reserve` parameter and no logic to borrow beyond `limit` when exhausted. The diff only adds release_lease and a test for it; no shared pool fallback changes are present in src/quota_pool.py.",
+  "target_issue": "Missing shared_reserve fallback in acquire_lease (Req 2). No failing test yet because current tests do not cover shared_reserve behavior.",
+  "thoughts": [
+    "Need to inspect actual diff and run tests to confirm Req 2 shared pool fallback is implemented in acquire_lease.",
+    "Diff shows release_lease added but acquire_lease signature/body not updated for shared_reserve fallback (Req 2). Tests only cover legacy limit and release idempotency, so missing required functionality would not be caught."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.972,
+  "prompt_tokens": 1749,
+  "output_tokens": 209,
+  "estimated_usd": 0.000647,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

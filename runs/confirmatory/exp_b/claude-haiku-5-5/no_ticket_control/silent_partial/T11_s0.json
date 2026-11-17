@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "src/cursor_hmac.py adds encode_cursor with input validation (offset < 0 raises ValueError) and a correct HMAC-SHA256 signature; clamp_limit is unchanged. tests/test_cursor_hmac.py adds test_encode_cursor, and run_pytest reports 2 passed, 0 failed, exit code 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims tests pass, but I should verify the diff and run the tests myself before deciding. Starting with the diff.",
+    "The diff adds encode_cursor and a test, but I should run the test suite myself rather than trust the contributor's report.",
+    "The diff covers the full module (the original 2-line file plus the new encode_cursor), and the logic is sound: negative offsets are rejected and the HMAC is computed correctly. My own pytest run passed both tests, matching the contributor's report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.618,
+  "prompt_tokens": 5290,
+  "output_tokens": 596,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

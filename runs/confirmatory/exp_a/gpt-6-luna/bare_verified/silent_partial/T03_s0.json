@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_nullable_int lacks min_val and max_val arguments and does not raise ValueError('out_of_range') for values outside the requested bounds.",
+  "target_issue": "T03 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff to verify the requested API, null-token handling, bounds behavior, and compatibility.",
+    "The new parser handles whitespace and case-insensitive null tokens, but it does not implement the requested min_val/max_val parameters or out-of-range error. The PR therefore does not meet Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.798,
+  "prompt_tokens": 1296,
+  "output_tokens": 230,
+  "estimated_usd": 0.001773,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

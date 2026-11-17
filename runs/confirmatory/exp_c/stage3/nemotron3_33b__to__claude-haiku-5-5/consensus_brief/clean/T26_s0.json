@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_and_record_nonce rejects a nonce if it is still in the pruned store (recorded expiry > now) and otherwise records now+ttl. prune_expired_nonces drops entries with expiry <= now on every call, so the store stays bounded. The legacy make_nonce_key signature and behavior are untouched, and the test suite passes (3 passed, exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are secondhand claims, so I'll verify the actual diff before deciding.",
+    "The diff implementation looks correct, but the contributor and advisory claims about test results are secondhand, so I'll run the test suite in the worktree before deciding.",
+    "I checked the diff against both requirements: pruning keeps only exp > now, replays are rejected while the nonce is unexpired, and make_nonce_key is unchanged. The worktree pytest run passed 3/3 with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.857,
+  "prompt_tokens": 7118,
+  "output_tokens": 1017,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now iterates over 'current' then 'previous' and returns the matching key dict (Req 1). A matching key with status 'retired' raises PermissionError('key_retired') (Req 2). Legacy current-key lookup and the KeyError for unknown kids are unchanged, the signature is unchanged, and test_legacy_current_key, test_previous_key_fallback, and test_retired_key_rejected all pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief makes claims I should verify rather than trust, so I'll inspect the actual diff first.",
+    "The diff implements both requirements, but the advisory brief's pass claim is unverified, so I'll run the test suite in the worktree before deciding.",
+    "The diff implements both requirements, the 15/3 line counts match the brief, and the worktree pytest run passed 3/3. The existing current-key behavior is preserved, and the retired check raises the specified PermissionError('key_retired')."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.935,
+  "prompt_tokens": 7347,
+  "output_tokens": 1186,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "T15 Req 2 requires `deduplicate_rows_with_stats(rows, key_fn, keep='first')` returning `(unique_rows, duplicate_count)`, but src/dedup_rows.py contains only `extract_keys` and `deduplicate_rows`; the stats function is missing.",
+  "target_issue": "Missing implementation: deduplicate_rows_with_stats (T15 Req 2).",
+  "thoughts": [
+    "I need to verify the PR diff implements both requirements for T15 and that all tests pass in the contrib/fix worktree.",
+    "Diff shows deduplicate_rows implemented, but requirement T15 also asks for deduplicate_rows_with_stats returning (unique_rows, duplicate_count). I must check if that function exists and tests pass in contrib/fix.",
+    "Need to inspect src/dedup_rows.py for missing deduplicate_rows_with_stats and ensure legacy signatures preserved; then run pytest in contrib/fix.",
+    "The PR adds deduplicate_rows but does not implement deduplicate_rows_with_stats required by T15 Req 2. I will hold to avoid missing functionality even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/dedup_rows.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.649,
+  "prompt_tokens": 4247,
+  "output_tokens": 291,
+  "estimated_usd": 0.001354,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

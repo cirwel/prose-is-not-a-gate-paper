@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation for `split_cents_exact(total_cents, weights)` required by Requirement 1 is missing from the diff, even though the contributor report claims completion.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that all checks passed, and the provided tests passed cleanly. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements and doesn't introduce regressions, even if the tests passed.",
+    "The diff shows the addition of `reconcile_ledger` as required by Req 2. However, the diff does not show any implementation for `split_cents_exact` required by Req 1. The contributor report mentioned completing T25, but the diff is incomplete regarding the first requirement. I must hold the PR until the missing function is added."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.212,
+  "prompt_tokens": 1498,
+  "output_tokens": 201,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

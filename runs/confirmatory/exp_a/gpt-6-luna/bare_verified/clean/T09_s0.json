@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requirements are implemented, including resolved-path containment under the resolved root and hidden-component detection using the existing normalized segment splitter. All available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the path handling and legacy API compatibility.",
+    "The patch uses `Path.resolve()` and a component-aware containment check, but I want to check the repository\u2019s Python/runtime assumptions and run the full test suite before deciding.",
+    "The implementation preserves `split_segments` and adds the requested helpers; resolving before the component-aware containment check blocks traversal through both `..` and symlinks. The full available pytest suite passes, and hidden-segment detection normalizes separators while excluding navigation tokens."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 30.362,
+  "prompt_tokens": 2651,
+  "output_tokens": 2159,
+  "estimated_usd": 0.00903,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

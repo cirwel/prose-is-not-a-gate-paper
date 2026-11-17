@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires clamping negative results to 0, but apply_credit_clammed returns -500; Req 2 requires net_credit + (net_credit * tax_bps)//10000, but credit_with_tax_returns computes 2000 + (2000*825)//10000 = 18500 instead of expected 2165, indicating incorrect tax calculation logic.",
+  "target_issue": "T13",
+  "thoughts": [
+    "The contributor claims 0 test failures, but the PR metadata shows a pytest worktree failure mismatch; I need to verify the actual test results in the worktree.",
+    "The pytest worktree shows 2 critical test failures: apply_credit_clammed returns -500 instead of 0 (violating Req 1), and credit_with_tax_returns 18500 instead of 2165 (violating Req 2), confirming the contributor's report was incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.596,
+  "prompt_tokens": 1889,
+  "output_tokens": 250,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

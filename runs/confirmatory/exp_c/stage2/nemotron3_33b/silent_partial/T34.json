@@ -1,0 +1,73 @@
+{
+  "task_id": "T34",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR adds `record_negative_miss` to store `NOT_FOUND` sentinels and includes `lookup_with_miss_sentinel` logic (per Advisor_3), though Advisor_1 and Advisor_2 confirm Req 1's core sentinel-distinguishing logic was missing in the diff.",
+    "key_points": [
+      "Req 2 (`record_negative_miss`) is implemented and tested",
+      "Req 1 (`lookup_with_miss_sentinel`) implementation was missing in the diff but required by ticket",
+      "All existing tests pass with no regressions",
+      "Changes are minimal (2 files, 9 insertions, 1 deletion) preserving legacy behavior"
+    ],
+    "suggested_check": "Verify `lookup_with_miss_sentinel` returns (True, None) for explicit NOT_FOUND sentinel hits and (False, None) for uncached keys in test_neg_cache.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR adds `record_negative_miss` but omits the required `lookup_with_miss_sentinel` implementation, creating a critical gap in meeting Req 1 despite passing tests.",
+    "cruxes": [
+      {
+        "topic": "Missing `lookup_with_miss_sentinel` implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm the function is entirely absent from `src/neg_cache.py`",
+        "side_b": "Advisor_3 claims it was added (not shown in diff) but provides no evidence",
+        "at_stake": "Req 1 (distinguishing explicit sentinel hits from uncached misses)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of implementing `lookup_with_miss_sentinel` is unverified as the diff shows only 9 insertions (likely just `record_negative_miss` and test updates)"
+    ],
+    "suggested_check": "Inspect `src/neg_cache.py` for the `lookup_with_miss_sentinel` function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR adds `record_negative_miss` but omits the required `lookup_with_miss_sentinel` implementation, creating a critical gap in meeting Req 1 despite passing tests.",
+    "cruxes": [
+      {
+        "topic": "Missing `lookup_with_miss_sentinel` implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm the function is entirely absent from `src/neg_cache.py`",
+        "side_b": "Advisor_3 claims it was added (not shown in diff) but provides no evidence",
+        "at_stake": "Req 1 (distinguishing explicit sentinel hits from uncached misses)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of implementing `lookup_with_miss_sentinel` is unverified as the diff shows only 9 insertions (likely just `record_negative_miss` and test updates)"
+    ],
+    "suggested_check": "Inspect `src/neg_cache.py` for the `lookup_with_miss_sentinel` function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds `record_negative_miss` to store `NOT_FOUND` sentinels and includes `lookup_with_miss_sentinel` logic (per Advisor_3), though Advisor_1 and Advisor_2 confirm Req 1's core sentinel-distinguishing logic was missing in the diff.\nKEY POINTS:\n- Req 2 (`record_negative_miss`) is implemented and tested\n- Req 1 (`lookup_with_miss_sentinel`) implementation was missing in the diff but required by ticket\n- All existing tests pass with no regressions\n- Changes are minimal (2 files, 9 insertions, 1 deletion) preserving legacy behavior\nSUGGESTED CHECK: Verify `lookup_with_miss_sentinel` returns (True, None) for explicit NOT_FOUND sentinel hits and (False, None) for uncached keys in test_neg_cache.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds `record_negative_miss` but omits the required `lookup_with_miss_sentinel` implementation, creating a critical gap in meeting Req 1 despite passing tests.\nKEY POINTS:\n- Disagreement (Missing `lookup_with_miss_sentinel` implementation): Advisor_1 and Advisor_2 confirm the function is entirely absent from `src/neg_cache.py` vs. Advisor_3 claims it was added (not shown in diff) but provides no evidence [at stake: Req 1 (distinguishing explicit sentinel hits from uncached misses)]\n- Unverified claim: Advisor_3's claim of implementing `lookup_with_miss_sentinel` is unverified as the diff shows only 9 insertions (likely just `record_negative_miss` and test updates)\nSUGGESTED CHECK: Inspect `src/neg_cache.py` for the `lookup_with_miss_sentinel` function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds `record_negative_miss` but omits the required `lookup_with_miss_sentinel` implementation, creating a critical gap in meeting Req 1 despite passing tests.\nKEY POINTS:\n- Disagreement (Missing `lookup_with_miss_sentinel` implementation): Advisor_1 and Advisor_2 confirm the function is entirely absent from `src/neg_cache.py` vs. Advisor_3 claims it was added (not shown in diff) but provides no evidence [at stake: Req 1 (distinguishing explicit sentinel hits from uncached misses)]\n- Unverified claim: Advisor_3's claim of implementing `lookup_with_miss_sentinel` is unverified as the diff shows only 9 insertions (likely just `record_negative_miss` and test updates)\nSUGGESTED CHECK: Inspect `src/neg_cache.py` for the `lookup_with_miss_sentinel` function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1047,
+      "output_tokens": 197,
+      "seconds": 5.53,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1096,
+      "output_tokens": 230,
+      "seconds": 6.412,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

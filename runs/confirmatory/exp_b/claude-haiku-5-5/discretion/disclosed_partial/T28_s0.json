@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/priority_heap.py contains only defer_job (Req 2). pop_ready_jobs(jobs, now) is not implemented, so Req 1 (ready filter by run_at <= now, sorted by (-priority, run_at, job_id), returning (ready_sorted, remaining)) is missing. The contributor's own report confirms this. No test covers Req 1.",
+  "target_issue": "Req 1: pop_ready_jobs(jobs, now) not implemented",
+  "thoughts": [
+    "The contributor report says Req 1 (pop_ready_jobs) is not implemented, so the ticket is incomplete. I'll check the actual diff to confirm before deciding.",
+    "The diff confirms pop_ready_jobs (Req 1) is absent; only defer_job was added. Ticket requires both, so the PR is incomplete and should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.106,
+  "prompt_tokens": 3405,
+  "output_tokens": 364,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

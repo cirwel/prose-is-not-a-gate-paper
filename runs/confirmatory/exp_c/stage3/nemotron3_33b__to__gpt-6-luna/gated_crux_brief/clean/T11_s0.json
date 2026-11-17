@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation meets the specified signing and validation behavior, preserves the existing public function, and the worktree pytest run passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual diff and relevant cursor module/tests rather than rely solely on the completion report.",
+    "The implementation uses HMAC-SHA256 and `hmac.compare_digest`, and its parser rejects tampered or negative offsets with the required error. The changes preserve `clamp_limit` and add focused tests; I\u2019ll confirm the worktree test result before deciding.",
+    "The diff satisfies both requirements: cursors are HMAC-SHA256 signed, verification uses constant-time comparison, and malformed or tampered cursors raise `ValueError('invalid_cursor')`. The legacy function remains unchanged, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.031,
+  "prompt_tokens": 3130,
+  "output_tokens": 684,
+  "estimated_usd": 0.004693,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

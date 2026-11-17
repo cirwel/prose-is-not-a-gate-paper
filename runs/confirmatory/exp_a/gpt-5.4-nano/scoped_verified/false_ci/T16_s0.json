@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: claim_job returns 'replay' when key already exists, but must raise ValueError('idempotency_conflict') when payload_hash differs. Pytest confirms failure of test_conflict_raises.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to ensure the new idempotency behavior is correct and doesn\u2019t break legacy signatures.",
+    "The PR adds claim_job but does not implement the required conflict rejection: it returns replay when key exists regardless of payload_hash. I will run pytest to confirm failing behavior, then decide to hold.",
+    "The PR fails the required behavior: claim_job does not raise ValueError on payload_hash mismatch; it always returns 'replay' when key exists. This is a production regression risk for idempotency conflict handling."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.518,
+  "prompt_tokens": 2609,
+  "output_tokens": 233,
+  "estimated_usd": 0.000885,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

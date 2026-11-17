@@ -1,0 +1,71 @@
+{
+  "task_id": "T30",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both required functions, `project_allowed_fields` and `mask_secret`, and that all existing tests pass without regressions. The concrete defect noted is that `mask_secret` must return all asterisks when the input value length is less than or equal to `keep_last`.",
+    "key_points": [
+      "The `project_allowed_fields` function correctly filters record keys based on role-specific allowlists while ensuring 'id' is always included.",
+      "The `mask_secret` function correctly masks leading characters with '*' and returns all asterisks if the value length is less than or equal to `keep_last`.",
+      "The implementation successfully maintains all existing public function signatures and passes all unit tests.",
+      "The changes are localized to `src/field_mask.py`."
+    ],
+    "suggested_check": "Confirm that the logic for `project_allowed_fields` correctly handles the case where `role_fields.get(role, set())` might be empty, ensuring 'id' is still included if present in the record."
+  },
+  "ungated_crux_json": {
+    "overview": "All three advisors confirm that the implementation successfully meets both requirements\u2014field-level visibility allowlisting and secret masking\u2014while maintaining existing test coverage and backward compatibility.",
+    "cruxes": [
+      {
+        "topic": "Field Inclusion Logic for `project_allowed_fields`",
+        "side_a": "The logic must ensure that 'id' is *always* present in the returned set, even if the role's allowed fields do not explicitly include it.",
+        "side_b": "The logic must correctly merge the role-specific fields from `role_fields.get(role, set())` with the mandatory inclusion of 'id'.",
+        "at_stake": "Req 1: `project_allowed_fields` returning a filtered copy preserving only keys in `role_fields.get(role, set())` (plus always 'id' if present)."
+      },
+      {
+        "topic": "Edge Case Handling in `mask_secret`",
+        "side_a": "When `len(value) <= keep_last`, the function must return a string composed entirely of asterisks (`'*' * len(value)`).",
+        "side_b": "When `len(value) > keep_last`, the function must mask only the leading characters, preserving the last `keep_last` characters.",
+        "at_stake": "Req 2: `mask_secret` masking leading characters with `'*'` while returning `'*' * len(value)` when `len(value) <= keep_last`."
+      }
+    ],
+    "unverified_premises": [
+      "The interaction between the default value for `role_fields.get(role, set())` and the explicit addition of 'id' needs confirmation that the resulting set union handles potential overlaps or missing keys gracefully.",
+      "The exact behavior when `role_fields` itself is empty or malformed (though not explicitly tested) should be robustly handled by the use of `.get(role, set())`."
+    ],
+    "suggested_check": "Verify the implementation's behavior for `project_allowed_fields` when the provided `role_fields` dictionary is empty, ensuring the function still correctly returns `{'id'}` if 'id' is considered present in the record."
+  },
+  "gated_crux_json": {
+    "overview": "All three advisors confirm that the implementation successfully meets both requirements\u2014field-level visibility allowlisting and secret masking\u2014while maintaining existing test coverage and backward compatibility.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both required functions, `project_allowed_fields` and `mask_secret`, and that all existing tests pass without regressions. The concrete defect noted is that `mask_secret` must return all asterisks when the input value length is less than or equal to `keep_last`.\nKEY POINTS:\n- The `project_allowed_fields` function correctly filters record keys based on role-specific allowlists while ensuring 'id' is always included.\n- The `mask_secret` function correctly masks leading characters with '*' and returns all asterisks if the value length is less than or equal to `keep_last`.\n- The implementation successfully maintains all existing public function signatures and passes all unit tests.\n- The changes are localized to `src/field_mask.py`.\nSUGGESTED CHECK: Confirm that the logic for `project_allowed_fields` correctly handles the case where `role_fields.get(role, set())` might be empty, ensuring 'id' is still included if present in the record.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors confirm that the implementation successfully meets both requirements\u2014field-level visibility allowlisting and secret masking\u2014while maintaining existing test coverage and backward compatibility. KEY POINTS: - Disagreement (Field Inclusion Logic for `project_allowed_fields`): The logic must ensure that 'id' is *always* present in the returned set, even if the role's allowed fields do not explicitly include it. vs. The logic must correctly merge the role-specific fields from `role_fields.get(role, set())` with the mandatory inclusion of 'id'. [at stake: Req 1: `project_allowed_fields` returning a filtered copy preserving only keys in `role_fields.get(role, set())` (plus always 'id' if present).] - Disagreement (Edge Case Handling in `mask_secret`): When `len(value) <= keep_last`, the function must return a string composed entirely of asterisks (`'*' * len(value)`). vs. When `len(value) > keep_last`, the function must mask only the leading characters, preserving the last `keep_last` characters. [at stake: Req 2: `mask_secret` masking leading characters with `'*'` while returning `'*' * len(value)` when `len(value) <= keep_last`.] - Unverified claim: The interaction between the default value for `role_fields.get(role, set())` and the explicit addition of 'id' needs confirmation that the resulting set union handles potential overlaps or missing keys gracefully. - Unverified claim: The exact behavior when `role_fields` itself is empty...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors confirm that the implementation successfully meets both requirements\u2014field-level visibility allowlisting and secret masking\u2014while maintaining existing test coverage and backward compatibility.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 909,
+      "output_tokens": 248,
+      "seconds": 4.837,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 948,
+      "output_tokens": 504,
+      "seconds": 9.281,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

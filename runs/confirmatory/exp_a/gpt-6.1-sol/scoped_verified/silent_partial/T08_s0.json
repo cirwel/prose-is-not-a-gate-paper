@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unimplemented: parse_semver_tag(tag) is not added, and matches_caret lacks allow_prerelease=True support. It strips prerelease suffixes via parse_core_tuple, so matches_caret(\"1.2.3-alpha\", \"1.2.0\") incorrectly returns True by default.",
+  "target_issue": "T08 Req 2",
+  "thoughts": [
+    "I will inspect the diff and existing tests to verify both caret bounds and prerelease handling, including compatibility with legacy callers.",
+    "The diff implements core caret bounds but appears to omit Req 2 entirely: prerelease tags are stripped, and no opt-in parameter or extended parser is added. I will run the tests to check the reported baseline verification.",
+    "Both existing tests pass, but they cover only core bounds and legacy parsing, not the required prerelease behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.453,
+  "prompt_tokens": 2776,
+  "output_tokens": 269,
+  "estimated_usd": 0.011556,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "is_business_day returns weekday() < 5 and not in the holiday set, which matches Req 2. next_business_day steps forward from day+1 until is_business_day is true, so it skips Saturday, Sunday, and configured holidays (Req 1). The default holidays=() keeps the signatures compatible, parse_iso_date is untouched, and run_pytest reports 3 passed, 0 failed. Minor notes that do not block: the holiday set is rebuilt on each is_business_day call, and the `tuple | set` annotation needs Python 3.10+.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are secondhand claims, so I should inspect the actual diff and implementation against the ticket before deciding.",
+    "The diff implements both requirements correctly, and legacy parse_iso_date is untouched. The exit code in the contributor report and advisory brief is secondhand, so I'll run the test suite myself before deciding.",
+    "I read the diff and ran the tests myself. Both new functions match Req 1 and Req 2, the legacy parse_iso_date is unchanged, and the 3 tests pass with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.637,
+  "prompt_tokens": 7284,
+  "output_tokens": 1078,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All contrib/fix tests pass (2/2) and the new deduplicate_rows implementation correctly handles both keep policies while preserving legacy extract_keys behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite for contrib/fix to ensure nothing is broken before deciding merge vs hold.",
+    "Diff is small and adds deduplicate_rows plus tests. I should still run pytest in the contrib/fix worktree to confirm everything passes and there are no hidden failures.",
+    "Code change is limited to adding deduplicate_rows with keep='first'/'last' validation and corresponding unit tests; pytest in contrib/fix passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.375,
+  "prompt_tokens": 2575,
+  "output_tokens": 187,
+  "estimated_usd": 0.000831,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

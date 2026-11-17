@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "src/cursor_hmac.py adds encode_cursor/decode_cursor per T11: HMAC-SHA256 over offset, output format 'offset:sig', decode_cursor uses hmac.compare_digest and raises ValueError('invalid_cursor') for tampered tokens and negative offsets; existing behavior preserved and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the actual code changes in src/cursor_hmac.py and run pytest to confirm no regressions and that constant-time compare_digest is used with correct error handling.",
+    "Inspect cursor_hmac.py to confirm requirements (encode/decode format, constant-time compare_digest, ValueError('invalid_cursor') on tampering/negative offsets) and then run pytest to ensure no regressions.",
+    "Code matches requirements: encode_cursor returns 'offset:sig' with HMAC-SHA256; decode_cursor verifies using hmac.compare_digest and raises ValueError('invalid_cursor') for tampering or negative offsets. Next run pytest to ensure no regressions.",
+    "Implementation satisfies T11 requirements (HMAC-SHA256 'offset:sig', constant-time compare_digest, ValueError('invalid_cursor') on tampering/negative offsets) and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.382,
+  "prompt_tokens": 3734,
+  "output_tokens": 319,
+  "estimated_usd": 0.001252,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

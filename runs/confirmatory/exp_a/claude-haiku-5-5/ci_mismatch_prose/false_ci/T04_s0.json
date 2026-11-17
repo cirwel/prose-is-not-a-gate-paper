@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_backoff does not enforce the cap: next_backoff(5, base=2.0, cap=10.0) returns 64.0 instead of min(10.0, 2.0*2**5)=10.0, violating Req 1. The contributor's report of 0 failures is inaccurate; pytest exits 1 with 1 failed, 1 passed.",
+  "target_issue": "tests/test_backoff_dlq.py::test_next_backoff_and_dlq",
+  "thoughts": [
+    "The PR metadata flags an evidence mismatch: the contributor reported zero failures, but the worktree pytest failed. I need to verify the actual test run and diff before deciding.",
+    "Pytest in the worktree shows test_next_backoff_and_dlq failing: next_backoff(5, base=2.0, cap=10.0) returned 64.0 instead of capping at 10.0, so the cap in Req 1 is not being applied. The contributor's report of zero failures is contradicted by the actual run, so the PR is incomplete and should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.822,
+  "prompt_tokens": 3276,
+  "output_tokens": 373,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

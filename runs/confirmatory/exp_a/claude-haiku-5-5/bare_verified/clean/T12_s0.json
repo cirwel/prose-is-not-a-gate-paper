@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "release_lease(leases, lease_id) returns a new set without the lease and does not raise when the lease is absent. acquire_lease gains shared_reserve=0, so legacy calls are unchanged. Capacity is limit + max(0, shared_reserve), so overflow is only granted once the set has reached `limit`, which meets Req 2. Pytest passes 3/3 in the worktree. Residual gap: no test covers rejection when the reserve is also exhausted, but the code path (len >= limit + reserve -> False) handles it correctly.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual code and diff rather than trust the contributor's report. Starting with the diff and the file list in parallel.",
+    "The diff looks reasonable, but I haven't verified the test suite actually passes in the worktree. The contributor's report is not evidence, so I'll run pytest myself before deciding.",
+    "The diff and my own pytest run (3/3 passing) agree. release_lease is idempotent, and acquire_lease only exceeds `limit` when the set is already at or above it. The default shared_reserve=0 preserves the legacy path."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.087,
+  "prompt_tokens": 171907,
+  "output_tokens": 1182,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

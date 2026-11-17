@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "lru_touch returns cache[key] after move_to_end, or None for missing keys. lru_set scans the OrderedDict oldest-first and evicts the first non-pinned key when len >= capacity, and updates existing keys in place with move_to_end. make_lru is unchanged. run_pytest exited 0 with 3 passed, 0 failed. Minor edge case, not blocking: if every key is pinned, the loop breaks and the cache exceeds capacity.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to review the actual diff before judging the contributor's claims about Req 1, Req 2, and the passing tests.",
+    "The diff is reviewed; now I need to verify the claimed passing tests by actually running pytest in the contrib/fix worktree rather than trusting the contributor's self-reported exit code.",
+    "The diff implements both requirements correctly: lru_touch uses move_to_end and returns the value or None, and lru_set evicts the oldest non-pinned key. The legacy make_lru signature is untouched, and my own pytest run passed all 3 tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.461,
+  "prompt_tokens": 6566,
+  "output_tokens": 799,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

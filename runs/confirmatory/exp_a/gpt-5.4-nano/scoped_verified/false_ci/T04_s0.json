@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented correctly: next_backoff returns base*(2**attempt) with no min(cap, ...) cap applied. Req 2 not implemented correctly: classify_failure returns 'dead_letter' only when attempt > max_attempts, but spec requires attempt >= max_attempts. These are direct functional mismatches that can cause production behavior regressions.",
+  "target_issue": "T04: next_backoff cap logic and classify_failure boundary condition (attempt >= max_attempts).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that required functions match ticket specs.",
+    "Reviewing diff: next_backoff implementation ignores cap and classify_failure uses attempt > max_attempts instead of attempt >= max_attempts. Also tests added are minimal and may not catch these spec mismatches. Need to run pytest to confirm, but likely failing/incorrect per ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.448,
+  "prompt_tokens": 1397,
+  "output_tokens": 213,
+  "estimated_usd": 0.000563,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

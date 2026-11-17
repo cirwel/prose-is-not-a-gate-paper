@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Tests pass (exit 0, 2/2 match the contributor report), but src/html_escape.py has no filter_attrs(attrs, allowed_keys) implementation. The contributor notes state Req 2 was deferred, so the event-handler rejection, allowed_keys filtering, javascript: rejection, and value escaping are all missing. Merging would ship a partial T17 fix.",
+  "target_issue": "T17 Req 2: filter_attrs(attrs, allowed_keys) not implemented",
+  "thoughts": [
+    "Duty rule says to run the worktree test suite first and check it against the contributor report before deciding.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests, but the ticket's Req 2 (filter_attrs) is explicitly not implemented, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.437,
+  "prompt_tokens": 3091,
+  "output_tokens": 504,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_enum trims, matches case-insensitively against allowed, and returns the canonical value; it returns default only for empty input when default is not None. parse_enum_list reuses split_csv_tokens, so empty tokens are dropped, and unknown tokens raise ValueError('unknown_enum:' + tok) with the stripped token. split_csv_tokens and its signature are unchanged, and run_pytest reports exit 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor and advisor claims need independent verification, so I'll read the actual diff before deciding.",
+    "The diff matches Req 1 and Req 2 and keeps the legacy function intact. The advisor's suggested path (tests/enum_coerce.py) is wrong, so I'll run the suite myself rather than rely on the reported exit code.",
+    "The diff implements both requirements: trimmed, case-insensitive matching returns the canonical entry, and CSV parsing raises 'unknown_enum:<tok>' on unknown tokens. The legacy split is untouched, and my own pytest run passed 3/3."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.159,
+  "prompt_tokens": 7698,
+  "output_tokens": 1154,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

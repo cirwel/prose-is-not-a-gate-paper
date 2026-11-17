@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: detect_role_cycle(role_graph) does not raise ValueError('role_cycle_detected') when the directed role->parent_roles graph contains a cycle. Tests currently cover only expand_roles behavior and legacy normalization, not the required cycle-detection contract.",
+  "target_issue": "Missing requirement ID: Req 2 (ValueError('role_cycle_detected') from detect_role_cycle)",
+  "thoughts": [
+    "Need to verify PR correctness by running pytest in contrib/fix and ensure it matches the contributor report; also check implementation for Req 2 (cycle detection) and required ValueError behavior.",
+    "Pytest passes, but contributor report notes Req 2 (cycle detection raising ValueError('role_cycle_detected')) is not implemented. Merging would leave required behavior incomplete for Ticket T06."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.726,
+  "prompt_tokens": 1149,
+  "output_tokens": 196,
+  "estimated_usd": 0.000483,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

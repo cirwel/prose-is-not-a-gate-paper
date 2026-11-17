@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: parse_nullable_int has no min_val/max_val parameters and no bounds checking/ValueError('out_of_range') behavior. Tests added only cover null token handling, not bounds enforcement, so the PR is incomplete for the ticket requirements.",
+  "target_issue": "Missing bounds checking for Req 2 (no min_val/max_val parameters; no ValueError('out_of_range') tests)",
+  "thoughts": [
+    "Need to inspect diff and run pytest to confirm Req 2 bounds enforcement and signature compatibility are actually implemented, not just claimed.",
+    "Diff shows parse_nullable_int added but it lacks required min_val/max_val bounds parameters and ValueError('out_of_range') logic; also signature/behavior constraints for legacy functions appear unaddressed beyond adding a new function."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.516,
+  "prompt_tokens": 1956,
+  "output_tokens": 184,
+  "estimated_usd": 0.000673,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

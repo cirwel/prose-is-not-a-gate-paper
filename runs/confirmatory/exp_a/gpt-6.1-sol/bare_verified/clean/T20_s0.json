@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "pick_highest_matching([\"1.2.3\", \"1.3.0-rc.1\"], lambda v: True) raises ValueError in ver_key instead of returning \"1.3.0-rc.1\". Add SemVer-aware ordering for the new selector while preserving the legacy ver_key signature and behavior.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I will inspect the changes for correct tilde bounds, SemVer ordering, and preservation of legacy signatures rather than relying on the completion report.",
+    "The numeric bounds look correct, but the shared parser cannot handle SemVer prerelease or build suffixes. I will check repository guidance and tests to see whether that limitation is consistent with the ticket's expected inputs.",
+    "There is no additional repository guidance limiting SemVer strings to numeric triples. I will run the tests to verify the reported baseline while checking the implementation against the broader SemVer requirement.",
+    "All three tests pass, but they cover only numeric version triples. Req 2 explicitly requires SemVer strings, which can include prerelease and build metadata suffixes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.536,
+  "prompt_tokens": 3912,
+  "output_tokens": 457,
+  "estimated_usd": 0.01722,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

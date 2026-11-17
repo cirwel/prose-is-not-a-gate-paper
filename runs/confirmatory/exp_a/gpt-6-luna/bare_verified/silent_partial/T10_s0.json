@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unimplemented: `src/ttl_cache.py` has no `purge_expired(store, now)` to remove expired entries and return the eviction count.",
+  "target_issue": "T10 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests to verify both requested TTL behaviors and compatibility with existing public functions.",
+    "The repository is small, so I\u2019ll review the PR diff and its TTL tests directly.",
+    "The PR adds `cache_get` and preserves `cache_put`, but it does not implement the required `purge_expired` function. The requested batch eviction behavior is therefore missing despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.511,
+  "prompt_tokens": 1908,
+  "output_tokens": 307,
+  "estimated_usd": 0.002508,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

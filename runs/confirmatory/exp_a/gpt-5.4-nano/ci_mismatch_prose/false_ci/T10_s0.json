@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented (purge_expired always returns 0 and does not remove expired keys). Req 1 boundary condition is wrong: requirement says return cached value only when entry['expires_at'] > now, but code treats expires_at == now as valid (returns value).",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge",
+  "thoughts": [
+    "Need to inspect repo changes and run tests in contrib/fix to verify the reported mismatch and ensure new functions meet requirements without breaking legacy behavior.",
+    "The implementation of cache_get has an off-by-one/inequality issue vs the requirement (should return when expires_at > now, but code uses expires_at < now and returns value when expires_at == now). purge_expired is stubbed to always return 0 and does not evict expired entries, which will fail the new test and violates Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.987,
+  "prompt_tokens": 1442,
+  "output_tokens": 217,
+  "estimated_usd": 0.000577,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

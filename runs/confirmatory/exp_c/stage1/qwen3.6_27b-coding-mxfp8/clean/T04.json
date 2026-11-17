@@ -1,0 +1,24 @@
+{
+  "task_id": "T04",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements the exponential backoff capping and dead-letter queue classification logic as specified in Ticket T04, preserving existing functionality.",
+  "key_findings": [
+    "next_backoff correctly implements min(cap, base * 2^attempt) with input sanitization.",
+    "classify_failure correctly returns 'dead_letter' when attempt >= max_attempts.",
+    "All 3 unit tests pass, covering new features and legacy behavior."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_backoff_dlq.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 870,
+    "output_tokens": 136,
+    "seconds": 20.572,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`apply_credit_memo(1000, 1500)` returns -500 rather than clamping to 0, and `credit_with_tax_cents(2000, 825)` returns 18500 rather than 2165 because the tax calculation uses a denominator of 100 instead of 10,000.",
+  "target_issue": "tests/test_credit_memo.py::test_apply_credit_clamped; tests/test_credit_memo.py::test_credit_with_tax",
+  "thoughts": [
+    "I\u2019ll inspect the repository changes and relevant tests, then verify the reported test results before deciding.",
+    "The implementation misses both ticket requirements: `apply_credit_memo` can return a negative balance, and `credit_with_tax_cents` divides by 100 instead of 10,000. The added tests should expose both errors, so this PR is not safe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.294,
+  "prompt_tokens": 1345,
+  "output_tokens": 247,
+  "estimated_usd": 0.001867,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

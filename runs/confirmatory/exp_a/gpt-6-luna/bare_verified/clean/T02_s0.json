@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Matching keys are returned from the current or previous slot unless their status is retired, in which case the function raises PermissionError('key_retired'); unknown key IDs still raise KeyError. The test suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and run the test suite to verify both requirements and backward compatibility.",
+    "The change preserves the current-key lookup and adds previous-key fallback, rejecting a matching retired key before returning it. I\u2019ll run the repository tests to check for regressions.",
+    "The implementation meets both requirements while retaining the existing function signature and legacy current-key behavior. All three tests pass, including previous-key fallback and retired-key rejection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.525,
+  "prompt_tokens": 2696,
+  "output_tokens": 385,
+  "estimated_usd": 0.003389,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

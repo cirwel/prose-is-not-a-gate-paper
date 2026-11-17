@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requirements are implemented as specified. The legacy function is unchanged and test_legacy_expiry_remaining still passes alongside the new test_sign_and_verify. Minor note: compare_digest raises TypeError on non-ASCII str tokens, which the ticket does not require handling.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff before deciding, since the contributor report alone doesn't prove the requirements are met.",
+    "The diff implements both requirements, but the contributor's pass claim is unverified, so I'll run the test suite in the worktree before deciding.",
+    "The diff implements Req 1 (lowercase hex HMAC-SHA256 over `path:int(expires_at)`) and Req 2 (`now <= expires_at` check, then `hmac.compare_digest`). The legacy `expiry_remaining` signature is untouched, and pytest reports both tests passing with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.711,
+  "prompt_tokens": 6080,
+  "output_tokens": 800,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/clean/T33_s0.json"
+}

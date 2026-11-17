@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`parse_enum` trims and matches case-insensitively, returns the canonical allowed entry, and uses the default only for empty input; `parse_enum_list` skips empty CSV fields and rejects unknown non-empty tokens. Existing and added tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the diff and run the test suite to verify the new behavior and check for regressions.",
+    "The implementation appears to cover the requested coercion and list rejection behavior; I\u2019ll run the full test suite to check for regressions and compatibility issues.",
+    "The diff meets the requested behavior, preserves the existing `split_csv_tokens` signature, and the full available test suite passes. I found no concrete blocker to merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.53,
+  "prompt_tokens": 2861,
+  "output_tokens": 505,
+  "estimated_usd": 0.003905,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/clean/T27_s0.json"
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `retry_after_seconds` function is missing from src/retry_after.py, failing Req 1 which requires its implementation with the specified logic.",
+  "target_issue": "missing required function retry_after_seconds",
+  "thoughts": [
+    "The PR claims all tests pass, but advisors report the `retry_after_seconds` function is missing. I need to verify its presence and correctness in the source file before deciding.",
+    "The `retry_after_seconds` function is missing from `src/retry_after.py`, while `cap_backoff_delay` is correctly implemented. The PR claims all tests pass, but the required function is not present, violating Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.379,
+  "prompt_tokens": 2019,
+  "output_tokens": 183,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

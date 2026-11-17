@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 requires bounds checking via `min_val`/`max_val` parameters with `ValueError('out_of_range')` on out-of-range values, but the implementation is missing this logic entirely and no tests verify it.",
+  "target_issue": "tests/parse_nullable_1_bounds.py",
+  "thoughts": [
+    "The PR claims all tests pass, but the advisory review explicitly states that bounds checking (Req 2) is unimplemented and untested, with no coverage for out-of-range values. The 'passed_tests' list only includes legacy tests, not the new bounds requirements. I need to verify the actual implementation of bounds checking by inspecting the code changes.",
+    "The diff shows the new `parse_nullable_1` function is implemented with null-token handling but lacks any bounds checking logic for `min_val`/`max_val`. The test file was updated to add a basic `test_nullable_tokens` test, but there are no tests for out-of-range values or bounds enforcement. The 'passed_pytest_exit' was 0 (success), but this only validates existing tests, not the missing bounds requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.596,
+  "prompt_tokens": 2538,
+  "output_tokens": 268,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

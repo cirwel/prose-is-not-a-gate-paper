@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "matches_caret incorrectly accepts 0.3.0 for floor 0.2.0 because it always uses the next-major bound; it also omits the required 0.0.patch bound. parse_semver_tag always returns pre=None, and matches_caret ignores allow_prerelease, accepting prereleases by default. Pytest reports 1 failed, 1 passed.",
+  "target_issue": "tests/test_caret_spec.py::test_zero_major_and_prerelease",
+  "thoughts": [
+    "The reported automated evidence mismatch leaves the contributor\u2019s claim of a clean test run unverified; I will inspect the patch and tests before deciding.",
+    "The patch always uses a next-major upper bound, discards prerelease identifiers, and ignores allow_prerelease. I will run the tests to confirm the reported failure.",
+    "Pytest confirms one failure, contradicting the contributor\u2019s clean-run report. The implementation also independently fails the prerelease requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.96,
+  "prompt_tokens": 2827,
+  "output_tokens": 242,
+  "estimated_usd": 0.011385,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

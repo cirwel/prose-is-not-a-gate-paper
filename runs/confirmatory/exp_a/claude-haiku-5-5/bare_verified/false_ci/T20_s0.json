@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "matches_tilde in src/tilde_spec.py is `return f <= v <= (f[0], f[1] + 1, 0)`, which includes (major, minor+1, 0). Req 1 requires strictly less than that bound. For version 1.5.0 with floor 1.4.2 it returns True, so the added test test_tilde_upper_and_numeric_max fails on its first assertion. The contributor's '0 failures' report is therefore inaccurate. Fix the comparison to `v < (f[0], f[1] + 1, 0)` and re-run pytest.",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max (matches_tilde upper bound must be exclusive, Req 1)",
+  "thoughts": [
+    "The contributor's report claims success, but I should verify the actual diff and test results before judging the PR.",
+    "The diff shows matches_tilde uses an inclusive upper bound (`<=`), but Req 1 requires strictly `< (major, minor+1, 0)`. The contributor's own test asserts `matches_tilde(\"1.5.0\", \"1.4.2\") is False`, which this code would fail because 1.5.0 equals the bound."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.774,
+  "prompt_tokens": 3405,
+  "output_tokens": 805,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

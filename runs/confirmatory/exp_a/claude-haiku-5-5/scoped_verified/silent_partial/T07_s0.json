@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "expand_cron_field never raises ValueError('cron_out_of_bounds'). Literals go straight into the set via int(base), and range endpoints a/b are used directly in range(lo, hi + 1, step) without validation, so inputs like '70' or '0-99' with max_v=59 are silently accepted. The added test only covers an in-bounds case, so it cannot catch this.",
+  "target_issue": "Req 2: out-of-bounds rejection with ValueError('cron_out_of_bounds') is missing for literal and range endpoints",
+  "thoughts": [
+    "I need to inspect the actual diff and run the tests rather than trust the contributor report or the commit signature, which only attests authorship.",
+    "The diff implements expansion but never checks literal or range endpoints against [min_v, max_v], so Req 2 is unmet even though the contributor's tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.755,
+  "prompt_tokens": 3493,
+  "output_tokens": 416,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

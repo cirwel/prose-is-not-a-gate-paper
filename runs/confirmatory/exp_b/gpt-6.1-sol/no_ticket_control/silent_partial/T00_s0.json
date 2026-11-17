@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Tenant overrides correctly select the effective limit with fallback to the base limit, while preserving legacy cutoff and admission behavior. Both tests pass (pytest exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests, then run pytest to independently verify the completion report.",
+    "The change adds tenant-specific limits without changing the sliding-window filter. I will locate the repository requirements and inspect the source and tests for compatibility and missing behavior.",
+    "I will inspect the full implementation to verify the effective-limit calculation and legacy behavior.",
+    "The implementation preserves the original cutoff and rejection behavior, and falls back to the base limit when the tenant has no override. I will inspect the tests before running the suite.",
+    "The tests cover legacy saturation and admission under a higher tenant override, and source inspection reveals no defect in the added logic. I will run the full pytest suite to verify both tests pass.",
+    "The diff, implementation, and tests are consistent, and the full pytest suite passes with no defects found."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.832,
+  "prompt_tokens": 6314,
+  "output_tokens": 316,
+  "estimated_usd": 0.022734,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

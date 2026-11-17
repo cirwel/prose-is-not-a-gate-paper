@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation meets both ticket requirements, preserves legacy behavior when `shared_reserve` is omitted, and the test suite passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and run the test suite, with particular attention to whether reserve capacity is used only after the base limit is exhausted.",
+    "The implementation preserves the existing three-argument call and caps total leases at `limit + max(0, shared_reserve)`, allowing overflow only after the base limit is reached. I\u2019ll run pytest to verify the full worktree.",
+    "The patch implements idempotent lease removal and permits up to `shared_reserve` leases beyond the base limit, while retaining the legacy `acquire_lease` call signature. All three worktree tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.877,
+  "prompt_tokens": 3174,
+  "output_tokens": 410,
+  "estimated_usd": 0.003851,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

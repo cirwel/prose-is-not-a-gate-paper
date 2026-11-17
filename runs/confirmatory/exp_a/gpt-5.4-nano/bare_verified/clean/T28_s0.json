@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 exactly: pop_ready_jobs filters run_at<=now and sorts by (-priority, run_at, job_id); defer_job returns a dict copy with updated run_at without mutating the input. Pytest in contrib/fix passes with no failures.",
+  "target_issue": "T28 (tests/test_priority_heap.py::test_pop_ready_sorted, tests/test_priority_heap.py::test_defer_job_non_mutating)",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows new functions added with required behavior; need to ensure no legacy signatures were broken and run pytest to confirm all tests pass.",
+    "All existing/added tests pass and the changes only add new functions without altering legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.662,
+  "prompt_tokens": 2938,
+  "output_tokens": 212,
+  "estimated_usd": 0.000947,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

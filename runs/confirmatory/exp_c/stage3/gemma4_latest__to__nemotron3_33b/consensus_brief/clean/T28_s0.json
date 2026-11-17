@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "pop_ready_jobs correctly filters jobs with run_at <= now and sorts by (-priority, run_at, job_id), while defer_job creates a non-mutating copy with updated run_at; all existing tests pass and the diff shows minimal, targeted changes preserving legacy behavior",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR report confirms all unit tests pass and the implementation meets both requirements, but I need to verify the exact sorting key used in pop_ready_jobs to ensure it matches (-priority, run_at, job_id) as specified.",
+    "The diff confirms pop_ready_jobs uses the exact sorting key (-j['priority'], j['run_at'], j['job_id']) as required, and all unit tests pass including the new test_pop_ready_sorted that validates the sort order. The implementation fully satisfies both requirements with zero test failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.46,
+  "prompt_tokens": 2617,
+  "output_tokens": 210,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

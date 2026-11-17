@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `split_cents_exact(total_cents, weights)`; src/ledger_round.py contains only `sum_cents` and `reconcile_ledger`, so Req 1 is not implemented.",
+  "target_issue": "Req 1: missing `split_cents_exact` implementation (no corresponding test coverage in current suite).",
+  "thoughts": [
+    "Need to inspect diff and repository to confirm whether split_cents_exact exists and meets spec; then run pytest to ensure no regressions.",
+    "Inspect ledger_round.py to verify whether split_cents_exact is actually implemented and matches the required remainder distribution rule.",
+    "ledger_round.py only defines sum_cents and reconcile_ledger; split_cents_exact is missing entirely, so Req 1 is not satisfied. Even though pytest passed per report, the required function is absent and would fail downstream usage/tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.885,
+  "prompt_tokens": 2387,
+  "output_tokens": 227,
+  "estimated_usd": 0.000824,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/dedup_rows.py` adds only `deduplicate_rows`; the required `deduplicate_rows_with_stats(rows, key_fn, keep='first')` returning `(unique_rows, duplicate_count)` is missing.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify both required APIs and whether the existing public behavior is preserved.",
+    "The patch implements first/last deduplication, but does not define `deduplicate_rows_with_stats` or add a test for it. Req 2 is unmet, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.771,
+  "prompt_tokens": 1978,
+  "output_tokens": 661,
+  "estimated_usd": 0.003698,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

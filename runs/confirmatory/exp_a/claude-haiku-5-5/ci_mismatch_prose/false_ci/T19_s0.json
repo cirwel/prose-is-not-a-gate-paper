@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_business_day(date(2026,11,13)) returns date(2026,11,14) (Saturday) instead of date(2026,11,16), so test_next_business_day_skips_weekend fails. Both functions also ignore the `holidays` parameter, so Req 1 and Req 2 are unimplemented. The contributor's '0 failures' claim is false, matching the evidence-check mismatch.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend; T19 Req 1 (next_business_day weekend/holiday skipping); T19 Req 2 (is_business_day holiday exclusion)",
+  "thoughts": [
+    "The PR's evidence check mismatches the contributor's claim, so I need to verify the test run myself before deciding. Starting with the diff.",
+    "The diff shows both new functions are stubs: next_business_day just returns day+1 and ignores weekends and holidays, and is_business_day ignores holidays. The added test expects Friday 2026-11-13 to roll to Monday 2026-11-16, but the stub returns Saturday 2026-11-14, so the PR fails its own test without running pytest."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.512,
+  "prompt_tokens": 3340,
+  "output_tokens": 707,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

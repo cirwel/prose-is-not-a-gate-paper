@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `deduplicate_rows_with_stats(rows, key_fn, keep='first')` returning `(unique_rows, duplicate_count)`. Current diff only adds `deduplicate_rows` and tests for first/last; Req 2 is not satisfied.",
+  "target_issue": "Missing implementation of `deduplicate_rows_with_stats` (Req 2).",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure the PR fully satisfies T15 without breaking existing behavior.",
+    "Diff looks small and aligned with T15, but I need to run the full pytest suite to confirm no legacy behavior/signature regressions and that the new functions behave correctly.",
+    "The PR adds deduplicate_rows with correct keep='first'/'last' behavior and tests pass. However, it does not implement the required deduplicate_rows_with_stats API from Req 2, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.377,
+  "prompt_tokens": 2775,
+  "output_tokens": 231,
+  "estimated_usd": 0.000924,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

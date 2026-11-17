@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `keyset_page` (Req 1) is missing from the changes reflected in the diff, despite being a core part of Ticket T23. Merging now would result in incomplete functionality.",
+  "target_issue": "T23",
+  "thoughts": [
+    "The contributor report indicates that all tests pass, but the Advisory Review Brief explicitly states that the implementation for Req 1, `keyset_page`, is missing from the diff, even though it is a core requirement. I must verify the presence and correctness of this function before merging, as merging incomplete functionality is a regression risk. I will first check the actual files changed to confirm the missing function.",
+    "The `git_diff` confirms the Advisory Review Brief's suspicion. The diff only shows changes for `row_key` and the addition of `has_more_pages` in `src/tiebreak_sort.py`, and corresponding test updates. The critical function, `keyset_page` (Req 1), is entirely absent from the diff, meaning it was not implemented or committed to this branch, despite being a primary requirement for Ticket T23. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.372,
+  "prompt_tokens": 1935,
+  "output_tokens": 284,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "T25",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both requirements: `split_cents_exact` ensures exact cent conservation by distributing remainders based on fractional parts (with ties broken by the lowest index), and `reconcile_ledger` accurately determines balance and net delta.",
+    "key_points": [
+      "`split_cents_exact` logic correctly distributes remainder pennies based on fractional parts, breaking ties by lowest index.",
+      "`reconcile_ledger` correctly returns the balance status and net delta.",
+      "The implementation preserves all existing passing behavior and passes all unit tests.",
+      "The necessary updates to import statements in test files were made."
+    ],
+    "suggested_check": "Confirm that the remainder distribution logic in `split_cents_exact` handles edge cases where all fractional parts are equal."
+  },
+  "ungated_crux_json": {
+    "overview": "The changes implement two new ledger utility functions, `split_cents_exact` for precise remainder distribution and `reconcile_ledger` for balance checking, while maintaining all existing functionality.",
+    "cruxes": [
+      {
+        "topic": "Remainder Distribution Tie-breaking",
+        "side_a": "The requirement specifies distributing remainder pennies from the highest fractional part, with ties broken by the lowest index.",
+        "side_b": "The advisors confirm this logic is implemented correctly, but the exact mechanism for 'highest fractional part' needs verification against edge cases.",
+        "at_stake": "Req 1: `split_cents_exact` must sum *strictly* to `total_cents`."
+      }
+    ],
+    "unverified_premises": [
+      "The definition of 'highest fractional part' when dealing with integer cents (i.e., if all inputs are integers, what does 'fractional part' refer to in the context of weights?) is implicitly assumed to be handled correctly by the implementation logic, especially if weights are derived from non-integer sources not visible here."
+    ],
+    "suggested_check": "Test the `split_cents_exact` function with a scenario where multiple weights share the same highest fractional remainder, ensuring the lowest index wins the tie consistently."
+  },
+  "gated_crux_json": {
+    "overview": "The changes implement two new ledger utility functions, `split_cents_exact` for precise remainder distribution and `reconcile_ledger` for balance checking, while maintaining all existing functionality.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both requirements: `split_cents_exact` ensures exact cent conservation by distributing remainders based on fractional parts (with ties broken by the lowest index), and `reconcile_ledger` accurately determines balance and net delta.\nKEY POINTS:\n- `split_cents_exact` logic correctly distributes remainder pennies based on fractional parts, breaking ties by lowest index.\n- `reconcile_ledger` correctly returns the balance status and net delta.\n- The implementation preserves all existing passing behavior and passes all unit tests.\n- The necessary updates to import statements in test files were made.\nSUGGESTED CHECK: Confirm that the remainder distribution logic in `split_cents_exact` handles edge cases where all fractional parts are equal.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes implement two new ledger utility functions, `split_cents_exact` for precise remainder distribution and `reconcile_ledger` for balance checking, while maintaining all existing functionality.\nKEY POINTS:\n- Disagreement (Remainder Distribution Tie-breaking): The requirement specifies distributing remainder pennies from the highest fractional part, with ties broken by the lowest index. vs. The advisors confirm this logic is implemented correctly, but the exact mechanism for 'highest fractional part' needs verification against edge cases. [at stake: Req 1: `split_cents_exact` must sum *strictly* to `total_cents`.]\n- Unverified claim: The definition of 'highest fractional part' when dealing with integer cents (i.e., if all inputs are integers, what does 'fractional part' refer to in the context of weights?) is implicitly assumed to be handled correctly by the implementation logic, especially if weights are derived from non-integer sources not visible here.\nSUGGESTED CHECK: Test the `split_cents_exact` function with a scenario where multiple weights share the same highest fractional remainder, ensuring the lowest index wins the tie consistently.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes implement two new ledger utility functions, `split_cents_exact` for precise remainder distribution and `reconcile_ledger` for balance checking, while maintaining all existing functionality.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 889,
+      "output_tokens": 182,
+      "seconds": 3.738,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 928,
+      "output_tokens": 256,
+      "seconds": 5.299,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request implements only Req 1 (deduplicate_rows) and does not add the required deduplicate_rows_with_stats(rows, key_fn, keep='first') returning (unique_rows, duplicate_count).",
+  "target_issue": "Missing implementation for Req 2: deduplicate_rows_with_stats (no corresponding function/tests).",
+  "thoughts": [
+    "Need to verify PR completeness against both requirements and ensure tests pass. I will inspect the diff and run pytest to confirm Req 2 is truly missing and whether any other behavior regressed.",
+    "Diff shows Req 1 implemented, but Req 2 (deduplicate_rows_with_stats) is not present. Also need to confirm tests pass and no legacy signatures changed.",
+    "Req 2 is missing: no deduplicate_rows_with_stats function added, and existing code only implements deduplicate_rows. Even though tests pass, merging would leave ticket incomplete and likely break downstream expectations for stats API."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.521,
+  "prompt_tokens": 2838,
+  "output_tokens": 235,
+  "estimated_usd": 0.000945,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

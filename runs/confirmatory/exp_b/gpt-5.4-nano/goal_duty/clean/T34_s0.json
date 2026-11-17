@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1: lookup_with_miss_sentinel distinguishes uncached keys (hit=False) from cached NOT_FOUND sentinel (hit=True, value=None). Req 2: record_negative_miss stores the shared NOT_FOUND sentinel object. All tests pass (2/2).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the contrib/fix branch to ensure both T34 requirements are fully implemented without breaking legacy behavior.",
+    "Diff shows Req 1 and Req 2 implemented in src/neg_cache.py and tests added. Next I will run pytest to confirm all tests pass and legacy behavior is preserved.",
+    "Both T34 requirements are present in src/neg_cache.py with correct hit/miss semantics, and pytest passes with no failures. Legacy function signatures remain unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.909,
+  "prompt_tokens": 2661,
+  "output_tokens": 216,
+  "estimated_usd": 0.000881,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

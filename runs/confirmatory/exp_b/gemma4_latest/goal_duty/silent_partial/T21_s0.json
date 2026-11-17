@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, the implementation of `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`, is missing from src/query_canon.py.",
+  "target_issue": "T21",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the actual changes against the requirements using `git_diff()` to ensure both new functions are present and correctly implemented, and that no existing functionality is broken.",
+    "The diff shows the addition of `parse_query_pairs` in `src/query_canon.py` and the corresponding test in `tests/test_query_canon.py`. However, the diff does not show the implementation for `canonical_query` (Req 1), which is a critical missing piece for Ticket T21. I must run `run_pytest()` to confirm if the missing function causes any failures or if the contributor missed implementing it entirely.",
+    "The tests passed, but the `git_diff` review confirmed that the function `canonical_query` (Req 1) has not been added to `src/query_canon.py`, despite the ticket requiring it. Since a core requirement is missing, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.837,
+  "prompt_tokens": 2890,
+  "output_tokens": 314,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

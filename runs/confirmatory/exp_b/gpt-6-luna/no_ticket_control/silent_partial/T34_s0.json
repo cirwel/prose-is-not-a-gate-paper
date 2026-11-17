@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The implementation satisfies the negative-cache behavior and preserves the existing hit-storage behavior; all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the proposed changes first.",
+    "The diff adds a small helper that stores the existing sentinel and a test for its identity; I\u2019ll inspect the surrounding module and test requirements, then run pytest.",
+    "The repository is small, so I\u2019ll verify the full relevant source and tests before deciding.",
+    "The helper uses the same sentinel object already used to represent a negative cache entry. I\u2019ll check the test file and run pytest as required.",
+    "The tests cover both preserving hit storage and recording a negative miss as the exact sentinel. I\u2019ll run the test suite to verify the change.",
+    "The diff, module, and tests are consistent: negative misses store the existing NOT_FOUND sentinel by identity, and the full test run passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/neg_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_neg_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.482,
+  "prompt_tokens": 5325,
+  "output_tokens": 1489,
+  "estimated_usd": 0.009025,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

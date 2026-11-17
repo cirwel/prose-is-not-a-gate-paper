@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (Burst Weighting) is not implemented in the provided diff. The function signature and logic do not account for the optional 'weight' parameter or weighted request counting, despite the ticket requiring it.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report claims all tests pass, but the Advisory Review Brief highlights a major conflict regarding Requirement 2 (Burst Weighting). The brief suggests the weight functionality might be missing despite the contributor's claim. I must inspect the actual changes in `src/sliding_window.py` to verify the implementation of the `weight` parameter and its logic, as this is the critical point of failure/disagreement.",
+    "The diff confirms the implementation of Req 1 (Per-Tenant Override) by updating the signature and using `overrides.get(tenant, limit)` to set `eff_limit`. However, the diff for `src/sliding_window.py` only modifies the basic check (`len(active) >= eff_limit`) and does not show any logic related to the `weight` parameter or weighted counting, which is the core of Req 2. The test file also only adds a test for tenant override and does not test for weight. Since the critical logic for weighted counting (Req 2) is entirely missing from the provided diff, I cannot merge this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "from": "main",
+        "to": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.707,
+  "prompt_tokens": 2107,
+  "output_tokens": 318,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "T33",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `verify_path_token` correctly but fails to implement the required `sign_path_token` function specified in Req 1.",
+  "key_findings": [
+    "Req 1 requires adding `sign_path_token(secret, path, expires_at) -> str`, which is missing from the diff.",
+    "Req 2 (`verify_path_token`) is implemented correctly with constant-time comparison and expiry checks.",
+    "Existing legacy behavior for `expiry_remaining` is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing function: `sign_path_token`"
+  ],
+  "verification_check": "src/signed_url.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 830,
+    "output_tokens": 155,
+    "seconds": 20.968,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

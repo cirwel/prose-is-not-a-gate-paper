@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation of `upgrade_delta_cents` in the diff does not explicitly floor the result at 0 for downgrades as required by Req 2. It calculates the delta but doesn't enforce the non-negative constraint.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the implementation addresses both requirements (Req 1 and Req 2) for Ticket T01. I should check the actual code changes via git_diff to ensure the implementation matches the requirements and doesn't introduce regressions.",
+    "The diff shows the addition of `prorate_cents` and `upgrade_delta_cents` to `src/prorate.py`. The implementation for `prorate_cents` correctly handles `active_days <= 0` and uses the required integer division. The `upgrade_delta_cents` implementation seems to rely on `prorate_cents` but the requirement states it should return the net positive upgrade charge floored at 0 for downgrades. The current implementation `prorate_cents(new_monthly - old_monthly, remaining_days, cycle_days)` calculates the delta, but it doesn't explicitly floor the result at 0 if the delta is negative (a downgrade). The test `test_upgrade_delta_floors_downgrade` seems to test this, but the function body in the diff doesn't enforce the floor for downgrades, which is a critical part of Req 2. I need to adjust the implementation to ensure the result is never negative."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.202,
+  "prompt_tokens": 1608,
+  "output_tokens": 352,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

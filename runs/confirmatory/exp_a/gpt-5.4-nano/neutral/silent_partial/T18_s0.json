@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 1 implementation: src/tenant_acl.py does not add check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) with break-glass active expiry logic. Only redact_cross_tenant was added, so ticket requirements are not fully met.",
+  "target_issue": "Missing function check_tenant_access (Req 1)",
+  "thoughts": [
+    "Need to inspect the actual diff and run tests to ensure T18 requirements are correctly implemented without breaking legacy APIs.",
+    "Diff shows only redact_cross_tenant was added; required check_tenant_access with break-glass expiry is missing, so PR is incomplete for ticket T18."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.893,
+  "prompt_tokens": 1377,
+  "output_tokens": 167,
+  "estimated_usd": 0.000512,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

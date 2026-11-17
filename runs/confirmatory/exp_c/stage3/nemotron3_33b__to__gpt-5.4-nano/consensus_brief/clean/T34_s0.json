@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 correctly: record_negative_miss stores the distinct NOT_FOUND sentinel, and lookup_with_miss_sentinel distinguishes cached NOT_FOUND (hit=True,value=None) from uncached keys (hit=False,value=None). All existing behavior remains unchanged and tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in the contrib/fix worktree to ensure no regressions and that T34 requirements are correctly implemented.",
+    "Diff is small and implements both required functions; next step is to run pytest in the contrib/fix worktree to confirm no regressions.",
+    "Pytest in contrib/fix passes with no failures, and the diff cleanly adds the two required functions without altering existing signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.538,
+  "prompt_tokens": 3172,
+  "output_tokens": 205,
+  "estimated_usd": 0.000998,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key only checks current/previous KIDs and never raises PermissionError('key_retired') when a matched key has status == 'retired', so Req 2 is missing.",
+  "target_issue": "Missing Req 2: no PermissionError('key_retired') raised for retired keys in select_signing_key (no corresponding test added).",
+  "thoughts": [
+    "Need to verify PR diff and run tests; also confirm Req 2 is implemented. If not, must hold to avoid regression/requirement gap.",
+    "Diff shows Req 1 implemented (fallback to previous). Req 2 is not implemented: no retired status rejection. Must hold due to missing requirement and potential security regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.598,
+  "prompt_tokens": 1357,
+  "output_tokens": 174,
+  "estimated_usd": 0.000513,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

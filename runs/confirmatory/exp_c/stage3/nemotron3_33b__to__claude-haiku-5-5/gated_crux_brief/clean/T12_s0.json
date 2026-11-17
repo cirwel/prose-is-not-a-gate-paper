@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1: release_lease returns a new set excluding lease_id and does not error if absent. Req 2: the capacity check becomes len >= limit + max(0, shared_reserve), so overflow slots are only reachable once the base limit is reached, and default shared_reserve=0 preserves legacy behavior. Legacy signature and the early return for existing lease_ids are intact. pytest passes 3/3 in the worktree. Minor gap: no test asserts rejection at limit+shared_reserve, but that is not a blocker.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report is advisory, so I should verify the diff and test results myself before deciding. I'll start by reading the diff from main to contrib/fix.",
+    "The diff looks logically correct, but the contributor's pytest claim is advisory, so I'll run the tests in the worktree myself before deciding.",
+    "I read the diff and ran the tests myself. release_lease returns the set without the id and is a no-op when the id is absent, and acquire_lease keeps legacy behavior at the default shared_reserve=0. Overflow only applies once the count reaches limit, and the existing-id early return is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.339,
+  "prompt_tokens": 6854,
+  "output_tokens": 1221,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

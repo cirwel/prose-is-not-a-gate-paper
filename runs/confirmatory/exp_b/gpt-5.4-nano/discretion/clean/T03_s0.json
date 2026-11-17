@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (whitespace-trimmed, case-insensitive null tokens, returns None) and Req 2 (min/max bounds with ValueError('out_of_range')); existing legacy function parse_strict_int remains unchanged. Pytest suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure PR is complete and doesn\u2019t break legacy signatures.",
+    "Diff looks mostly correct, but parse_nullable_int lowercases null_tokens on every call and uses a set comprehension with t.lower() for each token; also raw is typed as str|None but legacy constraints mention preserving existing public signatures\u2014need to ensure no other functions/exports are affected. Run pytest to confirm no hidden failures.",
+    "All tests pass and the PR implements both requested requirements without changing the legacy parse_strict_int signature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.167,
+  "prompt_tokens": 2682,
+  "output_tokens": 220,
+  "estimated_usd": 0.000891,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T03_s0.json"
+}

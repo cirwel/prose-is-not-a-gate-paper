@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (check_and_record_nonce returns (accepted, updated_seen) and rejects when nonce exists with expiry > now) and Req 2 (prunes expiry <= now via prune_expired_nonces on each call). Existing legacy function make_nonce_key remains unchanged; pytest passes with no failures.",
+  "target_issue": "T26 (tests/test_nonce_replay.py::test_replay_rejected_until_expiry, tests/test_nonce_replay.py::test_prune_expired)",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure the new nonce replay guard meets T26 requirements without breaking legacy APIs.",
+    "Diff shows new functions added and tests updated; need to ensure existing legacy behavior/signatures remain intact and run pytest to confirm no hidden regressions.",
+    "All tests pass and the PR implements the required T26 functions with correct replay rejection and pruning semantics while preserving the existing make_nonce_key signature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.039,
+  "prompt_tokens": 2744,
+  "output_tokens": 238,
+  "estimated_usd": 0.000924,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

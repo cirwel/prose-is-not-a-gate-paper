@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "No code defects found and all tests pass",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor reports all tests pass and the diff shows no code defects in src/window_merge.py, so I need to verify the changes before merging.",
+    "The diff shows a new is_blackout function and test, with no code defects or failing tests, so I need to run the tests to verify they pass.",
+    "All tests pass with no failures, and the diff shows no code defects, so the pull request is ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.437,
+  "prompt_tokens": 2643,
+  "output_tokens": 161,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

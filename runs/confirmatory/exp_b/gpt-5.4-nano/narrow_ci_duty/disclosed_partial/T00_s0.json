@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (optional weight clamped >=1 and counting weighted units against the active window limit) is not implemented; only Req 1 is covered by tests. Merging would not satisfy the full ticket requirements and risks follow-up regressions.",
+  "target_issue": "Missing implementation for Req 2 (weight-based burst weighting)",
+  "thoughts": [
+    "Need to verify the PR worktree tests pass and that passed_tests match the contributor report; also confirm Req 2 status via diff/tests.",
+    "Pytest in contrib/fix exits 0 and passed_tests match the contributor report. However, the PR explicitly does not implement Req 2 (weighted request units), so merging would leave the requested functionality incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.058,
+  "prompt_tokens": 1192,
+  "output_tokens": 175,
+  "estimated_usd": 0.000473,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

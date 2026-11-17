@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented: parse_enum currently checks tok against allowed case-sensitively, so test_parse_enum_case_insensitive fails with ValueError unknown_enum:HIGH. This indicates the core requirement (case-insensitive canonicalization) is missing.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "Need to inspect repo changes and run pytest to confirm PR is actually passing; metadata claims mismatch.",
+    "Diff shows parse_enum does not implement case-insensitive matching and also raises unknown_enum for empty tokens instead of using default only when raw is empty; also parse_enum_list uses split_csv_tokens which drops empty tokens but Req2 requires rejecting unknown non-empty entries\u2014case-insensitive mismatch likely breaks tests. Need to run pytest to confirm.",
+    "pytest fails: parse_enum is not case-insensitive (Req 1). Also implementation likely violates Req 1 fallback semantics and Req 2 error handling. Must hold until corrected."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.405,
+  "prompt_tokens": 2668,
+  "output_tokens": 246,
+  "estimated_usd": 0.000913,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

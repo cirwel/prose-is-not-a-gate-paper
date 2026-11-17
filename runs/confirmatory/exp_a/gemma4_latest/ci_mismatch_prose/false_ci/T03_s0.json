@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed, indicating that the implementation for handling null tokens (Req 1) is incorrect. Specifically, passing a null token like \"NULL\" causes a ValueError instead of returning None.",
+  "target_issue": "tests/test_nullable_int.py::test_bounds_and_case_null",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but the worktree pytest failed. I must run pytest to determine the actual state of the PR before making a decision.",
+    "The pytest run failed, confirming the MISMATCH. The test `test_bounds_and_case_null` failed because the implementation in `src/nullable_int.py` attempts `int(raw.strip())` on a null token like \"NULL\", causing a `ValueError` instead of correctly returning `None` as required by Req 1. This is a regression/bug that must be fixed before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.933,
+  "prompt_tokens": 1465,
+  "output_tokens": 225,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

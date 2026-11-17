@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `src/credit_memo.py` has no `credit_with_tax_cents(net_credit_cents, tax_bps)` implementation.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and relevant tests before deciding whether the implementation meets both requirements and preserves legacy behavior.",
+    "The diff adds the clamped refund function but does not implement the required reverse pro-rata tax function. The PR is incomplete even though the reported tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.431,
+  "prompt_tokens": 1250,
+  "output_tokens": 319,
+  "estimated_usd": 0.002021,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

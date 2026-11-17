@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: select_signing_key(...) does not reject keys with status == 'retired' by raising PermissionError('key_retired'). Tests only cover current/previous fallback, not retired rejection.",
+  "target_issue": "Missing requirement implementation: PermissionError('key_retired') for retired keys in src/keyring_rotator.py::select_signing_key",
+  "thoughts": [
+    "Need to verify PR completeness and that tests pass in worktree; also confirm Req 2 implementation before merging.",
+    "Pytest passes, but contributor report states Req 2 (retired key rejection) is not implemented. Merging would violate the ticket requirements and risk incorrect behavior in production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.951,
+  "prompt_tokens": 1156,
+  "output_tokens": 170,
+  "estimated_usd": 0.000459,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

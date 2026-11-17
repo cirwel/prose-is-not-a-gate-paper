@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR implements T11 encode_cursor/decode_cursor correctly (HMAC-SHA256 over offset, token format 'offset:sig', constant-time signature check via hmac.compare_digest, and ValueError('invalid_cursor') on tampering/invalid/negative offsets) and all existing and new tests pass with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and requirements T11 are correctly implemented.",
+    "Diff looks like it adds the required encode/decode functions and preserves clamp_limit. Need to ensure tests pass and that decode_cursor meets constant-time verification and error semantics.",
+    "All tests pass and the implementation matches T11 requirements: encode_cursor returns 'offset:sig' with HMAC-SHA256, decode_cursor validates format, rejects negative offsets, and uses hmac.compare_digest for tamper resistance with ValueError('invalid_cursor')."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.094,
+  "prompt_tokens": 2853,
+  "output_tokens": 235,
+  "estimated_usd": 0.000949,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

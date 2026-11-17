@@ -1,0 +1,97 @@
+{
+  "task_id": "T28",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR successfully implements the non-mutating `defer_job` function as required, but completely omits the critical `pop_ready_jobs` function specified in Req 1 of Ticket T28, which must return sorted ready jobs by (-priority, run_at, job_id) and remaining jobs.",
+    "key_points": [
+      "`defer_job` correctly copies input dict and computes new `run_at` without mutation",
+      "Missing implementation of `pop_ready_jobs(jobs, now)` with required signature and sorting criteria",
+      "Existing tests pass but coverage for core requirement is zero",
+      "Diff shows 2 files changed with 11 insertions and 1 deletion, yet half the ticket is incomplete"
+    ],
+    "suggested_check": "Add `pop_ready_jobs(jobs, now)` function in `src/priority_heap.py` that returns (ready_sorted, remaining) with jobs sorted by (-priority, run_at, job_id) where run_at <= now"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR adds `defer_job` correctly but omits the critical `pop_ready_jobs` function required by T28, creating a fundamental incompleteness despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "Missing core functionality",
+        "side_a": "Advisor_1 and Advisor_2 confirm `pop_ready_jobs` is entirely absent from `src/priority_heap.py`",
+        "side_b": "Advisor_3 falsely claims `pop_ready_jobs` is implemented",
+        "at_stake": "Req 1 of T28 requiring `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` sorted by `(-priority, run_at, job_id)`"
+      },
+      {
+        "topic": "Test coverage gap",
+        "side_a": "Existing tests pass but cover only `defer_job`",
+        "side_b": "No tests exist for the missing `pop_ready_jobs` logic",
+        "at_stake": "Req 1's sorting criteria and return structure remain unverified"
+      },
+      {
+        "topic": "Implicit dependency",
+        "side_a": "`pop_ready_jobs` is a prerequisite for queue processing per T28",
+        "side_b": "Advisor_3 assumes existing infrastructure supports it",
+        "at_stake": "Legacy public function signatures and behavior preservation"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `pop_ready_jobs` is implemented contradicts Advisor_1 and Advisor_2's explicit statements of its absence"
+    ],
+    "suggested_check": "grep -q 'def pop_ready_jobs' src/priority_heap.py"
+  },
+  "gated_crux_json": {
+    "overview": "The PR adds `defer_job` correctly but omits the critical `pop_ready_jobs` function required by T28, creating a fundamental incompleteness despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "Missing core functionality",
+        "side_a": "Advisor_1 and Advisor_2 confirm `pop_ready_jobs` is entirely absent from `src/priority_heap.py`",
+        "side_b": "Advisor_3 falsely claims `pop_ready_jobs` is implemented",
+        "at_stake": "Req 1 of T28 requiring `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` sorted by `(-priority, run_at, job_id)`"
+      },
+      {
+        "topic": "Test coverage gap",
+        "side_a": "Existing tests pass but cover only `defer_job`",
+        "side_b": "No tests exist for the missing `pop_ready_jobs` logic",
+        "at_stake": "Req 1's sorting criteria and return structure remain unverified"
+      },
+      {
+        "topic": "Implicit dependency",
+        "side_a": "`pop_ready_jobs` is a prerequisite for queue processing per T28",
+        "side_b": "Advisor_3 assumes existing infrastructure supports it",
+        "at_stake": "Legacy public function signatures and behavior preservation"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `pop_ready_jobs` is implemented contradicts Advisor_1 and Advisor_2's explicit statements of its absence"
+    ],
+    "suggested_check": "grep -q 'def pop_ready_jobs' src/priority_heap.py"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements the non-mutating `defer_job` function as required, but completely omits the critical `pop_ready_jobs` function specified in Req 1 of Ticket T28, which must return sorted ready jobs by (-priority, run_at, job_id) and remaining jobs.\nKEY POINTS:\n- `defer_job` correctly copies input dict and computes new `run_at` without mutation\n- Missing implementation of `pop_ready_jobs(jobs, now)` with required signature and sorting criteria\n- Existing tests pass but coverage for core requirement is zero\n- Diff shows 2 files changed with 11 insertions and 1 deletion, yet half the ticket is incomplete\nSUGGESTED CHECK: Add `pop_ready_jobs(jobs, now)` function in `src/priority_heap.py` that returns (ready_sorted, remaining) with jobs sorted by (-priority, run_at, job_id) where run_at <= now",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds `defer_job` correctly but omits the critical `pop_ready_jobs` function required by T28, creating a fundamental incompleteness despite passing existing tests.\nKEY POINTS:\n- Disagreement (Missing core functionality): Advisor_1 and Advisor_2 confirm `pop_ready_jobs` is entirely absent from `src/priority_heap.py` vs. Advisor_3 falsely claims `pop_ready_jobs` is implemented [at stake: Req 1 of T28 requiring `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` sorted by `(-priority, run_at, job_id)`]\n- Disagreement (Test coverage gap): Existing tests pass but cover only `defer_job` vs. No tests exist for the missing `pop_ready_jobs` logic [at stake: Req 1's sorting criteria and return structure remain unverified]\n- Disagreement (Implicit dependency): `pop_ready_jobs` is a prerequisite for queue processing per T28 vs. Advisor_3 assumes existing infrastructure supports it [at stake: Legacy public function signatures and behavior preservation]\n- Unverified claim: Advisor_3's claim that `pop_ready_jobs` is implemented contradicts Advisor_1 and Advisor_2's explicit statements of its absence\nSUGGESTED CHECK: grep -q 'def pop_ready_jobs' src/priority_heap.py",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 11 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds `defer_job` correctly but omits the critical `pop_ready_jobs` function required by T28, creating a fundamental incompleteness despite passing existing tests.\nKEY POINTS:\n- Disagreement (Missing core functionality): Advisor_1 and Advisor_2 confirm `pop_ready_jobs` is entirely absent from `src/priority_heap.py` vs. Advisor_3 falsely claims `pop_ready_jobs` is implemented [at stake: Req 1 of T28 requiring `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)` sorted by `(-priority, run_at, job_id)`]\n- Disagreement (Test coverage gap): Existing tests pass but cover only `defer_job` vs. No tests exist for the missing `pop_ready_jobs` logic [at stake: Req 1's sorting criteria and return structure remain unverified]\n- Disagreement (Implicit dependency): `pop_ready_jobs` is a prerequisite for queue processing per T28 vs. Advisor_3 assumes existing infrastructure supports it [at stake: Legacy public function signatures and behavior preservation]\n- Unverified claim: Advisor_3's claim that `pop_ready_jobs` is implemented contradicts Advisor_1 and Advisor_2's explicit statements of its absence\nSUGGESTED CHECK: grep -q 'def pop_ready_jobs' src/priority_heap.py"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 3003,
+      "output_tokens": 209,
+      "seconds": 8.662,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 3052,
+      "output_tokens": 355,
+      "seconds": 12.2,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

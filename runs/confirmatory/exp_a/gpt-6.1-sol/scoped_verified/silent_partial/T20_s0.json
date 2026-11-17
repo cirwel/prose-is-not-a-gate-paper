@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tilde_spec.py lacks the required matches_tilde(version, floor) function enforcing floor <= version < (major, minor + 1, 0).",
+  "target_issue": "T20 Req 1",
+  "thoughts": [
+    "I will inspect the implementation and diff, then run the tests to verify both ticket requirements and compatibility.",
+    "The diff adds pick_highest_matching but does not implement matches_tilde; the added tests also omit tilde-bound checks. Requirement 1 is therefore incomplete regardless of whether the current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.521,
+  "prompt_tokens": 1346,
+  "output_tokens": 181,
+  "estimated_usd": 0.00621,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

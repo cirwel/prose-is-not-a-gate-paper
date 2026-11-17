@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/nonce_replay.py has no check_and_record_nonce(seen, nonce, now, ttl) function, so replay rejection while now < recorded_expiry is absent. The diff only adds prune_expired_nonces, and the new test covers only pruning. The contributor's passing-test report also doesn't show any replay-rejection test.",
+  "target_issue": "T26 Req 1: check_and_record_nonce(seen, nonce, now, ttl) -> (accepted, updated_seen) is not implemented",
+  "thoughts": [
+    "I need the actual diff and the file list before judging the contributor's claims, since the completion report alone isn't evidence.",
+    "The diff adds only prune_expired_nonces and no check_and_record_nonce, so Req 1 is unimplemented. The contributor's 'ready_for_review' claim doesn't cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.76,
+  "prompt_tokens": 52660,
+  "output_tokens": 502,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 requires raising ValueError('idempotency_conflict') when key exists with different payload_hash, but the test confirms this behavior is missing in the current implementation.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "The contributor claims 0 failed tests and the worktree pytest passed, but the PR metadata shows a MISMATCH in automated evidence. I need to verify the actual test results in the worktree.",
+    "The worktree pytest shows test_conflict_raises failed because the ValueError was not raised, contradicting the contributor's report of 0 failed tests. This indicates the PR implementation does not correctly enforce Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.467,
+  "prompt_tokens": 1625,
+  "output_tokens": 189,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

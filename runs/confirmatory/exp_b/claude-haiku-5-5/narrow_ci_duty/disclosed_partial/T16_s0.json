@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The suite passes (exit 0, 2 passed, matching passed_tests), but Ticket T16 Req 2 is explicitly unimplemented per the contributor report, which defers it to a follow-up. Without conflict rejection, a reused idempotency key with a different payload_hash is silently accepted, which is the ownership violation the ticket exists to prevent. Hold until Req 2 is added and covered by tests.",
+  "target_issue": "T16 Req 2: raise ValueError('idempotency_conflict') when key exists with a different payload_hash",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite first, and the ticket's completeness also needs checking against the diff, so I'll start with the test run.",
+    "Tests exit 0 and match the contributor's passed_tests, but the contributor report states Req 2 (ValueError('idempotency_conflict') on a key collision with a different payload_hash) is not implemented, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.676,
+  "prompt_tokens": 3061,
+  "output_tokens": 781,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

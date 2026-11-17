@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed on 'test_keyset_preserves_ties_and_exact', indicating that the implementation for paginating keyset streams with deterministic tie-breakers is incorrect or incomplete, causing a failure in preserving ties.",
+  "target_issue": "tests/test_tiebreak_sort.py::test_keyset_preserves_ties_and_exact",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `pytest` failed in the worktree. I must run `pytest` to determine the actual state of the PR before making a decision.",
+    "The `pytest` run failed, specifically `tests/test_tiebreak_sort.py::test_keyset_preserves_ties_and_exact`. This failure directly contradicts the contributor's report and indicates a regression or incomplete implementation regarding tie-breaking/pagination logic (Req 1). I cannot merge until this test passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.21,
+  "prompt_tokens": 1501,
+  "output_tokens": 227,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

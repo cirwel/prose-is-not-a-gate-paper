@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not satisfied: matches_caret currently enforces v < (floor_major+1,0,0) which is wrong for SemVer caret when major==0 (should use <(0, minor+1,0) for 0.x and <(0,0,patch+1) for 0.0.x). Req 2 not satisfied: parse_semver_tag always returns (major,minor,patch,None) and matches_caret ignores prerelease and allow_prerelease entirely (it also parses only core tuples). Tests added do not cover the required prerelease opt-out behavior beyond a single false case.",
+  "target_issue": "tests/test_caret_spec.py::test_zero_major_and_prerelease (insufficient coverage; implementation still violates T08 caret bounds and prerelease handling)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to confirm the SemVer caret bounds and prerelease opt-out behavior for T08 without breaking legacy signatures.",
+    "The diff shows matches_caret and parse_semver_tag were added but the implementation does not meet the required caret bounds for major==0 cases and does not implement prerelease parsing/rejection logic. I should hold to avoid a production regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.468,
+  "prompt_tokens": 1526,
+  "output_tokens": 284,
+  "estimated_usd": 0.000666,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

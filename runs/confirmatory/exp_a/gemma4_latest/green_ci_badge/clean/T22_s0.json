@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required functionalities (Req 1 and Req 2) for T22, and all associated unit tests pass, confirming no regressions and correct implementation.",
+  "target_issue": "T22",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the PR claims to have implemented both required features (Req 1 and Req 2) while maintaining existing behavior. I should run `git_diff()` to understand the changes and then `run_pytest()` to confirm the passing status in the actual worktree environment before deciding.",
+    "The diff shows the implementation of `lru_touch` and `lru_set` in `src/lru_cap.py`, and corresponding updates in `tests/test_lru_cap.py`. Since the contributor report stated all tests passed, I will now run `run_pytest()` to confirm the functionality in the current worktree state.",
+    "All checks passed, the diff shows the required logic for T22, and running pytest confirms that all new and existing tests pass successfully. The PR is complete and correct."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.229,
+  "prompt_tokens": 3684,
+  "output_tokens": 273,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

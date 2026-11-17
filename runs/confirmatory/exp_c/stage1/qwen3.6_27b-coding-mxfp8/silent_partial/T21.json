@@ -1,0 +1,27 @@
+{
+  "task_id": "T21",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `parse_query_pairs` correctly but completely omits the required `canonical_query` function specified in Req 1.",
+  "key_findings": [
+    "Missing implementation of `canonical_query(pairs, strip_keys=...)`.",
+    "No tests provided for the missing `canonical_query` function.",
+    "Existing legacy behavior for `has_query` is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Req 1: canonical_query function implementation",
+    "Tests for canonical_query sorting and stripping logic"
+  ],
+  "verification_check": "src/query_canon.py for presence of canonical_query function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 683,
+    "output_tokens": 135,
+    "seconds": 18.005,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required Req 1 implementation: no sign_path_token(secret, path, expires_at) added to src/signed_url.py. The PR only adds verify_path_token and a test that hardcodes token generation, so the ticket\u2019s signing API is not delivered.",
+  "target_issue": "Missing function sign_path_token (Req 1) in src/signed_url.py",
+  "thoughts": [
+    "I will inspect the diff and run the test suite in the PR worktree to ensure the T33 requirements are implemented correctly and no legacy behavior regresses.",
+    "The diff adds verify_path_token but does not implement the required sign_path_token function, and verify_path_token uses hexdigest comparison (still compare_digest) but token generation requirement is missing. I will run pytest to confirm, but likely the PR is incomplete vs ticket T33.",
+    "Pytest passes, but the PR is incomplete relative to ticket T33: it does not add the required sign_path_token(secret, path, expires_at) function, and verify_path_token\u2019s expected-token derivation is not aligned with the ticket\u2019s specified API/behavior beyond the test. This risks missing functionality for downstream callers."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.719,
+  "prompt_tokens": 2567,
+  "output_tokens": 281,
+  "estimated_usd": 0.000922,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/enum_coerce.py` does not implement the required `parse_enum` function, including trimming, case-insensitive canonical matching, and the empty-input-only default behavior. Passing tests cover only the legacy splitter and `parse_enum_list`.",
+  "target_issue": "T27 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and repository tests against both ticket requirements before deciding whether to merge.",
+    "The diff adds list coercion but contains no `parse_enum`, so Req 1 appears missing. I\u2019ll verify the complete source and test suite before finalizing.",
+    "The source confirms `parse_enum` is absent. I\u2019ll run the full test suite and inspect the tests for any additional requirement coverage before deciding.",
+    "The current tests pass, but they only cover the legacy splitter and list parsing; they do not implement or test Req 1. I\u2019ll inspect the test file directly to confirm the suite\u2019s scope.",
+    "The source and tests confirm Req 1 is missing: `parse_enum(raw, allowed, default=None)` is not implemented. Although the two available tests pass and Req 2 is covered, the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/enum_coerce.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_enum_coerce.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.992,
+  "prompt_tokens": 5588,
+  "output_tokens": 480,
+  "estimated_usd": 0.006006,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

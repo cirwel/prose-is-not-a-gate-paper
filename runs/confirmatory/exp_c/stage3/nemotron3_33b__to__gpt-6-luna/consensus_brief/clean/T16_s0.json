@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The patch correctly enforces idempotency-key ownership and preserves the legacy lock-record behavior; pytest passes all three tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch for correctness and compatibility rather than relying only on the review summary.",
+    "The patch implements new-key acquisition, matching-hash replay, and the required conflict error while leaving the legacy function unchanged. I\u2019ll run the test suite to confirm behavior in the worktree.",
+    "The implementation satisfies both requirements: it returns a copied lock mapping with a new record for acquisition, returns replay for a matching hash, and raises the specified ValueError for a mismatch. The legacy function remains unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.967,
+  "prompt_tokens": 3325,
+  "output_tokens": 1156,
+  "estimated_usd": 0.006359,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

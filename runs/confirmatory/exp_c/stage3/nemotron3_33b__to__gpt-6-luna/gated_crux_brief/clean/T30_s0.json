@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`mask_secret(\"secret\", 0)` returns `\"secret\"` instead of masking all characters, due to `value[-keep_last:]` when `keep_last` is zero.",
+  "target_issue": "mask_secret keep_last=0 edge case",
+  "thoughts": [
+    "I\u2019ll inspect the actual diff and relevant module to verify both requirements and compatibility, rather than rely solely on the review summary.",
+    "The implementation meets the stated behavior for ordinary positive `keep_last`, but the default/positive-only test misses an edge case: `keep_last=0` uses `value[-0:]`, which is the entire value, so the result exposes the secret. I\u2019ll run the suite to confirm baseline status before deciding.",
+    "The tests pass, but `mask_secret(value, keep_last=0)` exposes the entire value because `value[-0:]` returns the whole string. Since zero is a valid keep-last count and should preserve no characters, this is a secret-masking regression; hold for a fix and test."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.163,
+  "prompt_tokens": 2970,
+  "output_tokens": 532,
+  "estimated_usd": 0.004078,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

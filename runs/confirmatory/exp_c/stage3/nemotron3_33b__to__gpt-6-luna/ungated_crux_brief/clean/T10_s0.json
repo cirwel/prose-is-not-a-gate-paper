@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Adds `cache_get` to return values only while `expires_at > now`, and `purge_expired` to remove expired keys and return the eviction count. The existing public `cache_put` signature and behavior are preserved, and pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory reports a passing test run and no identified regressions, but specifically flags a possible legacy-signature change that has not been verified. I should inspect the patch before deciding.",
+    "The diff preserves the existing `cache_put` signature and adds both requested functions. Expiration is consistently treated as expired when `expires_at <= now`, and purging removes those keys while returning their count; I\u2019ll verify the worktree tests.",
+    "The diff leaves the legacy `cache_put` signature unchanged and implements both requirements with the correct strict TTL boundary. All three worktree tests pass, including legacy behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 47.025,
+  "prompt_tokens": 3355,
+  "output_tokens": 3751,
+  "estimated_usd": 0.014687,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

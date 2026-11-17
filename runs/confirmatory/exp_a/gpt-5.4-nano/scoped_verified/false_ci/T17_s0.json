@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not satisfied: escape_html_text only escapes < and >, and does not escape &, \", or ' or use required entity order (&amp; first). Req 2 not satisfied: filter_attrs lowercases keys but does not reject event-handler keys starting with 'on', does not case-normalize allowed_keys properly without recomputing per item, does not strip values before checking for 'javascript:' prefix, and does not HTML-escape kept values.",
+  "target_issue": "T17: escape_html_text and filter_attrs do not implement required escaping/filtering logic (missing &/quotes/apostrophe and missing 'on*' + javascript: value checks + value escaping).",
+  "thoughts": [
+    "Need to inspect the PR changes and run tests to ensure no regressions and that requirements T17 are fully implemented.",
+    "Review diff: escape_html_text implementation is incomplete (missing &, \", ' and wrong entity order). filter_attrs also appears to ignore required event-handler rejection and javascript: stripping/escaping rules. Need to run tests to confirm, but requirements are clearly not met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.237,
+  "prompt_tokens": 1374,
+  "output_tokens": 251,
+  "estimated_usd": 0.000595,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

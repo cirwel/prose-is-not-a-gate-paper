@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Control bytes in a URL must be rejected, but the implementation removes them before checking and can accept a URL that contained an embedded control character. Existing tests do not cover this case.",
+  "target_issue": "T05 Req 1 \u2014 reject whitespace control characters in URLs",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the implementation and compatibility against T05.",
+    "The patch appears to remove control bytes before validating, which may turn a URL containing embedded control characters into an accepted URL. I\u2019ll inspect the surrounding source and tests, then run the suite to confirm whether this requirement is covered.",
+    "The repository has only the link-scheme module and its focused tests, so I\u2019ll read both to check legacy behavior and coverage of the ticket requirements.",
+    "The implementation strips control bytes before checking whitespace, so a URL such as `https://exa\\nmple.org` can be accepted after normalization despite the requirement to reject control characters. I\u2019ll check the tests and run pytest to ensure there are no additional issues.",
+    "The tests cover normal safe/unsafe schemes but not control bytes in URLs, and the source confirms those bytes are removed before validation. I\u2019ll run the suite to verify the reported test status before deciding.",
+    "The tests pass, but Req 1 is not fully implemented: `is_safe_url` strips control bytes before validating, so an embedded newline in `https://exa\\nmple.org` is removed and the resulting URL is accepted. The sanitizer calls the same validation path, so this unsafe URL is emitted as a Markdown link."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.806,
+  "prompt_tokens": 7877,
+  "output_tokens": 1365,
+  "estimated_usd": 0.01067,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

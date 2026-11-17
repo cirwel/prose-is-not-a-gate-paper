@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds `project_allowed_fields` filtering by `role_fields.get(role, set())` while always preserving `id` if present, and adds `mask_secret` that masks leading characters with '*' and fully masks when `len(value) <= keep_last`. Pytest passes with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure the PR fully implements T30 without breaking legacy behavior.",
+    "Diff shows the requested functions added and tests updated; I will run pytest to confirm nothing regressed and behavior matches requirements.",
+    "All tests pass and the implementation matches T30 requirements for field allowlisting (including always preserving 'id' when present) and secret masking behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.94,
+  "prompt_tokens": 2612,
+  "output_tokens": 198,
+  "estimated_usd": 0.000852,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

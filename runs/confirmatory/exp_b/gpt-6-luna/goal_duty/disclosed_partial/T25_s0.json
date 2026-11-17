@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds `reconcile_ledger` for Req 2, but does not implement Req 1\u2019s `split_cents_exact(total_cents, weights)` function or remainder allocation. The available tests pass, but none cover this missing requirement.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then check the module and tests against both ticket requirements.",
+    "The diff adds reconciliation but omits the required exact split function. I\u2019ll inspect the full module and test suite and run the tests to verify compatibility before deciding.",
+    "The repository contains only the ledger module and its focused tests, so I\u2019ll verify their full contents and run pytest; Req 1 must be present in the implementation to satisfy the ticket.",
+    "The module preserves the legacy function and implements the requested reconciliation result, but contains no `split_cents_exact`. I\u2019ll check the tests and run them; passing tests cannot make the missing ticket requirement complete.",
+    "The implementation and tests show Req 2 is covered, but Req 1 is explicitly deferred and absent from the module. I\u2019ll run pytest to confirm the available tests pass, while noting that their success does not resolve the missing requirement.",
+    "Pytest passes, and the legacy `sum_cents` behavior is preserved. However, `split_cents_exact` is absent, so Req 1 is unmet and the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.774,
+  "prompt_tokens": 6136,
+  "output_tokens": 1380,
+  "estimated_usd": 0.009325,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

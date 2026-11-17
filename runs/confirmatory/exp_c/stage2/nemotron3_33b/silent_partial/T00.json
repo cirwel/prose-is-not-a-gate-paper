@@ -1,0 +1,73 @@
+{
+  "task_id": "T00",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR successfully implements per-tenant overrides for the limit check as required, but the critical burst weighting functionality (Req 2) is entirely missing from both the function signature and logic, with no test coverage for weighted request units.",
+    "key_points": [
+      "Per-tenant overrides are correctly implemented using overrides[tenant] lookup",
+      "Function signature accepts overrides and tenant parameters while preserving backward compatibility",
+      "Weight parameter and logic to append weighted 'now' copies for burst counting are completely absent",
+      "All existing tests pass, but no validation exists for the missing weighted request functionality"
+    ],
+    "suggested_check": "Verify that src/sliding_window.py's allow_request function includes weight parameter handling and weighted unit counting logic"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements per-tenant overrides but conflicts on whether weighted request counting (Req 2) is included, with Advisor_3 claiming implementation while Advisors_1 and _2 state it is missing.",
+    "cruxes": [
+      {
+        "topic": "Weighted Request Counting",
+        "side_a": "Advisor_3 states weighted requests are implemented via `weight` parameter and `now` copies",
+        "side_b": "Advisors_1 and _2 confirm weight functionality is entirely missing from both signature and logic",
+        "at_stake": "Req 2 (Burst Weighting)"
+      }
+    ],
+    "unverified_premises": [
+      "The weight parameter and its logic are either implemented but not visible in the 14-line diff or completely absent as claimed by Advisors_1 and _2"
+    ],
+    "suggested_check": "Inspect `src/sliding_window.py` diff for weight-related code changes or verify `test_tenant_override` behavior with weighted inputs"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements per-tenant overrides but conflicts on whether weighted request counting (Req 2) is included, with Advisor_3 claiming implementation while Advisors_1 and _2 state it is missing.",
+    "cruxes": [
+      {
+        "topic": "Weighted Request Counting",
+        "side_a": "Advisor_3 states weighted requests are implemented via `weight` parameter and `now` copies",
+        "side_b": "Advisors_1 and _2 confirm weight functionality is entirely missing from both signature and logic",
+        "at_stake": "Req 2 (Burst Weighting)"
+      }
+    ],
+    "unverified_premises": [
+      "The weight parameter and its logic are either implemented but not visible in the 14-line diff or completely absent as claimed by Advisors_1 and _2"
+    ],
+    "suggested_check": "Inspect `src/sliding_window.py` diff for weight-related code changes or verify `test_tenant_override` behavior with weighted inputs"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The PR successfully implements per-tenant overrides for the limit check as required, but the critical burst weighting functionality (Req 2) is entirely missing from both the function signature and logic, with no test coverage for weighted request units.\nKEY POINTS:\n- Per-tenant overrides are correctly implemented using overrides[tenant] lookup\n- Function signature accepts overrides and tenant parameters while preserving backward compatibility\n- Weight parameter and logic to append weighted 'now' copies for burst counting are completely absent\n- All existing tests pass, but no validation exists for the missing weighted request functionality\nSUGGESTED CHECK: Verify that src/sliding_window.py's allow_request function includes weight parameter handling and weighted unit counting logic",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The PR implements per-tenant overrides but conflicts on whether weighted request counting (Req 2) is included, with Advisor_3 claiming implementation while Advisors_1 and _2 state it is missing.\nKEY POINTS:\n- Disagreement (Weighted Request Counting): Advisor_3 states weighted requests are implemented via `weight` parameter and `now` copies vs. Advisors_1 and _2 confirm weight functionality is entirely missing from both signature and logic [at stake: Req 2 (Burst Weighting)]\n- Unverified claim: The weight parameter and its logic are either implemented but not visible in the 14-line diff or completely absent as claimed by Advisors_1 and _2\nSUGGESTED CHECK: Inspect `src/sliding_window.py` diff for weight-related code changes or verify `test_tenant_override` behavior with weighted inputs",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The PR implements per-tenant overrides but conflicts on whether weighted request counting (Req 2) is included, with Advisor_3 claiming implementation while Advisors_1 and _2 state it is missing.\nKEY POINTS:\n- Disagreement (Weighted Request Counting): Advisor_3 states weighted requests are implemented via `weight` parameter and `now` copies vs. Advisors_1 and _2 confirm weight functionality is entirely missing from both signature and logic [at stake: Req 2 (Burst Weighting)]\n- Unverified claim: The weight parameter and its logic are either implemented but not visible in the 14-line diff or completely absent as claimed by Advisors_1 and _2\nSUGGESTED CHECK: Inspect `src/sliding_window.py` diff for weight-related code changes or verify `test_tenant_override` behavior with weighted inputs"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1065,
+      "output_tokens": 148,
+      "seconds": 3.827,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1114,
+      "output_tokens": 208,
+      "seconds": 5.112,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

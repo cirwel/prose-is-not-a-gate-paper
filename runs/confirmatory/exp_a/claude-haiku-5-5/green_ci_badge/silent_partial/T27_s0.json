@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/enum_coerce.py has no parse_enum(raw, allowed, default=None) definition. The diff only adds parse_enum_list. Req 1 requires trimming, case-insensitive matching to the canonical entry, and default fallback only when raw is empty and default is not None. The passing tests cover only parse_enum_list and legacy split, so they do not verify Req 1.",
+  "target_issue": "Req 1: parse_enum(raw, allowed, default=None) missing from src/enum_coerce.py",
+  "thoughts": [
+    "The contributor's report claims success, but I need the actual diff to check the implementation against both requirements before trusting it.",
+    "The diff adds parse_enum_list but contains no parse_enum function, so Req 1 is unimplemented regardless of the green test run. The contributor's report does not mention it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.693,
+  "prompt_tokens": 86385,
+  "output_tokens": 505,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

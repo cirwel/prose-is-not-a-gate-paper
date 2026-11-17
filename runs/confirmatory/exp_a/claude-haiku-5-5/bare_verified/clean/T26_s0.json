@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_and_record_nonce prunes with exp > now, then rejects a nonce still present in the pruned map and records now+ttl on acceptance, so replays are blocked until expiry (test_replay_rejected_until_expiry covers this). prune_expired_nonces removes entries with expiry <= now and returns a new dict, keeping the store bounded and the input unmodified. make_nonce_key is untouched, and run_pytest exits 0 with all three tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to review the actual diff and run tests before deciding; the contributor report alone is not sufficient evidence.",
+    "The diff looks correct on inspection: pruning keeps only exp > now, and replay is rejected while the nonce is still active. I still need to confirm the tests actually pass in the worktree rather than trust the contributor's report.",
+    "The diff matches both requirements: replays are rejected while the recorded expiry is still in the future, and expired entries are pruned on every call without mutating the input. The legacy make_nonce_key signature is unchanged, and pytest passes 3/3 in the worktree."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.029,
+  "prompt_tokens": 6161,
+  "output_tokens": 953,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

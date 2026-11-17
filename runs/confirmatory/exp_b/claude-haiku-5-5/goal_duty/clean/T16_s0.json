@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "claim_job records a new key as 'acquired', returns 'replay' for an identical payload_hash, and raises ValueError('idempotency_conflict') for a different hash on an existing key. The legacy make_lock_record signature and behavior are preserved, and test_legacy_lock_record, test_claim_and_replay, and test_conflict_raises all pass in the contrib/fix worktree.",
+  "target_issue": "none",
+  "thoughts": [
+    "The ticket has two requirements and the contributor claims tests pass, but I need to verify the diff and source myself before deciding. I'll start by reading the diff and the module file.",
+    "The diff implements both requirements, but I must verify the tests actually pass rather than trust the contributor's report. I'll run pytest in the contrib/fix worktree.",
+    "The diff implements Req 1 (acquired/replay) and Req 2 (ValueError('idempotency_conflict') on hash mismatch), leaves make_lock_record unchanged, and run_pytest independently shows all 3 tests passing with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.657,
+  "prompt_tokens": 89204,
+  "output_tokens": 586,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

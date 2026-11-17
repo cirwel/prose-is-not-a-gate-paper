@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/lru_cap.py` has no `lru_set(cache, key, value, capacity, pinned=())`, so it cannot enforce LRU capacity eviction or preserve pinned keys as required.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the repository layout and the PR diff, then verify the implementation and tests against both requirements.",
+    "The change is narrowly scoped, so I\u2019ll compare the proposed diff with the existing module and its tests.",
+    "The diff adds `lru_touch` but does not implement the required `lru_set`; I\u2019ll inspect the current module and run the tests to confirm the gap isn\u2019t addressed elsewhere.",
+    "The PR implements `lru_touch` and preserves `make_lru`, but omits the required capacity-aware `lru_set` entirely. The reported tests do not cover that missing requirement, so merging would leave T22 incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.488,
+  "prompt_tokens": 2923,
+  "output_tokens": 1213,
+  "estimated_usd": 0.00622,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

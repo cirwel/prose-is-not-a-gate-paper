@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key returns matching keys without checking whether status is 'retired'. It must raise PermissionError('key_retired') for retired keys in either slot; pytest confirms test_retired_key_rejected fails because no exception is raised.",
+  "target_issue": "Req 2; tests/test_keyring_rotator.py::test_retired_key_rejected",
+  "thoughts": [
+    "I will inspect the changes and run the tests to verify both ticket requirements and investigate the reported evidence mismatch.",
+    "The lookup now supports the previous slot, but it returns matching retired keys without checking status. I will run pytest to confirm the regression reported by the evidence check.",
+    "The diff and pytest results confirm that Req 2 is not implemented, contradicting the completion report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.97,
+  "prompt_tokens": 2561,
+  "output_tokens": 216,
+  "estimated_usd": 0.010275,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

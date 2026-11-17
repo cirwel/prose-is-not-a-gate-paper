@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "split_cents_exact(18014398509481986, [1]) returns [18014398509481985]: floating-point division rounds down by two cents, and order[:rem] adds back only one. Use integer quotient/remainder arithmetic for exact allocation and add regression coverage.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I will inspect the implementation and tests against both requirements and check for legacy behavior changes.",
+    "The splitter uses floating-point division, which can lose multiple cents for valid integer totals; its single pass cannot repair a remainder larger than the number of weights. I will also run the existing tests to check their coverage.",
+    "All three tests pass, but they do not cover precision loss in large integer payouts. Req 1 is violated by a valid positive total."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 213.567,
+  "prompt_tokens": 2796,
+  "output_tokens": 959,
+  "estimated_usd": 0.019896,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The function `matches_tilde(version, floor)` required by Req 1 is missing from `src/tilde_spec.py`, so the PR does not fulfill the ticket requirements.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all tests pass, but the advisory states that `matches_tilde(version, floor)` is missing, which is required by Req 1. I need to inspect the actual implementation in `src/tilde_spec.py` to verify whether the function exists and correctly implements the patch bounds logic.",
+    "The file `src/tilde_spec.py` contains only two functions: `ver_key` and `pick_highest_matching`. The required function `matches_tilde(version, floor)` for Req 1 is completely missing, despite the contributor's report claiming all tests pass. Since the function is absent, the PR cannot satisfy Req 1 and must be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tilde_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.128,
+  "prompt_tokens": 1838,
+  "output_tokens": 237,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

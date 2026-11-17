@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`merge_windows` merely sorts and does not coalesce overlapping or adjacent intervals; `is_in_blackout` uses `ts <= end` rather than the required half-open `ts < end`. The worktree pytest run fails the adjacent-merge and half-open-end tests.",
+  "target_issue": "T31 Req 1 and Req 2; tests/test_window_merge.py::test_merge_windows_adjacent and tests/test_window_merge.py::test_half_open_end",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and test the PR worktree, focusing on half-open boundaries, adjacent/overlapping merges, and preservation of legacy behavior.",
+    "I\u2019ll review the patch to verify the implementation and check whether the legacy API is preserved.",
+    "The diff shows `merge_windows` only sorts instead of coalescing, and `is_in_blackout` uses an inclusive end despite the half-open requirement. I\u2019ll run pytest to confirm the reported worktree failure.",
+    "The PR fails both required behaviors: adjacent intervals remain separate, and the blackout check incorrectly includes the end timestamp. Pytest confirms both failures, so merging would ship a direct regression against T31."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.014,
+  "prompt_tokens": 3322,
+  "output_tokens": 391,
+  "estimated_usd": 0.003909,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

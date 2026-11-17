@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: expand_cron_field converts literals/range endpoints to int and uses range(lo, hi+1, step) without checking that lo/hi (or literal values) are within [min_v, max_v], so out-of-bounds inputs will not raise ValueError('cron_out_of_bounds') as required. Also step parsing uses partition('/') but does not validate step or handle empty/invalid forms; comma-separated combination logic is simplistic and untested for complex cases.",
+  "target_issue": "Missing ValueError('cron_out_of_bounds') behavior for out-of-bounds literals/range endpoints (no failing test currently covers this).",
+  "thoughts": [
+    "Need to inspect diff and run pytest to confirm Req 2 out-of-bounds validation and full syntax handling beyond current tests.",
+    "Diff shows expand_cron_field lacks required out-of-bounds validation and likely mishandles step/range endpoints; only minimal test added. Need to run pytest to confirm but based on code it will not raise ValueError('cron_out_of_bounds')."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.247,
+  "prompt_tokens": 2010,
+  "output_tokens": 245,
+  "estimated_usd": 0.000748,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

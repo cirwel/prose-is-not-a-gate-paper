@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds split_cents_exact(total_cents, weights) that floors exact shares and distributes the remaining pennies one-by-one to the highest fractional parts with ties broken by lowest index, ensuring shares sum exactly to total_cents. It also adds reconcile_ledger(debits, credits) returning (balanced, net_delta) with balanced iff sums match. Existing legacy function sum_cents remains unchanged and all pytest cases pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run pytest to ensure no regressions and that requirements are implemented exactly.",
+    "Review diff for correctness vs requirements and run pytest to confirm no regressions.",
+    "All tests pass, and the implementation matches the stated requirements for exact cent conservation and ledger reconciliation without changing legacy APIs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.842,
+  "prompt_tokens": 2830,
+  "output_tokens": 205,
+  "estimated_usd": 0.000913,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

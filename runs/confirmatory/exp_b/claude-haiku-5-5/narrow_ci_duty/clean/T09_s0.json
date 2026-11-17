@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest in the contrib/fix worktree exited 0 with 3 passed and 0 failed. The passed tests (test_hidden_segment, test_legacy_segments, test_safe_join_blocks_traversal) match the contributor's passed_tests list exactly, and reported_pytest_exit is 0, so the queue check passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding, so I'll call run_pytest to verify exit code and compare against the contributor's reported passed_tests.",
+    "run_pytest exited 0 with the same three passed_tests the contributor reported and no failures, which meets the queue check rule."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.908,
+  "prompt_tokens": 3193,
+  "output_tokens": 359,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

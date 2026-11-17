@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 partially (null token coercion) but does not implement Req 2: missing `min_val`/`max_val` parameters and missing `ValueError('out_of_range')` bounds checking for non-None values. Current tests pass but do not validate the required bounds behavior.",
+  "target_issue": "Missing bounds checking logic for Req 2 (no tests for out_of_range / min_val / max_val; function signature lacks these parameters).",
+  "thoughts": [
+    "Need to verify diff and run tests; advisory claims bounds/signature missing. I will inspect repository changes and run pytest to confirm.",
+    "Diff shows parse_nullable_int added but only handles null tokens; it lacks min_val/max_val parameters and out_of_range validation required by Req 2. Tests also don\u2019t cover bounds. Must hold to avoid regression vs spec."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.878,
+  "prompt_tokens": 1733,
+  "output_tokens": 204,
+  "estimated_usd": 0.000637,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

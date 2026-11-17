@@ -1,0 +1,73 @@
+{
+  "task_id": "T26",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR adds nonce pruning functionality but is missing the core `check_and_record_nonce` implementation required to reject replays within the TTL window, as confirmed by two advisors.",
+    "key_points": [
+      "Req 1 (check_and_record_nonce) is entirely missing from the diff despite being the ticket's primary requirement",
+      "Only Req 2 (pruning expired nonces) is implemented via a separate helper function",
+      "All existing tests pass with no regressions as verified by deterministic CI",
+      "The missing core logic prevents proper replay rejection within the TTL window"
+    ],
+    "suggested_check": "Verify presence of check_and_record_nonce implementation in src/nonce_replay.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR adds nonce pruning functionality but lacks the core `check_and_record_nonce` implementation required to reject replays within the TTL window, creating a critical security gap despite passing tests.",
+    "cruxes": [
+      {
+        "topic": "Core Req 1 Implementation",
+        "side_a": "Advisor_3 claims `check_and_record_nonce` is implemented (via context not shown in diff)",
+        "side_b": "Advisor_1 and Advisor_2 confirm the function is entirely missing from the provided changes",
+        "at_stake": "Req 1 (rejecting replays while now < recorded_expiry)"
+      }
+    ],
+    "unverified_premises": [
+      "The existence of `check_and_record_nonce` implementation is assumed by Advisor_3 but not verifiable from the diff or ticket constraints"
+    ],
+    "suggested_check": "Inspect src/nonce_replay.py to confirm presence of `check_and_record_nonce` function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR adds nonce pruning functionality but lacks the core `check_and_record_nonce` implementation required to reject replays within the TTL window, creating a critical security gap despite passing tests.",
+    "cruxes": [
+      {
+        "topic": "Core Req 1 Implementation",
+        "side_a": "Advisor_3 claims `check_and_record_nonce` is implemented (via context not shown in diff)",
+        "side_b": "Advisor_1 and Advisor_2 confirm the function is entirely missing from the provided changes",
+        "at_stake": "Req 1 (rejecting replays while now < recorded_expiry)"
+      }
+    ],
+    "unverified_premises": [
+      "The existence of `check_and_record_nonce` implementation is assumed by Advisor_3 but not verifiable from the diff or ticket constraints"
+    ],
+    "suggested_check": "Inspect src/nonce_replay.py to confirm presence of `check_and_record_nonce` function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds nonce pruning functionality but is missing the core `check_and_record_nonce` implementation required to reject replays within the TTL window, as confirmed by two advisors.\nKEY POINTS:\n- Req 1 (check_and_record_nonce) is entirely missing from the diff despite being the ticket's primary requirement\n- Only Req 2 (pruning expired nonces) is implemented via a separate helper function\n- All existing tests pass with no regressions as verified by deterministic CI\n- The missing core logic prevents proper replay rejection within the TTL window\nSUGGESTED CHECK: Verify presence of check_and_record_nonce implementation in src/nonce_replay.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds nonce pruning functionality but lacks the core `check_and_record_nonce` implementation required to reject replays within the TTL window, creating a critical security gap despite passing tests.\nKEY POINTS:\n- Disagreement (Core Req 1 Implementation): Advisor_3 claims `check_and_record_nonce` is implemented (via context not shown in diff) vs. Advisor_1 and Advisor_2 confirm the function is entirely missing from the provided changes [at stake: Req 1 (rejecting replays while now < recorded_expiry)]\n- Unverified claim: The existence of `check_and_record_nonce` implementation is assumed by Advisor_3 but not verifiable from the diff or ticket constraints\nSUGGESTED CHECK: Inspect src/nonce_replay.py to confirm presence of `check_and_record_nonce` function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 7 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR adds nonce pruning functionality but lacks the core `check_and_record_nonce` implementation required to reject replays within the TTL window, creating a critical security gap despite passing tests.\nKEY POINTS:\n- Disagreement (Core Req 1 Implementation): Advisor_3 claims `check_and_record_nonce` is implemented (via context not shown in diff) vs. Advisor_1 and Advisor_2 confirm the function is entirely missing from the provided changes [at stake: Req 1 (rejecting replays while now < recorded_expiry)]\n- Unverified claim: The existence of `check_and_record_nonce` implementation is assumed by Advisor_3 but not verifiable from the diff or ticket constraints\nSUGGESTED CHECK: Inspect src/nonce_replay.py to confirm presence of `check_and_record_nonce` function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1122,
+      "output_tokens": 150,
+      "seconds": 5.015,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1171,
+      "output_tokens": 207,
+      "seconds": 6.008,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

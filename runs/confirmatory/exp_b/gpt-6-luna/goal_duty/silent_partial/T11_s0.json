@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/cursor_hmac.py implements encode_cursor but does not implement the required decode_cursor(token, secret), so tamper detection and invalid_cursor errors are missing despite the available tests passing.",
+  "target_issue": "T11 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first, then verify the implementation and relevant tests against both ticket requirements.",
+    "The diff adds cursor encoding but contains no decode_cursor implementation, so the required verification and tamper rejection are not present. I\u2019ll inspect the source and tests and run the suite to confirm the gap.",
+    "The repository is small, so I\u2019ll read the implementation and its tests directly, then run pytest to check for regressions and missing coverage.",
+    "The source confirms there is no decode_cursor, leaving Req 2 unimplemented. I\u2019ll inspect the tests and run the suite to verify the current test status before deciding.",
+    "The tests cover encoding and legacy clamping but do not test decoding or tampering. I\u2019ll run the full available test suite; regardless of its result, the missing required decoder means the ticket is incomplete.",
+    "The existing tests pass, but they only cover encoding and the legacy clamp behavior. Req 2 is absent: there is no decoder to verify signatures in constant time or reject tampered and negative offsets."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.025,
+  "prompt_tokens": 6315,
+  "output_tokens": 462,
+  "estimated_usd": 0.00653,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

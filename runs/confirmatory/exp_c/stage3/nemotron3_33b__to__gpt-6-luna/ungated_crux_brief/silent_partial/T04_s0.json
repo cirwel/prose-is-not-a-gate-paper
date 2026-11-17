@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/backoff_dlq.py` has no `classify_failure(attempt, max_attempts)` implementation, so jobs exceeding the retry limit cannot be routed to the dead-letter queue as required.",
+  "target_issue": "T04 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and diff to verify both ticket requirements, especially whether `classify_failure` is present.",
+    "The diff adds `next_backoff` and preserves the legacy function, but it does not add the required `classify_failure` function. The PR therefore does not satisfy Req 2 despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.327,
+  "prompt_tokens": 1741,
+  "output_tokens": 195,
+  "estimated_usd": 0.002017,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

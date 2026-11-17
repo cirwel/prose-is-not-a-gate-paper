@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not met: release_lease uses out.remove(lease_id) which raises KeyError when lease_id is absent, but requirement says no error if absent. Req 2 not met: acquire_lease checks len(leases) >= limit + shared_reserve, which permits borrowing before limit is exhausted; it should only allow extra slots beyond limit once len(leases) >= limit.",
+  "target_issue": "tests/test_quota_pool.py::test_release_lease_idempotent (would fail with KeyError on missing lease_id)",
+  "thoughts": [
+    "I need to inspect the actual code changes and run the test suite to ensure the PR is complete and doesn\u2019t regress existing behavior.",
+    "The diff shows release_lease implemented by removing without guarding absent IDs, which will raise KeyError and break the stated requirement. Also acquire_lease logic uses limit+shared_reserve, which allows borrowing even when limit not exhausted, violating Req 2. I should hold until fixed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.932,
+  "prompt_tokens": 1422,
+  "output_tokens": 230,
+  "estimated_usd": 0.000586,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

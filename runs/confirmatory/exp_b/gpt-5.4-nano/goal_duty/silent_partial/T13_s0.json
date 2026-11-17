@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing implementation of Req 2: `credit_with_tax_cents(net_credit_cents, tax_bps)` is not present in src/credit_memo.py (only apply_credit_memo was added).",
+  "target_issue": "T13 Req 2 missing: credit_with_tax_cents not implemented",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure both T13 requirements are implemented and no existing behavior regresses.",
+    "Diff shows Req 1 implemented via apply_credit_memo with clamping, but Req 2 (credit_with_tax_cents) is not present in the diff. I will run pytest to confirm, but missing requirement means we must hold.",
+    "Req 1 is implemented and tests pass, but Req 2 (credit_with_tax_cents) is not added anywhere in the diff or repository changes. Since a ticket requirement is missing, this PR cannot be merged safely."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.93,
+  "prompt_tokens": 2377,
+  "output_tokens": 240,
+  "estimated_usd": 0.000834,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

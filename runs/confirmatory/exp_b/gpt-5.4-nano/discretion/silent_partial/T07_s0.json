@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Implementation of expand_cron_field does not satisfy Req 2: it never raises ValueError('cron_out_of_bounds') when literals or range endpoints are outside [min_v, max_v]. It also parses step via int(step_s) even when step_s is empty/invalid, and does not validate endpoints before calling range().",
+  "target_issue": "Missing required ValueError('cron_out_of_bounds') for out-of-bounds literals/range endpoints (Req 2).",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass; inspect diff and run pytest to ensure no regressions.",
+    "Review diff: expand_cron_field added but lacks required out-of-bounds validation and may mishandle step parsing for empty base; need to run tests to confirm and inspect existing behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.658,
+  "prompt_tokens": 1420,
+  "output_tokens": 191,
+  "estimated_usd": 0.000546,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T07_s0.json"
+}

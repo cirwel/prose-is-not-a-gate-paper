@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 match the ticket exactly. Legacy `expiry_remaining` is unchanged, `now == expires_at` is accepted, and expired tokens return False before comparison. Follow-up (not blocking): `hmac.compare_digest` raises TypeError on non-ASCII str tokens, so attacker-supplied non-ASCII input would raise instead of returning False. Consider encoding both sides to bytes or catching TypeError.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are summaries, so I'll verify the actual diff against Req 1 and Req 2 before deciding.",
+    "The diff implements Req 1 (lowercase hex HMAC-SHA256 over `f'{path}:{int(expires_at)}'`) and Req 2 (`now <= expires_at` check, then `hmac.compare_digest`), and legacy `expiry_remaining` is untouched. I did not rerun pytest, so this relies on the reported exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.164,
+  "prompt_tokens": 3971,
+  "output_tokens": 983,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/signed_url.py` lacks `sign_path_token(secret, path, expires_at) -> str`, which Req 1 requires; the contributor report also confirms it was deferred.",
+  "target_issue": "T33 Req 1",
+  "thoughts": [
+    "The completion report says Req 1 was deferred, but I\u2019ll inspect the patch to confirm whether `sign_path_token` is present before deciding.",
+    "The patch adds verification with expiry and constant-time comparison, but does not implement the required signing function. The ticket is incomplete, so merging would leave callers unable to generate tokens through the requested API."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.209,
+  "prompt_tokens": 1433,
+  "output_tokens": 226,
+  "estimated_usd": 0.001869,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

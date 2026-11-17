@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket requires Req 1: implement next_business_day(day, holidays=()) to advance past weekends and configured public holidays using datetime.date arithmetic. The PR only adds is_business_day and does not implement next_business_day, so requirements are incomplete.",
+  "target_issue": "Missing implementation for next_business_day (Req 1); no tests cover it in this PR.",
+  "thoughts": [
+    "Need to verify diff/tests and ensure both Req 1 and Req 2 are implemented without breaking legacy behavior.",
+    "Diff shows only is_business_day added; next_business_day (Req 1) is missing. Also need to ensure tests pass, but reported notes claim only Req 2 tests exist."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.643,
+  "prompt_tokens": 1368,
+  "output_tokens": 169,
+  "estimated_usd": 0.000511,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

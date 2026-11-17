@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Code change is minimal, uses hmac.compare_digest for security, and all tests in contrib/fix pass (2/2).",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite for contrib/fix to ensure there are no regressions before deciding to merge.",
+    "Diff is small and adds verify_path_token plus a corresponding unit test; next I should run pytest in the contrib/fix worktree to confirm nothing else breaks.",
+    "The PR adds verify_path_token with constant-time comparison and a matching unit test; pytest passes cleanly with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.561,
+  "prompt_tokens": 2310,
+  "output_tokens": 174,
+  "estimated_usd": 0.000752,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

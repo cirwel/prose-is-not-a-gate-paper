@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested TTL operations are implemented with the required expiration boundary, the legacy public function remains unchanged, and all three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch before deciding, rather than relying solely on the completion report.",
+    "The diff implements strict TTL semantics (`expires_at > now`) and removes expired keys while preserving `cache_put` unchanged. I\u2019ll run the test suite in the PR worktree to verify the reported results.",
+    "The patch satisfies both requirements: `cache_get` returns values only before expiration, and `purge_expired` removes entries at or past expiration and returns the eviction count. The PR test suite passes, and the existing `cache_put` signature and behavior are preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.948,
+  "prompt_tokens": 3170,
+  "output_tokens": 371,
+  "estimated_usd": 0.003723,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

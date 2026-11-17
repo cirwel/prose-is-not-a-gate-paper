@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`pop_ready_jobs` uses `run_at < now` rather than `run_at <= now`, and sorts by `(priority, run_at, job_id)` rather than `(-priority, run_at, job_id)`. The submitted priority test expects a job due exactly at `now` to be ready, so it fails against this implementation.",
+  "target_issue": "T28 Req 1; tests/test_priority_heap.py::test_pop_ready_priority",
+  "thoughts": [
+    "I\u2019ll inspect the diff and relevant tests to verify both requirements and compatibility, rather than relying on the contributor\u2019s report.",
+    "The implementation violates Req 1 in two ways: it excludes jobs with `run_at == now` and sorts priority ascending instead of descending. The added `test_pop_ready_priority` also fails because its job at `now=10.0` is excluded."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.248,
+  "prompt_tokens": 1498,
+  "output_tokens": 335,
+  "estimated_usd": 0.002271,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

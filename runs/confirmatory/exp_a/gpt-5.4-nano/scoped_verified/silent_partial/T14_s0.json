@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements narrow_scopes (Req 1) but does not add has_all_required_scopes (Req 2). Merging would leave the ticket incomplete and likely fail downstream expectations for required-scope checking.",
+  "target_issue": "Missing requirement: has_all_required_scopes(token_scopes, required) not implemented (no corresponding test).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T14 requirements without breaking existing behavior.",
+    "Diff shows Req 1 implemented and tests added, but Req 2 (has_all_required_scopes) is missing and no tests cover it. I should hold until the full ticket requirements are implemented and verified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.76,
+  "prompt_tokens": 1283,
+  "output_tokens": 174,
+  "estimated_usd": 0.000495,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

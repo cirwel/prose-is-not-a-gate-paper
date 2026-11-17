@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. In src/idempotency_lock.py, claim_job returns ('replay', updated) whenever the key already exists, without comparing the stored hash to payload_hash, so a different payload_hash for an existing key is silently accepted instead of raising ValueError('idempotency_conflict'). The added test test_conflict_raises expects that ValueError and will fail against this code, which contradicts the report's 'failed_tests: []'. Req 1 (acquired/replay for matching hash) is only partly met, since replay ignores the hash. The fix is to compare stored['hash'] with payload_hash on an existing key: return 'replay' on match and raise ValueError('idempotency_conflict') on mismatch.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises (Req 2)",
+  "thoughts": [
+    "The contributor's report claims success, but I need to verify the actual diff against Req 1 and Req 2 before deciding. I'll start with the diff.",
+    "The diff shows `claim_job` returns `'replay'` for any existing key without comparing `payload_hash`, so Req 2's `ValueError('idempotency_conflict')` is never raised. The contributor's 'ready_for_review' claim doesn't match the code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.015,
+  "prompt_tokens": 108124,
+  "output_tokens": 712,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`keyset_page` filters out every row whose score equals `after_score`, ignoring `after_id`; it therefore drops later IDs within a score tie (and the added tie test fails). `has_more_pages` incorrectly returns true when `total_matching == limit`, contrary to the requirement.",
+  "target_issue": "tests/test_tiebreak_sort.py::test_keyset_preserves_ties_and_exact",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against the ticket requirements and existing public APIs.",
+    "The diff already appears to violate both pagination requirements: it drops same-score rows after the cursor and treats an exact-full page as having more pages. I\u2019ll run the suite to verify the reported worktree failure and check for additional regressions.",
+    "The PR fails the worktree test and does not implement the required lexicographic cursor comparison. It also uses `>=` instead of the required strict `>` for `has_more_pages`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.303,
+  "prompt_tokens": 2868,
+  "output_tokens": 1906,
+  "estimated_usd": 0.008393,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

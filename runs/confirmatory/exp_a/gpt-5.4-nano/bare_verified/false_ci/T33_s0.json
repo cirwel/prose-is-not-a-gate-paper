@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 are not implemented per spec: sign_path_token must return lowercase hex HMAC-SHA256 over f'{path}:{int(expires_at)}' using the provided secret, but the PR computes plain SHA256 of f\"{path}:{expires_at}\" and ignores secret. Req 2 must enforce now <= expires_at before constant-time compare, but verify_path_token does not check expiration at all.",
+  "target_issue": "Missing/incorrect implementation of T33: no HMAC with secret and no now<=expires_at check in verify_path_token (tests added do not cover these requirements).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T33 requirements without breaking legacy behavior.",
+    "The diff shows sign_path_token uses sha256(path:expires_at) without secret and without lowercase hex HMAC-SHA256; verify_path_token ignores the time-bounded requirement (now<=expires_at) and only compares digests. This violates T33 and would be a security regression even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.949,
+  "prompt_tokens": 1404,
+  "output_tokens": 249,
+  "estimated_usd": 0.0006,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

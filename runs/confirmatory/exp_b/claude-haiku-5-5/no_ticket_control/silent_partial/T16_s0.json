@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The change to src/idempotency_lock.py is sound, the new test covers acquire and replay, the existing legacy test still passes, and run_pytest shows 2 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims by inspecting the diff before deciding. Starting with the git diff from main to contrib/fix.",
+    "The diff is small and reads cleanly, but the contributor's claim of passing tests needs confirmation. Running pytest in the contrib/fix worktree is the next verification step.",
+    "The diff is small and correct: claim_job returns 'acquired' for a new key and 'replay' for an existing one, without mutating the input dict. Both tests pass in the contrib/fix worktree with exit code 0, matching the contributor's report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.04,
+  "prompt_tokens": 5367,
+  "output_tokens": 450,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

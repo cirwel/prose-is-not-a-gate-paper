@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test suite failed on `test_expiry_boundary_and_purge`, indicating that `cache_get` is incorrectly returning a value for an expired key instead of `None` as required by the ticket.",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `pytest` failed in the worktree. I must run `pytest` to determine the actual state of the PR before making a decision.",
+    "The `pytest` run failed, specifically `test_expiry_boundary_and_purge` failed with an `AssertionError`. The failure indicates that `cache_get` is returning a value (42) when it should return `None` for an expired key at time 15.0. This is a regression or an incomplete fix for Req 1/Req 2. I must hold the PR until this test passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.269,
+  "prompt_tokens": 1387,
+  "output_tokens": 237,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

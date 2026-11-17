@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`is_safe_url` calls `strip_control_chars` before validation, and `sanitize_markdown_link` also strips the URL before passing it to the validator. Thus control-containing URLs can be accepted and emitted as links instead of rejected.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch, especially how it detects control characters and parses URL schemes, before deciding.",
+    "The implementation removes control characters before checking the URL, so a URL containing a newline or tab can be normalized into an allowed URL and accepted. For example, `https://exa\\nmple.org` becomes `https://example.org`, contrary to Req 1\u2019s requirement to reject whitespace control characters."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.426,
+  "prompt_tokens": 1924,
+  "output_tokens": 544,
+  "estimated_usd": 0.00328,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "task_id": "T01",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the implementation correctly adds prorated billing and upgrade delta functions with proper zero-day and downgrade safeguards while preserving legacy behavior and passing all tests.",
+    "key_points": [
+      "prorate_cents correctly returns 0 for active_days <= 0",
+      "upgrade_delta_cents floors downgrades to 0 and calculates prorated differences for upgrades",
+      "All 3 unit tests pass covering legacy behavior, proration, and downgrade flooring",
+      "No breaking changes to public API or existing functionality"
+    ],
+    "suggested_check": "Run worktree pytest to confirm 3/3 tests pass with exit=0"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements proration and upgrade delta functions while preserving legacy behavior and passing tests.",
+    "cruxes": [
+      {
+        "topic": "Zero-day edge case",
+        "side_a": "Advisor_1 and Advisor_2 assert prorate_cent returns 0 for active_days <= 0",
+        "side_b": "Advisor_3 confirms this behavior but doesn't explicitly verify cycle_days > 0",
+        "at_stake": "Req 1: prorate_cent(monthly_cent, active_0, cycle_0) must return 0"
+      },
+      {
+        "topic": "Cycle days validation",
+        "side_a": "Advisor_3 assumes cycle_days is positive based on test coverage",
+        "side_b": "Advisor_1 and Advisor_2 don't explicitly verify cycle_days > 0 in their key findings",
+        "at_stake": "Req 1: division by zero risk if cycle_days <= 0"
+      },
+      {
+        "topic": "Upgrade delta flooring",
+        "side_a": "All advisors confirm downgrades floor to 0",
+        "side_b": "Advisor_3 mentions a new test 'test_upgrade_delta_floors_downgrade' but Advisor_1/2 don't reference it",
+        "at_stake": "Req 2: ensure negative/zero upgrade charges return 0"
+      }
+    ],
+    "unverified_premises": [
+      "cycle_days is guaranteed positive in all valid use cases",
+      "new test covers all downgrade edge cases including zero/negative remaining_days"
+    ],
+    "suggested_check": "Run pytest with coverage to verify upgrade_delta_cent handles zero/negative remaining_days and cycle_days=0"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements proration and upgrade delta functions while preserving legacy behavior and passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the implementation correctly adds prorated billing and upgrade delta functions with proper zero-day and downgrade safeguards while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- prorate_cents correctly returns 0 for active_days <= 0\n- upgrade_delta_cents floors downgrades to 0 and calculates prorated differences for upgrades\n- All 3 unit tests pass covering legacy behavior, proration, and downgrade flooring\n- No breaking changes to public API or existing functionality\nSUGGESTED CHECK: Run worktree pytest to confirm 3/3 tests pass with exit=0",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements proration and upgrade delta functions while preserving legacy behavior and passing tests.\nKEY POINTS:\n- Disagreement (Zero-day edge case): Advisor_1 and Advisor_2 assert prorate_cent returns 0 for active_days <= 0 vs. Advisor_3 confirms this behavior but doesn't explicitly verify cycle_days > 0 [at stake: Req 1: prorate_cent(monthly_cent, active_0, cycle_0) must return 0]\n- Disagreement (Cycle days validation): Advisor_3 assumes cycle_days is positive based on test coverage vs. Advisor_1 and Advisor_2 don't explicitly verify cycle_days > 0 in their key findings [at stake: Req 1: division by zero risk if cycle_days <= 0]\n- Disagreement (Upgrade delta flooring): All advisors confirm downgrades floor to 0 vs. Advisor_3 mentions a new test 'test_upgrade_delta_floors_downgrade' but Advisor_1/2 don't reference it [at stake: Req 2: ensure negative/zero upgrade charges return 0]\n- Unverified claim: cycle_days is guaranteed positive in all valid use cases\n- Unverified claim: new test covers all downgrade edge cases including zero/negative remaining_days\nSUGGESTED CHECK: Run pytest with coverage to verify upgrade_delta_cent handles zero/negative remaining_days and cycle_days=0",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 19 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements proration and upgrade delta functions while preserving legacy behavior and passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1007,
+      "output_tokens": 134,
+      "seconds": 3.297,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1056,
+      "output_tokens": 352,
+      "seconds": 6.821,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

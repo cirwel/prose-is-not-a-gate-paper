@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is incomplete for zero-major minor bumps; Req 2 requires a sorted list, but the returned list follows declaration insertion order.",
+  "target_issue": "T32 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the lock resolver\u2019s existing API to check both requirements and compatibility.",
+    "The implementation misses both required behaviors: `is_breaking_bump` does not detect minor increments when the old major version is 0, and `verify_lock_pins` does not sort its result. The added test checks only the first function\u2019s zero-major case and does not catch that its implementation is incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.394,
+  "prompt_tokens": 1399,
+  "output_tokens": 1180,
+  "estimated_usd": 0.004895,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

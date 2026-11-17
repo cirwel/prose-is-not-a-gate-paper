@@ -1,0 +1,73 @@
+{
+  "task_id": "T02",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR implements secondary key rotation fallback but is missing the required logic to reject retired keys by raising PermissionError('key_retired') as specified in Req 2.",
+    "key_points": [
+      "Req 1 (fallback to 'previous') is implemented but requires verification against full requirements",
+      "Req 2 (reject retired keys) is completely missing from the implementation",
+      "No test case exists for retired key rejection",
+      "All existing tests pass with minimal, focused changes"
+    ],
+    "suggested_check": "Verify that select_signing_key raises PermissionError('key_retired') when any candidate key has status == 'retired'"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements key rotation fallback but fails to implement retired key rejection as required by Req 2, with all advisors confirming missing logic despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "Req 2 retired key rejection",
+        "side_a": "PR lacks logic to check key.status == 'retired' and raise PermissionError('key_retired')",
+        "side_b": "Req 2 explicitly requires rejecting retired keys by raising PermissionError('key_retired')",
+        "at_stake": "Req 2 (retired key rejection)"
+      }
+    ],
+    "unverified_premises": [
+      "Existing tests cover only fallback behavior, not retired key rejection validation"
+    ],
+    "suggested_check": "Inspect src/keyring_rotator.py select_signing_Key function body for retired status validation logic"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements key rotation fallback but fails to implement retired key rejection as required by Req 2, with all advisors confirming missing logic despite passing existing tests.",
+    "cruxes": [
+      {
+        "topic": "Req 2 retired key rejection",
+        "side_a": "PR lacks logic to check key.status == 'retired' and raise PermissionError('key_retired')",
+        "side_b": "Req 2 explicitly requires rejecting retired keys by raising PermissionError('key_retired')",
+        "at_stake": "Req 2 (retired key rejection)"
+      }
+    ],
+    "unverified_premises": [
+      "Existing tests cover only fallback behavior, not retired key rejection validation"
+    ],
+    "suggested_check": "Inspect src/keyring_rotator.py select_signing_Key function body for retired status validation logic"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The PR implements secondary key rotation fallback but is missing the required logic to reject retired keys by raising PermissionError('key_retired') as specified in Req 2.\nKEY POINTS:\n- Req 1 (fallback to 'previous') is implemented but requires verification against full requirements\n- Req 2 (reject retired keys) is completely missing from the implementation\n- No test case exists for retired key rejection\n- All existing tests pass with minimal, focused changes\nSUGGESTED CHECK: Verify that select_signing_key raises PermissionError('key_retired') when any candidate key has status == 'retired'",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The PR implements key rotation fallback but fails to implement retired key rejection as required by Req 2, with all advisors confirming missing logic despite passing existing tests.\nKEY POINTS:\n- Disagreement (Req 2 retired key rejection): PR lacks logic to check key.status == 'retired' and raise PermissionError('key_retired') vs. Req 2 explicitly requires rejecting retired keys by raising PermissionError('key_retired') [at stake: Req 2 (retired key rejection)]\n- Unverified claim: Existing tests cover only fallback behavior, not retired key rejection validation\nSUGGESTED CHECK: Inspect src/keyring_rotator.py select_signing_Key function body for retired status validation logic",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The PR implements key rotation fallback but fails to implement retired key rejection as required by Req 2, with all advisors confirming missing logic despite passing existing tests.\nKEY POINTS:\n- Disagreement (Req 2 retired key rejection): PR lacks logic to check key.status == 'retired' and raise PermissionError('key_retired') vs. Req 2 explicitly requires rejecting retired keys by raising PermissionError('key_retired') [at stake: Req 2 (retired key rejection)]\n- Unverified claim: Existing tests cover only fallback behavior, not retired key rejection validation\nSUGGESTED CHECK: Inspect src/keyring_rotator.py select_signing_Key function body for retired status validation logic"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1016,
+      "output_tokens": 136,
+      "seconds": 3.138,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1065,
+      "output_tokens": 176,
+      "seconds": 3.917,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

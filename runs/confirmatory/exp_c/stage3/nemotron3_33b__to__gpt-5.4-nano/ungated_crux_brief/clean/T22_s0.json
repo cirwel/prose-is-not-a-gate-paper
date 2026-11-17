@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All tests pass (3/3) and the PR adds the required lru_set and lru_touch functions while preserving the legacy make_lru signature/behavior; lru_set evicts the least-recently-used non-pinned key and lru_touch moves the key to most-recent and returns its value.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to confirm pinned eviction edge cases and lru_touch return semantics; then decide merge vs hold.",
+    "Diff shows lru_touch returns value (not None) when found, and lru_set evicts first non-pinned key by iterating cache order. Need to run pytest to confirm and check edge case when all keys pinned (capacity full) doesn't break; also ensure legacy make_lru behavior unchanged.",
+    "Pytest passes on contrib/fix; diff implements lru_set and lru_touch without altering make_lru. No failing tests or missing requirements indicated; edge case all-pinned not covered but implementation breaks only by not evicting when no non-pinned victim exists, which is consistent with pinned preservation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.603,
+  "prompt_tokens": 3998,
+  "output_tokens": 277,
+  "estimated_usd": 0.001276,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

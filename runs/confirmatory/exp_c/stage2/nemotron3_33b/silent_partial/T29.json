@@ -1,0 +1,73 @@
+{
+  "task_id": "T29",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR successfully implements log truncation (Req 2) with correct behavior and passing tests, but completely omits the required `wrap_`code_`fence` implementation (Req 1) as confirmed by all advisors.",
+    "key_points": [
+      "Req 2 (truncate_log_lines) is fully implemented and tested",
+      "Req 1 (wrap_`code_`fence) function is entirely missing from src/fence_escape.py",
+      "No tests exist for the missing wrap_`code_`fence functionality",
+      "All existing tests pass with zero failures"
+    ],
+    "suggested_check": "Add the wrap_`code_`fence function to src/fence_escape.py with logic to compute longest consecutive backtick run and wrap with max(3, longest + 1) backticks"
+  },
+  "ungated_crux_json": {
+    "overview": "Advisor_1 and Advisor_2 confirm Req 2 (truncate_*_log_lines) is implemented correctly with passing tests, while Advisor_3 claims both Req 1 (wrap_code_fence) and Req 2 are implemented, but all advisors agree the wrap_code_fence function is missing from src/fence_escape.py.",
+    "cruxes": [
+      {
+        "topic": "wrap_code_fence implementation",
+        "side_a": "Advisor_3 claims wrap_code_fence is implemented",
+        "side_b": "Advisor_1 and Advisor_2 confirm it is entirely missing",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that wrap_code_fence is implemented contradicts Advisor_1 and Advisor_2's explicit statements about its absence"
+    ],
+    "suggested_check": "grep -n 'def wrap_code_fence' src/fence_escape.py"
+  },
+  "gated_crux_json": {
+    "overview": "Advisor_1 and Advisor_2 confirm Req 2 (truncate_*_log_lines) is implemented correctly with passing tests, while Advisor_3 claims both Req 1 (wrap_code_fence) and Req 2 are implemented, but all advisors agree the wrap_code_fence function is missing from src/fence_escape.py.",
+    "cruxes": [
+      {
+        "topic": "wrap_code_fence implementation",
+        "side_a": "Advisor_3 claims wrap_code_fence is implemented",
+        "side_b": "Advisor_1 and Advisor_2 confirm it is entirely missing",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that wrap_code_fence is implemented contradicts Advisor_1 and Advisor_2's explicit statements about its absence"
+    ],
+    "suggested_check": "grep -n 'def wrap_code_fence' src/fence_escape.py"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements log truncation (Req 2) with correct behavior and passing tests, but completely omits the required `wrap_`code_`fence` implementation (Req 1) as confirmed by all advisors.\nKEY POINTS:\n- Req 2 (truncate_log_lines) is fully implemented and tested\n- Req 1 (wrap_`code_`fence) function is entirely missing from src/fence_escape.py\n- No tests exist for the missing wrap_`code_`fence functionality\n- All existing tests pass with zero failures\nSUGGESTED CHECK: Add the wrap_`code_`fence function to src/fence_escape.py with logic to compute longest consecutive backtick run and wrap with max(3, longest + 1) backticks",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisor_1 and Advisor_2 confirm Req 2 (truncate_*_log_lines) is implemented correctly with passing tests, while Advisor_3 claims both Req 1 (wrap_code_fence) and Req 2 are implemented, but all advisors agree the wrap_code_fence function is missing from src/fence_escape.py.\nKEY POINTS:\n- Disagreement (wrap_code_fence implementation): Advisor_3 claims wrap_code_fence is implemented vs. Advisor_1 and Advisor_2 confirm it is entirely missing [at stake: Req 1]\n- Unverified claim: Advisor_3's claim that wrap_code_fence is implemented contradicts Advisor_1 and Advisor_2's explicit statements about its absence\nSUGGESTED CHECK: grep -n 'def wrap_code_fence' src/fence_escape.py",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisor_1 and Advisor_2 confirm Req 2 (truncate_*_log_lines) is implemented correctly with passing tests, while Advisor_3 claims both Req 1 (wrap_code_fence) and Req 2 are implemented, but all advisors agree the wrap_code_fence function is missing from src/fence_escape.py.\nKEY POINTS:\n- Disagreement (wrap_code_fence implementation): Advisor_3 claims wrap_code_fence is implemented vs. Advisor_1 and Advisor_2 confirm it is entirely missing [at stake: Req 1]\n- Unverified claim: Advisor_3's claim that wrap_code_fence is implemented contradicts Advisor_1 and Advisor_2's explicit statements about its absence\nSUGGESTED CHECK: grep -n 'def wrap_code_fence' src/fence_escape.py"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1026,
+      "output_tokens": 172,
+      "seconds": 4.736,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1075,
+      "output_tokens": 205,
+      "seconds": 5.718,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "task_id": "T22",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both the LRU capacity eviction with pinned key preservation and the recency update via `lru_touch`. The core functionality, including the eviction logic in `lru_set`, appears sound.",
+    "key_points": [
+      "`lru_set` correctly evicts the least-recently-used non-pinned key when capacity is reached.",
+      "`lru_touch` correctly updates recency order using `move_to_end` and returns the value or `None`.",
+      "The implementation maintains existing passing behavior and does not regress legacy functions.",
+      "The type hint for `pinned` in `lru_set` was updated to accept `tuple[str, ...] | set[str]`."
+    ],
+    "suggested_check": "Confirm that the return value of `lru_set` (evicted key or None) is consistently handled by calling code paths."
+  },
+  "ungated_crux_json": {
+    "overview": "The changes implement LRU capacity eviction and a touch mechanism while preserving pinned keys, and all three advisors have reviewed the implementation positively, noting correct handling of recency updates and eviction logic.",
+    "cruxes": [
+      {
+        "topic": "Eviction Return Value",
+        "side_a": "Advisor_3 notes `lru_set` returns evicted key or None.",
+        "side_b": "The ticket requirements do not explicitly specify the return value upon eviction, only the function signature.",
+        "at_stake": "Correct API contract for `lru_set` when capacity is hit."
+      },
+      {
+        "topic": "Pinned Key Handling in Eviction",
+        "side_a": "All advisors confirm that eviction correctly skips pinned keys.",
+        "side_b": "The mechanism for determining 'least-recently-used' among *non-pinned* keys needs robust verification, especially if multiple keys share the same recency status.",
+        "at_stake": "Correctness of the eviction candidate selection."
+      }
+    ],
+    "unverified_premises": [
+      "The precise behavior or return value of `lru_set` when capacity is *not* reached, but the key already exists (i.e., update vs. set behavior), is not explicitly detailed in the requirements or confirmed across all findings.",
+      "The interaction between `lru_touch` and the eviction logic (e.g., if a key is touched, does it prevent immediate eviction even if it's otherwise LRU?) is assumed correct but not tested for edge cases."
+    ],
+    "suggested_check": "Verify the return value of `lru_set` when eviction occurs, and confirm that the return value is consistently the evicted key (or None) as suggested by Advisor_3."
+  },
+  "gated_crux_json": {
+    "overview": "The changes implement LRU capacity eviction and a touch mechanism while preserving pinned keys, and all three advisors have reviewed the implementation positively, noting correct handling of recency updates and eviction logic.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both the LRU capacity eviction with pinned key preservation and the recency update via `lru_touch`. The core functionality, including the eviction logic in `lru_set`, appears sound.\nKEY POINTS:\n- `lru_set` correctly evicts the least-recently-used non-pinned key when capacity is reached.\n- `lru_touch` correctly updates recency order using `move_to_end` and returns the value or `None`.\n- The implementation maintains existing passing behavior and does not regress legacy functions.\n- The type hint for `pinned` in `lru_set` was updated to accept `tuple[str, ...] | set[str]`.\nSUGGESTED CHECK: Confirm that the return value of `lru_set` (evicted key or None) is consistently handled by calling code paths.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes implement LRU capacity eviction and a touch mechanism while preserving pinned keys, and all three advisors have reviewed the implementation positively, noting correct handling of recency updates and eviction logic. KEY POINTS: - Disagreement (Eviction Return Value): Advisor_3 notes `lru_set` returns evicted key or None. vs. The ticket requirements do not explicitly specify the return value upon eviction, only the function signature. [at stake: Correct API contract for `lru_set` when capacity is hit.] - Disagreement (Pinned Key Handling in Eviction): All advisors confirm that eviction correctly skips pinned keys. vs. The mechanism for determining 'least-recently-used' among *non-pinned* keys needs robust verification, especially if multiple keys share the same recency status. [at stake: Correctness of the eviction candidate selection.] - Unverified claim: The precise behavior or return value of `lru_set` when capacity is *not* reached, but the key already exists (i.e., update vs. set behavior), is not explicitly detailed in the requirements or confirmed across all findings. - Unverified claim: The interaction between `lru_touch` and the eviction logic (e.g., if a key is touched, does it prevent immediate eviction even if it's otherwise LRU?) is assumed correct but not tested for edge cases. SUGGESTED CHECK: Verify the...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes implement LRU capacity eviction and a touch mechanism while preserving pinned keys, and all three advisors have reviewed the implementation positively, noting correct handling of recency updates and eviction logic.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 872,
+      "output_tokens": 191,
+      "seconds": 3.632,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 911,
+      "output_tokens": 403,
+      "seconds": 7.418,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

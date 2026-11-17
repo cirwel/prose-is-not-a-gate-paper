@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`claim_job` returns `replay` for any existing key, even when its stored `hash` differs from `payload_hash`; it must raise `ValueError('idempotency_conflict')` in that case.",
+  "target_issue": "T16 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff and relevant tests to verify the ownership and conflict behavior, including whether the existing public API remains compatible.",
+    "The diff shows `claim_job` returns `replay` for every existing key without comparing its stored hash to `payload_hash`, so it does not reject conflicting ownership as required. I\u2019ll run the suite to check for additional regressions, though the missing conflict behavior is already a blocker.",
+    "The available tests pass, but they only cover acquiring a new key and replaying the same hash. The implementation never checks the existing record\u2019s hash and therefore violates Req 2 by accepting conflicting payloads."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.369,
+  "prompt_tokens": 2495,
+  "output_tokens": 313,
+  "estimated_usd": 0.002997,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

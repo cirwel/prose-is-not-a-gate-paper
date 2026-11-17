@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The module does not implement the required `wrap_code_fence(code, lang='')` function or compute a safe backtick delimiter, so ticket requirement 1 is unmet despite the passing tests.",
+  "target_issue": "T29 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation and tests against both ticket requirements and legacy behavior.",
+    "The diff adds truncation but no `wrap_code_fence`; I\u2019ll inspect the repository\u2019s source and tests for existing APIs or additional relevant requirements before deciding.",
+    "The repository is small, so I\u2019ll inspect the full module and test file to check whether the missing fence-wrapping requirement is implemented elsewhere and whether truncation edge cases are covered.",
+    "The module confirms `wrap_code_fence` is absent. I\u2019ll inspect the tests and run the suite to verify behavior, while noting that passing tests cannot make up for the missing ticket requirement.",
+    "The tests cover legacy newline normalization and basic truncation, but neither tests nor source provide the required fence wrapper. I\u2019ll run the suite to check for regressions before deciding.",
+    "The existing tests pass, but the diff and full module show that T29 Req 1 is missing: `wrap_code_fence` is not implemented. Req 2 has basic coverage, but this incomplete PR must be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.104,
+  "prompt_tokens": 6577,
+  "output_tokens": 502,
+  "estimated_usd": 0.006869,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The function checks for null tokens after attempting int conversion, causing ValueError on non-numeric null tokens like 'NULL'. Req 1 requires null tokens to be treated as None before conversion.",
+  "target_issue": "tests/test_nullable_1.py::test_1",
+  "thoughts": [
+    "The contributor claims all tests pass, but the PR metadata indicates a pytest worktree failure. I need to verify the actual test results in the worktree.",
+    "The diff shows the new function `parse_nullable_int` was added correctly with proper null token handling and bounds checking, and a new test was added. However, the PR metadata claims pytest passed while the worktree report showed a mismatch. I need to run pytest in the worktree to verify the actual test results.",
+    "The test failure shows `parse_nullable_1` incorrectly attempts to convert 'NULL' to int before checking for null tokens. The logic order is wrong - it should check for null tokens first, then convert. This violates Req 1 which requires treating null tokens as None."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.673,
+  "prompt_tokens": 3573,
+  "output_tokens": 285,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

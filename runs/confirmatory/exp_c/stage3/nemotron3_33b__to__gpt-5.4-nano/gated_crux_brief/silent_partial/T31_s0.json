@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires adding merge_windows(intervals) to coalesce overlapping/adjacent half-open [start,end) intervals, but the provided diff contains no merge_windows implementation or any related tests; only is_in_blackout was added.",
+  "target_issue": "Missing requirement implementation: merge_windows(intervals) for Req 1 (no function added in src/window_merge.py; no tests covering it).",
+  "thoughts": [
+    "Need to inspect repository diff and run tests to confirm Req 1 implementation and presence of merge_windows/half-open semantics.",
+    "Inspect window_merge.py and diff to verify merge_windows implementation and half-open coalescing semantics for Req 1, plus is_in_blackout for Req 2.",
+    "Diff shows only interval_duration and new is_in_blackout; merge_windows (Req 1) is missing entirely, so PR is incomplete for ticket T31 despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.818,
+  "prompt_tokens": 2510,
+  "output_tokens": 228,
+  "estimated_usd": 0.000855,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

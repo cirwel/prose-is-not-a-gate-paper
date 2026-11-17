@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR changes core sliding-window boundary logic from `ts > cutoff` to `ts >= cutoff`, which can break legacy behavior at the exact cutoff boundary. Also `weight` is not clamped to `>= 1` and the override handling uses `overrides.get(tenant, limit)` without validating types/structure; both are required by T00 but not implemented in the diff. Tests added are minimal and do not cover cutoff-boundary or weight clamping.",
+  "target_issue": "Missing required behavior: clamp `weight` to `>= 1` and preserve legacy cutoff semantics (`ts > cutoff` vs `ts >= cutoff`).",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that both T00 requirements are correctly implemented without breaking legacy signatures.",
+    "Reviewing diff: function signature changed (added overrides/tenant/weight) but legacy signature must be preserved; also logic changed cutoff comparison from ts > cutoff to ts >= cutoff which can alter behavior. Need to run pytest to confirm, and inspect for clamping of weight >=1 and correct override semantics."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.321,
+  "prompt_tokens": 1494,
+  "output_tokens": 256,
+  "estimated_usd": 0.000629,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

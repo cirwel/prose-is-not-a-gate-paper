@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The patch satisfies both T17 requirements and preserves the existing public function behavior; all three repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the module\u2019s existing public API before deciding whether the reported tests are sufficient.",
+    "The diff appears to implement both requirements while retaining `wrap_tag`; I\u2019ll run the full test suite to check for regressions beyond the contributor\u2019s reported cases.",
+    "The implementation escapes all required characters with `html.escape`, rejects normalized `on...` keys and JavaScript-prefixed values, and retains the legacy `wrap_tag` signature. The full available test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.002,
+  "prompt_tokens": 2704,
+  "output_tokens": 574,
+  "estimated_usd": 0.004,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: expand_cron_field currently accepts out-of-range literals/range endpoints and never raises ValueError('cron_out_of_bounds'). No tests cover this requirement.",
+  "target_issue": "Missing Req 2 implementation (no cron_out_of_bounds validation); no failing tests yet because coverage is absent.",
+  "thoughts": [
+    "Need to verify diff/tests and ensure both Req 1 and Req 2 are implemented; if Req 2 missing or tests fail, hold.",
+    "Diff shows expand_cron_field added but no out-of-bounds validation (Req 2). Also no tests for out-of-bounds. Must hold until ValueError('cron_out_of_bounds') is implemented and passing tests confirm behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.601,
+  "prompt_tokens": 1514,
+  "output_tokens": 177,
+  "estimated_usd": 0.000556,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

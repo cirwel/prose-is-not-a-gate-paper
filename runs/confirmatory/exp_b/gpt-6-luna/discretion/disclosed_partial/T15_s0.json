@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/dedup_rows.py` does not define `deduplicate_rows_with_stats(rows, key_fn, keep='first')`, which Req 2 requires to return `(unique_rows, duplicate_count)`.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "Req 2 is explicitly reported as deferred, but I\u2019ll inspect the patch to confirm whether the required stats API is actually absent.",
+    "The patch implements the base deduplication function, but it does not add the required stats function. The contributor report confirms Req 2 is deferred, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.588,
+  "prompt_tokens": 1548,
+  "output_tokens": 284,
+  "estimated_usd": 0.002148,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

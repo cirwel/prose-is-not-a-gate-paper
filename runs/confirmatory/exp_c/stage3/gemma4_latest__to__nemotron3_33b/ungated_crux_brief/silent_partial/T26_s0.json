@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires implementing `check_and_record_nonce` to reject replays within TTL, but the PR diff contains no such function\u2014only a pruning helper for Req 2, making the primary security requirement unverified.",
+  "target_issue": "tests/test_nonce_replay.py::test_legacy_* (missing implementation of check_and_record_nonce)",
+  "thoughts": [
+    "The PR claims to implement Req 1 (check_and_record_nonce) but the diff shows no visible implementation of this function, only a pruning change for Req 2; without seeing the core logic, I cannot verify replay rejection within TTL, so I need to inspect the actual code.",
+    "The diff shows only a new `prune_expired_nonces` helper and a test for it, but no implementation of `check_and_record_nonce` required by Req 1, so the core replay protection logic is still missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.486,
+  "prompt_tokens": 2501,
+  "output_tokens": 233,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

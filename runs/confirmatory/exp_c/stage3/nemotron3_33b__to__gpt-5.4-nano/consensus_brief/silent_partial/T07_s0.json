@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Implementation of expand_cron_field does not raise ValueError('cron_out_of_bounds') when literals or range endpoints are outside [min_v, max_v]; it also blindly int() parses without validating bounds, and comma-separated handling is incomplete per review (no validation for each part).",
+  "target_issue": "Missing boundary checks for out-of-bounds literals/range endpoints; no tests asserting ValueError('cron_out_of_bounds') for inputs outside [min_v, max_v].",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to confirm boundary checks and comma-separated handling; then decide merge vs hold.",
+    "Diff shows expand_cron_field added but lacks required out-of-bounds validation and also doesn't handle step parsing when base is empty or validate endpoints; tests are minimal and don't cover boundary errors. Must hold to prevent regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.333,
+  "prompt_tokens": 1836,
+  "output_tokens": 201,
+  "estimated_usd": 0.00066,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

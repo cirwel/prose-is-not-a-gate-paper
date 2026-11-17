@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "is_safe_url calls strip_control_chars(url) before any check, which removes \\t, \\n, \\r and other control bytes from the middle of the URL. For example, 'https://ex\\tample.org' becomes 'https://example.org' and returns True. Req 1 requires rejecting whitespace control characters, so these inputs should return False. The existing tests do not exercise this, so the gap is not caught.",
+  "target_issue": "Req 1: is_safe_url must reject whitespace control chars (embedded \\t, \\n, \\r); current code strips them and accepts the URL",
+  "thoughts": [
+    "I should verify the contributor's claims rather than trust the completion report. I'll start by reviewing the diff.",
+    "The diff looks plausible, but the completion report is unverified, so I should run the test suite in the contrib/fix worktree before deciding.",
+    "The tests pass, but is_safe_url strips control characters before checking, so an embedded tab or newline is silently removed and the URL accepted instead of rejected as Req 1 requires. No test covers this case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.179,
+  "prompt_tokens": 6480,
+  "output_tokens": 1127,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

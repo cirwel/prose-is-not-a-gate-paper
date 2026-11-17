@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: no wrap_code_fence(code, lang='') implementation or tests for computing the longest consecutive backtick run and wrapping with max(3, longest+1) backticks. Only Req 2 (truncate_log_lines) was added.",
+  "target_issue": "Missing requirement: wrap_code_fence implementation (Req 1)",
+  "thoughts": [
+    "I need to verify the PR diff implements both T29 requirements without breaking legacy behavior, and that all tests pass.",
+    "The diff only adds truncate_log_lines and tests for it; it does not implement Req 1 (wrap_code_fence) or any related tests. That means the ticket requirements are incomplete, so merging would be risky."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.806,
+  "prompt_tokens": 1408,
+  "output_tokens": 176,
+  "estimated_usd": 0.000528,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

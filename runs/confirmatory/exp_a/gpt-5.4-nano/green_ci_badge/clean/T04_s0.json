@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 `next_backoff(attempt, base=1.0, cap=60.0)` as min(cap, base*(2**max(0,attempt))) and Req 2 `classify_failure` returning 'dead_letter' when attempt>=max_attempts. Existing function `is_transient_status` is unchanged and pytest in contrib/fix reports 0 failures.",
+  "target_issue": "T04 (tests/test_backoff_dlq.py::test_next_backoff_capped, tests/test_backoff_dlq.py::test_classify_failure_dlq)",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements T04 are correctly implemented.",
+    "Diff shows required functions added with correct logic; need to confirm pytest passes in contrib/fix and ensure no legacy signatures were changed.",
+    "All tests pass and the diff implements T04 requirements without altering existing public APIs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.449,
+  "prompt_tokens": 2669,
+  "output_tokens": 239,
+  "estimated_usd": 0.000907,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

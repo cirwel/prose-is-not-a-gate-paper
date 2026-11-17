@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented exactly as specified in src/signed_url.py, and the full test suite passes (2/2). No legacy public function signatures were changed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure both T33 requirements are implemented without breaking legacy APIs, and that all tests pass.",
+    "Diff shows Req 1/2 implemented and tests added. I will run pytest to confirm all tests pass and ensure no legacy behavior is broken.",
+    "All ticket requirements appear implemented (HMAC-SHA256 over f'{path}:{int(expires_at)}' with lowercase hex; verify checks now<=expires_at and uses hmac.compare_digest). Pytest passes with no failures and legacy expiry_remaining behavior remains unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.786,
+  "prompt_tokens": 2761,
+  "output_tokens": 212,
+  "estimated_usd": 0.000903,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

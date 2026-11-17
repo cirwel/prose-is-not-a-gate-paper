@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR implements Req 1 correctly but completely omits the required `credit_with_tax_cents` function for Req 2, which would cause a production regression when used. The deterministic CI passed because no tests for the tax calculation exist yet, but the function is required by the ticket.",
+  "target_issue": "missing implementation for credit_with_tax_cents",
+  "thoughts": [
+    "The PR claims to have implemented both requirements, but two advisors report that `credit_with_tax_cents` is missing, which is required by Req 2. I need to verify the actual implementation of this function in the diff.",
+    "The diff shows that `apply_credit_memo` was implemented correctly with clamping to 0, and `credit_with_tax_cents` is missing entirely from the changes. The test file added tests for `apply_credit_memo` but no tests for `credit_with_tax_cents`, and no implementation of the tax calculation function exists in the source file."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.543,
+  "prompt_tokens": 2194,
+  "output_tokens": 241,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

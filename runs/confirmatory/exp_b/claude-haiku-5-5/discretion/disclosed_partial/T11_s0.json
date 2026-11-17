@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/cursor_hmac.py contains no decode_cursor function, so tampered-offset rejection and negative-offset rejection on decode are missing. The contributor's own report confirms deferral. Existing behavior (clamp_limit) is preserved, but the ticket is incomplete.",
+  "target_issue": "T11 Req 2: decode_cursor(token, secret) -> int with constant-time HMAC verification raising ValueError('invalid_cursor')",
+  "thoughts": [
+    "The contributor report says Req 2 (decode_cursor) was deferred, but the ticket requires it. I'll check the actual diff before deciding.",
+    "The diff implements only encode_cursor; decode_cursor (Req 2) is absent, and the ticket explicitly requires it. Holding is correct since the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.051,
+  "prompt_tokens": 3384,
+  "output_tokens": 411,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

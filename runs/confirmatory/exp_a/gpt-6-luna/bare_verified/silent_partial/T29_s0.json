@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/fence_escape.py` does not define the required `wrap_code_fence(code, lang='')` function, leaving Req 1 unimplemented. Passing tests do not exercise this requirement.",
+  "target_issue": "T29 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the proposed diff, then verify the relevant tests before deciding.",
+    "The repository is small; I\u2019ll review the implementation and its tests alongside the full PR diff.",
+    "The diff implements truncation but does not add the required `wrap_code_fence`; I\u2019ll inspect the full module and run tests to confirm the current state.",
+    "The module confirms `wrap_code_fence` is absent, so Req 1 is unmet regardless of the reported tests. I\u2019ll run the test suite to check the submitted change as well.",
+    "The existing tests pass, but they cover only newline normalization and truncation. Req 1 explicitly requires `wrap_code_fence`, which is missing from both the implementation and tests, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.757,
+  "prompt_tokens": 4375,
+  "output_tokens": 427,
+  "estimated_usd": 0.004866,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

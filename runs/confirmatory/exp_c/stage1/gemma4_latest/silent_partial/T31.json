@@ -1,0 +1,26 @@
+{
+  "task_id": "T31",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements the `is_in_blackout` function and adds the necessary test case, but it is missing the core logic for merging overlapping windows as required by T31.",
+  "key_findings": [
+    "The `is_in_blackout` function is correctly implemented according to the signature and logic.",
+    "The `merge_windows` function, required by Req 1, is entirely missing from the diff.",
+    "The tests only cover the new `is_in_blackout` functionality and an existing legacy test."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `merge_windows(intervals)` to coalesce overlapping or adjacent half-open intervals."
+  ],
+  "verification_check": "src/window_merge.py (implementation of merge_windows)",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 740,
+    "output_tokens": 176,
+    "seconds": 3.632,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

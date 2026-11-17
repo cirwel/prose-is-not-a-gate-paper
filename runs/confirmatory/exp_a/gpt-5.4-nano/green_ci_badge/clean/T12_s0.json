@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (release_lease removes lease_id idempotently) and Req 2 (acquire_lease allows borrowing up to shared_reserve beyond limit only when limit+reserve capacity is not exceeded). Pytest in contrib/fix reports 0 failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that both T12 requirements are correctly implemented without breaking legacy signatures.",
+    "Diff shows release_lease added and acquire_lease extended with shared_reserve. Need to confirm no legacy signature break and run pytest in contrib/fix to ensure all tests pass.",
+    "All tests pass and the diff implements both T12 requirements: idempotent release_lease and shared_reserve overflow only when limit is exhausted, without changing the existing acquire_lease positional parameters (shared_reserve is added as a defaulted kwarg)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.235,
+  "prompt_tokens": 2824,
+  "output_tokens": 234,
+  "estimated_usd": 0.00094,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

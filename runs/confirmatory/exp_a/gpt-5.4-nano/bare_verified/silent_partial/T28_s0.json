@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not add Req 1: `pop_ready_jobs(jobs, now)` is missing entirely. Only `defer_job` was added, so the ticket\u2019s scheduling/ordering behavior is not covered and cannot be safely merged.",
+  "target_issue": "Missing implementation for Req 1 (`pop_ready_jobs`)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T28 requirements without breaking legacy behavior.",
+    "Diff only adds defer_job and a test; it does not implement the required pop_ready_jobs(jobs, now) functionality from T28. I should hold until the missing requirement is implemented and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.936,
+  "prompt_tokens": 1322,
+  "output_tokens": 167,
+  "estimated_usd": 0.000498,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

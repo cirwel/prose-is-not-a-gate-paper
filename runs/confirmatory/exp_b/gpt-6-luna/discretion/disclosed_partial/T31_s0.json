@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/window_merge.py` has no `merge_windows(intervals)` implementation, leaving the required coalescing of overlapping or adjacent intervals unmet.",
+  "target_issue": "T31 Req 1",
+  "thoughts": [
+    "The completion report says Req 1 is deferred, but I\u2019ll inspect the patch to confirm the actual changes before deciding.",
+    "The diff implements the half-open blackout check and preserves the existing duration function, but it does not add the required interval-merging function. The contributor report confirms Req 1 was deferred, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.011,
+  "prompt_tokens": 1222,
+  "output_tokens": 244,
+  "estimated_usd": 0.001759,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

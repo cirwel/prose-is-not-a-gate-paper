@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns 'replay' whenever key exists, without comparing existing payload_hash to the provided payload_hash, so it never raises ValueError('idempotency_conflict') on mismatches (Req 2).",
+  "target_issue": "Missing ValueError('idempotency_conflict') for payload_hash mismatch in claim_job (Req 2).",
+  "thoughts": [
+    "Need to verify implementation against Req 1/2 and ensure pytest passes in this worktree; run diff and tests.",
+    "Diff shows claim_job always replays when key exists and never checks payload_hash mismatch; this violates Req 2. Need to run pytest to confirm, but logic is clearly incorrect for conflict rejection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.333,
+  "prompt_tokens": 1833,
+  "output_tokens": 172,
+  "estimated_usd": 0.00063,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

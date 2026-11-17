@@ -1,0 +1,24 @@
+{
+  "task_id": "T16",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements the idempotency key ownership and conflict rejection logic as specified in Ticket T16, preserving legacy behavior.",
+  "key_findings": [
+    "claim_job correctly returns 'acquired' for new keys and 'replay' for identical payload hashes.",
+    "ValueError('idempotency_conflict') is raised when an existing key has a different payload hash.",
+    "Legacy function make_lock_record remains unchanged and passing."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_idempotency_lock.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 889,
+    "output_tokens": 142,
+    "seconds": 20.736,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

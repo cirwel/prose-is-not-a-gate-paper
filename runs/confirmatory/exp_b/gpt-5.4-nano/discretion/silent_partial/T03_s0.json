@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 2 entirely: parse_nullable_int has no min_val/max_val parameters and does not raise ValueError('out_of_range') for out-of-range values. This is a functional gap relative to T03 and would fail hidden/extended tests.",
+  "target_issue": "T03 Req 2 (min_val/max_val bounds + ValueError('out_of_range'))",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure PR is complete and doesn\u2019t break legacy signatures; then decide merge vs hold based on correctness and test results.",
+    "Diff shows parse_nullable_int added but it does not implement Req 2 (min_val/max_val bounds) and null token handling is case-insensitive but inefficient (recomputes lowercased tokens each call). Need to run tests and inspect src/nullable_int.py for existing APIs to ensure no missing requirements.",
+    "PR tests pass but implementation is incomplete vs ticket requirements: Req 2 (min_val/max_val bounds with ValueError('out_of_range')) is missing, and Req 1 requires whitespace + case-insensitive null tokens (implemented) but should treat null_tokens case-insensitively without recomputing lowercased tokens each call. Since missing required functionality, cannot merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.677,
+  "prompt_tokens": 2382,
+  "output_tokens": 299,
+  "estimated_usd": 0.000895,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T03_s0.json"
+}

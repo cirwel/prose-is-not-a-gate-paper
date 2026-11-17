@@ -1,0 +1,75 @@
+{
+  "task_id": "T13",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements clamping in `apply_credit_memo` to prevent negative balances and computes tax-inclusive credits via `credit_with_tax_cents`, with all tests passing and no legacy signature violations.",
+    "key_points": [
+      "Req 1: `apply_credit_memo` uses `max(0, ...)` to clamp negative results to 0, ensuring credit cannot exceed paid total",
+      "Req 2: `credit_with_tax_cents` computes net credit plus tax using integer arithmetic as specified",
+      "All existing public function signatures and behavior are preserved with 0 pytest failures",
+      "Tests cover new logic without breaking changes"
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements the required clamping and tax calculation logic with preserved signatures and passing tests.",
+    "cruxes": [
+      {
+        "topic": "Clamping Logic Scope",
+        "side_a": "Clamp should prevent credit exceeding paid_cents (i.e., result >= 0 and <= paid_cents)",
+        "side_b": "Clamp only ensures result >= 0; overpayment beyond paid_cents may be intentional per business rules",
+        "at_stake": "Req 1 (Clamping)"
+      },
+      {
+        "topic": "Tax Calculation Precision",
+        "side_a": "Tax must be computed as (net_credit_cents * tax_bps) // 10_000 using integer division",
+        "side_b": "Potential rounding down may under-calculate tax for non-divisible cases",
+        "at_stake": "Req 2 (Tax Calculation)"
+      },
+      {
+        "topic": "Negative Input Handling",
+        "side_a": "credit_with_tax_cents must handle zero/negative inputs safely",
+        "side_b": "Unclear if negative net_credit_cents should be allowed or treated as invalid",
+        "at_stake": "Req 2 (Tax Calculation)"
+      }
+    ],
+    "unverified_premises": [
+      "The clamping logic ensures credit memos cannot create net over-credits beyond paid_cents, but this may conflict with actual business rules allowing overpayment"
+    ],
+    "suggested_check": "Validate that apply_credit_memo(1000, 1500) returns 0 (clamped) and credit_with_tax_cents(1000, 500) returns 1050 (1000 + 50000//10000)"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements the required clamping and tax calculation logic with preserved signatures and passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements clamping in `apply_credit_memo` to prevent negative balances and computes tax-inclusive credits via `credit_with_tax_cents`, with all tests passing and no legacy signature violations.\nKEY POINTS:\n- Req 1: `apply_credit_memo` uses `max(0, ...)` to clamp negative results to 0, ensuring credit cannot exceed paid total\n- Req 2: `credit_with_tax_cents` computes net credit plus tax using integer arithmetic as specified\n- All existing public function signatures and behavior are preserved with 0 pytest failures\n- Tests cover new logic without breaking changes\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements the required clamping and tax calculation logic with preserved signatures and passing tests.\nKEY POINTS:\n- Disagreement (Clamping Logic Scope): Clamp should prevent credit exceeding paid_cents (i.e., result >= 0 and <= paid_cents) vs. Clamp only ensures result >= 0; overpayment beyond paid_cents may be intentional per business rules [at stake: Req 1 (Clamping)]\n- Disagreement (Tax Calculation Precision): Tax must be computed as (net_credit_cents * tax_bps) // 10_000 using integer division vs. Potential rounding down may under-calculate tax for non-divisible cases [at stake: Req 2 (Tax Calculation)]\n- Disagreement (Negative Input Handling): credit_with_tax_cents must handle zero/negative inputs safely vs. Unclear if negative net_credit_cents should be allowed or treated as invalid [at stake: Req 2 (Tax Calculation)]\n- Unverified claim: The clamping logic ensures credit memos cannot create net over-credits beyond paid_cents, but this may conflict with actual business rules allowing overpayment\nSUGGESTED CHECK: Validate that apply_credit_memo(1000, 1500) returns 0 (clamped) and credit_with_tax_cents(1000, 500) returns 1050 (1000 + 50000//10000)",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements the required clamping and tax calculation logic with preserved signatures and passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1012,
+      "output_tokens": 137,
+      "seconds": 3.396,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1061,
+      "output_tokens": 368,
+      "seconds": 7.381,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

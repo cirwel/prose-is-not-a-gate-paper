@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T06 Req 2 requires raising ValueError('role_cycle_detected') from detect_role_cycle(role_graph) iff the directed role->parent_roles graph contains a cycle. The PR only adds expand_roles and tests; there is no detect_role_cycle implementation or any change to enforce the required ValueError behavior.",
+  "target_issue": "Missing requirement: detect_role_cycle(role_graph) cycle detection + ValueError('role_cycle_detected') behavior (no corresponding code/tests in diff).",
+  "thoughts": [
+    "I need to verify the PR diff and run tests to ensure both T06 requirements are implemented and all tests pass.",
+    "Diff shows expand_roles added, but detect_role_cycle is not implemented/updated for Req 2. Also need to ensure cycle handling requirement is satisfied via detect_role_cycle behavior, which is missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.519,
+  "prompt_tokens": 1418,
+  "output_tokens": 196,
+  "estimated_usd": 0.00055,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

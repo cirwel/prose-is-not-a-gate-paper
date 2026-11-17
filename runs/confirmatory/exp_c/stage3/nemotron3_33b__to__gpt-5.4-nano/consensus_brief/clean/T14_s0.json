@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All ticket requirements are implemented: narrow_scopes returns a sorted, deduplicated intersection of requested and granted; has_all_required_scopes returns True iff required is a subset of token_scopes. Existing behavior (parse_scope_header) is unchanged and all tests pass (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure T14 requirements are met without regressions.",
+    "Diff shows new functions added and tests updated; need to confirm pytest passes in the contrib/fix worktree and that legacy signatures are preserved.",
+    "Pytest in contrib/fix passes and diff cleanly adds the two required functions with correct sorting/deduplication and subset logic, without touching legacy parse_scope_header."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.299,
+  "prompt_tokens": 3131,
+  "output_tokens": 203,
+  "estimated_usd": 0.000986,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

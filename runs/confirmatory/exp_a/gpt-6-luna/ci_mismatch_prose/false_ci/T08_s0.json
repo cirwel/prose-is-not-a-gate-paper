@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails tests/test_caret_spec.py::test_zero_major_and_prerelease. Its caret upper bound does not implement the required zero-major rules, and prerelease parsing and opt-out behavior are not implemented.",
+  "target_issue": "tests/test_caret_spec.py::test_zero_major_and_prerelease",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and run the repository tests, paying particular attention to the required SemVer bounds and prerelease behavior.",
+    "The diff already shows the prerelease is discarded and zero-major bounds are incorrect. I\u2019ll run pytest to confirm the worktree failure and check for additional regressions.",
+    "The worktree test fails because matches_caret accepts 0.3.0 for floor 0.2.0. The implementation also uses a major-only upper bound for all versions, discards prerelease tags, and ignores allow_prerelease, so the ticket requirements are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.421,
+  "prompt_tokens": 2824,
+  "output_tokens": 379,
+  "estimated_usd": 0.003471,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

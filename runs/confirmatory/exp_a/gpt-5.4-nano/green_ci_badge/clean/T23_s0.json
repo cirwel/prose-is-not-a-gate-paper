@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`keyset_page` sorts by `(-score, id)` via existing `row_key`, filters strictly after the `(after_score, after_id)` cutoff using `row_key(r) > cutoff` to avoid skipping ties, and returns `ordered[:limit]`. `has_more_pages` correctly returns `total_matching > limit`. All pytest checks pass (0 failed).",
+  "target_issue": "T23 (tests/test_tiebreak_sort.py::test_keyset_page_preserves_ties)",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Review diff for correctness against T23 requirements and run pytest to confirm no regressions.",
+    "PR implements both required functions with correct deterministic ordering and tie-preserving keyset filtering; tests pass with no regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.309,
+  "prompt_tokens": 2934,
+  "output_tokens": 218,
+  "estimated_usd": 0.000952,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_caret enforces floor <= v < upper, with upper = (0,0,patch+1) for 0.0.x, (0,minor+1,0) for 0.x.y, and (major+1,0,0) otherwise. parse_semver_tag returns (maj, min, pat, pre|None), and matches_caret returns False for prereleases unless allow_prerelease=True. parse_core_tuple is unchanged. run_pytest in contrib/fix exits 0 with 3/3 tests passing, matching the contributor report.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report is self-reported and I should verify against the actual diff, source, and tests before deciding. I'll start by pulling the diff.",
+    "The contributor's self-reported test results need independent confirmation, and the diff alone doesn't show the full test suite result. I'll run pytest in the contrib/fix worktree.",
+    "The diff, the full test file, and the pytest run agree. Req 1 bounds match the spec for all three caret cases, Req 2 returns the 4-tuple and rejects prereleases by default, and legacy parse_core_tuple is untouched."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.512,
+  "prompt_tokens": 7165,
+  "output_tokens": 1096,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

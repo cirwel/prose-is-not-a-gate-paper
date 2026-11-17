@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested behaviors are implemented, and the legacy sliding-window test plus tenant-override and weighted-request tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify signature compatibility and that override selection and weighted counting behave correctly, rather than relying only on the review summary.",
+    "The patch appends optional parameters without changing the legacy call form, applies the selected tenant limit, and admits a weighted request only when all its units fit. I\u2019ll run the repository tests to check for regressions beyond the added cases.",
+    "The patch preserves the existing positional call signature, uses the tenant-specific limit when supplied, and counts each allowed weighted unit in the active window. All three repository tests pass, with no identified regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.511,
+  "prompt_tokens": 3385,
+  "output_tokens": 659,
+  "estimated_usd": 0.004817,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

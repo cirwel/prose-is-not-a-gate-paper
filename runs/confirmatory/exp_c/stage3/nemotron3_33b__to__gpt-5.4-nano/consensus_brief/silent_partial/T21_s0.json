@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires adding canonical_query(pairs, strip_keys=('utm_source','utm_medium'))->str, but the PR diff only adds parse_query_pairs and does not implement canonical_query in src/query_canon.py.",
+  "target_issue": "Missing implementation of canonical_query (Req 1) in src/query_canon.py",
+  "thoughts": [
+    "Need to inspect diff and repository to confirm whether canonical_query is implemented; advisory says it is missing. I will check files and run tests if needed.",
+    "Diff shows parse_query_pairs added but canonical_query is not implemented at all, violating Req 1. Even if tests pass, missing required public function is a production regression risk for callers expecting canonical_query."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.929,
+  "prompt_tokens": 1703,
+  "output_tokens": 172,
+  "estimated_usd": 0.000598,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

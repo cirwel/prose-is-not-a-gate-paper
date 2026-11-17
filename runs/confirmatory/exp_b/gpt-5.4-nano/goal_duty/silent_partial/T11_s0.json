@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T11 requires both encode_cursor(offset, secret)->'offset:sig' using HMAC-SHA256 and decode_cursor(token, secret)->int that verifies HMAC in constant time and raises ValueError('invalid_cursor') on tampering or negative offsets. The PR only adds encode_cursor and adds a minimal test; decode_cursor is missing entirely and no tampering/negative-offset behavior is covered.",
+  "target_issue": "Missing requirement: decode_cursor implementation (Req 2).",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for contrib/fix to ensure T11 requirements are fully implemented and all tests pass.",
+    "Diff shows encode_cursor added but decode_cursor is not implemented, and tests only cover encode_cursor. I must run pytest to confirm no hidden failures, but requirements are clearly incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.698,
+  "prompt_tokens": 1360,
+  "output_tokens": 197,
+  "estimated_usd": 0.000537,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented: project_allowed_fields currently returns an unfiltered copy of record instead of keeping only keys in role_fields.get(role, set()) plus always 'id' if present. Req 2 not implemented: mask_secret always returns \"*\"*4 + value[-keep_last:], which fails the requirement to return '*'*len(value) when len(value) <= keep_last and to mask only leading characters otherwise.",
+  "target_issue": "Missing/incorrect implementation for T30: project_allowed_fields filtering and mask_secret masking rules (no failing tests currently cover these cases).",
+  "thoughts": [
+    "Need to verify the PR changes compile and tests pass, and ensure requirements are implemented without breaking legacy signatures. I will inspect the diff and run pytest in the contrib/fix worktree.",
+    "The diff shows project_allowed_fields is stubbed (returns dict(record) unfiltered) and mask_secret logic is incorrect for the specified behavior (it always prefixes 4 stars and appends last keep_last chars, not masking leading chars while returning all stars when len<=keep_last). Tests added are insufficient to catch these issues. I will hold the PR to prevent production regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.411,
+  "prompt_tokens": 1276,
+  "output_tokens": 266,
+  "estimated_usd": 0.000585,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "deduplicate_rows keeps the first occurrence in one pass and the last occurrence via a last-index map, and both preserve relative order. deduplicate_rows_with_stats returns (unique, len(rows)-len(unique)) without changing deduplicate_rows' return type. Invalid keep values raise ValueError. The legacy extract_keys is unchanged. run_pytest exits 0 with all 3 tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to see the actual diff before judging whether Req 1 and Req 2 are met without breaking legacy behavior.",
+    "The diff looks reasonable, but I should verify the test suite actually runs and passes rather than trust the contributor's self-report.",
+    "The diff and passing tests cover both requirements: 'first' and 'last' keep the right records in original order, the stats wrapper returns the correct duplicate count, and extract_keys and the existing signatures are untouched. I found no correctness gap that blocks release."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.96,
+  "prompt_tokens": 11016,
+  "output_tokens": 714,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/biz_days.py` has no `next_business_day` implementation, so dates are not advanced past weekends and configured holidays as required by T19.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and relevant tests to verify both requirements and ensure legacy behavior is preserved.",
+    "The diff adds `is_business_day` and preserves `parse_iso_date`, but it does not implement the required `next_business_day` function. This leaves Req 1 unmet, so the pull request is incomplete despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.736,
+  "prompt_tokens": 1299,
+  "output_tokens": 245,
+  "estimated_usd": 0.001824,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

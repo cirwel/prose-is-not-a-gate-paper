@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "cache_get returns the stored value while now < expires_at and None at or after expiry, which matches the put semantics (expires_at = now + ttl). The new test covers the boundary at 14.0 and 15.0, and pytest reports 2 passed, 0 failed. No code defects found in the diff.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims by inspecting the diff before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff adds cache_get and tests; I still need to confirm the tests actually pass rather than trust the contributor's report, so I'll run pytest in the contrib/fix worktree.",
+    "The diff adds a small, correct cache_get that treats expires_at <= now as expired, matching the TTL test boundary. run_pytest confirmed both tests pass with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.488,
+  "prompt_tokens": 5389,
+  "output_tokens": 518,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

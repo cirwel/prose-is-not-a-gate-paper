@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 fails: split_cents_exact(9007199254740995, [1]) returns [9007199254740996] because floating-point division rounds the total upward and the remainder loop cannot correct it. Use integer quotient/remainder arithmetic for allocation and fractional ranking, and add regression coverage.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I will inspect the implementation and tests for exact remainder allocation, ledger reconciliation, and preservation of legacy behavior.",
+    "The split implementation uses floating-point division, which can lose integer cents for large totals; its remainder loop can then distribute too few pennies. I will run the available tests to check the reported baseline coverage.",
+    "All three tests pass, but they do not cover precision loss in the new exact-cent splitter. A positive total with a single positive weight already violates conservation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 199.22,
+  "prompt_tokens": 2828,
+  "output_tokens": 437,
+  "estimated_usd": 0.013728,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6.1-sol/neutral/clean/T25_s0.json"
+}

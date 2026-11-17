@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/ledger_round.py does not define split_cents_exact(total_cents, weights), leaving integer share allocation, total-cent conservation, and fractional-remainder distribution with lowest-index tie-breaking unimplemented.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch, source, and tests against both ticket requirements, then run the test suite.",
+    "The diff adds reconciliation but appears to omit the required exact split function. I\u2019ll inspect the complete source and tests to confirm.",
+    "The source confirms that split_cents_exact is absent. I\u2019ll inspect the tests before running them.",
+    "The tests cover legacy summation and reconciliation, but not the missing split requirement. I\u2019ll run the suite to verify its current status.",
+    "Both existing tests pass, and reconciliation is implemented without changing the legacy function. However, the required exact split function is absent, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.033,
+  "prompt_tokens": 4805,
+  "output_tokens": 320,
+  "estimated_usd": 0.018255,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

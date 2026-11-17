@@ -1,0 +1,65 @@
+{
+  "task_id": "T20",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation successfully addresses both the tilde patch bounds logic and the highest compatible version selection, with all existing functionality preserved and all tests passing.",
+    "key_points": [
+      "`matches_tilde` correctly enforces bounds: inclusive of `floor` and exclusive of the next minor version (e.g., < (major, minor + 1, 0)).",
+      "`pick_highest_matching` correctly filters candidates and returns the maximum matching version or `None`.",
+      "The implementation preserves all existing public function signatures and legacy behavior.",
+      "The deterministic CI check passed with 3 tests successful and 0 failures."
+    ],
+    "suggested_check": "Confirm that the logic for calculating the exclusive upper bound in `matches_tilde` handles year/version rollover correctly if applicable to the version scheme."
+  },
+  "ungated_crux_json": {
+    "overview": "All three advisors concur that the implementation correctly addresses both the tilde patch bounds logic and the highest compatible version selection, with all existing tests passing.",
+    "cruxes": [
+      {
+        "topic": "Tilde Patch Bounds Logic",
+        "side_a": "The required bounds are inclusive of the floor and strictly less than (major, minor + 1, 0).",
+        "side_b": "The implementation must correctly handle edge cases where minor incrementing causes major version rollover (e.g., 0.x.y to 1.0.0).",
+        "at_stake": "Req 1: `matches_tilde` must be robust for all valid SemVer transitions."
+      }
+    ],
+    "unverified_premises": [
+      "The advisors confirm the logic but do not explicitly verify the rollover case for the minor version increment (e.g., if `floor` is `X.9.y`, the exclusive upper bound should correctly resolve to `X+1.0.0`).",
+      "The interaction between `pick_highest_matching` and the new `matches_tilde` predicate needs confirmation across all possible candidate sets."
+    ],
+    "suggested_check": "Verify `matches_tilde` behavior when the minor version increment causes a major version rollover (e.g., testing against a version like 1.9.9 when the floor is 1.9.0)."
+  },
+  "gated_crux_json": {
+    "overview": "All three advisors concur that the implementation correctly addresses both the tilde patch bounds logic and the highest compatible version selection, with all existing tests passing.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation successfully addresses both the tilde patch bounds logic and the highest compatible version selection, with all existing functionality preserved and all tests passing.\nKEY POINTS:\n- `matches_tilde` correctly enforces bounds: inclusive of `floor` and exclusive of the next minor version (e.g., < (major, minor + 1, 0)).\n- `pick_highest_matching` correctly filters candidates and returns the maximum matching version or `None`.\n- The implementation preserves all existing public function signatures and legacy behavior.\n- The deterministic CI check passed with 3 tests successful and 0 failures.\nSUGGESTED CHECK: Confirm that the logic for calculating the exclusive upper bound in `matches_tilde` handles year/version rollover correctly if applicable to the version scheme.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors concur that the implementation correctly addresses both the tilde patch bounds logic and the highest compatible version selection, with all existing tests passing.\nKEY POINTS:\n- Disagreement (Tilde Patch Bounds Logic): The required bounds are inclusive of the floor and strictly less than (major, minor + 1, 0). vs. The implementation must correctly handle edge cases where minor incrementing causes major version rollover (e.g., 0.x.y to 1.0.0). [at stake: Req 1: `matches_tilde` must be robust for all valid SemVer transitions.]\n- Unverified claim: The advisors confirm the logic but do not explicitly verify the rollover case for the minor version increment (e.g., if `floor` is `X.9.y`, the exclusive upper bound should correctly resolve to `X+1.0.0`).\n- Unverified claim: The interaction between `pick_highest_matching` and the new `matches_tilde` predicate needs confirmation across all possible candidate sets.\nSUGGESTED CHECK: Verify `matches_tilde` behavior when the minor version increment causes a major version rollover (e.g., testing against a version like 1.9.9 when the floor is 1.9.0).",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors concur that the implementation correctly addresses both the tilde patch bounds logic and the highest compatible version selection, with all existing tests passing.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 851,
+      "output_tokens": 169,
+      "seconds": 3.574,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 890,
+      "output_tokens": 285,
+      "seconds": 5.39,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

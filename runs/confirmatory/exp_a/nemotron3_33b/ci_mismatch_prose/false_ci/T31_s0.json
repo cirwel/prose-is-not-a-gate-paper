@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented (merging logic missing) and Req 2 boundary check incorrect (uses <= instead of <), risking production regression",
+  "target_issue": "T31",
+  "thoughts": [
+    "The contributor reports 0 failed tests and the worktree pytest passed, but the automated evidence check shows a MISMATCH, indicating a discrepancy between reported and actual test results.",
+    "The diff shows critical bugs: merge_windows only sorts intervals without merging overlapping ones (Req 1 failure), and is_blackout uses <= instead of < for end boundary (Req 2 failure), contradicting the half-open [start, end) requirement and causing false positives."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.217,
+  "prompt_tokens": 1746,
+  "output_tokens": 188,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

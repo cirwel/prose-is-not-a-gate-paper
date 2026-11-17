@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`allow_request` still records exactly one event per allowed call and has no `weight` argument, so burst-weighted request units are not counted against the active window limit.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and the sliding-window implementation to verify both requirements and compatibility.",
+    "The diff implements tenant overrides but does not add the required `weight` parameter or append multiple copies of `now`; the reported passing tests do not cover Req 2. This pull request is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.542,
+  "prompt_tokens": 1427,
+  "output_tokens": 268,
+  "estimated_usd": 0.001999,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

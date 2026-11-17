@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. src/credit_memo.py gains only apply_credit_memo; credit_with_tax_cents is absent from the diff, and no test covers it. Req 1's clamp logic is correct and the legacy invoice_balance signature is untouched, but T13 is incomplete.",
+  "target_issue": "credit_with_tax_cents (T13 Req 2) missing from src/credit_memo.py, with no test covering it",
+  "thoughts": [
+    "The contributor claims T13 is done, but I need to verify the diff against Req 1 and Req 2 and check the tests myself before judging. I'll start by reading the diff and running pytest.",
+    "The diff adds apply_credit_memo but has no credit_with_tax_cents(net_credit_cents, tax_bps), so Req 2 is missing. The contributor's 'ready_for_review' claim doesn't hold, and I don't need pytest to see the gap."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.131,
+  "prompt_tokens": 168966,
+  "output_tokens": 444,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

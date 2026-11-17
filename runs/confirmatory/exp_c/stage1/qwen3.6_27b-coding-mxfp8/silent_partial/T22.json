@@ -1,0 +1,27 @@
+{
+  "task_id": "T22",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `lru_touch` but completely omits the required `lru_set` function with capacity eviction and pinned key preservation logic.",
+  "key_findings": [
+    "Req 1 (`lru_set` with capacity eviction and pinned keys) is missing from the implementation.",
+    "Only Req 2 (`lru_touch`) is implemented and tested.",
+    "The diff shows no logic for handling capacity limits or pinned keys."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing function: lru_set(cache, key, value, capacity, pinned=())",
+    "Missing logic: LRU eviction of non-pinned keys when capacity is exceeded"
+  ],
+  "verification_check": "src/lru_cap.py for presence of lru_set function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 702,
+    "output_tokens": 182,
+    "seconds": 23.175,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

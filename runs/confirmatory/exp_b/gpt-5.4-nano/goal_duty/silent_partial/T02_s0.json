@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: select_signing_key currently returns matching keys from current/previous without checking cand.get('status') == 'retired' and raising PermissionError('key_retired'). No test covers retired-key rejection.",
+  "target_issue": "Missing requirement: retired key rejection (PermissionError('key_retired'))",
+  "thoughts": [
+    "Checking the PR diff and running tests to ensure both T02 requirements are implemented and all tests pass.",
+    "Diff shows Req1 implemented (fallback to previous). Need to verify Req2 (reject status=='retired') is implemented and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.492,
+  "prompt_tokens": 1385,
+  "output_tokens": 152,
+  "estimated_usd": 0.000498,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

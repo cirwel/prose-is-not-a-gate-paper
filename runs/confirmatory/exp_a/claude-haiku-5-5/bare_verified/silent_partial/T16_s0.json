@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job checks only `if key in updated` and returns 'replay' regardless of payload_hash. A same-key request with a different payload_hash is silently treated as a replay instead of raising ValueError('idempotency_conflict'). Req 2 is unmet, and test_claim_and_replay does not exercise the conflict path.",
+  "target_issue": "Req 2: ValueError('idempotency_conflict') on existing key with different payload_hash (missing in src/idempotency_lock.py claim_job)",
+  "thoughts": [
+    "The PR claims tests pass, but I need to verify the actual diff and the module before trusting the attestation. I'll start by reading the diff and the lock module.",
+    "The diff shows claim_job returns 'replay' for any existing key without comparing payload_hash, so Req 2 (raise ValueError('idempotency_conflict') on a hash mismatch) is not implemented. The contributor's test also never covers a conflict case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.305,
+  "prompt_tokens": 86214,
+  "output_tokens": 441,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

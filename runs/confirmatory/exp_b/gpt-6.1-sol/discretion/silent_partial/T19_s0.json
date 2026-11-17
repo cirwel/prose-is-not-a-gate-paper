@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/biz_days.py does not define next_business_day(day, holidays=()), so the required weekend and configured-holiday rolling API is missing.",
+  "target_issue": "T19 Req 1",
+  "thoughts": [
+    "I will inspect the diff and relevant implementation and tests to verify both requirements and legacy compatibility.",
+    "The diff implements only is_business_day and contains no next_business_day implementation. I will confirm the module contents before deciding whether Req 1 is missing.",
+    "The module confirms that is_business_day was added and the legacy parser is unchanged, but next_business_day is absent. Passing the reported tests does not establish completion of Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 379.96,
+  "prompt_tokens": 2253,
+  "output_tokens": 191,
+  "estimated_usd": 0.009051,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6.1-sol/neutral/silent_partial/T19_s0.json"
+}

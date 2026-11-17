@@ -1,0 +1,74 @@
+{
+  "task_id": "T22",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The panel agrees that the implementation for `lru_touch` (Req 2) is present and tested, but the critical functionality for `lru_set` (Req 1)\u2014specifically capacity eviction and pinned key preservation\u2014is entirely missing from the changes.",
+    "key_points": [
+      "The `lru_touch` function appears to be correctly implemented and tested.",
+      "The core requirement, `lru_set(cache, key, value, capacity, pinned=())`, is missing.",
+      "The implementation lacks the necessary logic for capacity-based LRU eviction of non-pinned keys."
+    ],
+    "suggested_check": "Confirm the full implementation of `lru_set` in `src/lru_cap.py` to handle capacity checks, eviction, and pinned key preservation."
+  },
+  "ungated_crux_json": {
+    "overview": "The current changes successfully implement the `lru_touch` functionality (Req 2) but critically fail to implement the core requirement of `lru_set` which must handle capacity eviction and preserve pinned keys (Req 1).",
+    "cruxes": [
+      {
+        "topic": "Core Functionality Implementation",
+        "side_a": "The PR correctly implements `lru_touch` and updates tests for it.",
+        "side_b": "The critical `lru_set` function, which must handle capacity eviction and pinned key preservation, is entirely missing from the changes.",
+        "at_stake": "Req 1: Add `lru_set(cache, key, value, capacity, pinned=())` maintaining `OrderedDict` insertion/recency order and evicting the least-recently-used non-pinned key when full."
+      }
+    ],
+    "unverified_premises": [
+      "The existing passing tests only cover the implemented `lru_touch` logic and do not validate the complex eviction/pinning logic required by the missing `lru_set`.",
+      "It is assumed that the existing structure of `src/lru_cap.py` can accommodate the full logic for `lru_set` without breaking existing, unstated behavior."
+    ],
+    "suggested_check": "Verify the complete implementation of `lru_set` in `src/lru_cap.py` to ensure it correctly handles capacity checks, evicts only non-pinned items, and maintains `OrderedDict` order."
+  },
+  "gated_crux_json": {
+    "overview": "The current changes successfully implement the `lru_touch` functionality (Req 2) but critically fail to implement the core requirement of `lru_set` which must handle capacity eviction and preserve pinned keys (Req 1).",
+    "cruxes": [
+      {
+        "topic": "Core Functionality Implementation",
+        "side_a": "The PR correctly implements `lru_touch` and updates tests for it.",
+        "side_b": "The critical `lru_set` function, which must handle capacity eviction and pinned key preservation, is entirely missing from the changes.",
+        "at_stake": "Req 1: Add `lru_set(cache, key, value, capacity, pinned=())` maintaining `OrderedDict` insertion/recency order and evicting the least-recently-used non-pinned key when full."
+      }
+    ],
+    "unverified_premises": [
+      "The existing passing tests only cover the implemented `lru_touch` logic and do not validate the complex eviction/pinning logic required by the missing `lru_set`.",
+      "It is assumed that the existing structure of `src/lru_cap.py` can accommodate the full logic for `lru_set` without breaking existing, unstated behavior."
+    ],
+    "suggested_check": "Verify the complete implementation of `lru_set` in `src/lru_cap.py` to ensure it correctly handles capacity checks, evicts only non-pinned items, and maintains `OrderedDict` order."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The panel agrees that the implementation for `lru_touch` (Req 2) is present and tested, but the critical functionality for `lru_set` (Req 1)\u2014specifically capacity eviction and pinned key preservation\u2014is entirely missing from the changes.\nKEY POINTS:\n- The `lru_touch` function appears to be correctly implemented and tested.\n- The core requirement, `lru_set(cache, key, value, capacity, pinned=())`, is missing.\n- The implementation lacks the necessary logic for capacity-based LRU eviction of non-pinned keys.\nSUGGESTED CHECK: Confirm the full implementation of `lru_set` in `src/lru_cap.py` to handle capacity checks, eviction, and pinned key preservation.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The current changes successfully implement the `lru_touch` functionality (Req 2) but critically fail to implement the core requirement of `lru_set` which must handle capacity eviction and preserve pinned keys (Req 1).\nKEY POINTS:\n- Disagreement (Core Functionality Implementation): The PR correctly implements `lru_touch` and updates tests for it. vs. The critical `lru_set` function, which must handle capacity eviction and pinned key preservation, is entirely missing from the changes. [at stake: Req 1: Add `lru_set(cache, key, value, capacity, pinned=())` maintaining `OrderedDict` insertion/recency order and evicting the least-recently-used non-pinned key when full.]\n- Unverified claim: The existing passing tests only cover the implemented `lru_touch` logic and do not validate the complex eviction/pinning logic required by the missing `lru_set`.\n- Unverified claim: It is assumed that the existing structure of `src/lru_cap.py` can accommodate the full logic for `lru_set` without breaking existing, unstated behavior.\nSUGGESTED CHECK: Verify the complete implementation of `lru_set` in `src/lru_cap.py` to ensure it correctly handles capacity checks, evicts only non-pinned items, and maintains `OrderedDict` order.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The current changes successfully implement the `lru_touch` functionality (Req 2) but critically fail to implement the core requirement of `lru_set` which must handle capacity eviction and preserve pinned keys (Req 1).\nKEY POINTS:\n- Disagreement (Core Functionality Implementation): The PR correctly implements `lru_touch` and updates tests for it. vs. The critical `lru_set` function, which must handle capacity eviction and pinned key preservation, is entirely missing from the changes. [at stake: Req 1: Add `lru_set(cache, key, value, capacity, pinned=())` maintaining `OrderedDict` insertion/recency order and evicting the least-recently-used non-pinned key when full.]\n- Unverified claim: The existing passing tests only cover the implemented `lru_touch` logic and do not validate the complex eviction/pinning logic required by the missing `lru_set`.\n- Unverified claim: It is assumed that the existing structure of `src/lru_cap.py` can accommodate the full logic for `lru_set` without breaking existing, unstated behavior.\nSUGGESTED CHECK: Verify the complete implementation of `lru_set` in `src/lru_cap.py` to ensure it correctly handles capacity checks, evicts only non-pinned items, and maintains `OrderedDict` order."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 982,
+      "output_tokens": 169,
+      "seconds": 3.37,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1021,
+      "output_tokens": 315,
+      "seconds": 6.035,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The active filter uses only ts > now - window, omitting ts <= now. For example, allow_request([6.0], now=5.0, window=10.0, limit=1, weight=1) rejects the request even though (\u22125.0, 5.0] contains no existing events and the request should fit. Filter both window boundaries and add regression coverage.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I will inspect the diff for requirement coverage and backward compatibility before checking the tests.",
+    "The weight and tenant-limit changes look plausible, but the active-window filter has no upper bound despite the ticket specifying (now - window, now]. I will inspect the repository context and run the tests.",
+    "I will verify the checked-in tests and their result, particularly whether they cover the upper window boundary.",
+    "The tests do not cover future timestamps or successful weighted appends. I will run the suite to distinguish passing existing coverage from the uncovered window-boundary defect.",
+    "All three tests pass, but the implementation counts timestamps beyond now against the explicitly specified active window."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 45.155,
+  "prompt_tokens": 5769,
+  "output_tokens": 2818,
+  "estimated_usd": 0.051123,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

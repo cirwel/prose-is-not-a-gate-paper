@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both Req 1 (narrow_scopes: set intersection, deduplicated, sorted) and Req 2 (has_all_required_scopes: issubset check returning bool) are implemented correctly against the ticket. Verified via git_diff and run_pytest (exit 0, 3 passed, 0 failed). The legacy parse_scope_header and its test are unchanged. Residual risk: the PEP 604 union annotations evaluate at def time and would fail on Python 3.9, so the project's minimum Python version should be confirmed before release.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief is a summary from other reviewers, not evidence, so I should verify the diff myself before deciding. I'll start by reading the actual change.",
+    "The diff logic looks correct on inspection, but the advisory brief and contributor report are unverified claims. I'll run the test suite in the worktree myself before deciding.",
+    "I read the diff and ran the tests myself. narrow_scopes returns a sorted, deduplicated intersection, has_all_required_scopes is a correct subset check, the legacy parse_scope_header is untouched, and all 3 tests pass. The only open point is the `list[str] | set[str]` annotation, which needs Python 3.10+ at import time, but the project's Python version is not stated in the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.739,
+  "prompt_tokens": 6948,
+  "output_tokens": 1021,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

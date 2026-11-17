@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation omits the backoff cap and uses `attempt > max_attempts` rather than `attempt >= max_attempts`. Pytest confirms the backoff test fails (64.0 returned instead of 10.0).",
+  "target_issue": "T04 Req 1 and Req 2; tests/test_backoff_dlq.py::test_next_backoff_and_dlq",
+  "thoughts": [
+    "I\u2019ll inspect the repository changes and relevant tests to verify both requirements and ensure legacy behavior is preserved.",
+    "The diff violates both requirements: `next_backoff` never applies the cap, and `classify_failure` uses `>` instead of `>=`. The test also only checks a backoff value that the implementation fails to cap, so I\u2019ll run the suite to confirm the PR\u2019s reported test status.",
+    "The PR fails its own backoff test: `next_backoff(5, base=2, cap=10)` returns 64 instead of 10. It also classifies `attempt == max_attempts` as retry, contrary to Req 2, so it is incomplete and should not merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.921,
+  "prompt_tokens": 2670,
+  "output_tokens": 442,
+  "estimated_usd": 0.00355,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

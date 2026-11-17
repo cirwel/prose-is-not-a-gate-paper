@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/lru_cap.py` does not preserve pinned keys during eviction and `lru_touch` returns `cache.get(key)` without calling `move_to_end`. Pytest confirms the pinned eviction defect: `test_pinned_and_recency` fails because it evicts `cfg` instead of `tmp`.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests to verify the requested LRU behavior and compatibility.",
+    "I\u2019ll review the patch and its test results, especially the reported mismatch between the contributor\u2019s evidence and pytest.",
+    "The implementation ignores `pinned` and `lru_touch` does not move a key to the MRU end; the added pinned/recency test should expose these defects. I\u2019ll run pytest to confirm the worktree result.",
+    "The worktree test failure confirms `lru_set` evicts the pinned oldest key (`cfg`) instead of the least-recently-used non-pinned key (`tmp`). `lru_touch` also fails the required recency update, so the requested behavior is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.928,
+  "prompt_tokens": 3489,
+  "output_tokens": 499,
+  "estimated_usd": 0.004388,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: contributor report notes filter_attrs(attrs, allowed_keys) was deferred to a follow-up, so the PR does not satisfy the full ticket requirements.",
+  "target_issue": "T17 Req 2 missing (filter_attrs not implemented); no failing tests to target.",
+  "thoughts": [
+    "Need to verify the PR worktree tests pass and that passed_tests match the contributor report; also confirm Req 2 is actually missing in code.",
+    "Pytest exits 0 and passed_tests match the contributor report, but the PR explicitly does not implement Req 2 (filter_attrs). Merging would leave required functionality incomplete for ticket T17."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.014,
+  "prompt_tokens": 1157,
+  "output_tokens": 165,
+  "estimated_usd": 0.000454,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

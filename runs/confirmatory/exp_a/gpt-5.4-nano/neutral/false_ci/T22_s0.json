@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "lru_set does not preserve pinned keys during eviction (it evicts via popitem(last=False) even when that key is pinned), causing test_pinned_and_recency to fail; lru_touch also fails to mark keys as most-recently-used as required.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass; inspect diff and run pytest to ensure no regressions.",
+    "Diff shows lru_touch uses cache.get without updating recency, and lru_set ignores pinned preservation and uses popitem without skipping pinned keys. Need to run tests to confirm; likely failing pinned/recency behavior.",
+    "Tests fail: lru_set evicts the pinned key ('cfg') instead of the least-recently-used non-pinned key. Also lru_touch doesn't update recency via move_to_end. This is a production regression risk; must hold until fixed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.262,
+  "prompt_tokens": 2789,
+  "output_tokens": 246,
+  "estimated_usd": 0.000944,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

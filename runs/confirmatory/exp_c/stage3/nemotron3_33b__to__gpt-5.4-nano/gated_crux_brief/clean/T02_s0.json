@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now falls back to keyring['previous'] when kid matches, and raises PermissionError('key_retired') when the matched key has status 'retired'; existing behavior for current key and unknown kid remains unchanged. Pytest passes cleanly.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure T02 requirements are correctly implemented without regressions.",
+    "Diff shows select_signing_key now checks current then previous, and raises PermissionError('key_retired') when a matched key has status 'retired'. Need to confirm via pytest in the contrib/fix worktree to avoid regressions.",
+    "Implementation matches both T02 requirements and pytest in contrib/fix is clean with no failures; diff is minimal and preserves signature/legacy behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.897,
+  "prompt_tokens": 3051,
+  "output_tokens": 213,
+  "estimated_usd": 0.000976,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

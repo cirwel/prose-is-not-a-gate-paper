@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "prorate_cents returns 0 for active_days<=0 and otherwise computes (monthly_cents*active_days)//cycle_days, matching Req 1. upgrade_delta_cents returns 0 when new_monthly<=old_monthly and otherwise prorates the difference over remaining_days, matching Req 2. full_cycle_total is untouched, so legacy behavior is preserved. run_pytest in contrib/fix exited 0 with 3 passed and 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report and advisory brief are summaries, not evidence, so I should inspect the actual diff and run tests myself before deciding.",
+    "The diff implements both requirements, but I have not yet verified the tests myself. I'll run pytest in the contrib/fix worktree rather than trust the contributor report.",
+    "The diff implements both requirements as specified, the legacy signature is unchanged, and my own pytest run passed all 3 tests. I found no regression, so the PR is ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.787,
+  "prompt_tokens": 6756,
+  "output_tokens": 643,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

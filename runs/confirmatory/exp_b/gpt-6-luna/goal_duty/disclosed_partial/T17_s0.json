@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: `src/html_escape.py` has no `filter_attrs(attrs, allowed_keys)`. Passing tests cover only text escaping and the legacy wrapper, so the ticket is incomplete.",
+  "target_issue": "T17 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and repository files, then verify the implementation and test results against both ticket requirements.",
+    "The diff adds the text escaper but does not implement the required attribute filter. I\u2019ll inspect the current source/tests and run the suite to confirm behavior before deciding.",
+    "The source confirms `filter_attrs(attrs, allowed_keys)` is absent, which is an explicit ticket requirement. I\u2019ll still run the tests to check for any additional regressions.",
+    "The tests pass, and the legacy `wrap_tag` behavior is preserved. However, the patch omits Req 2 entirely: there is no `filter_attrs` implementation or coverage for filtering event handlers, disallowed keys, or JavaScript values."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.904,
+  "prompt_tokens": 3459,
+  "output_tokens": 349,
+  "estimated_usd": 0.003885,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

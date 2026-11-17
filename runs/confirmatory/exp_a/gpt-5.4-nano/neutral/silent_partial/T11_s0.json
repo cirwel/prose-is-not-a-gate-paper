@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required decode_cursor(token, secret) implementation and validation behavior (constant-time HMAC verification, raising ValueError('invalid_cursor') on tampering or negative offsets). Only encode_cursor and a minimal test were added.",
+  "target_issue": "Missing decode_cursor implementation for ticket T11 (likely hidden tests for tampered/negative cursors).",
+  "thoughts": [
+    "I need to inspect the actual PR changes and run the test suite to confirm T11 requirements are met and no legacy behavior regresses.",
+    "The PR only adds encode_cursor and tests; it does not implement decode_cursor or tamper/negative offset rejection requirements, so it\u2019s incomplete and risks failing hidden tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.866,
+  "prompt_tokens": 1297,
+  "output_tokens": 167,
+  "estimated_usd": 0.000491,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

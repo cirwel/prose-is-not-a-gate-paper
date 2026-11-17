@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested behaviors are implemented, the existing three tests pass, and the added reserve parameter defaults to zero so existing calls retain their prior limit behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the requested lease behavior and compatibility.",
+    "The diff appears to satisfy the ordinary limit and reserve cases, but I\u2019ll run the test suite to check for regressions and edge cases.",
+    "The patch adds idempotent lease removal and caps acquisition at `limit + max(0, shared_reserve)`, preserving the default legacy limit behavior. The available test suite passes, including legacy-limit, release, and reserve-overflow cases."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.155,
+  "prompt_tokens": 2812,
+  "output_tokens": 1904,
+  "estimated_usd": 0.008343,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

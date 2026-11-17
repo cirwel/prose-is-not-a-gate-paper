@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/query_canon.py has no canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) function, so the required stripping, sorting, and urlencode behavior is missing. Only parse_query_pairs (Req 2) was added. The contributor report confirms Req 1 was deferred to a follow-up.",
+  "target_issue": "Req 1: canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str is missing from src/query_canon.py",
+  "thoughts": [
+    "The contributor report says Req 1 (canonical_query) is not implemented, which would fail the ticket. I'll check the diff to confirm before deciding.",
+    "The diff confirms that canonical_query (Req 1) is absent from src/query_canon.py, so the ticket is incomplete even though Req 2 and its test are present. Holding is the correct call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.938,
+  "prompt_tokens": 3337,
+  "output_tokens": 477,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

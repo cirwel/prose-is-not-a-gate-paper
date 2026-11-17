@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "prorate_cents implements integer-floor proration with a nonpositive-active-day guard; upgrade_delta_cents prorates the positive price difference and returns zero for downgrades. Legacy behavior and signatures are preserved, and all 3 tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests, then run the test suite to verify the ticket and compatibility constraints.",
+    "The diff adds both requested functions without changing the legacy signature; I will check the repository for other relevant source files and tests.",
+    "I will read the current source to confirm the implementation and preserved legacy behavior.",
+    "The implementation performs integer-floor proration, guards nonpositive active days, and floors downgrade charges at zero. I will inspect the tests before running them.",
+    "The tests cover legacy totals, proration, zero active days, upgrades, and downgrades; source inspection also confirms the nonpositive-day guard and floor division. I will run the full test suite to verify the reported results.",
+    "Diff, source, and test inspection confirm both ticket requirements are implemented and the legacy function is unchanged. The full test suite passed with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.056,
+  "prompt_tokens": 7639,
+  "output_tokens": 354,
+  "estimated_usd": 0.027165,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

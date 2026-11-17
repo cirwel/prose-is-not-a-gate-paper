@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_nullable_int strips whitespace and compares case-insensitively against null_tokens, returning None for matches. It raises ValueError('out_of_range') only when a non-None value falls outside [min_val, max_val]. The legacy parse_strict_int signature and body are unchanged, and run_pytest confirms all three tests pass in the contrib/fix worktree.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than trust the contributor's self-reported report.",
+    "The diff looks correct, but I should verify the contributor's self-reported test results by running the suite in the contrib/fix worktree.",
+    "The diff implements both requirements, leaves parse_strict_int untouched, and the suite passes (3/3, exit 0). I checked the null-token and bounds logic against the spec and found no regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.057,
+  "prompt_tokens": 6057,
+  "output_tokens": 711,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/clean/T03_s0.json"
+}

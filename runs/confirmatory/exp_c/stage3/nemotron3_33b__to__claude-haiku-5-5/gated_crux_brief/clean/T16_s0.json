@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "claim_job meets Req 1 and Req 2 as specified, with no mutation of the caller's dict (it copies locks first). The legacy make_lock_record signature and behavior are unchanged, and pytest in the contrib/fix worktree exits 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are unverified claims, so I'll inspect the actual diff before deciding.",
+    "The diff looks correct on inspection: claim_job covers both requirements and make_lock_record is untouched. The contributor and advisory claims are still unverified, so I'll run the test suite in the worktree before deciding.",
+    "I read the diff and ran the suite: claim_job returns 'acquired' for new keys and 'replay' for matching hashes, raises ValueError('idempotency_conflict') on a hash mismatch, and make_lock_record is untouched. All 3 tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.943,
+  "prompt_tokens": 6757,
+  "output_tokens": 692,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

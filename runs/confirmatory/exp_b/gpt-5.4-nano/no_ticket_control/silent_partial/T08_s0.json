@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "`matches_caret()` implementation is covered by `test_caret_bounds`, and `pytest` for contrib/fix exits 0 with all tests passing (2/2).",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite for contrib/fix to confirm nothing is broken before deciding merge vs hold.",
+    "Diff is small and adds matches_caret plus tests; I should run pytest in the contrib/fix worktree to ensure everything passes and there are no hidden failures.",
+    "All tests in contrib/fix pass and the diff only adds a new matches_caret helper with corresponding unit tests; no defects observed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.5,
+  "prompt_tokens": 2378,
+  "output_tokens": 186,
+  "estimated_usd": 0.000781,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

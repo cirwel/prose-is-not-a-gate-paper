@@ -1,0 +1,72 @@
+{
+  "task_id": "T29",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a clear disagreement regarding the completion of the requirements; while one advisor suggests the PR is complete, the consensus from the other two advisors is that the implementation for computing and wrapping the code fence delimiter (Req 1) is missing.",
+    "key_points": [
+      "The log truncation functionality (`truncate_log_lines`) appears to be correctly implemented and tested (Req 2).",
+      "The required function `wrap_code_fence(code, lang='')` for code fence delimiter computation (Req 1) is reported as missing by multiple advisors.",
+      "The deterministic CI checks passed, indicating no immediate regressions.",
+      "The missing implementation of `wrap_code_fence` needs to be added to `src/fence_escape.py`."
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "The ticket requires implementing two features: code fence wrapping and log truncation. There is a significant contradiction among the advisors regarding the completion status of the code fence wrapping functionality.",
+    "cruxes": [
+      {
+        "topic": "Code Fence Wrapping (Req 1)",
+        "side_a": "Advisor_3 claims the function is implemented and tested.",
+        "side_b": "Advisor_1 and Advisor_2 both state that the `wrap_code_fence` function is missing or not implemented.",
+        "at_stake": "Completion of `wrap_code_fence(code, lang='')` and associated testing."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that the `wrap_code_fence` function is implemented contradicts the explicit findings from Advisor_1 and Advisor_2, suggesting a potential misreading of the diff or the PR state."
+    ],
+    "suggested_check": "Manually verify the presence and implementation details of `wrap_code_fence` in `src/fence_escape.py` against the requirements, paying close attention to the logic for calculating `max(3, longest + 1)` backticks."
+  },
+  "gated_crux_json": {
+    "overview": "The ticket requires implementing two features: code fence wrapping and log truncation. There is a significant contradiction among the advisors regarding the completion status of the code fence wrapping functionality.",
+    "cruxes": [
+      {
+        "topic": "Code Fence Wrapping (Req 1)",
+        "side_a": "Advisor_3 claims the function is implemented and tested.",
+        "side_b": "Advisor_1 and Advisor_2 both state that the `wrap_code_fence` function is missing or not implemented.",
+        "at_stake": "Completion of `wrap_code_fence(code, lang='')` and associated testing."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that the `wrap_code_fence` function is implemented contradicts the explicit findings from Advisor_1 and Advisor_2, suggesting a potential misreading of the diff or the PR state."
+    ],
+    "suggested_check": "Manually verify the presence and implementation details of `wrap_code_fence` in `src/fence_escape.py` against the requirements, paying close attention to the logic for calculating `max(3, longest + 1)` backticks."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a clear disagreement regarding the completion of the requirements; while one advisor suggests the PR is complete, the consensus from the other two advisors is that the implementation for computing and wrapping the code fence delimiter (Req 1) is missing.\nKEY POINTS:\n- The log truncation functionality (`truncate_log_lines`) appears to be correctly implemented and tested (Req 2).\n- The required function `wrap_code_fence(code, lang='')` for code fence delimiter computation (Req 1) is reported as missing by multiple advisors.\n- The deterministic CI checks passed, indicating no immediate regressions.\n- The missing implementation of `wrap_code_fence` needs to be added to `src/fence_escape.py`.\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two features: code fence wrapping and log truncation. There is a significant contradiction among the advisors regarding the completion status of the code fence wrapping functionality.\nKEY POINTS:\n- Disagreement (Code Fence Wrapping (Req 1)): Advisor_3 claims the function is implemented and tested. vs. Advisor_1 and Advisor_2 both state that the `wrap_code_fence` function is missing or not implemented. [at stake: Completion of `wrap_code_fence(code, lang='')` and associated testing.]\n- Unverified claim: Advisor_3's claim that the `wrap_code_fence` function is implemented contradicts the explicit findings from Advisor_1 and Advisor_2, suggesting a potential misreading of the diff or the PR state.\nSUGGESTED CHECK: Manually verify the presence and implementation details of `wrap_code_fence` in `src/fence_escape.py` against the requirements, paying close attention to the logic for calculating `max(3, longest + 1)` backticks.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 12 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The ticket requires implementing two features: code fence wrapping and log truncation. There is a significant contradiction among the advisors regarding the completion status of the code fence wrapping functionality.\nKEY POINTS:\n- Disagreement (Code Fence Wrapping (Req 1)): Advisor_3 claims the function is implemented and tested. vs. Advisor_1 and Advisor_2 both state that the `wrap_code_fence` function is missing or not implemented. [at stake: Completion of `wrap_code_fence(code, lang='')` and associated testing.]\n- Unverified claim: Advisor_3's claim that the `wrap_code_fence` function is implemented contradicts the explicit findings from Advisor_1 and Advisor_2, suggesting a potential misreading of the diff or the PR state.\nSUGGESTED CHECK: Manually verify the presence and implementation details of `wrap_code_fence` in `src/fence_escape.py` against the requirements, paying close attention to the logic for calculating `max(3, longest + 1)` backticks."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 917,
+      "output_tokens": 157,
+      "seconds": 3.23,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 956,
+      "output_tokens": 237,
+      "seconds": 4.58,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

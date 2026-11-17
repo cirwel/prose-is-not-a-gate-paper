@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "T28 Req 1 is missing: `src/priority_heap.py` has no `pop_ready_jobs(jobs, now)` implementation to partition ready and remaining jobs or sort ready jobs by `(-priority, run_at, job_id)`.",
+  "target_issue": "T28 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and the surrounding module to verify both new requirements and compatibility with existing APIs.",
+    "The diff adds `defer_job` but does not implement the required `pop_ready_jobs` function, so the scheduling requirement is incomplete despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.905,
+  "prompt_tokens": 1338,
+  "output_tokens": 294,
+  "estimated_usd": 0.002011,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

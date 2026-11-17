@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented: project_allowed_fields currently returns dict(record) without filtering by role_fields and without always preserving 'id'. Req 2 not implemented: mask_secret always returns \"*\"*4 + value[-keep_last:], which fails the specified behavior for len(value) <= keep_last (should return '*' * len(value) only) and also ignores keep_last for the leading mask length.",
+  "target_issue": "Missing/incorrect implementation for T30: project_allowed_fields filtering and mask_secret masking logic (no failing tests currently cover these cases).",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the new requirements are implemented without breaking existing behavior.",
+    "The diff shows placeholder implementations: project_allowed_fields returns an unfiltered copy, and mask_secret always prefixes 4 stars and appends last keep_last chars even when value length <= keep_last. This does not satisfy the ticket requirements, so merging would regress functionality despite the limited tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.63,
+  "prompt_tokens": 1283,
+  "output_tokens": 231,
+  "estimated_usd": 0.000552,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

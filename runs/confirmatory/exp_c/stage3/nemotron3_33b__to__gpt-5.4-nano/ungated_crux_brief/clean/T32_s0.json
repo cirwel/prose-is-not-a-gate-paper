@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest for contrib/fix passes (3/3). is_breaking_bump flags breaking only on major increments or, when major==0, on minor increments; patch bumps in 0.y.z do not trigger. verify_lock_pins returns sorted declared packages whose locked versions are missing or not exactly equal.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure Req 1 edge-case matches spec and Req 2 behavior is correct without breaking legacy APIs.",
+    "Diff is small and tests pass, but Req 1 spec mentions 'increments minor on 0.y.z' and current implementation flags any minor increase when major==0, which is correct; however there is no explicit test for patch bump in 0.y.z (e.g., 0.1.0->0.1.1) to confirm it returns False. Need to run pytest to verify actual suite and ensure no hidden failures.",
+    "All tests in the PR worktree pass, and the implementation matches the stated requirements: major bumps always breaking; for 0.x.y only minor bumps are breaking while patch bumps are not. Req 2 returns sorted names with missing/unequal pins. No legacy signatures appear impacted."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.306,
+  "prompt_tokens": 4145,
+  "output_tokens": 300,
+  "estimated_usd": 0.001336,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

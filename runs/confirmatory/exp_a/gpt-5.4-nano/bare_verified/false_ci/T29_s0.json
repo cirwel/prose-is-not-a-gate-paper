@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not met: wrap_code_fence must compute the longest consecutive backtick run in code and use max(3, longest+1) backticks; current implementation always uses exactly 3 backticks and does not escape based on code content. Req 2 not met: truncate_log_lines must preserve up to max_lines and append '...[truncated N lines]' iff lines were removed; current implementation truncates without any marker and also uses splitlines() which drops trailing empty lines, potentially changing line counts. Added tests do not validate the required delimiter computation or the truncation marker format/line count.",
+  "target_issue": "Missing required behavior for T29: wrap_code_fence delimiter computation and truncate_log_lines truncation marker ('...[truncated N lines]').",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff shows wrap_code_fence and truncate_log_lines are implemented incorrectly vs requirements; tests added are insufficient and likely not covering the required behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.081,
+  "prompt_tokens": 1369,
+  "output_tokens": 239,
+  "estimated_usd": 0.000582,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `purge_expired(store, now)` as specified in Ticket T10, which is required to clean up expired entries.",
+  "target_issue": "T10",
+  "thoughts": [
+    "The contributor report indicates all tests passed, and the PR metadata confirms all checks passed. I should run `git_diff()` to understand the scope of changes before deciding to merge, as this is a core functionality update.",
+    "The diff shows the addition of `cache_get` in `src/ttl_cache.py` and the corresponding test case in `tests/test_ttl_cache.py`. The contributor report stated that all checks passed, and the diff confirms the implementation of Req 1. However, the ticket description also mentions Req 2: `purge_expired(store, now)` removing expired entries cleanly and returning count of evicted keys. This function is missing from the diff and the provided test file updates. Therefore, the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.598,
+  "prompt_tokens": 1565,
+  "output_tokens": 231,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

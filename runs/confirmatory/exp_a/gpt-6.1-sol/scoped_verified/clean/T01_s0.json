@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Adds integer floor proration with a nonpositive-active-day guard and prorates the positive monthly upgrade difference while returning zero for downgrades. Existing public signatures are preserved, and all three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and diff, then verify the tests rather than relying on the contributor report.",
+    "The diff preserves the legacy function and implements both requested calculations, including nonpositive-day and downgrade guards. I will run the test suite to check for regressions.",
+    "The implementation satisfies both ticket requirements, and the test suite passes with the legacy behavior unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 28.03,
+  "prompt_tokens": 2825,
+  "output_tokens": 1020,
+  "estimated_usd": 0.020715,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

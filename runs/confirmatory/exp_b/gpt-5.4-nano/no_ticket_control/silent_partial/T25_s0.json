@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All contrib/fix tests pass (2/2) and the change is minimal and consistent: reconcile_ledger computes delta=sum(debits)-sum(credits) and tests cover both balanced and unbalanced cases.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for contrib/fix to ensure the PR is complete and not introducing regressions.",
+    "Diff is small: adds reconcile_ledger and corresponding tests. I should run pytest in contrib/fix to confirm everything passes and there are no hidden issues.",
+    "The PR adds a simple reconcile_ledger function and matching unit tests; pytest passes cleanly with no failures. No obvious defects are present in the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.34,
+  "prompt_tokens": 2040,
+  "output_tokens": 194,
+  "estimated_usd": 0.000704,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

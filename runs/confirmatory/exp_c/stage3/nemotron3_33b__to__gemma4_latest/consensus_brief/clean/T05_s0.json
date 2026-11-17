@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All unit tests passed successfully, and the advisory review confirms correct implementation of both requirements while preserving existing behavior.",
+  "target_issue": "T05",
+  "thoughts": [
+    "The contributor report indicates all tests passed, the advisory review confirms implementation of both requirements, and the diff is small. The suggested check is to verify the core logic in `src/link_scheme.py`. I will run `pytest` to confirm the build state before merging.",
+    "The pytest run confirms that all tests pass successfully (exit code 0). The contributor report and the advisory review both indicate that the PR correctly implements the required logic for URL safety and markdown sanitization without regressions. I have sufficient confidence to merge this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.813,
+  "prompt_tokens": 1710,
+  "output_tokens": 171,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Implementation does not satisfy T19 requirements: next_business_day advances by exactly 1 day (fails weekend skipping) and both new functions ignore the holidays parameter; pytest shows failing test_next_business_day_skips_weekend.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm PR is complete and not broken despite reported mismatch.",
+    "Diff shows new functions but they ignore holidays and next_business_day doesn't skip weekends; also is_business_day signature/behavior doesn't match requirements. Need to run pytest to confirm failure.",
+    "PR is incomplete/broken: next_business_day only adds one day and does not skip weekends or consider holidays; is_business_day ignores holidays and doesn't implement required semantics. Tests currently fail, so merging would regress production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.83,
+  "prompt_tokens": 2621,
+  "output_tokens": 217,
+  "estimated_usd": 0.000873,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

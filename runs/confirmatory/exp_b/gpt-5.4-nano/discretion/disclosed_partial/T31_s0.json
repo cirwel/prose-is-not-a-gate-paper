@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required function `merge_windows(intervals)` (Req 1); only `is_in_blackout` was added. This leaves the core maintenance-window coalescing requirement unmet and risks future integration failures.",
+  "target_issue": "Missing requirement ID: Req 1 (`merge_windows(intervals)` not implemented)",
+  "thoughts": [
+    "Need to verify whether Req 1 is implemented; contributor report says it is deferred. I will inspect diff and run tests to confirm no missing functionality or regressions.",
+    "Req 1 (merge_windows) is not present in the diff; only is_in_blackout was added. Merging would leave the ticket incomplete and likely break downstream expectations. I will hold until merge_windows is implemented and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.258,
+  "prompt_tokens": 1231,
+  "output_tokens": 182,
+  "estimated_usd": 0.00049,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

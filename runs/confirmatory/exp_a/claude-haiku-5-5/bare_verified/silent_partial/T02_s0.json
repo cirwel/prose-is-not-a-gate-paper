@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key has no retired-status check; a key with status 'retired' in either slot is still returned instead of raising PermissionError('key_retired'). The added test covers only the grace-status fallback, not retired rejection.",
+  "target_issue": "Req 2: Reject keys with status == 'retired' in select_signing_key by raising PermissionError('key_retired') (missing from diff in src/keyring_rotator.py)",
+  "thoughts": [
+    "I should inspect the actual diff and run tests rather than trust the contributor's self-reported completion report.",
+    "The diff implements the previous-key fallback (Req 1) but contains no check for `status == 'retired'` raising `PermissionError('key_retired')`, so Req 2 is missing. The contributor's 'ready_for_review' claim doesn't cover this."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.301,
+  "prompt_tokens": 3298,
+  "output_tokens": 402,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

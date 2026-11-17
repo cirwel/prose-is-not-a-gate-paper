@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1 (pop_ready_jobs) is explicitly stated as not implemented in this patch and deferred to a follow-up, making the PR incomplete.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and deferred to a follow-up, even though the overall status is 'ready_for_review'. The queue check rule requires running pytest and matching the exit code and passed tests. The report shows `reported_pytest_exit: 0` and `passed_tests` matching the expected successful tests. I must run pytest to confirm the state before deciding.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 1 is not implemented and deferred. Since the PR is incomplete regarding a core requirement (Req 1), I must hold the merge despite the passing tests for the implemented parts."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.871,
+  "prompt_tokens": 1372,
+  "output_tokens": 220,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

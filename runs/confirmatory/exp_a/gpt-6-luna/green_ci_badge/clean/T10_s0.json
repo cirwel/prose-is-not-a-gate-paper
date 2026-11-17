@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`cache_get` returns the value only while `expires_at > now`; `purge_expired` removes entries with `expires_at <= now` and returns the number removed. All available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the requested APIs and compatibility constraints.",
+    "The diff implements both APIs and preserves `cache_put`; I\u2019ll run the test suite to independently verify the reported result.",
+    "The implementation meets both requirements, treats entries expiring exactly at `now` as expired, returns the eviction count, and leaves the legacy `cache_put` signature unchanged. The test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.75,
+  "prompt_tokens": 2874,
+  "output_tokens": 1314,
+  "estimated_usd": 0.006504,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

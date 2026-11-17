@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "1) sign_path_token computes hashlib.sha256(f\"{path}:{expires_at}\") and ignores the secret, so it is not HMAC-SHA256 as Req 1 requires; any party knowing the path and expiry can forge tokens. 2) verify_path_token omits the `now <= expires_at` check required by Req 2, so expired tokens with a correct signature verify as True. The test asserts expiry rejection, but the code does not implement it. 3) The diff removes the legacy assertion `expiry_remaining(90, 100) == 0` from tests/test_signed_url.py, weakening coverage of existing behavior. The contributor's '0 failures' report does not match the diff.",
+  "target_issue": "T33 Req 1 (HMAC-SHA256 over path:expires_at keyed by secret), T33 Req 2 (now <= expires_at check missing in verify_path_token), constraint 'preserve existing passing behavior' (legacy assertion removed)",
+  "thoughts": [
+    "The contributor report claims success, but I need to verify the actual diff against Req 1 and Req 2 before deciding. Starting with the unified diff.",
+    "The diff shows sign_path_token uses plain SHA-256 rather than HMAC-SHA256 keyed by the secret, and verify_path_token never checks now <= expires_at. The diff also deletes a legacy test assertion, so the PR fails Req 1, Req 2, and the preserve-behavior constraint."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.444,
+  "prompt_tokens": 3480,
+  "output_tokens": 676,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

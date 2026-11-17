@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR only adds `reconcile_ledger` and corresponding test; it completely omits the required `split_cents_exact(total_cents, weights)` function from Req 1, so the ticket requirements are not satisfied and could cause downstream failures when callers expect that API.",
+  "target_issue": "Missing requirement ID: Req 1 (`split_cents_exact`) \u2014 no function definition or tests added in src/ledger_round.py.",
+  "thoughts": [
+    "Need to inspect diff and repository to confirm whether split_cents_exact exists and meets spec; then run pytest to ensure no regressions.",
+    "Diff shows reconcile_ledger added but split_cents_exact is not present anywhere; must hold until Req 1 is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.49,
+  "prompt_tokens": 1761,
+  "output_tokens": 180,
+  "estimated_usd": 0.00062,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

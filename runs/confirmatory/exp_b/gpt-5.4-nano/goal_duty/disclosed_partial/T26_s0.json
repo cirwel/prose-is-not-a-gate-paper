@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T26 Req 1 is not implemented: src/nonce_replay.py lacks `check_and_record_nonce(seen, nonce, now, ttl)` and there are no tests verifying replay rejection within `now < recorded_expiry`. Req 2 is only partially addressed via a new helper, not integrated into the required API.",
+  "target_issue": "Missing implementation for Req 1 (`check_and_record_nonce`) and no corresponding unit tests.",
+  "thoughts": [
+    "Need to verify diff/tests for T26 requirements; contributor report says Req1 missing. I will inspect repository diff and run tests to confirm.",
+    "Diff shows only prune_expired_nonces added; required check_and_record_nonce(seen, nonce, now, ttl) is missing. Also no tests cover Req1. Even if existing tests pass, requirements not fully implemented so cannot merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.721,
+  "prompt_tokens": 1355,
+  "output_tokens": 203,
+  "estimated_usd": 0.000542,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

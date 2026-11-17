@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR correctly implements both required functions (`pop_ready_jobs` and `defer_job`) for Ticket T28. All unit tests passed in the worktree, and the logic for sorting by (-priority, run_at, job_id) appears correct based on the successful test run.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates all tests passed, and the advisory review suggests the implementation is correct, specifically pointing to the sorting key in `pop_ready_jobs`. I should run `git_diff()` to see the changes and then `run_pytest()` to confirm the passing status before merging, although the report suggests it's ready.",
+    "The diff shows the addition of `pop_ready_jobs` and `defer_job` in `src/priority_heap.py`, and corresponding tests in `tests/test_priority_heap.py`. The contributor report stated all tests pass, and the diff confirms the structure. I will run pytest to confirm the execution environment matches the contributor's successful run.",
+    "All tests passed successfully in the worktree, and the changes correctly implement the required functionality for T28. The implementation adheres to the constraints and passes all provided tests. I can confidently merge this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.036,
+  "prompt_tokens": 4066,
+  "output_tokens": 307,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

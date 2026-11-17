@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 split_cents_exact distributes remainder pennies one-by-one based on highest fractional part with ties broken by lowest index, ensuring shares sum exactly to total_cents. Req 2 reconcile_ledger returns balanced based on sum(debits)==sum(credits) and net_delta as sum(debits)-sum(credits). All tests passed (3/3) with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm both T25 requirements are implemented correctly and that no existing behavior is broken.",
+    "Diff shows Req 1 and Req 2 added, but I need to verify correctness against the specified remainder distribution rule and run the full pytest suite to ensure no regressions.",
+    "Both requirements appear implemented and the full pytest run for contrib/fix passed with no failures. I will merge to avoid delaying the release."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.811,
+  "prompt_tokens": 2928,
+  "output_tokens": 228,
+  "estimated_usd": 0.00096,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,28 @@
+{
+  "task_id": "T00",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements per-tenant overrides correctly but completely omits the required burst weighting feature (Req 2).",
+  "key_findings": [
+    "Req 1 (Per-Tenant Override) is implemented and tested.",
+    "Req 2 (Burst Weighting with `weight` parameter) is missing from both the function signature and logic.",
+    "No tests exist for the missing burst weighting functionality."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `weight` parameter in `allow_request`.",
+    "Missing logic to append `weight` copies of `now` when allowed.",
+    "Missing test coverage for burst weighting."
+  ],
+  "verification_check": "src/sliding_window.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 829,
+    "output_tokens": 172,
+    "seconds": 24.729,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

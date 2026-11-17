@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` function is missing from `src/retry_after.py`; only `cap_backoff_delay` is added. Req 1 therefore remains unimplemented.",
+  "target_issue": "T24 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the target module to verify whether both required functions are present and whether existing public behavior is preserved.",
+    "The diff adds `cap_backoff_delay` but removes the `math` import and does not add the required `retry_after_seconds` function. I\u2019ll verify the module\u2019s current contents before deciding.",
+    "The module confirms `retry_after_seconds` is absent, so Req 1 is not implemented. The reported passing tests only cover legacy wait-ratio behavior and the new cap function; merging would leave the ticket incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.998,
+  "prompt_tokens": 3038,
+  "output_tokens": 304,
+  "estimated_usd": 0.003403,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

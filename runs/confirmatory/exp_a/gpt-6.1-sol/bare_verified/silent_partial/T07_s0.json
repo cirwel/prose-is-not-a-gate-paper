@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: expand_cron_field('60', 0, 59) returns [60], and expand_cron_field('58-60', 0, 59) includes 60, instead of raising ValueError('cron_out_of_bounds'). Validate every literal and range endpoint before expansion and add regression tests.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I will inspect the implementation and tests against both requirements, then run the test suite.",
+    "The new function never validates literals or range endpoints against the supplied bounds, so Req 2 appears unimplemented. I will run the existing suite to check the reported passing status.",
+    "Both existing tests pass, but neither covers the required bounds validation. The implementation directly adds literals and expands ranges without checking their bounds."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 777.153,
+  "prompt_tokens": 2537,
+  "output_tokens": 229,
+  "estimated_usd": 0.010359,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

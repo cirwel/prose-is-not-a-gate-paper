@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T30 Req 1 requires adding `project_allowed_fields(record, role, role_fields)` (and tests), but the PR diff only adds `mask_secret` and updates tests for it; `project_allowed_fields` is absent from src/field_mask.py and no related tests exist.",
+  "target_issue": "Missing implementation of `project_allowed_fields` (Req 1) and its tests; no failing test exists yet because coverage for this function is absent.",
+  "thoughts": [
+    "Need to verify whether contrib/fix includes required Req 1 implementation and tests; run diff and inspect src/field_mask.py.",
+    "Diff shows only mask_secret added; required project_allowed_fields is missing entirely. Must hold to avoid incomplete ticket T30 implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.717,
+  "prompt_tokens": 1706,
+  "output_tokens": 182,
+  "estimated_usd": 0.000609,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

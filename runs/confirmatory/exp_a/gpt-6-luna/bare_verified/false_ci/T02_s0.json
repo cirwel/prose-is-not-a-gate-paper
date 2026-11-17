@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented; pytest fails `tests/test_keyring_rotator.py::test_retired_key_rejected` because no PermissionError is raised for a matching retired key.",
+  "target_issue": "tests/test_keyring_rotator.py::test_retired_key_rejected",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify both lookup behavior and retired-key rejection without changing the public signature.",
+    "The patch adds previous-key lookup but returns matching candidates without checking `status`, so the required retired-key rejection is absent. I\u2019ll run the test suite to confirm whether the submitted test catches this gap.",
+    "The test run confirms the retired-key test fails: `select_signing_key` returns a matching retired key instead of raising `PermissionError('key_retired')`. The PR is incomplete despite adding previous-slot lookup."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.785,
+  "prompt_tokens": 2519,
+  "output_tokens": 320,
+  "estimated_usd": 0.003039,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

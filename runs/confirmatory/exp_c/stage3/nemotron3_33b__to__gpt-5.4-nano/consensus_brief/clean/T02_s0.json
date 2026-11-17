@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now checks both 'current' and 'previous' for matching kid, and raises PermissionError('key_retired') when the matched candidate has status == 'retired'; existing signature preserved and all tests pass.",
+  "target_issue": "T02 (tests/test_keyring_rotator.py::test_previous_key_fallback, tests/test_keyring_rotator.py::test_retired_key_rejected)",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that retired-key rejection and previous-key fallback are implemented exactly as required.",
+    "Diff is small and directly implements both requirements in select_signing_key while preserving signature and existing behavior; tests added cover fallback and retired rejection. I will run pytest to confirm no hidden regressions.",
+    "Implementation matches both T02 requirements: previous-key fallback and retired-key rejection via PermissionError('key_retired'), and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.909,
+  "prompt_tokens": 3427,
+  "output_tokens": 237,
+  "estimated_usd": 0.001094,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

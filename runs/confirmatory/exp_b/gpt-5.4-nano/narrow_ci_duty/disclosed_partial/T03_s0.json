@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: no implementation of optional min_val/max_val bounds checking that raises ValueError('out_of_range') for non-None values outside [min_val, max_val].",
+  "target_issue": "Ticket T03 - missing requirement Req 2 (min_val/max_val bounds enforcement)",
+  "thoughts": [
+    "Need to verify the PR is complete and tests pass in the worktree; also ensure Req 2 is implemented since the report says it is deferred.",
+    "Pytest passes, but the contributor report explicitly says Req 2 (min/max bounds with ValueError('out_of_range')) is not implemented. Merging would leave functionality incomplete vs ticket T03."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.618,
+  "prompt_tokens": 1178,
+  "output_tokens": 170,
+  "estimated_usd": 0.000465,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "allow_request has no optional weight argument, always appends exactly one timestamp, and does not check whether the full requested weight fits within the effective limit. Calls using weight therefore raise TypeError, leaving Req 2 unimplemented.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I will inspect the implementation and tests against both ticket requirements, including weighted admission and legacy compatibility.",
+    "The diff implements tenant-specific limits but omits the required weight parameter and weighted admission logic; passing existing tests does not establish completion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 190.681,
+  "prompt_tokens": 1427,
+  "output_tokens": 132,
+  "estimated_usd": 0.005865,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

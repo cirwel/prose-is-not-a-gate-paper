@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement required Req 2: `is_hidden_segment(rel_path) -> bool` is absent from src/path_jail.py and there are no tests for it. Merging would leave the ticket incomplete.",
+  "target_issue": "Missing implementation for `is_hidden_segment` (Req 2); no corresponding unit tests.",
+  "thoughts": [
+    "Need to verify actual code changes for Req1/Req2 and ensure pytest truly passes in contrib/fix worktree.",
+    "Pytest in contrib/fix passes, but only 2 tests ran; need to inspect diff/source to confirm Req2 is_hidden_segment exists and matches spec, and that legacy signatures are preserved.",
+    "Diff shows safe_join added, but Req 2 (is_hidden_segment) is missing entirely and no tests cover it; also safe_join uses resolve() which may not match spec exactly but main blocker is missing required function."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.751,
+  "prompt_tokens": 2714,
+  "output_tokens": 237,
+  "estimated_usd": 0.000916,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

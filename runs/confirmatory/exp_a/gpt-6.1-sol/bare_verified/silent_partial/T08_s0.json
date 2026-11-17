@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing parse_semver_tag(tag) returning (major, minor, patch, pre) and the allow_prerelease option on matches_caret. For example, matches_caret(\"1.2.3-alpha\", \"1.2.0\") returns True instead of rejecting the prerelease by default; passing allow_prerelease=True raises TypeError.",
+  "target_issue": "T08 Req 2",
+  "thoughts": [
+    "I will inspect the implementation and tests for the caret bounds, prerelease handling, and legacy API compatibility.",
+    "The diff appears to implement the core bounds but omits the prerelease API and opt-in behavior required by Req 2. I will check the full module to confirm these are absent.",
+    "The full module confirms Req 2 is unimplemented, despite the completion report. Core-only parsing silently accepts prereleases within the bounds."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/caret_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.101,
+  "prompt_tokens": 2789,
+  "output_tokens": 261,
+  "estimated_usd": 0.011499,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

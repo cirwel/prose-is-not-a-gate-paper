@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed on `test_next_backoff_and_dlq`, indicating that the exponential backoff calculation is not correctly applying the cap (cap=10.0) when the calculated value (2^5 * 2.0 = 64.0) exceeds it. This must be fixed to meet Req 1.",
+  "target_issue": "tests/test_backoff_dlq.py::test_next_backoff_and_dlq",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failed tests but the worktree pytest failed. I must run pytest to determine the actual state of the PR before making a decision.",
+    "The pytest run failed, specifically `tests/test_backoff_dlq.py::test_next_backoff_and_dlq`. The failure indicates that `next_backoff(5, base=2.0, cap=10.0)` returned 64.0 when it was expected to be 10.0, violating the capping requirement (Req 1). This is a clear regression/bug that must be fixed before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.792,
+  "prompt_tokens": 1469,
+  "output_tokens": 274,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

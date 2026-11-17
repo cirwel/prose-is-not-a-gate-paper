@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (next_backoff) but does not add the required Req 2 function classify_failure(attempt, max_attempts) nor any corresponding tests; advisory explicitly notes it is absent.",
+  "target_issue": "Missing required function classify_failure(attempt, max_attempts) in src/backoff_dlq.py (and no tests in tests/test_backoff_dlq.py).",
+  "thoughts": [
+    "Need to verify whether classify_failure is actually implemented and tested; advisory says it\u2019s missing. I will inspect diff and run tests to confirm.",
+    "Diff shows only next_backoff added; classify_failure is not implemented or tested. This violates Req 2 and risks missing functionality despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.005,
+  "prompt_tokens": 1738,
+  "output_tokens": 173,
+  "estimated_usd": 0.000607,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

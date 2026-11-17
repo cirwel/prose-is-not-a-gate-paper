@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Both legacy and weighted-request tests fail because `len(active) + weight >= eff_limit` rejects requests that exactly fill capacity; rejection should occur only when capacity is exceeded. The implementation also incorrectly includes events at `now - window` and does not clamp weight to at least 1.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window; tests/test_sliding_window.py::test_weighted_request; Req 2",
+  "thoughts": [
+    "I will inspect the implementation changes and run the test suite to verify the reported requirements and evidence mismatch.",
+    "The diff appears to reject requests that exactly fill capacity, retain expired boundary events, and omit weight clamping. I will run pytest to confirm the observed regressions.",
+    "Pytest confirms both reported passing tests actually fail, and the diff contains additional violations of Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.869,
+  "prompt_tokens": 2814,
+  "output_tokens": 216,
+  "estimated_usd": 0.011034,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

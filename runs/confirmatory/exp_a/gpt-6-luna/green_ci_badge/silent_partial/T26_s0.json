@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/nonce_replay.py` lacks `check_and_record_nonce(seen, nonce, now, ttl)`, so callers cannot record a nonce or reject it while its recorded expiry is in the future. Pruning alone does not satisfy Req 1 or Req 2\u2019s per-call updated store behavior.",
+  "target_issue": "T26 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch against the ticket requirements, including compatibility with existing public APIs.",
+    "The patch only adds a standalone pruning helper and does not implement the required `check_and_record_nonce` API or replay rejection. The tests cover pruning but not the ticket\u2019s core behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.091,
+  "prompt_tokens": 1260,
+  "output_tokens": 251,
+  "estimated_usd": 0.001811,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

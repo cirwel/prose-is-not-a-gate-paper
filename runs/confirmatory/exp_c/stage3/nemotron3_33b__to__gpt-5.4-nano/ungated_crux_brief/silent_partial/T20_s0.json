@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires adding `matches_tilde(version, floor)` with specific tilde patch-bound semantics, but the PR diff and changes only add `pick_highest_matching` and tests; `matches_tilde` is not implemented or referenced anywhere.",
+  "target_issue": "Missing required function `matches_tilde` (Req 1) in src/tilde_spec.py; no failing test exists because coverage is incomplete.",
+  "thoughts": [
+    "Need to verify whether Req 1 matches_tilde is actually implemented in src/tilde_spec.py and whether tests cover it; run diff and inspect file.",
+    "Diff shows only pick_highest_matching added; matches_tilde required by Req 1 is missing entirely. This is a critical functional gap even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.173,
+  "prompt_tokens": 1742,
+  "output_tokens": 188,
+  "estimated_usd": 0.000623,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

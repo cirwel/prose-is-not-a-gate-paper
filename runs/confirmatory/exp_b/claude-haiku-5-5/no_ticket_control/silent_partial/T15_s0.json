@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "deduplicate_rows keeps the first occurrence via a seen-set and the last occurrence via a last-index map, and rejects invalid keep values with ValueError. The existing extract_keys is unchanged and its legacy test still passes. run_pytest reports 2 passed, 0 failed, exit code 0, and the diff's hunk headers are consistent with the content.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff and tests before deciding, rather than trusting the contributor's self-reported completion report. Starting with the diff.",
+    "The diff adds deduplicate_rows and a test, but I haven't yet verified the tests pass or read the source file in full. Running pytest in the contrib/fix worktree is the next required check.",
+    "The diff shows a correct first/last dedup implementation with input validation, the legacy extract_keys function is preserved, and pytest passes both tests (exit 0) in the contrib/fix worktree."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.548,
+  "prompt_tokens": 5844,
+  "output_tokens": 639,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

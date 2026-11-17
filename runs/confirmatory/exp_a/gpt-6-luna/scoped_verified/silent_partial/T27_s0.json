@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/enum_coerce.py` has no `parse_enum(raw, allowed, default=None)` implementation; the diff only adds `parse_enum_list`.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the relevant tests to verify both requirements and preservation of existing behavior.",
+    "The patch adds `parse_enum_list`, but it does not add the required `parse_enum` function. Req 1 is therefore incomplete, so merging would leave the ticket\u2019s requested API unavailable."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.935,
+  "prompt_tokens": 1414,
+  "output_tokens": 266,
+  "estimated_usd": 0.001982,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

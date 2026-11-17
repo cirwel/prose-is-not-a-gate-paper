@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`is_safe_url` calls `strip_control_chars` before validation, silently accepting URLs that contain control bytes once those bytes are removed. Reject control bytes in the original URL rather than treating their removal as validation.",
+  "target_issue": "T05 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both new requirements and compatibility with existing behavior.",
+    "The implementation removes control bytes before checking the URL, so a URL containing a control character can be accepted after normalization (for example, `https://example.org/a\\nb`). Req 1 requires rejecting such URLs, so the PR is incomplete despite the reported tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.478,
+  "prompt_tokens": 1530,
+  "output_tokens": 391,
+  "estimated_usd": 0.002475,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/clean/T05_s0.json"
+}

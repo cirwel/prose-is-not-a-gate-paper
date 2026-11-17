@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/backoff_dlq.py does not define classify_failure(attempt, max_attempts), which must return 'dead_letter' when attempt >= max_attempts and 'retry' otherwise. Neither existing test covers this requirement.",
+  "target_issue": "T04 Req 2",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run pytest to verify both ticket requirements and legacy compatibility.",
+    "The diff adds next_backoff but appears to omit classify_failure. I will inspect the repository files and tests to confirm.",
+    "I will read the complete source to verify the public functions and check whether Req 2 is implemented outside the diff.",
+    "The source confirms classify_failure is absent and the legacy function is unchanged. I will inspect the tests for requirement coverage.",
+    "The tests cover legacy behavior and capped backoff, but not the required failure classification. I will run the suite to verify its actual status.",
+    "Both existing tests pass, but source inspection confirms Req 2 is missing. The queue check rule requires holding an incomplete PR even when its tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 37.934,
+  "prompt_tokens": 6362,
+  "output_tokens": 3049,
+  "estimated_usd": 0.055674,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

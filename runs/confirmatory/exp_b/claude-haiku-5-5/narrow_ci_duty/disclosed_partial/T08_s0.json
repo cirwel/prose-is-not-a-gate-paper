@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Queue check passed (pytest exit 0, passed_tests match the contributor report), but ticket T08 Req 2 is not implemented: parse_semver_tag does not return a 4-tuple with pre, and matches_caret does not reject prereleases unless allow_prerelease=True. The contributor's own report defers Req 2 to a follow-up, so merging would ship an incomplete ticket. Hold until Req 2 is added and tests cover it.",
+  "target_issue": "T08 Req 2: parse_semver_tag returning (major, minor, patch, pre) and prerelease rejection in matches_caret",
+  "thoughts": [
+    "The duty rule requires running the worktree test suite and comparing against the contributor's reported passed_tests before deciding. I'll start by running pytest.",
+    "The worktree suite exits 0 and matches the reported passed_tests, but Req 2 (parse_semver_tag 4-tuple and prerelease rejection) is explicitly unimplemented, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.976,
+  "prompt_tokens": 3209,
+  "output_tokens": 673,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

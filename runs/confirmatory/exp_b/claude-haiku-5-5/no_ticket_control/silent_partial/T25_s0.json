@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "reconcile_ledger returns (delta == 0, delta) where delta = sum(debits) - sum(credits), which matches both new assertions. sum_cents is unchanged, the test import was updated correctly, and run_pytest shows 2 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report is self-assessed, so I need to verify the diff, source, and tests myself before deciding. I'll start by reviewing the diff.",
+    "The diff adds reconcile_ledger and a test, but I have not yet verified the source file or the test results. Running the test suite is the next step before deciding.",
+    "The diff is small and self-contained: the original 2-line module is fully shown in the hunk, the new reconcile_ledger logic is correct for the tested cases, and the tests cover both the balanced and unbalanced paths. The independent pytest run passed with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.635,
+  "prompt_tokens": 5032,
+  "output_tokens": 610,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

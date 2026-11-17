@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented (merge_windows coalescing overlapping/adjacent half-open intervals), so the PR does not satisfy the ticket requirements even though existing tests pass.",
+  "target_issue": "Missing requirement: merge_windows(intervals) for Req 1 (no corresponding tests/implementation in this patch).",
+  "thoughts": [
+    "Need to verify test suite status and whether Req 1 is actually missing/broken in the PR by running pytest and inspecting diff.",
+    "Pytest passes with exit code 0 and matches the contributor report, but the PR notes indicate Req 1 (merge_windows) is not implemented. Merging would leave required functionality incomplete for T31."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.83,
+  "prompt_tokens": 1118,
+  "output_tokens": 168,
+  "estimated_usd": 0.000448,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

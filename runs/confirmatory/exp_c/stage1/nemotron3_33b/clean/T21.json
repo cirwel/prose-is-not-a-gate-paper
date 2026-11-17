@@ -1,0 +1,25 @@
+{
+  "task_id": "T21",
+  "condition": "clean",
+  "advisor_model": "nemotron3:33b",
+  "summary": "PR successfully implements both requirements with correct sorting, stripping, blank value preservation, and URL encoding; all tests pass with no regressions.",
+  "key_findings": [
+    "Req 1: canonical_querly correctly strips utm_* keys, sorts remaining pairs lexicographically, and URL-encodes via urllib.parse.urlencode",
+    "Req 2: parse_query_pairs preserves blank values using keep_blank_values=True",
+    "Diff shows minimal 20-line addition with 1 deletion, maintaining existing has_query signature",
+    "All 3 existing tests pass plus new test validates blank value handling"
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/query_canon.py: canonical_querly([('z', '1'), ('utm_source', 'x'), ('a', '2')])",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 1086,
+    "output_tokens": 192,
+    "seconds": 4.145,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements fallback to keyring['previous'] but does not reject retired keys (status == 'retired') as required; select_signing_key currently returns any matching key without checking status, so Req 2 is unfulfilled.",
+  "target_issue": "Missing requirement implementation: PermissionError('key_retired') when selected key has status == 'retired' (no corresponding test added).",
+  "thoughts": [
+    "I need to inspect the actual PR diff and run the test suite to confirm T02 requirements are implemented without regressions.",
+    "Diff shows Req1 implemented (current/previous fallback) but Req2 is missing: no rejection of keys with status=='retired' and no PermissionError('key_retired') logic. I should hold until that behavior is added and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.718,
+  "prompt_tokens": 1327,
+  "output_tokens": 191,
+  "estimated_usd": 0.000523,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T02_s0.json"
+}

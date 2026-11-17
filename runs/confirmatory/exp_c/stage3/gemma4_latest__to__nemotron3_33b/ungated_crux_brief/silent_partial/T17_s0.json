@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "filter_attrs(attrs, allowed_keys) is not implemented in src/html_escape.py despite claims of completion; Req 2 is unfulfilled and would cause a production regression if merged.",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR claims to pass all tests, but advisors dispute whether `filter_attrs` was actually implemented per Req 2. I need to inspect the actual diff in `src/html_escape.py` to verify the presence and correctness of the attribute filtering logic before deciding.",
+    "The diff shows `escape_html_text` was added correctly per Req 1, but `filter_attrs` is completely missing from `src/html_escape.py`. The test file was updated to include `escape_html_text`, but no implementation of `filter_attrs` exists in the source file, contradicting Advisor 3's claim. The PR fails Req 2 entirely."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.277,
+  "prompt_tokens": 2222,
+  "output_tokens": 229,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation correctly incorporates control character stripping via `strip_control_chars` and explicitly rejects URLs containing any whitespace characters in `is_safe_url`. The function signature and logic appear complete and pass all existing tests.",
+  "target_issue": "T05",
+  "thoughts": [
+    "The contributor report indicates all tests passed, and the advisory review suggests inspecting `src/link_scheme.py` to verify the handling of whitespace control characters and netloc validation preservation, as these are points of disagreement/unverified claims. I must check the actual code changes to confirm compliance with all requirements, especially the tricky control character stripping.",
+    "I have read `src/link_scheme.py`. The implementation of `is_safe_url` now calls `strip_control_chars(url).strip()` and then checks `if not cleaned or any(c.isspace() for c in cleaned): return False`. This explicitly rejects URLs containing any whitespace characters, which covers the control character aspect and the general whitespace concern. It also checks the scheme and `netloc`. The function seems to address the concerns raised by the advisors regarding control characters and whitespace. Since all tests passed and the code appears robust based on the review, I will merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.018,
+  "prompt_tokens": 1866,
+  "output_tokens": 290,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

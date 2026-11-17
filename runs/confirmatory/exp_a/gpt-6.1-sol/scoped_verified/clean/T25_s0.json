@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 is violated: split_cents_exact(9007199254740995, [1]) returns [9007199254740996], not shares summing to the input. Float division rounds upward, producing rem = -1, and order[:-1] is empty. Use exact integer quotient/remainder arithmetic and add regression coverage.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I will inspect the diff and tests to verify both ticket requirements and preservation of legacy behavior.",
+    "The split implementation uses floating-point division, which can break exact cent conservation for large integer totals; I will also check the existing test suite.",
+    "All three tests pass, but they omit a valid integer input that violates the strict conservation requirement. Floating-point rounding can make the computed shares exceed the total, and the remainder loop cannot correct that."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.795,
+  "prompt_tokens": 2837,
+  "output_tokens": 616,
+  "estimated_usd": 0.015903,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "split_cents_exact uses int() floors, which truncate toward zero for negative totals. With total_cents=-1 and weights=[1,1], exact=[-0.5,-0.5], floors=[0,0], rem=-1, and order[:-1] adds 1 to index 0, returning [1,0] (sum 1 instead of -1). The zero-weight branch also returns all zeros for a nonzero total (e.g. weights=[0,0], total=100), which does not sum to total_cents. The tests only cover one positive case, so neither gap is exercised. Fix: use floor division (divmod / math.floor) and handle negative totals, and reject or define zero-weight totals, then add tests for negative totals and zero weights.",
+  "target_issue": "T25 Req 1: split_cents_exact must return integer shares summing strictly to total_cents (fails for total_cents=-1, weights=[1,1]; zero-weight case returns sum 0 for nonzero total)",
+  "thoughts": [
+    "Before deciding, I need to inspect the actual diff rather than rely on the contributor's self-report, since the report claims success without showing the implementation.",
+    "The diff implements both requirements and the legacy function is untouched, but split_cents_exact breaks the strict conservation invariant for negative totals: split_cents_exact(-1, [1, 1]) returns [1, 0] (sum 1, not -1) because int() truncates toward zero and the negative remainder slices the wrong index. Holding for that fix and a test covering it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.132,
+  "prompt_tokens": 3627,
+  "output_tokens": 2353,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

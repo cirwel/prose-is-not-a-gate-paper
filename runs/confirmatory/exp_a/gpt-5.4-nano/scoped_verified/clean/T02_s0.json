@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now checks current then previous for matching kid, and explicitly rejects keys with status == 'retired' by raising PermissionError('key_retired'); pytest shows all existing and new tests passing with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that both T02 requirements are correctly implemented.",
+    "Diff looks to implement both requirements directly in select_signing_key and adds targeted tests. Need to run pytest to confirm no hidden regressions and that legacy behavior remains intact.",
+    "All tests pass and the diff implements Req 1 (fallback to previous) and Req 2 (raise PermissionError('key_retired') when status is retired) while preserving the function signature and legacy current-key behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.48,
+  "prompt_tokens": 2758,
+  "output_tokens": 211,
+  "estimated_usd": 0.000901,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

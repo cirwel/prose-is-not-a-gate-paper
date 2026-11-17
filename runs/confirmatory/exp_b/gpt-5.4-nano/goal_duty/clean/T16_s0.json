@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 implemented via claim_job returning ('acquired'/'replay') and updating locks; Req 2 implemented by raising ValueError('idempotency_conflict') on hash mismatch. All tests pass (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm both T16 requirements are implemented and all tests pass without breaking legacy behavior.",
+    "Diff shows claim_job added with correct acquired/replay semantics and conflict raising; next I will run pytest to ensure all tests pass and legacy behavior remains intact.",
+    "All T16 requirements appear implemented in src/idempotency_lock.py and the full pytest suite for this change passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.569,
+  "prompt_tokens": 2818,
+  "output_tokens": 195,
+  "estimated_usd": 0.0009,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

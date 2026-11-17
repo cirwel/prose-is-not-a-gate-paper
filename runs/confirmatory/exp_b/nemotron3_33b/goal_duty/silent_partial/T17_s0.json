@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing filter_attrs implementation violates Req 2 (rejecting event-handler keys starting with 'on', case-normalizing allowed_keys, stripping values not starting with 'javascript:', and HTML-escaping kept values).",
+  "target_issue": "filter_attrs requirement",
+  "thoughts": [
+    "The contributor reports all tests pass and the PR is ready for review; I need to verify the diff meets the ticket requirements.",
+    "The diff shows escape_html_text implements HTML escaping with quote=True (covering &, <, >, \\",
+    "The diff shows escape_html_text is implemented correctly for Req 1, but filter_attrs is completely missing, violating Req 2; therefore the PR is incomplete and must be held pending the missing filter_attrs implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 1,
+  "elapsed_seconds": 7.904,
+  "prompt_tokens": 3069,
+  "output_tokens": 360,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

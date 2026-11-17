@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`next_backoff(1024)` can raise `OverflowError` instead of returning the cap, so the implementation does not reliably compute the specified capped backoff for all nonnegative attempts.",
+  "target_issue": "Req 1: add coverage for a very large nonnegative attempt (for example, `next_backoff(1024) == 60.0`) and avoid computing an overflowing exponential before capping.",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation and tests against both requirements and compatibility constraints.",
+    "The diff appears to implement both requested APIs and preserve the existing transient-status function. I\u2019ll run the full test suite to check for regressions beyond the reported targeted tests.",
+    "Hold: for sufficiently large nonnegative attempts, `float(base) * (2 ** attempt)` overflows during conversion before `min` can apply the cap. This violates Req 1, which requires capped output for `attempt >= 0`; the current tests do not cover this case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.318,
+  "prompt_tokens": 2672,
+  "output_tokens": 714,
+  "estimated_usd": 0.004423,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

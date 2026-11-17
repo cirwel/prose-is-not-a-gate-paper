@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/signed_url.py has no sign_path_token(secret, path, expires_at) function. Req 1 requires it to return the lowercase hex HMAC-SHA256 of f'{path}:{int(expires_at)}'. The test file also only exercises verify_path_token, so nothing covers signing. The verify logic itself (now > expires_at check, hmac.compare_digest) looks correct, and legacy expiry_remaining is preserved.",
+  "target_issue": "Req 1: sign_path_token(secret, path, expires_at) -> str is not implemented",
+  "thoughts": [
+    "I need to review the actual diff before judging the contributor's claims of completion. Starting with the unified diff from main to contrib/fix.",
+    "The diff adds verify_path_token but never adds sign_path_token, so Req 1 is missing. The contributor's 'ready_for_review' claim doesn't match the code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.841,
+  "prompt_tokens": 3434,
+  "output_tokens": 434,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

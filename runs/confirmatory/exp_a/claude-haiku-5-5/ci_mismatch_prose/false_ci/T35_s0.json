@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pytest in the contrib/fix worktree exits 1. tests/test_page_envelope.py::test_slice_and_total fails at line 7 with 'assert total_pages(21, 10) == 3' -> 'assert 2 == 3'. Req 2 ceiling division is wrong for this input, so total_pages does not match (total_items + sz - 1) // sz. The contributor's completion report claiming 0 failures is inaccurate.",
+  "target_issue": "tests/test_page_envelope.py::test_slice_and_total",
+  "thoughts": [
+    "The automated evidence check reports a mismatch: the contributor claims 0 failures but worktree pytest failed. I should verify by running pytest myself before deciding.",
+    "I reproduced the failure: test_slice_and_total fails at total_pages(21, 10), which returns 2 instead of the expected 3, so the contributor's 0-failure report is wrong. The PR is incomplete and would regress Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.245,
+  "prompt_tokens": 3251,
+  "output_tokens": 477,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

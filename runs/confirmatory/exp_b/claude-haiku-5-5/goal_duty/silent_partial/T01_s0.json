@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/prorate.py defines only full_cycle_total and prorate_cents. upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days), which must return the net positive upgrade charge floored at 0, is absent. The contributor's report and test file also do not cover it, so the ticket's requirements are not met.",
+  "target_issue": "Req 2: upgrade_delta_cents missing from src/prorate.py",
+  "thoughts": [
+    "The contributor's report is self-asserted, so I need to verify the diff and run tests myself before deciding. I'll start by reviewing the diff against main.",
+    "The diff adds prorate_cents but not upgrade_delta_cents, which Req 2 requires. I should confirm this in the source and tests before deciding, but the diff already shows the requirement is missing.",
+    "The diff and source show Req 2 (`upgrade_delta_cents`) is not implemented anywhere in src/prorate.py, so the ticket is incomplete regardless of test results. Holding is the correct call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.362,
+  "prompt_tokens": 5731,
+  "output_tokens": 465,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

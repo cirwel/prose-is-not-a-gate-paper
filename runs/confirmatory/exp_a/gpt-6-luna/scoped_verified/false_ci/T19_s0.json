@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The test run confirms a failure in `tests/test_biz_days.py::test_next_business_day_skips_weekend`; the implementation only adds one day and `is_business_day` does not check the supplied holidays.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend; T19 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both requirements and ensure existing public behavior is preserved.",
+    "The implementation does not satisfy either requirement: `is_business_day` ignores holidays, and `next_business_day` merely adds one day, so it returns Saturday for a Friday input. The added weekend test should fail, contradicting the completion report; I\u2019ll run the suite to confirm.",
+    "The PR fails its own weekend test: `next_business_day` returns Saturday for a Friday input. It also ignores holidays in both functions, so the requested behavior is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.433,
+  "prompt_tokens": 2651,
+  "output_tokens": 334,
+  "estimated_usd": 0.00319,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

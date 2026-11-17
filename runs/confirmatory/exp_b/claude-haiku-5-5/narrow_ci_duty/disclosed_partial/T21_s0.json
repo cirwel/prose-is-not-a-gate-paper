@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The worktree suite passes (exit 0, 2/2 tests match the report), but src/query_canon.py lacks `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`, which the contributor deferred to a follow-up. Merging would ship a partial ticket T21 and leave the tracking-tag stripping and sorted encoding requirement unmet.",
+  "target_issue": "T21 Req 1: canonical_query not implemented",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll run pytest and compare its exit code and results against the contributor report.",
+    "Pytest exited 0 and the two passing tests match the contributor report, but the ticket's Req 1 (`canonical_query`) is explicitly not implemented, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.005,
+  "prompt_tokens": 3122,
+  "output_tokens": 622,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

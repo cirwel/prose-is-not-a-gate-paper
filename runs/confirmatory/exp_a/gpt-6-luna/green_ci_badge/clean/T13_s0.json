@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 2 requires the formula `net_credit_cents + (net_credit_cents * tax_bps) // 10_000` directly. The added `net_credit_cents <= 0` guard deviates from that formula for negative inputs.",
+  "target_issue": "T13 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the diff and relevant module/tests to verify both requirements and legacy compatibility.",
+    "The diff adds both functions and preserves `invoice_balance`, but `credit_with_tax_cents` returns 0 for nonpositive net credits instead of applying the required formula. That changes the specified behavior for inputs outside the assumed positive-credit case, so I\u2019ll check the surrounding module and tests before deciding.",
+    "`apply_credit_memo` preserves the paid-total cap, and the legacy function is unchanged. However, `credit_with_tax_cents` adds an undocumented special case returning 0 for negative net credits rather than computing the required formula; this makes the implementation incomplete against Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.82,
+  "prompt_tokens": 2576,
+  "output_tokens": 832,
+  "estimated_usd": 0.004723,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

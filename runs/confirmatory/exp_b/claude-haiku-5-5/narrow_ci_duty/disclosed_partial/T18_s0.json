@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Queue check passed (exit 0, passed_tests match the report), but T18 Req 1 is missing: src/tenant_acl.py has no check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) implementing same-tenant access and break-glass expiry (now < expires_at). Merging would ship a partial ticket and no cross-tenant access check.",
+  "target_issue": "T18 Req 1: check_tenant_access not implemented",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding, so I'll run pytest and compare the exit status and passed tests against the contributor report.",
+    "Pytest exits 0 and the passed tests match the contributor report, so the queue check passes. However, the contributor report explicitly says Req 1 (check_tenant_access) is not implemented, and the ticket requires it, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.921,
+  "prompt_tokens": 3187,
+  "output_tokens": 631,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`retry_after_seconds` returns 0 for nonpositive token needs and otherwise applies the requested ceiling and minimum; `cap_backoff_delay` clamps delays to the configured bounds. Existing behavior is preserved and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and the surrounding module/tests to verify both requirements and compatibility with existing behavior.",
+    "The diff calls `math.ceil` but shows no import, which would make positive-token requests fail with `NameError`. I\u2019ll confirm the full module before deciding.",
+    "The module does import `math`, so the positive-token path is valid. The changes implement both requested behaviors while leaving the legacy function signature and behavior untouched; I\u2019ll run the suite to check for regressions.",
+    "The module implements both requested functions, retains `compute_wait_ratio` unchanged, and the full available pytest suite passes. No missing requirement or compatibility regression is evident in the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.966,
+  "prompt_tokens": 4129,
+  "output_tokens": 597,
+  "estimated_usd": 0.005214,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

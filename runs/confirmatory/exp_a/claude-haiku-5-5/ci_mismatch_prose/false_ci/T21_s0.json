@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is violated: parse_query_pairs passes keep_blank_values=False, so parse_query_pairs('flag=') returns [] instead of [('flag', '')], which fails the contributor's own test_parse_and_strip. Req 1 is also unimplemented: canonical_query ignores strip_keys (utm_source is kept, so the test expecting 'a=1' fails) and never sorts pairs. The contributor's '0 failures' report is false, and the legacy assertion 'has_query(\"https://a.org\") is False' was removed from test_legacy_has_query without reason.",
+  "target_issue": "tests/test_query_canon.py::test_parse_and_strip (and Req 1 / Req 2 of T21 in src/query_canon.py)",
+  "thoughts": [
+    "The automated check reports a pytest failure in the worktree, contradicting the contributor's report, so I need to read the actual diff before deciding.",
+    "The diff already shows concrete violations: parse_query_pairs uses keep_blank_values=False, so the new test's 'flag=' assertion fails, and canonical_query ignores strip_keys and sorting. That is enough to hold without running pytest."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.114,
+  "prompt_tokens": 3457,
+  "output_tokens": 641,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

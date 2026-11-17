@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 concerning `filter_attrs(attrs, allowed_keys)` has not been implemented or tested in the visible changes (the diff only addresses basic HTML entity escaping). Merging now would leave critical functionality incomplete.",
+  "target_issue": "T17",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the actual changes against the requirements using `git_diff()` to ensure everything is implemented correctly before merging.",
+    "The diff shows the addition of `escape_html_text` using `html.escape(..., quote=True)` in `src/html_escape.py`. This handles Req 1 by escaping '&', '<', '>', '"
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.706,
+  "prompt_tokens": 1535,
+  "output_tokens": 336,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

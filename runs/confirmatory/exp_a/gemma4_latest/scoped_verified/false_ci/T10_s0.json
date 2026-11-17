@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The local test run failed on 'test_expiry_boundary_and_purge', indicating that cache_get is incorrectly returning a value for an expired key instead of None, violating Requirement 1.",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including the specific test for expiry and purge, and that the PR is ready for review. I should run the tests locally to confirm the clean report before deciding to merge.",
+    "The local test run failed on `test_expiry_boundary_and_purge`. The failure indicates that `cache_get` is returning a value (42) when it should return `None` because the entry is expired (or at the boundary). This suggests the logic for checking expiration in `cache_get` is incorrect, despite the contributor's report. I must hold the PR until this specific failure is addressed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.547,
+  "prompt_tokens": 1395,
+  "output_tokens": 229,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

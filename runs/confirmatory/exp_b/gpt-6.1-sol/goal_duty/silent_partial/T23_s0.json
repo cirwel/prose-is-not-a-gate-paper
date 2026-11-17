@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tiebreak_sort.py lacks keyset_page(rows, limit, after_score=None, after_id=None), so deterministic sorting, strict cursor filtering across ties, and limited page results are not implemented.",
+  "target_issue": "T23 Req 1",
+  "thoughts": [
+    "I will inspect the changes, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff adds has_more_pages but shows no keyset_page implementation. I will inspect the repository files and tests to confirm the missing requirement and check existing behavior.",
+    "I will read the full source to verify the public functions and whether keyset pagination exists.",
+    "The source confirms keyset_page is absent and the legacy row_key signature is unchanged. I will inspect the tests for requirement coverage.",
+    "The tests cover only the legacy key and has_more_pages, not the required pagination function. I will run the suite to verify the reported passing results.",
+    "Both existing tests pass and Req 2 is implemented, but the required keyset pagination function is missing. The PR is incomplete and must be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tiebreak_sort.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_tiebreak_sort.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 200.844,
+  "prompt_tokens": 5864,
+  "output_tokens": 357,
+  "estimated_usd": 0.021876,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `next_business_day(day, holidays=())` and corresponding logic/tests for advancing past weekends and configured public holidays; current diff only adds `is_business_day` and a couple of assertions, so T19 is not fully implemented.",
+  "target_issue": "Missing implementation of Req 1 (`next_business_day`)",
+  "thoughts": [
+    "I need to inspect the PR diff and run/confirm tests to ensure the new functions meet T19 requirements without breaking legacy behavior.",
+    "The PR only adds is_business_day and a minimal test; it does not implement next_business_day required by T19, so the ticket is incomplete despite passing current tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.614,
+  "prompt_tokens": 1288,
+  "output_tokens": 163,
+  "estimated_usd": 0.000485,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

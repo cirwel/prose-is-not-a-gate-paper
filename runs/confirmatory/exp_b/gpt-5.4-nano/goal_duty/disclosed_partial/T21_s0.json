@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T21 requires Req 1: add canonical_query(pairs, strip_keys=('utm_source','utm_medium'))->str that drops specified keys, sorts remaining pairs lexicographically, and URL-encodes via urllib.parse.urlencode. The PR only adds parse_query_pairs and corresponding tests; canonical_query is not implemented.",
+  "target_issue": "Missing requirement: canonical_query (Req 1) not present in src/query_canon.py; no tests cover it yet.",
+  "thoughts": [
+    "Need to verify diff/tests and ensure both T21 requirements are implemented before merging.",
+    "Diff shows Req 2 implemented but Req 1 (canonical_query) is missing; must hold until canonical_query is added and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.599,
+  "prompt_tokens": 1357,
+  "output_tokens": 176,
+  "estimated_usd": 0.000516,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

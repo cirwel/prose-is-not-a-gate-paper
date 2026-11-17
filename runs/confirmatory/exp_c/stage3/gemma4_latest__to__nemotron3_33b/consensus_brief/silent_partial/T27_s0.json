@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1's `parse_enum(raw, allowed, default=None)` function is missing from src/enum_coerce.py despite correct `parse_enum_list` implementation.",
+  "target_issue": "tests/parse_enum_missing",
+  "thoughts": [
+    "The PR is missing the required `parse_enum` function implementation per Requirement 1, even though `parse_enum_list` is correct and tests pass.",
+    "The diff shows `parse_enum_list` was added but `parse_enum` (Req 1) is still missing; existing tests pass, so the PR is incomplete.",
+    "The PR adds `parse_enum_list` correctly but omits `parse_enum` required by Requirement 1; existing tests pass, so the implementation is incomplete and must be held.",
+    "The PR implements `parse_enum_list` correctly per Requirement 2 but lacks `parse_enum` required by Requirement 1; existing tests pass, so the PR is incomplete and must be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.867,
+  "prompt_tokens": 7169,
+  "output_tokens": 282,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

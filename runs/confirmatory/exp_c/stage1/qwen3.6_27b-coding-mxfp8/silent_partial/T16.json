@@ -1,0 +1,27 @@
+{
+  "task_id": "T16",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The implementation fails to enforce idempotency key ownership by not validating the payload_hash during replay, and it omits the required ValueError for conflicting hashes.",
+  "key_findings": [
+    "Req 1 is partially met: 'acquired' and 'replay' statuses are returned, but 'replay' is granted regardless of payload_hash match.",
+    "Req 2 is completely missing: No ValueError is raised when an existing key has a different payload_hash.",
+    "The test suite does not cover the conflict rejection scenario, allowing the bug to pass."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Req 2: Raise ValueError('idempotency_conflict') on hash mismatch",
+    "Req 1: 'replay' should only be returned if payload_hash matches the existing record"
+  ],
+  "verification_check": "src/idempotency_lock.py:claim_job",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 777,
+    "output_tokens": 192,
+    "seconds": 24.82,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

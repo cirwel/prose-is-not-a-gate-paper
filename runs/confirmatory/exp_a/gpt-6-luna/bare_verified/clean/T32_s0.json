@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`is_breaking_bump` detects major increments and minor increments within 0.x versions. `verify_lock_pins` returns sorted declared package names with missing or nonmatching lock entries. All 3 tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the pull request diff to verify both requested functions and compatibility with existing code.",
+    "The diff implements the specified bump rules and returns sorted declared packages whose locked versions are absent or unequal. I\u2019ll run the full test suite to check for regressions.",
+    "The implementation satisfies both requirements, preserves the existing `split_ver` signature, and the full available test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.663,
+  "prompt_tokens": 2908,
+  "output_tokens": 556,
+  "estimated_usd": 0.004106,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

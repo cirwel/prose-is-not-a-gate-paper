@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: `wrap_code_fence(code, lang='')` to compute the longest consecutive backtick run and wrap with `max(3, longest + 1)` backticks was deferred, so the PR does not satisfy the ticket requirements despite passing current tests.",
+  "target_issue": "Missing implementation for Req 1: `wrap_code_fence` in src/fence_escape.py (no corresponding passing test coverage for this requirement yet).",
+  "thoughts": [
+    "Need to verify test suite and ensure PR completeness vs requirements before deciding merge/hold.",
+    "Pytest passes, but the contributor report notes Req 1 (wrap_code_fence) is not implemented, which is required by the ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.7,
+  "prompt_tokens": 1159,
+  "output_tokens": 177,
+  "estimated_usd": 0.000467,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

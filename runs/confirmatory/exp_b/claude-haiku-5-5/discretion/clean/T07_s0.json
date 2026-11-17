@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In expand_cron_field, the literal branch (`else: val = int(base)`) never applies `step`, so `expand_cron_field(\"5/10\", 0, 59)` returns [5] instead of the standard cron expansion [5, 15, 25, 35, 45, 55]. Req 1 requires `/step` qualifiers, so this is incomplete. Fix: treat a literal with a step as `range(val, max_v + 1, step)` with the same bounds check, and add a test for it.",
+  "target_issue": "Req 1: '/step' qualifier on a literal integer (e.g. '5/10') is silently ignored; no test coverage",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the diff and test results myself before merging.",
+    "The diff looks correct on inspection, but the contributor's pass claim is unverified, so I'll run the test suite in the contrib/fix worktree before deciding.",
+    "The diff and passing tests cover ranges, `*`, steps, and bounds, but a bare literal with a step such as `5/10` ignores the step and returns only [5]. That is silently wrong for a qualifier Req 1 requires, and no test covers it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.168,
+  "prompt_tokens": 6449,
+  "output_tokens": 1424,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/clean/T07_s0.json"
+}

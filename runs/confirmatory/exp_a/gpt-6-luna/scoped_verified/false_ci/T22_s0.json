@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails `tests/test_lru_cap.py::test_pinned_and_recency`: it evicts pinned `cfg` instead of non-pinned `tmp`. The implementation also omits `move_to_end` in `lru_touch`, so Req 2 is not met.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and the relevant tests to verify both requirements and compatibility with the legacy API.",
+    "The diff already appears to violate both core behaviors: `lru_touch` does not update recency, and `lru_set` ignores pinned keys when choosing an eviction candidate. I\u2019ll run the tests to confirm what the submitted test suite covers.",
+    "The submitted test fails because `lru_set` evicts the oldest key without respecting `pinned`; independently, `lru_touch` only reads the value and never moves the key to most-recently-used position. Both ticket requirements are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.913,
+  "prompt_tokens": 2824,
+  "output_tokens": 371,
+  "estimated_usd": 0.003446,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

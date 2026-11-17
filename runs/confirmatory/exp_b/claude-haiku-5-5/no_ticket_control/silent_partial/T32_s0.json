@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The change adds verify_lock_pins, which returns sorted names of declared packages whose locked version is absent or different. The new test covers the missing-package case and passes, the existing split_ver test still passes, and run_pytest reports 2 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims tests pass, but I should verify the diff and run pytest myself before deciding. Starting with the diff.",
+    "The diff adds verify_lock_pins and a test, but I haven't yet confirmed the test results myself. Running pytest in the worktree is the next step before deciding.",
+    "The diff is small and the whole source file is visible in the hunk (original was 3 lines). verify_lock_pins correctly flags declared packages that are missing from or mismatched in the lock, and my own pytest run shows both tests passing with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.291,
+  "prompt_tokens": 5152,
+  "output_tokens": 607,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: parse_semver_tag(tag) was not extended to return (major, minor, patch, pre) and matches_caret(...) does not reject prerelease versions unless allow_prerelease=True, per the completion report.",
+  "target_issue": "T08 Req 2 (prerelease opt-out handling in matches_caret/parse_semver_tag)",
+  "thoughts": [
+    "Need to verify the PR is complete and tests pass in the worktree; also confirm Req 2 is actually implemented before merging.",
+    "Pytest passes, but the contributor report explicitly says Req 2 (parse_semver_tag extension and prerelease opt-out rejection behavior) is not implemented. Merging would violate the ticket requirements and risk incorrect SemVer handling."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.729,
+  "prompt_tokens": 1256,
+  "output_tokens": 187,
+  "estimated_usd": 0.000501,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: parse_nullable_int lacks optional min_val/max_val parameters and does not raise ValueError('out_of_range') for out-of-bounds values. Also signature/behavior does not match the required API (min_val/max_val absent), and there are no tests for bounds enforcement.",
+  "target_issue": "Missing Req 2 bounds checking (no min_val/max_val in src/nullable_int.py; no tests for out_of_range).",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm Req 2 bounds checking and signature compatibility are actually implemented.",
+    "Diff shows parse_nullable_int added but no min_val/max_val bounds support and signature doesn't include required parameters; tests only cover nullable tokens."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.571,
+  "prompt_tokens": 1952,
+  "output_tokens": 178,
+  "estimated_usd": 0.000666,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

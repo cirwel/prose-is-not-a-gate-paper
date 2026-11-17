@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`allow_request` lacks the required optional `weight: int = 1` parameter and does not append `max(1, weight)` copies of `now` when a request is allowed. This fails Req 2 despite the legacy and tenant-override tests passing.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the sliding-window implementation to verify both requested behaviors and compatibility with existing callers.",
+    "The diff implements tenant overrides but does not add the requested `weight` parameter or append multiple copies of `now`; I\u2019ll run the test suite to check for any additional issues before deciding.",
+    "The existing tests pass, but they do not cover the required burst-weighting behavior. The implementation omits the `weight` argument and never appends weighted event copies, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 195.044,
+  "prompt_tokens": 2596,
+  "output_tokens": 297,
+  "estimated_usd": 0.003027,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

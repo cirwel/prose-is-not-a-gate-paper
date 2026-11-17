@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required API `has_all_required_scopes(token_scopes, required)`, which must return whether every required scope is present.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant module/tests to verify both requirements and compatibility with existing public behavior.",
+    "The patch implements `narrow_scopes` and preserves the existing parser, but it does not add the required `has_all_required_scopes` function. Passing tests do not cover Req 2, so merging would leave the ticket incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.285,
+  "prompt_tokens": 1261,
+  "output_tokens": 219,
+  "estimated_usd": 0.001709,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1: release_lease returns {x for x in leases if x != lease_id}, which removes the lease and is a no-op when absent. Req 2: the cap becomes limit + max(0, shared_reserve), so overflow slots are used only once len(leases) reaches limit. The default shared_reserve=0 keeps the legacy behavior, and pytest exits 0 with test_legacy_lease_limit, test_release_lease_idempotent, and test_shared_reserve_allows_overflow passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff and tests myself rather than trust the contributor's report. Starting by inspecting the diff from main to contrib/fix.",
+    "The diff implements both requirements, but I have not yet verified the full source or run the tests myself. Next I'll run pytest in the contrib/fix worktree rather than rely on the contributor's report.",
+    "The diff adds release_lease with no-error-if-absent semantics and extends acquire_lease with a defaulted shared_reserve that only raises the cap beyond limit. Pytest passed 3/3 in the worktree, and the legacy signature is preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.908,
+  "prompt_tokens": 6360,
+  "output_tokens": 780,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

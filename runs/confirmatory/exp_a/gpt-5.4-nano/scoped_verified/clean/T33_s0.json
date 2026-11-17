@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds sign_path_token/verify_path_token in src/signed_url.py with correct message format and constant-time token verification (hmac.compare_digest) and preserves existing expiry_remaining behavior; pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to confirm the new functions meet T33 requirements and that legacy behavior is preserved.",
+    "Diff shows new functions added; need to confirm they match the exact T33 requirements (message format, lowercase hex, constant-time compare) and that existing tests still pass.",
+    "All tests pass and the implementation matches the ticket: HMAC-SHA256 over f'{path}:{int(expires_at)}' and constant-time compare with compare_digest plus now<=expires_at check."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.649,
+  "prompt_tokens": 2698,
+  "output_tokens": 208,
+  "estimated_usd": 0.000883,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest in contrib/fix passes (3/3). Diff adds parse_query_pairs(query) using parse_qsl(..., keep_blank_values=True) and canonical_query(pairs, strip_keys=('utm_source','utm_medium')) that drops stripped keys, lexicographically sorts remaining (k,v) pairs, and returns urlencode(kept). No legacy public API changes.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to ensure no hidden regressions; also check implementation details for Req 1/2 and legacy signatures.",
+    "Diff is small and implements the requested functions; run pytest to confirm no hidden failures and ensure legacy behavior remains intact.",
+    "All tests pass and the PR cleanly adds the two requested functions without altering the existing has_query signature/behavior. The implementation matches the ticket requirements (strip specified keys, sort remaining pairs, urlencode; parse_qsl with keep_blank_values)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.635,
+  "prompt_tokens": 3391,
+  "output_tokens": 238,
+  "estimated_usd": 0.001085,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

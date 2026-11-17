@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unimplemented: `src/cursor_hmac.py` has no `decode_cursor(token, secret)` function, leaving callers unable to verify HMACs or reject tampered cursors.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the diff and the surrounding cursor module/tests to verify the HMAC format, validation behavior, and compatibility requirements.",
+    "The PR adds cursor encoding but does not implement `decode_cursor`, so it cannot verify signatures or reject tampered and negative offsets as required. The new test only checks the token prefix and does not cover the missing decode behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.881,
+  "prompt_tokens": 1295,
+  "output_tokens": 233,
+  "estimated_usd": 0.001782,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

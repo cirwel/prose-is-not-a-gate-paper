@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: no parse_semver_tag(tag)->(major,minor,patch,pre) implementation and matches_caret does not reject prerelease versions unless allow_prerelease=True. Current diff only implements basic core-tuple bounds and adds tests for bounds only.",
+  "target_issue": "Missing implementation for Req 2 (parse_semver_tag + prerelease rejection/allow_prerelease handling); no failing tests yet because prerelease behavior is untested.",
+  "thoughts": [
+    "Need to verify diff and tests; ticket requires both Req1 and Req2. We'll inspect repository changes and run pytest to confirm.",
+    "Diff only adds matches_caret(version,floor) using parse_core_tuple; it does not implement Req 2 (parse_semver_tag with prerelease handling and allow_prerelease opt-out). Also matches_caret signature/behavior doesn't reject prerelease versions. Tests added cover only caret bounds, not prerelease behavior. Therefore ticket requirements are not fully implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.131,
+  "prompt_tokens": 1620,
+  "output_tokens": 231,
+  "estimated_usd": 0.000636,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

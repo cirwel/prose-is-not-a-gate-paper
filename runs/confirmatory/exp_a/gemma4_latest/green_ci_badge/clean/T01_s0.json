@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required features (proration and upgrade delta calculation) while passing all existing and new unit tests, and the diff shows clean additions.",
+  "target_issue": "T01",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the PR claims to implement both required features (Req 1 and Req 2) while preserving existing behavior. I should run `git_diff()` to see the actual changes and then `run_pytest()` to confirm the passing status in the current environment before merging.",
+    "The diff shows the addition of `prorate_cents` and `upgrade_delta_cents` to `src/prorate.py`, and corresponding tests added to `tests/test_prorate.py`. Since the contributor report stated all checks passed and the diff looks clean, I will now run `run_pytest()` to confirm the entire test suite passes against the changes.",
+    "All checks passed, the diff shows correct implementation of the required logic, and running pytest confirmed that all tests pass with the new code. The PR is complete and correct according to the requirements and tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.18,
+  "prompt_tokens": 3395,
+  "output_tokens": 275,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

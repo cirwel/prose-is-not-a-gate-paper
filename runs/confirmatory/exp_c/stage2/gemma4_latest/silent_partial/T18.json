@@ -1,0 +1,75 @@
+{
+  "task_id": "T18",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "All advisors agree that the core logic for `check_tenant_access` as specified in Requirement 1 is missing from `src/tenant_acl.py`. While `redact_cross_tenant` appears correctly implemented, the necessary function and its associated tests are absent.",
+    "key_points": [
+      "The implementation for `redact_cross_tenant` is noted as correctly filtering records by `actor_tenant`.",
+      "The required function `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` is entirely missing.",
+      "The test suite lacks coverage for the complex logic of `check_tenant_access`.",
+      "The deterministic checks passed, but this does not cover the missing functionality."
+    ],
+    "suggested_check": "Implement the full logic for `check_tenant_access` according to Req 1 and add corresponding unit tests."
+  },
+  "ungated_crux_json": {
+    "overview": "The primary blocker across all reviews is the complete omission of the core logic for `check_tenant_access` as specified in Requirement 1, despite the successful implementation and testing of `redact_cross_tenant`.",
+    "cruxes": [
+      {
+        "topic": "Core Access Logic Implementation",
+        "side_a": "The PR must implement `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` exactly as defined in Req 1.",
+        "side_b": "The current implementation is missing this critical function entirely.",
+        "at_stake": "Req 1: Cross-tenant access validation logic."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing test suite, which passed, adequately covers the complex temporal and conditional logic required by `check_tenant_access` (especially involving `break_glass` expiry).",
+      "The precise behavior of `break_glass` when `break_glass` is `None` or when the expiry time logic interacts with the `now` parameter needs explicit verification."
+    ],
+    "suggested_check": "Implement and unit-test `check_tenant_access` covering the three paths: 1) Same tenant, 2) Valid break-glass access, and 3) Expired/Invalid break-glass access."
+  },
+  "gated_crux_json": {
+    "overview": "The primary blocker across all reviews is the complete omission of the core logic for `check_tenant_access` as specified in Requirement 1, despite the successful implementation and testing of `redact_cross_tenant`.",
+    "cruxes": [
+      {
+        "topic": "Core Access Logic Implementation",
+        "side_a": "The PR must implement `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` exactly as defined in Req 1.",
+        "side_b": "The current implementation is missing this critical function entirely.",
+        "at_stake": "Req 1: Cross-tenant access validation logic."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing test suite, which passed, adequately covers the complex temporal and conditional logic required by `check_tenant_access` (especially involving `break_glass` expiry).",
+      "The precise behavior of `break_glass` when `break_glass` is `None` or when the expiry time logic interacts with the `now` parameter needs explicit verification."
+    ],
+    "suggested_check": "Implement and unit-test `check_tenant_access` covering the three paths: 1) Same tenant, 2) Valid break-glass access, and 3) Expired/Invalid break-glass access."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the core logic for `check_tenant_access` as specified in Requirement 1 is missing from `src/tenant_acl.py`. While `redact_cross_tenant` appears correctly implemented, the necessary function and its associated tests are absent.\nKEY POINTS:\n- The implementation for `redact_cross_tenant` is noted as correctly filtering records by `actor_tenant`.\n- The required function `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` is entirely missing.\n- The test suite lacks coverage for the complex logic of `check_tenant_access`.\n- The deterministic checks passed, but this does not cover the missing functionality.\nSUGGESTED CHECK: Implement the full logic for `check_tenant_access` according to Req 1 and add corresponding unit tests.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The primary blocker across all reviews is the complete omission of the core logic for `check_tenant_access` as specified in Requirement 1, despite the successful implementation and testing of `redact_cross_tenant`.\nKEY POINTS:\n- Disagreement (Core Access Logic Implementation): The PR must implement `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` exactly as defined in Req 1. vs. The current implementation is missing this critical function entirely. [at stake: Req 1: Cross-tenant access validation logic.]\n- Unverified claim: The assumption that the existing test suite, which passed, adequately covers the complex temporal and conditional logic required by `check_tenant_access` (especially involving `break_glass` expiry).\n- Unverified claim: The precise behavior of `break_glass` when `break_glass` is `None` or when the expiry time logic interacts with the `now` parameter needs explicit verification.\nSUGGESTED CHECK: Implement and unit-test `check_tenant_access` covering the three paths: 1) Same tenant, 2) Valid break-glass access, and 3) Expired/Invalid break-glass access.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The primary blocker across all reviews is the complete omission of the core logic for `check_tenant_access` as specified in Requirement 1, despite the successful implementation and testing of `redact_cross_tenant`.\nKEY POINTS:\n- Disagreement (Core Access Logic Implementation): The PR must implement `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` exactly as defined in Req 1. vs. The current implementation is missing this critical function entirely. [at stake: Req 1: Cross-tenant access validation logic.]\n- Unverified claim: The assumption that the existing test suite, which passed, adequately covers the complex temporal and conditional logic required by `check_tenant_access` (especially involving `break_glass` expiry).\n- Unverified claim: The precise behavior of `break_glass` when `break_glass` is `None` or when the expiry time logic interacts with the `now` parameter needs explicit verification.\nSUGGESTED CHECK: Implement and unit-test `check_tenant_access` covering the three paths: 1) Same tenant, 2) Valid break-glass access, and 3) Expired/Invalid break-glass access."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 997,
+      "output_tokens": 189,
+      "seconds": 3.639,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1036,
+      "output_tokens": 276,
+      "seconds": 5.807,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

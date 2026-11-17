@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`cache_get` returns `None` for absent or expired entries and returns the value only when `expires_at > now`; `purge_expired` removes entries at or before `now` and returns the eviction count. Existing behavior is preserved and pytest passes (3 tests).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the diff and run the test suite to verify the implementation and compatibility.",
+    "The diff implements the requested strict expiry boundary and removes/counts expired entries while leaving `cache_put` unchanged. I\u2019ll run pytest to confirm the tests pass.",
+    "The implementation satisfies both T10 requirements, preserves the existing `cache_put` signature and behavior, and the test suite passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.49,
+  "prompt_tokens": 3369,
+  "output_tokens": 289,
+  "estimated_usd": 0.00362,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

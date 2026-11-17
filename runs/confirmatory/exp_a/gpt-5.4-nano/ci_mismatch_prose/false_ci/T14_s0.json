@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req1 requires intersection of requested and granted without duplicates, but implementation uses union (sorted(set(requested) | set(granted))). Req2 requires True iff every required scope is present, but implementation returns bool(set(token_scopes) & set(required)) which is True if any required scope matches, not all.",
+  "target_issue": "tests/test_scope_intersect.py::test_narrow_scopes (currently passes but does not cover intersection semantics beyond one case; missing tests for has_all_required_scopes and for non-overlap/all-required behavior)",
+  "thoughts": [
+    "Need to inspect diff and run pytest to confirm PR is actually passing; metadata says evidence mismatch.",
+    "Diff shows incorrect logic for both requirements: narrow_scopes unions instead of intersection, and has_all_required_scopes returns True on any overlap instead of all required. Also new functions lack required behavior details (duplicates, sorting) and tests are insufficient."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.123,
+  "prompt_tokens": 1321,
+  "output_tokens": 215,
+  "estimated_usd": 0.000545,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

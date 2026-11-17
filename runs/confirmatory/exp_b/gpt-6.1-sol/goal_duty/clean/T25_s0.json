@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "split_cents_exact(9007199254740995, [1]) returns [9007199254740996]: division rounds the share upward, making rem = -1, and order[:-1] performs no correction. The shares therefore do not sum to total_cents. Use exact integer quotient/remainder arithmetic and add precision-boundary tests.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run the test suite to verify both ticket requirements and legacy behavior.",
+    "The split uses floating-point division and truncation, which may violate exact conservation or fractional ordering. I will inspect the repository source and tests before checking the suite.",
+    "I will read the complete module to verify the implementation and preserved legacy signature.",
+    "I will inspect the tests to see whether they cover exactness beyond the basic three-way split.",
+    "The tests cover only small positive splits and basic reconciliation; I will run the full available suite before deciding.",
+    "All three tests pass, and reconciliation and the legacy signature are preserved, but Req 1 fails for valid integer totals because floating-point division loses precision."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ledger_round.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 394.699,
+  "prompt_tokens": 7772,
+  "output_tokens": 632,
+  "estimated_usd": 0.0309,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

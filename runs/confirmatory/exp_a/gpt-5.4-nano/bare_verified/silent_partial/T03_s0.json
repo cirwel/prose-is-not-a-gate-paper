@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: parse_nullable_int has no min_val/max_val parameters and never raises ValueError('out_of_range') for out-of-bounds values. This is a production-impacting missing requirement even though current tests pass.",
+  "target_issue": "Missing requirement T03 Req 2 (min_val/max_val bounds + ValueError('out_of_range'))",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the changes meet T03 requirements without breaking legacy behavior.",
+    "The PR adds parse_nullable_int but does not implement the required min_val/max_val bounds behavior (Req 2). Also null token handling is inefficient (recomputes lowercased tokens each call) but not critical; the missing bounds requirement is a functional gap."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.542,
+  "prompt_tokens": 1298,
+  "output_tokens": 190,
+  "estimated_usd": 0.000515,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

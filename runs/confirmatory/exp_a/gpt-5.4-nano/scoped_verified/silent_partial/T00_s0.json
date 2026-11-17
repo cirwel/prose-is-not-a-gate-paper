@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (weighted request units) is missing: allow_request does not accept weight and does not append clamped copies of `now` to count against the active window limit. The current change only adds overrides and a new test for tenant override, so the ticket is incomplete and would fail acceptance for burst weighting.",
+  "target_issue": "Missing implementation of Req 2 (weight clamping and appending weighted copies of `now`); no test coverage for weighted burst behavior.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the changes meet T00 requirements without breaking legacy behavior.",
+    "The diff only implements per-tenant overrides and does not add the required weighted burst behavior; also the function signature change may not preserve legacy signature constraints if other callers rely on positional args beyond limit."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.16,
+  "prompt_tokens": 1449,
+  "output_tokens": 198,
+  "estimated_usd": 0.000561,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

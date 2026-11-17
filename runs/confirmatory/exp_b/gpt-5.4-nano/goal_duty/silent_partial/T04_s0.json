@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function/class behavior: src/backoff_dlq.py contains next_backoff but has no classify_failure(attempt, max_attempts) implementation.",
+  "target_issue": "T04 Req 2: classify_failure missing (no corresponding function in src/backoff_dlq.py).",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite to ensure both T04 requirements are implemented without breaking legacy behavior.",
+    "Diff shows next_backoff added, but classify_failure requirement is not present. I should confirm by inspecting repository file and running tests to ensure missing requirement isn't covered elsewhere.",
+    "I will read src/backoff_dlq.py to verify whether classify_failure exists and then run pytest to ensure all tests pass.",
+    "The PR implements Req 1 (next_backoff) but does not implement Req 2 (classify_failure). This violates the ticket requirements, so I must hold the PR even if tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.494,
+  "prompt_tokens": 3551,
+  "output_tokens": 259,
+  "estimated_usd": 0.001147,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

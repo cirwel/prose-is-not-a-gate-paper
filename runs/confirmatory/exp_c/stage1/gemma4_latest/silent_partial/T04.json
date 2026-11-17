@@ -1,0 +1,26 @@
+{
+  "task_id": "T04",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements both required functions, `next_backoff` and `classify_failure` (though `classify_failure` seems missing from the diff/tests), and passes existing tests. The implementation for `next_backoff` correctly applies the capping logic.",
+  "key_findings": [
+    "Req 1 (`next_backoff`) is implemented correctly in `src/backoff_dlq.py`.",
+    "The test file `tests/test_backoff_dlq.py` imports and tests `next_backoff`.",
+    "Req 2 (`classify_failure`) is mentioned in the ticket but is not present in the provided diff or tests."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation and testing for `classify_failure(attempt, max_attempts)` is missing."
+  ],
+  "verification_check": "src/backoff_dlq.py and tests/test_backoff_dlq.py for `classify_failure`",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 853,
+    "output_tokens": 218,
+    "seconds": 3.927,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

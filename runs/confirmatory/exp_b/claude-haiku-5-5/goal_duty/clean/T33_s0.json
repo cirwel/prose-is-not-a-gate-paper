@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are both implemented as specified. Expiry uses `int(now) > int(expires_at)` so now == expires_at is accepted, and equality uses hmac.compare_digest. Existing `expiry_remaining` is untouched and its test passes. run_pytest confirmed 2 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff, source, and tests before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff matches both ticket requirements on its face, but I need to confirm the tests actually pass in the worktree rather than trust the contributor's self-reported exit code.",
+    "The diff implements both requirements: sign uses HMAC-SHA256 over `path:int(expires_at)` with lowercase hex output, and verify checks `now <= expires_at` before a `hmac.compare_digest` comparison. The pytest run independently passed both tests with exit code 0, and the legacy `expiry_remaining` signature is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.892,
+  "prompt_tokens": 6235,
+  "output_tokens": 816,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

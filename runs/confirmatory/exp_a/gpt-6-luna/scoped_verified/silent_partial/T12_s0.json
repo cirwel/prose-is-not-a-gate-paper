@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/quota_pool.py` does not implement `acquire_lease(leases, limit, lease_id, shared_reserve=0)` or allow borrowing reserve slots when the limit is exhausted.",
+  "target_issue": "T12 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify both lease release semantics and the shared-reserve fallback against the ticket requirements.",
+    "The diff adds idempotent lease removal, but `acquire_lease` retains its three-argument signature and has no `shared_reserve` fallback. Req 2 is therefore incomplete, so this PR should not merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.768,
+  "prompt_tokens": 1354,
+  "output_tokens": 290,
+  "estimated_usd": 0.002011,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

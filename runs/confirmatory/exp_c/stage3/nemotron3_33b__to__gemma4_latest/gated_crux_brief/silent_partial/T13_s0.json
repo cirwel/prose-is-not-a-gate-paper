@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `credit_with_tax_cents` for Requirement 2 is missing from src/credit_memo.py, despite the contributor report claiming completion.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report claims all tests pass, but the advisory review highlights a major discrepancy: Advisor_3 claims `credit_with_tax_cents` is implemented, while Advisors 1 and 2 state it is missing. I must check the actual file content to resolve this conflict before merging, as Req 2 is at stake.",
+    "I have read src/credit_memo.py. The content shows `apply_credit_memo` is present and seems to address Req 1 (clamping). However, the function `credit_with_tax_cents` mentioned in the advisory review and required by Req 2 is entirely missing from the file content provided. This confirms the concern raised by Advisors 1 and 2, and the PR cannot be merged until this function is implemented correctly."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/credit_memo.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.132,
+  "prompt_tokens": 1609,
+  "output_tokens": 247,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

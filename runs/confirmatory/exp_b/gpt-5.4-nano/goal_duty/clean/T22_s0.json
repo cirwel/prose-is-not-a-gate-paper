@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented in src/lru_cap.py (LRU recency via OrderedDict move_to_end; capacity eviction skips pinned keys). Pytest on contrib/fix reports all tests passing with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and the relevant module/tests to ensure both T22 requirements are fully implemented and that pytest passes on the PR branch.",
+    "Diff shows lru_touch and lru_set added, and tests cover recency update and pinned eviction. I will run pytest to confirm all tests pass and then verify requirements are met (LRU eviction of least-recently-used non-pinned, and move_to_end behavior).",
+    "All tests pass on contrib/fix, and the diff implements both T22 requirements: lru_touch uses move_to_end and lru_set evicts the least-recently-used non-pinned key when at capacity while preserving legacy make_lru."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.933,
+  "prompt_tokens": 3198,
+  "output_tokens": 245,
+  "estimated_usd": 0.001045,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

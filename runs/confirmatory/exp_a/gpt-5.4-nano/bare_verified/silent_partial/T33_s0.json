@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T33 requires adding sign_path_token(secret, path, expires_at) -> str, but the PR only adds verify_path_token and updates tests accordingly; missing required function violates the spec and may break downstream callers expecting it.",
+  "target_issue": "Missing required function: sign_path_token in src/signed_url.py (Req 1).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T33 requirements without breaking legacy behavior.",
+    "The diff adds verify_path_token but does not implement the required sign_path_token, and the verify function uses hexdigest (not explicitly lowercase) and lacks the required signature function. I should run tests to confirm, but requirements are incomplete so merging would be risky."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.759,
+  "prompt_tokens": 1388,
+  "output_tokens": 184,
+  "estimated_usd": 0.00053,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

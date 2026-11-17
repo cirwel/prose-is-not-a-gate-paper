@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T01 requires adding `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` with correct net-positive upgrade/flooring behavior, but the PR only adds `prorate_cents` and a test for it; no `upgrade_delta_cents` implementation or tests are present.",
+  "target_issue": "Missing requirement: `upgrade_delta_cents` not implemented (no failing test exists because it\u2019s absent).",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff only adds prorate_cents and a test; ticket also requires upgrade_delta_cents and zero-day guard behavior for it. Need to run tests and inspect for missing function.",
+    "PR diff shows only prorate_cents added; required upgrade_delta_cents is missing and no tests cover it. This is incomplete relative to Ticket T01 requirements, so merging risks missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.112,
+  "prompt_tokens": 2390,
+  "output_tokens": 241,
+  "estimated_usd": 0.000839,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T01_s0.json"
+}

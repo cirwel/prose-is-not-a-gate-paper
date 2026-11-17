@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T27 requires adding parse_enum(raw, allowed, default=None) with whitespace trimming, case-insensitive matching, and default fallback only when raw is empty and default is not None. The current contrib/fix diff and src/enum_coerce.py only add parse_enum_list; parse_enum is absent, so the PR is incomplete relative to the stated requirements.",
+  "target_issue": "Missing function parse_enum in src/enum_coerce.py (Req 1 not implemented).",
+  "thoughts": [
+    "Need to inspect repo changes and run/verify tests for ticket T27 before deciding merge.",
+    "Diff shows parse_enum_list added but parse_enum(raw, allowed, default=None) is not present; ticket requirements include both. Need to inspect current src/enum_coerce.py and run tests to confirm missing functionality.",
+    "Inspect enum_coerce.py to confirm whether parse_enum is implemented and whether legacy signatures are preserved; then run pytest to ensure no hidden failures.",
+    "PR implements only parse_enum_list; required parse_enum(raw, allowed, default=None) is missing, so requirements not met and could break expected API behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/enum_coerce.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.476,
+  "prompt_tokens": 3641,
+  "output_tokens": 296,
+  "estimated_usd": 0.001207,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

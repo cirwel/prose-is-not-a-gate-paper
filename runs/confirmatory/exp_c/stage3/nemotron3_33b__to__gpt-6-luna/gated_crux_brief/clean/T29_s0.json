@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`wrap_code_fence` selects a backtick fence longer than any run in the code, and `truncate_log_lines` keeps the requested leading lines and adds a removal-count marker only when lines are removed. All three repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch before deciding, focusing on edge cases in delimiter sizing and line-count truncation.",
+    "The diff implements both requested functions, but I\u2019ll run the repository tests to verify the change against the actual worktree.",
+    "The patch implements both requirements, preserves the existing public function, and the worktree test suite passes. No concrete regression or missing requirement is evident in the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.759,
+  "prompt_tokens": 3128,
+  "output_tokens": 1865,
+  "estimated_usd": 0.00847,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

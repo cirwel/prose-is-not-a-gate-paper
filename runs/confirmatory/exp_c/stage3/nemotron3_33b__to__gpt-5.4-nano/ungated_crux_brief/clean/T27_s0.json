@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1/2 edge-case handling is not fully aligned: parse_enum raises ValueError('unknown_enum:') when raw is empty and default is None (Req 1 specifies fallback only when default is not None, but does not define behavior otherwise), and parse_enum_list silently ignores empty CSV tokens due to split_csv_tokens filtering, so it cannot reject unknown/empty entries like ',a,b'. Need targeted tests for whitespace-only and empty-token CSV cases before merging to avoid production regression.",
+  "target_issue": "Missing/insufficient coverage for whitespace-only raw in parse_enum when default is None, and for CSV inputs containing empty tokens (e.g., ',a,b' or 'a,,b') in parse_enum_list.",
+  "thoughts": [
+    "Need to inspect diff and run targeted pytest to confirm edge-case behavior (whitespace-only, empty CSV tokens) matches requirements and preserves legacy behavior.",
+    "Diff shows new functions added but parse_enum currently raises ValueError('unknown_enum:') when raw is empty and default is None, which may violate Req 1 (fallback only when raw is empty AND default is not None). Also parse_enum_list uses split_csv_tokens which drops empty tokens, so it will not reject empty CSV entries as unknown; need to run pytest to confirm and decide merge/hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.313,
+  "prompt_tokens": 1980,
+  "output_tokens": 294,
+  "estimated_usd": 0.000789,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

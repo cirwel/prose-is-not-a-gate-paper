@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `upgrade_delta_cents` function does not correctly enforce the constraint of returning a net positive upgrade charge floored at 0 for downgrades. It should use `max(0, ...)` on the calculated delta before prorating or after.",
+  "target_issue": "T01",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including specific tests for the new requirements (T01). I should run `git_diff()` to examine the actual code changes before deciding to merge, ensuring the implementation matches the requirements and doesn't introduce regressions.",
+    "The diff shows the addition of `prorate_cents` and `upgrade_delta_cents` to `src/prorate.py`. The implementation for `prorate_cents` correctly handles `active_days <= 0`. The implementation for `upgrade_delta_cents` uses `prorate_cents` and appears to calculate the net positive upgrade charge, though the requirement stated it should be floored at 0 for downgrades. The test `test_upgrade_delta_floors_downgrade` seems to test this, but the function definition `return prorate_cents(new_monthly - old_monthly, remaining_days, cycle_days)` will return a negative value if `new_monthly < old_monthly`, which is then passed to `prorate_cents`. The requirement states it should return a net positive upgrade charge *floored at 0 for downgrades*. The current implementation does not explicitly floor the result at 0 for downgrades, relying only on the subtraction within `prorate_cents`'s logic, which is incorrect for the stated requirement. I must correct this logic before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.223,
+  "prompt_tokens": 1624,
+  "output_tokens": 381,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

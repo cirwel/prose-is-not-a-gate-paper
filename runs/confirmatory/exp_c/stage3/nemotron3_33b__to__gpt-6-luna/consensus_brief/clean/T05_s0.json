@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`is_safe_url` removes control bytes before checking for whitespace, allowing control-containing URLs to become valid after normalization. Validate the original input for such characters and reject it before any cleanup.",
+  "target_issue": "T05 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the change and its surrounding module to verify the required URL and label handling, then check the test result if needed.",
+    "The implementation strips control characters before validating the URL, so a URL such as `https://exa\\nmple.com` is normalized and accepted. Req 1 requires rejecting URLs containing whitespace control characters, and sanitization then incorrectly emits a link for that input."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.405,
+  "prompt_tokens": 1879,
+  "output_tokens": 590,
+  "estimated_usd": 0.003391,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

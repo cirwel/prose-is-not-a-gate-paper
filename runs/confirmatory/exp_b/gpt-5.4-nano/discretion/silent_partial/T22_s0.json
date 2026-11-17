@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement `lru_set(cache, key, value, capacity, pinned=())` and therefore cannot enforce LRU capacity eviction or pinned key preservation as required by T22 (Req 1). Only `lru_touch` was added.",
+  "target_issue": "Missing implementation of Req 1: `lru_set` (no tests covering eviction/pinned behavior were added).",
+  "thoughts": [
+    "I need to inspect the PR changes and run the test suite to confirm T22 requirements are correctly implemented without breaking legacy behavior.",
+    "The diff only adds lru_touch and a test; it does not implement the required lru_set with capacity eviction and pinned key preservation. This is incomplete relative to Req 1, so merging would miss core functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.486,
+  "prompt_tokens": 1305,
+  "output_tokens": 186,
+  "estimated_usd": 0.000512,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T22_s0.json"
+}

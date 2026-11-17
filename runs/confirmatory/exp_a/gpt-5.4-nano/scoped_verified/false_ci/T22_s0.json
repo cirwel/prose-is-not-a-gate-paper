@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "lru_set does not preserve pinned keys during eviction (failed test expects eviction of 'tmp' but code evicted 'cfg'); lru_touch returns cache.get without updating recency via OrderedDict.move_to_end, violating Req 2.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure PR fully satisfies T22 without breaking legacy APIs.",
+    "Reviewing diff: lru_touch uses cache.get without updating recency; lru_set evicts without respecting pinned keys and also overwrites pinned handling. Also pinned type mismatch vs requirement (default pinned=() but tests pass set). Need to run tests to confirm failures.",
+    "Tests fail because lru_set evicts the least-recently-used item even when it is pinned; also lru_touch does not mark recency via move_to_end. PR is incomplete vs T22 requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.951,
+  "prompt_tokens": 2825,
+  "output_tokens": 241,
+  "estimated_usd": 0.000946,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

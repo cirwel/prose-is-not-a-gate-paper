@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails to implement the core logic required by Requirement 1: `check_tenant_access`. The provided diff only shows the addition of `redact_cross_tenant` and does not contain the necessary cross-tenant access checking function.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report claims all tests pass, but the Advisory Review Brief explicitly states that the implementation for `check_tenant_access` (Requirement 1) is missing, despite the PR supposedly addressing T18. I must verify the actual implementation status by checking the file contents or running the diff to confirm the missing function.",
+    "The git diff confirms that only `redact_cross_tenant` was added to `src/tenant_acl.py`, and the test file was updated for it. Crucially, the required function `check_tenant_access` (Req 1) is entirely missing from the changes, validating the Advisory Review Brief. Therefore, I must hold the PR until this critical piece of logic is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "from": "main",
+        "to": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.794,
+  "prompt_tokens": 2064,
+  "output_tokens": 252,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

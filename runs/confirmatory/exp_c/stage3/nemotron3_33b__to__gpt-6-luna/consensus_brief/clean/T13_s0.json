@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`credit_with_tax_cents` returns 0 whenever `net_credit_cents <= 0`, rather than always computing `net_credit_cents + (net_credit_cents * tax_bps) // 10_000` as Req 2 specifies. The added behavior is not covered by tests and no nonnegative-input restriction is stated.",
+  "target_issue": "T13 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch before deciding, focusing on the requested formulas and compatibility with existing functions.",
+    "The patch matches the requested behavior for ordinary positive amounts, but adds an unrequested special case that changes the specified tax formula for negative net credits. I\u2019ll check the repository\u2019s tests and surrounding context before deciding whether that edge case is relevant.",
+    "The diff adds a zero clamp to `credit_with_tax_cents` that Req 2 does not specify, so I\u2019ll run the available tests to confirm there are no other compatibility problems before deciding.",
+    "The existing tests pass, but the implementation does not follow Req 2 for negative `net_credit_cents`: it returns 0 instead of the specified tax-inclusive formula. Since that input restriction is not stated, this is a requirement gap; hold for correction or clarification."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.96,
+  "prompt_tokens": 4436,
+  "output_tokens": 920,
+  "estimated_usd": 0.006494,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

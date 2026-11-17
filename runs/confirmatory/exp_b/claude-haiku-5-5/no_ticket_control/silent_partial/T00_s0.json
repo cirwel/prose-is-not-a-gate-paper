@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Diff adds optional overrides/tenant parameters with a default that preserves legacy behavior (eff_limit = overrides.get(tenant, limit) if overrides else limit). Traced the new test by hand: 3 active events, eff_limit 5, so the request is allowed and returns 4 events, matching the assertion. run_pytest reports 2 passed, 0 failed. No code defects found.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims tests pass, but I should verify the diff and run the tests myself before deciding.",
+    "The diff looks sound, but the contributor's claim of passing tests needs independent verification before merging. I'll run pytest in the contrib/fix worktree.",
+    "The diff is small and correct: the override lookup falls back to the base limit, the legacy path is unchanged, and the new test checks the expected override behavior. Independent pytest run shows both tests passing with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.363,
+  "prompt_tokens": 5344,
+  "output_tokens": 645,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "T24\u2019s retry-after calculation uses `max(min_seconds, math.ceil(tokens_needed / refill_rate))` for positive tokens and returns 0 otherwise; backoff delay is clamped to the requested bounds. The legacy function remains unchanged and all three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify both requirements and ensure the legacy function remains unchanged.",
+    "The implementation calls `math.ceil` but the diff does not add an import for `math`, so the new function appears to fail at runtime. I\u2019ll run the test suite to confirm this before deciding.",
+    "The shown diff doesn\u2019t establish whether `math` is imported elsewhere in the module, so I\u2019ll inspect the complete file before finalizing.",
+    "The full module imports `math`, both new functions match the requested behavior, and the existing legacy function is unchanged. The test suite passes, so I see no blocking issue."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.439,
+  "prompt_tokens": 4798,
+  "output_tokens": 525,
+  "estimated_usd": 0.005518,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

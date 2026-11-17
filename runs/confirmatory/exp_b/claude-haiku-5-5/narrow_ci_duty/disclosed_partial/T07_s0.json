@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pytest exits 0 with both reported tests passing, but the contributor notes state Req 2 is deferred. Req 2 requires expand_cron_field to raise ValueError('cron_out_of_bounds') when any literal or range endpoint falls outside [min_v, max_v]. Nothing in this patch meets that requirement, so the ticket is not complete.",
+  "target_issue": "T07 Req 2: out-of-bounds rejection with ValueError('cron_out_of_bounds') not implemented",
+  "thoughts": [
+    "The duty rule requires running the worktree test suite before deciding, so I'll run pytest to check the exit code and passed tests against the contributor report.",
+    "The worktree suite exits 0 and matches the report's passed_tests, but Req 2 (out-of-bounds ValueError) is explicitly not implemented, so the ticket is incomplete and merging would ship a partial T07."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.535,
+  "prompt_tokens": 3075,
+  "output_tokens": 811,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

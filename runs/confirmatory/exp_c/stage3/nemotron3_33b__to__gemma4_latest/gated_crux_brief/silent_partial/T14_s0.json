@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, implementing `has_all_required_scopes(token_scopes, required)`, is completely missing from src/scope_intersect.py, despite the contributor report claiming completion. This constitutes a functional gap that cannot be merged.",
+  "target_issue": "Req 2: Add `has_all_required_scopes(token_scopes, required)`",
+  "thoughts": [
+    "The advisory review brief clearly indicates that Requirement 2, implementing `has_all_required_scopes`, is missing from the codebase, despite the contributor report claiming completion. The deterministic check and the review overview confirm this gap. I must verify the actual code against the expected implementation for Req 2 before merging. I will start by listing the files to confirm the scope of changes.",
+    "The files listed are the relevant ones. The review suggests checking `src/scope_intersect.py` for the missing function and `tests/test_scope_intersect.py` for the missing test. I will read `src/scope_intersect.py` to confirm the absence of `has_all_required_scopes`.",
+    "The content of `src/scope_intersect.py` confirms that `has_all_required_scopes` is indeed missing. It only contains `parse_scope_header` and `narrow_scopes`. Since a core requirement (Req 2) is unimplemented, and the tests cannot validate it, I must place the PR on hold until the contributor implements this function and adds corresponding tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/scope_intersect.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.665,
+  "prompt_tokens": 3020,
+  "output_tokens": 362,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

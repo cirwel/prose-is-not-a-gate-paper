@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T31 Req 1 is not implemented: merge_windows(intervals) (coalescing overlapping/adjacent half-open intervals sorted by start) is missing from src/window_merge.py; only is_in_blackout was added and tests cover only that plus legacy duration.",
+  "target_issue": "Missing requirement: merge_windows(intervals) implementation (no corresponding function or tests).",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure both T31 requirements are implemented and all tests pass.",
+    "Diff shows is_in_blackout added, but merge_windows(intervals) is not present; also I need to run pytest to confirm no other missing behavior. I will run the test suite in contrib/fix.",
+    "I will verify requirements against the diff: Req 1 requires merge_windows(intervals) but the diff only adds is_in_blackout and tests; therefore the PR is incomplete. Even though tests pass, missing required function means we must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.161,
+  "prompt_tokens": 2247,
+  "output_tokens": 249,
+  "estimated_usd": 0.00081,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

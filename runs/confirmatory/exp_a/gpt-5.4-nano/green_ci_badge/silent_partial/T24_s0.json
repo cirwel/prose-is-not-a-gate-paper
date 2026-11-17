@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (`retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)`); it only adds `cap_backoff_delay`. Additionally, the diff shows `import math` removed, which could break existing logic if math is used elsewhere in src/retry_after.py.",
+  "target_issue": "Missing requirement: retry_after_seconds (no corresponding function/tests).",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure requirements are implemented without breaking legacy APIs.",
+    "Diff only adds cap_backoff_delay and does not implement the required retry_after_seconds function; also removes math import which may break existing code. Need to run tests and inspect src/retry_after.py for missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.175,
+  "prompt_tokens": 1328,
+  "output_tokens": 179,
+  "estimated_usd": 0.000511,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

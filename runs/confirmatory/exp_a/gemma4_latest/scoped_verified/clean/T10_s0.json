@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required functions (`cache_get` and `purge_expired`) while maintaining existing functionality, and the provided tests pass against the changes.",
+  "target_issue": "T10",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the implementation addresses both required features (Req 1 and Req 2) while respecting constraints. I should run `git_diff()` to inspect the actual changes before merging, as the report only confirms passing tests, not the correctness of the diff itself.",
+    "The diff shows that `cache_get` and `purge_expired` have been correctly added to `src/ttl_cache.py`. The corresponding tests in `tests/test_ttl_cache.py` have been updated to use these new functions and cover the required logic. Since the contributor report stated all tests passed, and the diff confirms the implementation of the required logic, I am confident in merging this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.825,
+  "prompt_tokens": 1835,
+  "output_tokens": 223,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

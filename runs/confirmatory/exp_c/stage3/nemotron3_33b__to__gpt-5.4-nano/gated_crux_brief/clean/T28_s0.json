@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements T28 Req 1 (pop_ready_jobs filters run_at<=now and sorts by -priority, run_at, job_id) and Req 2 (defer_job returns a copy with updated run_at without mutating input). All existing behavior remains intact and contrib/fix pytest exit=0 (3 passed, 0 failed).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that T28 requirements are correctly implemented.",
+    "Diff shows only two new functions added in src/priority_heap.py with tests updated accordingly; need to ensure pytest passes in the contrib/fix worktree and that legacy signatures remain unchanged.",
+    "PR cleanly adds the two required functions with correct sorting/defer semantics, and pytest passes with no regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.17,
+  "prompt_tokens": 3258,
+  "output_tokens": 216,
+  "estimated_usd": 0.00103,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

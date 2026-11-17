@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/fence_escape.py only defines normalize_newlines() and truncate_log_lines(); there is no def wrap_code_fence(code, lang='') implementing the safe Markdown fence delimiter logic required by Req 1.",
+  "target_issue": "Missing implementation for Req 1: wrap_code_fence (no corresponding function in src/fence_escape.py).",
+  "thoughts": [
+    "Need to verify whether wrap_code_fence exists and whether both requirements are correctly implemented; run diff and inspect fence_escape.py.",
+    "Inspect fence_escape.py and diff to confirm whether wrap_code_fence is present and requirements are satisfied without breaking legacy APIs.",
+    "wrap_code_fence is not present in src/fence_escape.py; Req 1 is missing, so merging would fail the ticket requirements even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.128,
+  "prompt_tokens": 2359,
+  "output_tokens": 213,
+  "estimated_usd": 0.000803,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

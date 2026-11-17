@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`sign_path_token` must use HMAC-SHA256 keyed by `secret` over `f'{path}:{int(expires_at)}'`; the current code uses plain SHA-256 and does not coerce `expires_at` to int. `verify_path_token` must reject when `now > expires_at`, but currently ignores `now`.",
+  "target_issue": "T33 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the requested API, expiry handling, and constant-time comparison.",
+    "The implementation does not meet either core verification requirement: it computes an unkeyed SHA-256 digest and ignores `now`, so wrong secrets are accepted and expired tokens are not rejected. The patch also removes an existing assertion for `expiry_remaining` without replacing its coverage."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.196,
+  "prompt_tokens": 1433,
+  "output_tokens": 810,
+  "estimated_usd": 0.003738,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

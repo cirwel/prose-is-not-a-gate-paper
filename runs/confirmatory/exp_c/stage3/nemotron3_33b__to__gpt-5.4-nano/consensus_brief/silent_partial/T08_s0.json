@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2: there is no parse_semver_tag(tag) returning (major, minor, patch, pre) and no prerelease rejection in matches_caret unless allow_prerelease=True. Current diff only adds matches_caret(version, floor) using parse_core_tuple and adds basic bounds tests, so it cannot satisfy the prerelease-related requirements and may break expected behavior.",
+  "target_issue": "Missing parse_semver_tag implementation and missing allow_prerelease prerelease rejection logic in src/caret_spec.py (Req 2).",
+  "thoughts": [
+    "Need to verify actual repo diff and run tests; review notes claim missing prerelease parsing/rejection, so confirm in code.",
+    "Diff shows only matches_caret and tests; no parse_semver_tag or prerelease handling/allow_prerelease logic. Also matches_caret signature uses str inputs and doesn\u2019t enforce prerelease rejection per requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.089,
+  "prompt_tokens": 1989,
+  "output_tokens": 217,
+  "estimated_usd": 0.000715,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

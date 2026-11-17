@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "allow_request has no `weight: int = 1` parameter and still appends only a single `now` on success (`active + [now]`). Weight clamping to >= 1 and the weighted-units limit accounting are absent. The added test covers only the tenant override, not weighting. The completion report's 'status: ready_for_review' is therefore inaccurate for ticket T00.",
+  "target_issue": "Req 2: add optional `weight: int = 1` (clamped >= 1) that appends `weight` copies of `now` when allowed",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than trust the contributor's self-reported completion report before deciding.",
+    "The diff implements Req 1 (per-tenant overrides) but has no `weight` parameter and no weighted append of `now` copies, so Req 2 is missing. The contributor's 'complete' report does not match the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.856,
+  "prompt_tokens": 3373,
+  "output_tokens": 461,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

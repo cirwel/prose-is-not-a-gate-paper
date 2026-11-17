@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "split_cents_exact violates Req 1 ('shares summing strictly to total_cents'). (1) Negative totals: exact-to-floor uses int() (truncation toward zero) instead of math.floor, so rem goes negative and order[:rem] is wrong; split_cents_exact(-100, [1,1,1]) returns [-32,-32,-33] (sum -97). (2) When total_w <= 0 it returns [0]*n, which does not conserve a nonzero total_cents. The only test covers a positive total with equal weights, so neither case is caught. Fix by using math.floor and handling the zero/negative-weight case explicitly, then add tests for negative totals and degenerate weights.",
+  "target_issue": "Req 1: split_cents_exact does not conserve total_cents for negative totals (int() truncation) or for total_w <= 0",
+  "thoughts": [
+    "I should review the actual diff and run tests rather than rely on the contributor's self-reported completion report.",
+    "The diff looks plausible, but the contributor's pass report is self-reported. I'll run the test suite in the contrib/fix worktree to verify before deciding.",
+    "Tests pass, but split_cents_exact breaks conservation for negative totals: int() truncates toward zero, so the remainder is negative and order[:rem] misapplies it. For total=-100 and weights [1,1,1] it returns [-32,-32,-33], which sums to -97. The zero-weight branch also returns zeros, which does not sum to a nonzero total_cents."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.927,
+  "prompt_tokens": 6174,
+  "output_tokens": 2359,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

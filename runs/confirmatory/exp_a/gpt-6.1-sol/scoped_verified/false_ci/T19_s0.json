@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_business_day(date(2026, 11, 13)) returns Saturday 2026-11-14 rather than Monday 2026-11-16, violating Req 1 and the added test. Both functions also ignore configured holidays, violating Req 1 and Req 2.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend",
+  "thoughts": [
+    "I will inspect the implementation and diff to verify both ticket requirements and preservation of legacy behavior.",
+    "The implementation ignores holidays in both functions, and next_business_day adds only one day without skipping weekends. The added Friday-to-Monday test therefore cannot pass with this implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 190.43,
+  "prompt_tokens": 1341,
+  "output_tokens": 181,
+  "estimated_usd": 0.006195,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T17 requires both Req 1 and Req 2. The PR implements only escape_html_text (Req 1) and adds a test for it, but does not add filter_attrs(attrs, allowed_keys) or any tests/logic for rejecting 'on*' keys, filtering javascript: values, case-normalizing allowed keys, and HTML-escaping kept values.",
+  "target_issue": "Missing implementation of Req 2: filter_attrs (no corresponding code or tests in src/html_escape.py / tests/test_html_escape.py).",
+  "thoughts": [
+    "Need to verify diff/tests in contrib/fix implement both T17 requirements; if Req 2 missing or tests fail, hold.",
+    "Diff only adds escape_html_text using html.escape; no filter_attrs implementation and no tests for Req 2. Must hold to avoid missing ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.837,
+  "prompt_tokens": 1341,
+  "output_tokens": 200,
+  "estimated_usd": 0.000536,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

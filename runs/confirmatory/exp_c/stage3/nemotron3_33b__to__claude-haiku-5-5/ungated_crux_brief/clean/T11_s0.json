@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "src/cursor_hmac.py uses hmac.new(secret, offset_str, hashlib.sha256) for encode and decode, verifies with hmac.compare_digest, and raises ValueError('invalid_cursor') for tampered signatures and negative offsets. The legacy clamp_limit signature is preserved, and run_pytest confirms exit 0 with 3 passed and 0 failed. Nit for follow-up: str.isdigit() accepts Unicode digits such as '\u00b2', which int() rejects with a non-'invalid_cursor' ValueError; switching to a check like raw_off.isascii() and raw_off.isdigit() would close this.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report and advisory brief are unverified claims, so I need to inspect the actual diff for HMAC-SHA256 and constant-time comparison before deciding.",
+    "The diff uses hmac.new with hashlib.sha256 and hmac.compare_digest, which covers Req 1 and Req 2's constant-time requirement. I'll confirm the test results myself rather than rely on the contributor's report.",
+    "The diff implements HMAC-SHA256 with hmac.compare_digest, rejects negative and tampered offsets with 'invalid_cursor', keeps clamp_limit unchanged, and pytest passes 3/3 in the worktree. One minor edge case remains: non-ASCII digits like '\u00b2' pass isdigit() and raise a different ValueError message, but that doesn't block the merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.903,
+  "prompt_tokens": 7360,
+  "output_tokens": 1568,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

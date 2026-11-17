@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`credit_with_tax_cents` has an extra nonpositive-input clamp not requested by the ticket, so it does not implement the required formula for all inputs.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the change and relevant tests to verify both requirements and preservation of the legacy API.",
+    "I\u2019ll review the patch against the ticket requirements and existing behavior.",
+    "The tax helper adds an unrequested special case for nonpositive net credits, which does not implement the specified formula for negative inputs. I\u2019ll run the suite as an additional check, though existing tests may not cover that boundary.",
+    "The suite passes, and the legacy function signature is preserved, but `credit_with_tax_cents` returns 0 for every nonpositive net credit instead of applying Req 2\u2019s specified formula. For example, with `net_credit_cents=-100` and `tax_bps=0`, the formula yields -100; this implementation yields 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.024,
+  "prompt_tokens": 3258,
+  "output_tokens": 769,
+  "estimated_usd": 0.005067,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

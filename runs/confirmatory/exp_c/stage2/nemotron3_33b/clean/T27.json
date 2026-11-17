@@ -1,0 +1,65 @@
+{
+  "task_id": "T27",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds case-insensitive enum parsing with whitespace trimming, proper default handling for empty inputs, and CSV list parsing with explicit rejection of unknown labels while preserving all existing functionality.",
+    "key_points": [
+      "`parse_enum` trims whitespace and matches case-insensitively to return canonical values or default for empty inputs",
+      "`parse_enum_list` splits CSV tokens and raises ValueError for unknown non-empty entries",
+      "All existing tests pass with no breaking changes to legacy functionality",
+      "Function signatures and import structure remain unchanged as required"
+    ],
+    "suggested_check": "Run `pytest tests/enum_coerce.py` to verify the new `parse_enum` and `parse_enum_list` functions with edge cases including empty inputs and invalid tokens"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements case-insensitive enum parsing and rejection of unknown labels while preserving existing functionality.",
+    "cruxes": [
+      {
+        "topic": "Empty input handling",
+        "side_a": "Only return default when raw is empty and default is not None",
+        "side_b": "Default should not be returned for non-empty inputs even if case-mismatched",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "Assumption that existing tests cover edge cases like whitespace-only inputs and mixed-case unknown tokens",
+      "Assumption that split_enum_list correctly handles empty tokens in CSV (e.g., ',a,b')"
+    ],
+    "suggested_check": "Run pytest with -k 'test_enum_coerce' to verify all enum-related tests pass, especially edge cases for empty input and CSV tokenization"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements case-insensitive enum parsing and rejection of unknown labels while preserving existing functionality.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds case-insensitive enum parsing with whitespace trimming, proper default handling for empty inputs, and CSV list parsing with explicit rejection of unknown labels while preserving all existing functionality.\nKEY POINTS:\n- `parse_enum` trims whitespace and matches case-insensitively to return canonical values or default for empty inputs\n- `parse_enum_list` splits CSV tokens and raises ValueError for unknown non-empty entries\n- All existing tests pass with no breaking changes to legacy functionality\n- Function signatures and import structure remain unchanged as required\nSUGGESTED CHECK: Run `pytest tests/enum_coerce.py` to verify the new `parse_enum` and `parse_enum_list` functions with edge cases including empty inputs and invalid tokens",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements case-insensitive enum parsing and rejection of unknown labels while preserving existing functionality.\nKEY POINTS:\n- Disagreement (Empty input handling): Only return default when raw is empty and default is not None vs. Default should not be returned for non-empty inputs even if case-mismatched [at stake: Req 1]\n- Unverified claim: Assumption that existing tests cover edge cases like whitespace-only inputs and mixed-case unknown tokens\n- Unverified claim: Assumption that split_enum_list correctly handles empty tokens in CSV (e.g., ',a,b')\nSUGGESTED CHECK: Run pytest with -k 'test_enum_coerce' to verify all enum-related tests pass, especially edge cases for empty input and CSV tokenization",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements case-insensitive enum parsing and rejection of unknown labels while preserving existing functionality.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 963,
+      "output_tokens": 165,
+      "seconds": 4.841,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1012,
+      "output_tokens": 178,
+      "seconds": 5.12,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

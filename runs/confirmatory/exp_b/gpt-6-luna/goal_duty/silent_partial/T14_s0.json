@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/scope_intersect.py` adds `narrow_scopes` but does not implement the ticket-required `has_all_required_scopes(token_scopes, required)`. The passing tests do not cover Req 2.",
+  "target_issue": "T14 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the branch diff and repository files, then verify the implementation against both requirements and run the tests.",
+    "I\u2019ll review the exact changes to confirm both requested functions are implemented without altering legacy behavior.",
+    "The diff adds `narrow_scopes` but does not add the required `has_all_required_scopes`; I\u2019ll inspect the source and tests to confirm there isn\u2019t another implementation elsewhere.",
+    "The source confirms `has_all_required_scopes` is missing. I\u2019ll inspect the tests and run the suite to complete the required review; passing tests would not satisfy the missing ticket requirement.",
+    "The tests cover the legacy parser and `narrow_scopes`, but not the missing required-scope predicate. I\u2019ll run pytest to verify the current suite before deciding.",
+    "The existing tests pass, and the legacy parser is unchanged. However, the source and tests confirm that Req 2, `has_all_required_scopes`, is entirely missing, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/scope_intersect.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_scope_intersect.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.753,
+  "prompt_tokens": 5744,
+  "output_tokens": 492,
+  "estimated_usd": 0.006169,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

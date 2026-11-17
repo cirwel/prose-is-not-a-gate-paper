@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/link_scheme.py adds only is_safe_url; there is no sanitize_markdown_link(label, url) definition, so Req 2 (return '[clean_label](url)' when safe, or plain clean_label when unsafe) is not implemented. The two added tests cover only is_safe_url, so the missing function is untested and the contributor's 'ready_for_review' status is inaccurate.",
+  "target_issue": "Req 2: sanitize_markdown_link(label, url) missing from src/link_scheme.py",
+  "thoughts": [
+    "The advisory brief conflicts on whether sanitize_markdown_link exists, and the contributor report is not evidence. I'll check the actual diff before deciding.",
+    "The diff confirms `sanitize_markdown_link` is absent from src/link_scheme.py, so Req 2 is unmet. The contributor report and the advisory brief's claim that it is implemented are not supported by the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.245,
+  "prompt_tokens": 4091,
+  "output_tokens": 448,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

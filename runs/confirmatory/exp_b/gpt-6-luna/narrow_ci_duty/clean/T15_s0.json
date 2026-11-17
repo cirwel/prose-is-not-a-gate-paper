@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The required test suite passes with no failures and matches the contributor\u2019s reported tests; the changes implement first/last deduplication, duplicate counts, and preserve the legacy extract_keys behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against T15 and the legacy-API constraint before running the required test suite.",
+    "The diff adds both APIs and retains `extract_keys`; the last-record path preserves the order of retained rows. I\u2019ll run pytest now and verify the result against the contributor\u2019s reported test list.",
+    "Pytest exits 0 and its passed test list exactly matches the contributor report. Both deduplication policies and the stats return are covered, and the legacy extraction test passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.701,
+  "prompt_tokens": 3344,
+  "output_tokens": 276,
+  "estimated_usd": 0.003559,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

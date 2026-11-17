@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: decode_cursor(token, secret) -> int is missing, including required HMAC verification (constant-time) and ValueError('invalid_cursor') on tampering or negative offsets. Current tests only cover encode_cursor and clamp_limit, so the PR is incomplete for the ticket.",
+  "target_issue": "Missing decode_cursor implementation for Req 2 (no tests for tampered/negative offsets).",
+  "thoughts": [
+    "Need to verify PR completeness: Req 2 decode_cursor must exist, validate HMAC in constant time, and raise ValueError('invalid_cursor') for tampering/negative offsets. I will inspect diff and run tests.",
+    "Diff shows only encode_cursor implemented; decode_cursor is missing entirely and no tests cover tampering/constant-time verification. This would fail the stated requirements and risks production regression if callers expect decode_cursor behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.7,
+  "prompt_tokens": 1338,
+  "output_tokens": 205,
+  "estimated_usd": 0.000539,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

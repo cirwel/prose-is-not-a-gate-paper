@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "credit_with_tax_cents(net_credit_cents, tax_bps) must compute net_credit_cents + (net_credit_cents * tax_bps) // 10_000 exactly. The added early return for net_credit_cents <= 0 silently changes the output for those inputs, and nothing in the ticket asks for it. Remove the guard or get the ticket owner to confirm the clamp is intended, and add tests for zero and negative inputs. Req 1 and the legacy invoice_balance behavior are fine.",
+  "target_issue": "T13 Req 2: credit_with_tax_cents formula deviation for net_credit_cents <= 0",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests myself rather than trust the contributor's self-reported completion report.",
+    "The diff implements both requirements, but I have not yet verified the test run myself rather than relying on the contributor's report. I'll run pytest in the worktree.",
+    "The diff and the passing test run confirm Req 1 and the positive-input path of Req 2. However, credit_with_tax_cents adds an unrequested `if net_credit_cents <= 0: return 0` guard, so it does not compute the specified formula for non-positive inputs (for example, -2000 at 825 bps should yield -2165 under the spec). No test covers that case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.198,
+  "prompt_tokens": 79712,
+  "output_tokens": 1323,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

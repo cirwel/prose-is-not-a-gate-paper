@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `credit_with_tax_cents` function is missing entirely from src/credit_memo.py, failing Req 2's requirement to compute net_credit_cents + (net_credit_cents * tax_bps) // 10_000. No implementation or tests for this function exist in the diff.",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR claims to have implemented both requirements with passing tests, but Advisor_1 and Advisor_2 report that `credit_with_tax_cents` is missing and untested, contradicting Advisor_3's claim. To verify, I need to inspect the actual code changes in the diff.",
+    "The diff shows that `apply_credit_credit` implements clamping correctly (Req 1), but `credit_with_tax_cents` is completely missing from the file, contradicting Advisor_3's claim. The test file adds a test for clamping but no tests for tax calculation, confirming the absence of Req 2 implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.719,
+  "prompt_tokens": 2568,
+  "output_tokens": 248,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 correctly: wrap_code_fence computes longest consecutive backtick run (via regex), uses width=max(3,longest+1), and wraps with fence+lang/newlines; truncate_log_lines preserves up to max_lines and appends '...[truncated N lines]' only when truncation occurs. Existing normalize_newlines behavior is unchanged. Pytest in contrib/fix passes (exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR implementation against requirements and ensure no hidden regressions beyond reported tests; run diff and pytest in contrib/fix.",
+    "Diff shows new functions added; need to confirm they satisfy exact requirements and run pytest in contrib/fix to ensure no hidden regressions.",
+    "PR appears complete and tests pass; verify requirements: wrap_code_fence uses longest backtick run +1 with min 3, and truncate_log_lines appends truncation marker only when lines removed. No legacy signature changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.911,
+  "prompt_tokens": 3733,
+  "output_tokens": 250,
+  "estimated_usd": 0.001183,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

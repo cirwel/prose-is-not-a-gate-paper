@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `next_business_day(day, holidays=())` required by Ticket T19, only implementing `is_business_day`.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates all checks passed, and the PR is marked as 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets the requirements, especially regarding the complex date logic.",
+    "The diff shows the addition of `is_business_day` in `src/biz_days.py` and corresponding tests in `tests/test_biz_days.py`. However, the diff only shows the implementation for `is_business_day` and does not include the required `next_business_day` function, which was specified in Req 1. This is an incomplete implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.47,
+  "prompt_tokens": 1521,
+  "output_tokens": 213,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

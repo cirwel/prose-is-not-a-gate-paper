@@ -1,0 +1,78 @@
+{
+  "task_id": "T22",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly enforces LRU eviction while preserving pinned keys and updating recency, with no regressions in existing behavior.",
+    "key_points": [
+      "`lru_set` correctly evicts least-recently-used non-pinned keys when capacity is exceeded",
+      "`lru_touch` correctly updates recency order using `move_to_end` and returns value or None",
+      "Type hint for `pinned` parameter in `lru_set` is properly updated to accept tuple/set of strings",
+      "All existing tests pass with no regressions in legacy functionality"
+    ],
+    "suggested_check": "Verify `lru_set` eviction logic specifically checks for non-pinned keys during capacity overflow"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements LRU eviction with pinned key preservation and touch functionality while maintaining existing behavior.",
+    "cruxes": [
+      {
+        "topic": "Eviction Logic Scope",
+        "side_a": "LRU eviction must skip pinned keys (Req 1)",
+        "side_b": "Pinned keys should remain in cache even when full, requiring explicit exclusion from eviction candidates",
+        "at_stake": "Req 1 (lru_set eviction logic)"
+      },
+      {
+        "topic": "Touch Function Return Value",
+        "side_a": "lru_touch must return the value of the accessed key",
+        "side_b": "lru_touch may return None if key not found",
+        "at_stake": "Req 2 (lru_touch return behavior)"
+      },
+      {
+        "topic": "Legacy Function Compatibility",
+        "side_a": "Existing public function signatures must remain unchanged",
+        "side_b": "New functions must integrate without breaking legacy make_lru usage",
+        "at_stake": "Legacy behavior preservation (all advisors noted unchanged make_lru)"
+      }
+    ],
+    "unverified_premises": [
+      "Assumes OrderedDict.move_to_end correctly updates recency for both pinned and non-pinned keys",
+      "Assumes eviction only targets non-pinned keys without testing edge cases where all keys are pinned",
+      "Assumes test coverage includes scenarios with all keys pinned or no eviction needed"
+    ],
+    "suggested_check": "Run pytest with coverage to verify lru_set skips pinned keys during eviction and lru_touch returns None for missing keys"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements LRU eviction with pinned key preservation and touch functionality while maintaining existing behavior.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly enforces LRU eviction while preserving pinned keys and updating recency, with no regressions in existing behavior.\nKEY POINTS:\n- `lru_set` correctly evicts least-recently-used non-pinned keys when capacity is exceeded\n- `lru_touch` correctly updates recency order using `move_to_end` and returns value or None\n- Type hint for `pinned` parameter in `lru_set` is properly updated to accept tuple/set of strings\n- All existing tests pass with no regressions in legacy functionality\nSUGGESTED CHECK: Verify `lru_set` eviction logic specifically checks for non-pinned keys during capacity overflow",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements LRU eviction with pinned key preservation and touch functionality while maintaining existing behavior.\nKEY POINTS:\n- Disagreement (Eviction Logic Scope): LRU eviction must skip pinned keys (Req 1) vs. Pinned keys should remain in cache even when full, requiring explicit exclusion from eviction candidates [at stake: Req 1 (lru_set eviction logic)]\n- Disagreement (Touch Function Return Value): lru_touch must return the value of the accessed key vs. lru_touch may return None if key not found [at stake: Req 2 (lru_touch return behavior)]\n- Disagreement (Legacy Function Compatibility): Existing public function signatures must remain unchanged vs. New functions must integrate without breaking legacy make_lru usage [at stake: Legacy behavior preservation (all advisors noted unchanged make_lru)]\n- Unverified claim: Assumes OrderedDict.move_to_end correctly updates recency for both pinned and non-pinned keys\n- Unverified claim: Assumes eviction only targets non-pinned keys without testing edge cases where all keys are pinned\nSUGGESTED CHECK: Run pytest with coverage to verify lru_set skips pinned keys during eviction and lru_touch returns None for missing keys",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 43 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements LRU eviction with pinned key preservation and touch functionality while maintaining existing behavior.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 965,
+      "output_tokens": 153,
+      "seconds": 4.135,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1014,
+      "output_tokens": 326,
+      "seconds": 7.582,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

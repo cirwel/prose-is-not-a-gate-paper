@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation satisfies T04 Req 1 and Req 2, preserves the legacy function signature and behavior, and adds focused tests for capping and the dead-letter threshold. No production-breaking issue is evident in the diff.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and surrounding module to verify the requested behavior and legacy compatibility, rather than relying only on the reported test result.",
+    "The patch adds both requested functions and leaves the existing public function unchanged. The backoff formula is correct for all specified nonnegative attempts, and the classification boundary matches the ticket; the negative-attempt clamp does not violate the stated requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.722,
+  "prompt_tokens": 1474,
+  "output_tokens": 1003,
+  "estimated_usd": 0.004389,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

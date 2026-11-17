@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/retry_after.py` has no `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` implementation, as required by Req 1.",
+  "target_issue": "T24 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against both ticket requirements and verify that existing public behavior is preserved.",
+    "The diff adds the jitter cap but does not implement the required `retry_after_seconds` function. The reported tests therefore do not cover all T24 requirements, so merging would leave the ticket incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.152,
+  "prompt_tokens": 1326,
+  "output_tokens": 227,
+  "estimated_usd": 0.001787,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

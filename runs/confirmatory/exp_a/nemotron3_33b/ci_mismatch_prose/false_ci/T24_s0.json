@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "test_retry_after_seconds fails because 2.1/2.0=1.05 ceil=2 but returns 1; test_cap_backoff_delay fails because negative input -3.0 returns -3.0 instead of clamped 0.0",
+  "target_issue": "tests/test_retry_after_seconds, tests/ test_cap_backoff_delay",
+  "thoughts": [
+    "The contributor claims 0 test failures, but the automated evidence check shows a mismatch, indicating potential hidden issues. I need to verify the actual test results in the worktree.",
+    "The pytest run shows 2 failed tests: test_retry_after_seconds and test_cap_backoff_delay, indicating the implementation violates the specified requirements. The failures confirm the logic is incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.666,
+  "prompt_tokens": 1890,
+  "output_tokens": 190,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

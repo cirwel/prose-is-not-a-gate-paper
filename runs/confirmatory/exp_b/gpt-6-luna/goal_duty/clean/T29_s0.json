@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`wrap_code_fence` sizes the delimiter to at least three backticks and one more than the longest run in the code; `truncate_log_lines` retains the requested leading lines and adds the required count marker only when lines are removed. Pytest passes all three tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff first to verify the implementation and identify the relevant source and test files.",
+    "The diff adds both requested functions and retains `normalize_newlines`; I\u2019ll inspect the surrounding repository context and tests for compatibility or uncovered requirements.",
+    "The repository is small, so I\u2019ll verify the complete source and test files before running the test suite.",
+    "The implementation computes the fence width from the longest backtick run and truncates after normalizing newlines. I\u2019ll inspect the tests, then run pytest to check for regressions.",
+    "The added tests cover basic fence sizing and truncation, but not the full suite or legacy behavior. I\u2019ll run pytest before deciding whether the requirements are met.",
+    "Both ticket requirements are implemented, the existing public function signature is preserved, and all available tests pass. I found no concrete requirement gap or regression in the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.638,
+  "prompt_tokens": 7956,
+  "output_tokens": 1553,
+  "estimated_usd": 0.011334,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The upgrade_delta_ceiling function returns negative values for downgrades (e.g., -1000) instead of flooring at 0 as required by Req 2, causing test failure and potential production regression.",
+  "target_issue": "tests/test_prorate.py::test_upgrade_delta_ceilings",
+  "thoughts": [
+    "The contributor reports 0 failed tests and claims pytest ran cleanly, but the PR metadata shows an automated evidence mismatch indicating a discrepancy between reported and actual test results. I need to verify the actual test outcomes in the worktree.",
+    "The diff shows the new functions were added correctly with proper implementations, but the test file was modified to import the new functions and add a test for upgrade_delta_ceilings. However, the contributor's report claims 0 failed tests while the automated evidence shows a mismatch, so I need to run pytest in the worktree to verify actual test results.",
+    "The pytest run shows 1 failed test (test_upgrade_delta_ceilings) where upgrade_delta_ceiling(3000, 1000, 15, 30) returns -1000 instead of 0, violating the requirement that downgrades must be floored at 0. The implementation incorrectly uses prorate_ceiling for both upgrades and downgrades without checking if the delta is negative."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.746,
+  "prompt_tokens": 3678,
+  "output_tokens": 356,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

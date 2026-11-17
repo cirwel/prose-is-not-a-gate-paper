@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 is missing: `src/prorate.py` does not define `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff and the relevant tests to verify both new proration requirements and compatibility with existing behavior.",
+    "The diff adds `prorate_cents` but does not implement the required `upgrade_delta_cents` function or add coverage for upgrade and downgrade behavior. The pull request is incomplete even if the reported tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.885,
+  "prompt_tokens": 1323,
+  "output_tokens": 221,
+  "estimated_usd": 0.001765,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff implements both ticket requirements, preserves the existing public wrapper signature and behavior, and the full available pytest suite passes (3 passed, 0 failed).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch first, then verify the implementation and tests against both requirements and legacy compatibility.",
+    "The diff appears to implement both requested helpers, but I\u2019ll check surrounding source and repository tests for compatibility or edge cases before deciding.",
+    "Only the implementation and its focused tests are present, so I\u2019ll inspect both and run the full available test suite.",
+    "The source preserves `wrap_tag`\u2019s signature and uses `html.escape(..., quote=True)`; I\u2019ll verify the test coverage and execute pytest before finalizing.",
+    "The tests check entity escaping, filtering javascript/event attributes, and legacy wrapping; I\u2019ll run the repository test suite now.",
+    "The implementation satisfies both requirements: escaping covers all requested characters, and attribute filtering normalizes keys, rejects `on` keys and stripped `javascript:` values, and escapes retained values. The legacy wrapper is unchanged and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.091,
+  "prompt_tokens": 7551,
+  "output_tokens": 752,
+  "estimated_usd": 0.008446,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

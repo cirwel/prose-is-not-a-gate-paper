@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR updates allow_request to compute an effective per-tenant limit from overrides[tenant] when provided, and adds clamped weight (>=1) by counting weight copies of now against the active window limit. Pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to ensure the changes meet both requirements without breaking legacy behavior.",
+    "Diff shows allow_request signature changed and logic updated; I will run the full pytest suite in the contrib/fix worktree to confirm no regressions and that weighted/override behavior matches expectations.",
+    "All tests pass and the implementation directly satisfies Req 1 and Req 2 while preserving legacy behavior for calls that omit the new optional parameters."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.172,
+  "prompt_tokens": 2828,
+  "output_tokens": 206,
+  "estimated_usd": 0.000913,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

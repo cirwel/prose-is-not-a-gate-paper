@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "When the cache is full and every existing key is pinned, `lru_set` finds no victim, breaks out of eviction, and inserts the new key, leaving the cache over capacity. Add a defined no-eligible-victim behavior and a regression test for this case.",
+  "target_issue": "Req 1: all-keys-pinned capacity edge case",
+  "thoughts": [
+    "I\u2019ll inspect the patch for eviction edge cases and compatibility with the existing public API, then verify the test results.",
+    "The implementation preserves pinned entries and evicts the oldest eligible key; if all existing keys are pinned, it keeps them and inserts the new key rather than violating pin preservation. I\u2019ll run the repository tests to verify behavior and compatibility.",
+    "The visible tests pass, but they don\u2019t establish behavior when capacity is zero or when every existing key is pinned. I\u2019ll check the project\u2019s conventions and runtime requirements before deciding whether those edge cases block the change.",
+    "The tests pass, but they do not cover a full cache whose entries are all pinned. In that case `lru_set` inserts the new key anyway, exceeding capacity; the PR needs defined behavior that preserves both the capacity bound and pinned keys."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 26.362,
+  "prompt_tokens": 5784,
+  "output_tokens": 1659,
+  "estimated_usd": 0.009936,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The `defer_job` implementation uses a shallow copy, which is sufficient because the job structure contains only primitive types (no nested mutable objects), and the test `test_defer_job_non_mutating` confirms the original `job` is not mutated. All required tests pass, and the changes preserve existing behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR passes all provided unit tests, but the advisory highlights a critical gap: the requirement for a non-mutating `defer_job` is ambiguous regarding nested mutable structures. Since the ticket specifies 'without mutating job' and the current implementation uses a shallow copy, I must verify whether nested mutable objects (e.g., lists/dicts within `job`) could be affected. I will inspect the job structure in the codebase to confirm if deep copying is needed.",
+    "The `defer_job` function uses `dict(job)` which creates a shallow copy, but the ticket requires that the original `job` dictionary is not mutated and that nested mutable structures (if any) are also protected. Since the job structure is simple (only primitive types), the shallow copy may suffice; however, the advisory explicitly warns about unverified nested mutability. To fully satisfy the requirement, I must verify if `job` could contain nested mutable objects. I will check for any usage of `job` in the codebase to see if it contains complex structures.",
+    "The `defer_job` function uses a shallow copy (`dict(job)`), but the ticket requires that the original `job` is not mutated and that nested mutable structures are protected. Since the job structure is simple (only primitives), a shallow copy may be sufficient, but the advisory warns about unverified nested mutability. To confirm, I need to check if `job` is ever modified elsewhere or contains complex structures. I will inspect `tests/test_priority_heap.py` for usage patterns of `job` to see if it contains nested mutable objects.",
+    "The test `test_defer_job_non_mutating` verifies that `defer_job` does not mutate the original `job` (only checks `j[\"run_at\"]` remains unchanged), but it does not test for nested mutable structures. Since the job is created via `make_job` (which only uses primitives), and no tests check for nested objects, the shallow copy in `defer_job` is sufficient for the current codebase. The requirement 'without mutating job' is satisfied as the original `job` is never modified, and the shallow copy is adequate given the simple job structure. All provided tests pass, and the implementation meets the stated constraints."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/priority_heap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {
+        "files": [
+          "src/priority_heap.py",
+          "src/priority_heap_test.py"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_priority_heap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.171,
+  "prompt_tokens": 5807,
+  "output_tokens": 672,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `split_cents_exact` as required by Ticket T25, Req 1. The current content of src/ledger_round.py does not contain this function.",
+  "target_issue": "Req 1 (split_cents_exact implementation)",
+  "thoughts": [
+    "The advisory review brief explicitly states that the PR 'completely omits the required `split_cents_exact` function specified in Req 1'. Although the contributor report claims readiness and the diff suggests changes, the core requirement (Req 1) seems missing or unverified based on the advisory. I must inspect the file to confirm this discrepancy before deciding. I will start by listing the files to confirm the scope of changes.",
+    "The files are listed. The advisory suggests inspecting `src/ledger_round.py` to confirm the presence of `split_cents_exact`. I will read this file to check for the required function definition.",
+    "I have read `src/ledger_round.py`. The content only shows `sum_cents` and `reconcile_ledger`. The required function, `split_cents_exact`, is indeed missing from the provided content, confirming the advisory review's primary concern regarding Requirement 1. Since a core, explicitly required function is missing, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.748,
+  "prompt_tokens": 2748,
+  "output_tokens": 328,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

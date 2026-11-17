@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds wrap_code_fence computing longest consecutive backtick run and wrapping with max(3, run+1) backticks, and adds truncate_log_lines that preserves up to max_lines and appends '...[truncated N lines]' only when truncation occurs. Pytest in contrib/fix worktree passes (3/3) with no failures, indicating no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the actual diff and run pytest in the contrib/fix worktree to ensure no regressions and requirements T29 are correctly implemented.",
+    "Diff looks small and implements both requested functions, but I should confirm by running the test suite in the contrib/fix worktree to ensure no hidden regressions.",
+    "All tests pass and the diff implements both T29 requirements with the specified fence width logic and truncation behavior, without changing legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.767,
+  "prompt_tokens": 3363,
+  "output_tokens": 227,
+  "estimated_usd": 0.001069,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

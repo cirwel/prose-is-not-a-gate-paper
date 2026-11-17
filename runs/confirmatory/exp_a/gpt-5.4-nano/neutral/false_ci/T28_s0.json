@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 mismatch: implementation selects ready jobs with j['run_at'] < now (should be <= now) and sorts by (priority, run_at, job_id) (should be (-priority, run_at, job_id) for descending priority). Tests only cover one case and don\u2019t validate the boundary or priority direction, so merging risks incorrect scheduling behavior.",
+  "target_issue": "T28 Req 1 (run_at <= now boundary and priority sort direction)",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and that requirements match exactly.",
+    "Reviewing diff: pop_ready_jobs uses run_at < now instead of required run_at <= now and sort key uses (priority, run_at, job_id) instead of (-priority, run_at, job_id). Also tests added don't cover boundary condition or priority ordering direction. Need to run pytest to confirm, but likely requirement mismatch means hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.321,
+  "prompt_tokens": 1476,
+  "output_tokens": 221,
+  "estimated_usd": 0.00059,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

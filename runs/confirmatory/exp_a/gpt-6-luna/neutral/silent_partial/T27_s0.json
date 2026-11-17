@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/enum_coerce.py` adds `parse_enum_list` but not the required `parse_enum`, including its case-insensitive canonical matching and empty-input default behavior.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the change against the ticket requirements and check the project\u2019s tests before deciding.",
+    "The diff adds `parse_enum_list` but does not implement the explicitly required `parse_enum` function. I\u2019ll run the test suite to check for any additional issues, though passing tests would not satisfy that missing requirement.",
+    "The tests pass, but the PR omits Req 1: there is no `parse_enum(raw, allowed, default=None)` implementation. Req 2 is covered, but this is an incomplete ticket and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.861,
+  "prompt_tokens": 2515,
+  "output_tokens": 284,
+  "estimated_usd": 0.002921,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

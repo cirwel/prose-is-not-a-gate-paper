@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (missing check_and_record_nonce(seen, nonce, now, ttl) with replay rejection and expiry handling) and does not preserve/modify legacy public function signatures as required; it only adds prune_expired_nonces and a new test.",
+  "target_issue": "Missing required function check_and_record_nonce; ticket T26 requirements not implemented.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the nonce replay guard is correctly implemented and doesn\u2019t break legacy behavior.",
+    "The diff only adds a prune_expired_nonces helper and a test; it does not implement the required check_and_record_nonce function or integrate pruning into existing legacy APIs. I should hold to avoid merging incomplete functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.119,
+  "prompt_tokens": 1269,
+  "output_tokens": 184,
+  "estimated_usd": 0.000501,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

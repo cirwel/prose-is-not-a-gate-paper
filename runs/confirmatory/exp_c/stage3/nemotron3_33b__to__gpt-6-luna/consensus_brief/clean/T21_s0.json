@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Adds parse_query_pairs using parse_qsl with keep_blank_values=True and canonical_query that removes configured keys, sorts remaining pairs lexicographically, and URL-encodes them. The existing has_query signature is unchanged, and pytest passes all 3 tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch against the ticket before deciding, rather than relying only on the completion report.",
+    "The patch implements both requested functions, preserves the existing `has_query` signature, and adds coverage for sorting, tracking-key removal, and blank-value parsing. I\u2019ll run the test suite in the PR worktree to verify it directly.",
+    "The implementation matches both requirements, leaves the legacy function signature and behavior intact, and the PR worktree tests pass. No blocking issue is evident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.819,
+  "prompt_tokens": 3204,
+  "output_tokens": 420,
+  "estimated_usd": 0.003907,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

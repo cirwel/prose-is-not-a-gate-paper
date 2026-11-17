@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds release_lease(leases, lease_id) that removes lease_id idempotently and extends acquire_lease with shared_reserve default=0, enforcing capacity as limit+shared_reserve. Pytest suite passes with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that Req 1/2 are correctly implemented without breaking legacy signatures.",
+    "Diff shows new release_lease and modified acquire_lease with shared_reserve. Need to ensure semantics match requirements and run pytest to confirm no hidden regressions.",
+    "All tests pass and the implementation matches Req 1 (idempotent removal) and Req 2 (allow overflow only when limit exhausted via effective capacity limit+shared_reserve). No legacy signature break: acquire_lease keeps original positional args and adds shared_reserve with default."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.181,
+  "prompt_tokens": 2819,
+  "output_tokens": 229,
+  "estimated_usd": 0.000933,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T12_s0.json"
+}

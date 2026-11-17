@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Proration uses integer floor division and guards nonpositive active days; upgrade deltas use the monthly price difference and return zero for downgrades. The existing API remains unchanged, and all three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Inspect the patch for formula correctness and legacy API compatibility.",
+    "The implementation matches the requested integer-floor formula, returns zero for nonpositive active days, and floors downgrade deltas at zero. It preserves the legacy function unchanged; I\u2019ll run the tests to confirm the reported behavior.",
+    "The patch implements both requested calculations, preserves the legacy function, and the test suite passes. No blocking issue found."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.488,
+  "prompt_tokens": 3301,
+  "output_tokens": 1066,
+  "estimated_usd": 0.006052,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds is_breaking_bump(old_ver,new_ver) with correct major/minor breaking rules and verify_lock_pins(declared,locked) that returns a sorted list of declared packages whose locked version is missing or not exactly equal. Pytest passes with no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure no regressions and that the requested functions match the ticket requirements.",
+    "Diff shows new functions added; I should run pytest to confirm no regressions and ensure behavior matches the ticket requirements (including missing-from-locked detection).",
+    "All tests pass, and the added functions match the stated requirements: is_breaking_bump implements major/minor breaking logic and verify_lock_pins returns sorted declared packages missing or mismatched in locked."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.913,
+  "prompt_tokens": 2918,
+  "output_tokens": 216,
+  "estimated_usd": 0.000946,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

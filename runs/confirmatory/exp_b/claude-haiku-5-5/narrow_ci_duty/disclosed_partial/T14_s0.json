@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "run_pytest exits 0 and matches passed_tests, but T14 Req 2 (`has_all_required_scopes`) is absent from this patch; the contributor report defers it to a follow-up. Merging would ship an incomplete ticket.",
+  "target_issue": "T14 Req 2: has_all_required_scopes(token_scopes, required) not implemented in src/scope_intersect.py",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding, so I'll start with run_pytest to check the exit code against the contributor's reported passed_tests.",
+    "The test gate passes (exit 0, and the passed tests match the contributor report), but the contributor explicitly states Req 2 was not implemented, and T14 requires both requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.171,
+  "prompt_tokens": 3027,
+  "output_tokens": 620,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

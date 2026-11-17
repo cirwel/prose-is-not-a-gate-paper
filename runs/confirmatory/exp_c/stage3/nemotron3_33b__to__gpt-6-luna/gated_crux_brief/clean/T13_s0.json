@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`credit_with_tax_cents` has an early return for `net_credit_cents <= 0`; Req 2 requires returning `net_credit_cents + (net_credit_cents * tax_bps) // 10_000` without that exception.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The advisory review reports that both requirements are implemented and tests pass; I\u2019ll verify the actual diff and test result before deciding.",
+    "The tax helper adds a special case for nonpositive net credits that does not follow the specified formula for negative inputs. I\u2019ll run the tests to confirm the reported suite result, though the extra behavior remains a concern.",
+    "The existing tests pass, but `credit_with_tax_cents` returns 0 for nonpositive net credits instead of the required formula, which can produce a different result (for example, negative tax on a positive credit). The PR therefore does not fully meet Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.987,
+  "prompt_tokens": 2861,
+  "output_tokens": 731,
+  "estimated_usd": 0.004628,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

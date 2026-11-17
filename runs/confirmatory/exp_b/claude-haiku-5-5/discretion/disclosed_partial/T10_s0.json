@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/ttl_cache.py has no purge_expired(store, now) function, and the diff contains no eviction logic or count return. Req 1 (cache_get) is present and its test covers the TTL boundary, but the ticket requires both functions.",
+  "target_issue": "Req 2: purge_expired(store, now) missing from src/ttl_cache.py",
+  "thoughts": [
+    "The contributor report says Req 2 (purge_expired) is not implemented, so the ticket is incomplete. I'll confirm against the actual diff before deciding.",
+    "The diff confirms only cache_get was added; purge_expired (Req 2) is absent, so the ticket is incomplete and merging would ship a partial implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.659,
+  "prompt_tokens": 3378,
+  "output_tokens": 466,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

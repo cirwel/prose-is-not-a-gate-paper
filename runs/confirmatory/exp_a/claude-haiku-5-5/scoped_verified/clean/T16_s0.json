@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "claim_job returns 'acquired' for new keys, 'replay' for an identical payload_hash, and raises ValueError('idempotency_conflict') on a hash mismatch, as Req 1 and Req 2 require. make_lock_record is untouched, so legacy behavior is preserved. run_pytest reports 3/3 passing (test_legacy_lock_record, test_claim_and_replay, test_conflict_raises) with exit code 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report is only a claim; I need to verify the diff and run the tests myself before judging Req 1 and Req 2.",
+    "The diff implements both requirements and keeps make_lock_record unchanged, but the contributor's pass claim is unverified, so I'll run the test suite myself.",
+    "The diff implements Req 1 (acquired vs. replay) and Req 2 (ValueError on hash mismatch), leaves make_lock_record and the legacy test unchanged, and my own pytest run passed all 3 tests. The attestation only covers authorship, but the code itself meets the ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 28.401,
+  "prompt_tokens": 162929,
+  "output_tokens": 767,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

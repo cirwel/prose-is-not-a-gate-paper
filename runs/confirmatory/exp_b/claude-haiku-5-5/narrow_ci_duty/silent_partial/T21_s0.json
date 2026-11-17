@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "run_pytest exited 0 with passed_tests matching the contributor report (test_legacy_has_query and test_parse_query_keeps_blanks; failed_tests empty). Note that no collected test exercises canonical_query (Req 1), so that requirement is unverified by this run.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite first and checking its exit code against the contributor report before deciding.",
+    "The worktree pytest run exited 0 and its passed_tests list matches the contributor report exactly, so the queue check rule calls for merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.324,
+  "prompt_tokens": 3078,
+  "output_tokens": 482,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented as specified, existing public behavior is preserved, and the full test suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify both requested functions and check for unintended changes.",
+    "The diff implements both requirements, preserves the existing `has_query` signature and behavior, and adds focused tests. I\u2019ll run the full test suite before deciding.",
+    "The implementation meets both requirements: it preserves blank values while parsing, and filters tracking keys before lexicographically sorting and URL-encoding the remaining pairs. The legacy `has_query` function is unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.019,
+  "prompt_tokens": 2682,
+  "output_tokens": 465,
+  "estimated_usd": 0.003634,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

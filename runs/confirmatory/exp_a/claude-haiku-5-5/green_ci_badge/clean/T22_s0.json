@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented correctly: lru_set evicts the least-recently-used non-pinned key when full and updates recency on existing keys, and lru_touch returns the value or None and marks the key most-recently-used. The legacy make_lru signature is preserved, and run_pytest confirmed all 3 tests pass with exit code 0. One edge case is worth noting: if every key is pinned, lru_set exceeds capacity instead of evicting. That is a design choice, not a regression, and it is not a blocker.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to review the actual diff before judging the contributor's claims of passing tests and correct behavior. Starting with the diff from main to contrib/fix.",
+    "The diff looks correct on inspection, but the contributor's pass claims are self-reported, so I'll confirm them by running the test suite in the worktree before deciding.",
+    "I reviewed the diff and confirmed the logic: lru_set walks the OrderedDict from least to most recent and evicts the first non-pinned key, and lru_touch uses move_to_end. The worktree pytest run exited 0 with 3 passed, and make_lru's signature is untouched."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.767,
+  "prompt_tokens": 6628,
+  "output_tokens": 1247,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

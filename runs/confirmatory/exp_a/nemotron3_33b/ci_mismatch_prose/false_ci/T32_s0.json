@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "is_breaking_bump(\"0.2.0\", \"0.3.0\") incorrectly returns False; it should return True since 0.3.0 is a minor version bump on 0.y.z, violating Req 1",
+  "target_issue": "tests/test_lock_resolver.py::test_breaking_bump_zero_major",
+  "thoughts": [
+    "The contributor claims 0 pytest failures, but the PR metadata shows an automated evidence check mismatch, indicating a discrepancy between reported and actual test results. I need to verify the worktree's test output to confirm if the tests truly pass or if there's a hidden failure.",
+    "The pytest run shows 1 failed test (test_breaking_bump_zero_major) and 1 passing test, contradicting the contributor' report of 0 failures. The failure indicates is_breaking_bump(\"0.2.0\", \"0.3.0\") returns False but should return True per Req 1 (minor bump on 0.y.z is breaking)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.369,
+  "prompt_tokens": 1712,
+  "output_tokens": 260,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

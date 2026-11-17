@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds cache_get(store,key,now) with correct TTL check (expires_at > now) and purge_expired(store,now) that removes expired entries and returns the number evicted; existing cache_put signature/behavior is unchanged and pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements T10 are correctly implemented without breaking legacy APIs.",
+    "Diff shows new functions cache_get and purge_expired added with correct TTL semantics and no changes to existing cache_put signature. Need to ensure tests pass and no legacy behavior is broken.",
+    "All tests pass and the implementation matches Req 1 (returns value only when expires_at > now) and Req 2 (purges expired entries and returns count) without altering existing public signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.337,
+  "prompt_tokens": 2905,
+  "output_tokens": 214,
+  "estimated_usd": 0.00094,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/tiebreak_sort.py` adds `has_more_pages` but does not define the required `keyset_page` function; passing tests do not cover this missing functionality.",
+  "target_issue": "T23 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and run the test suite to verify the cursor ordering, strict tie-break filtering, pagination limit, and legacy behavior.",
+    "The diff adds `has_more_pages` but does not implement the required `keyset_page` function. I\u2019ll run the suite to check for regressions, though passing existing tests would not satisfy the missing requirement.",
+    "The existing tests pass, but the patch omits `keyset_page`, which is required to sort by `(-score, id)`, filter strictly after the cursor without skipping ties, and apply the limit. The pull request is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.526,
+  "prompt_tokens": 2305,
+  "output_tokens": 321,
+  "estimated_usd": 0.002871,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

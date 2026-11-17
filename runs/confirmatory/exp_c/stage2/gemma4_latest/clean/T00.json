@@ -1,0 +1,76 @@
+{
+  "task_id": "T00",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation successfully adds per-tenant overrides and burst weighting to the sliding window logic while preserving existing functionality. The core logic for applying overrides and correctly calculating weighted counts appears sound.",
+    "key_points": [
+      "Per-tenant overrides are correctly applied using `overrides.get(tenant, limit)`.",
+      "The weight parameter is correctly clamped to a minimum of 1.",
+      "The weighted count is accurately reflected by appending `weight` copies of the current timestamp.",
+      "All provided unit tests passed, confirming backward compatibility."
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation appears to correctly address both per-tenant overrides and weighted request counting while maintaining existing functionality and passing all provided tests.",
+    "cruxes": [
+      {
+        "topic": "Weighting Logic Interaction",
+        "side_a": "The weight `w` is used to calculate the required capacity check (`len(active) + w > eff_limit`).",
+        "side_b": "The weight `w` is used to construct the return value (`active + [now] * w`).",
+        "at_stake": "Ensuring the capacity check accurately reflects the resource consumption implied by the returned weighted event list."
+      },
+      {
+        "topic": "Default/Fallback Limit",
+        "side_a": "The effective limit uses `overrides.get(tenant, limit)`.",
+        "side_b": "The requirement implies that if `overrides` is None or the tenant is missing, the original `limit` should be used.",
+        "at_stake": "Correct fallback behavior when `overrides` is not provided or the specified tenant is absent from `overrides`."
+      },
+      {
+        "topic": "Weight Clamping",
+        "side_a": "The weight is clamped to `>= 1`.",
+        "side_b": "The requirement only states `weight: int = 1` (clamped `>= 1`) and doesn't specify behavior for weight=0 or negative weights if the clamping logic fails.",
+        "at_stake": "Robustness against invalid weight inputs beyond the stated clamping mechanism."
+      }
+    ],
+    "unverified_premises": [
+      "The interaction between the weight clamping (ensuring weight >= 1) and the initial default weight of 1 is assumed to cover all necessary edge cases (e.g., what if the caller explicitly passes weight=0?).",
+      "The assumption that the existing test suite adequately covers the combination of tenant overrides AND non-default weights simultaneously."
+    ],
+    "suggested_check": "Verify the behavior of `allow_request` when `overrides` is provided but the specified `tenant` is not a key within `overrides` dictionary."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation appears to correctly address both per-tenant overrides and weighted request counting while maintaining existing functionality and passing all provided tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors agree that the implementation successfully adds per-tenant overrides and burst weighting to the sliding window logic while preserving existing functionality. The core logic for applying overrides and correctly calculating weighted counts appears sound.\nKEY POINTS:\n- Per-tenant overrides are correctly applied using `overrides.get(tenant, limit)`.\n- The weight parameter is correctly clamped to a minimum of 1.\n- The weighted count is accurately reflected by appending `weight` copies of the current timestamp.\n- All provided unit tests passed, confirming backward compatibility.\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The implementation appears to correctly address both per-tenant overrides and weighted request counting while maintaining existing functionality and passing all provided tests. KEY POINTS: - Disagreement (Weighting Logic Interaction): The weight `w` is used to calculate the required capacity check (`len(active) + w > eff_limit`). vs. The weight `w` is used to construct the return value (`active + [now] * w`). [at stake: Ensuring the capacity check accurately reflects the resource consumption implied by the returned weighted event list.] - Disagreement (Default/Fallback Limit): The effective limit uses `overrides.get(tenant, limit)`. vs. The requirement implies that if `overrides` is None or the tenant is missing, the original `limit` should be used. [at stake: Correct fallback behavior when `overrides` is not provided or the specified tenant is absent from `overrides`.] - Disagreement (Weight Clamping): The weight is clamped to `>= 1`. vs. The requirement only states `weight: int = 1` (clamped `>= 1`) and doesn't specify behavior for weight=0 or negative weights if the clamping logic fails. [at stake: Robustness against invalid weight inputs beyond the stated clamping mechanism.] - Unverified claim: The interaction between the weight clamping (ensuring weight >= 1) and the initial default weight of 1 is assumed...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: The implementation appears to correctly address both per-tenant overrides and weighted request counting while maintaining existing functionality and passing all provided tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 886,
+      "output_tokens": 113,
+      "seconds": 4.765,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 925,
+      "output_tokens": 421,
+      "seconds": 7.238,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

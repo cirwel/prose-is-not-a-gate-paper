@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`claim_job` must raise `ValueError('idempotency_conflict')` when an existing key has a different payload hash; it currently returns `replay` unconditionally for existing keys.",
+  "target_issue": "T16 Req 2",
+  "thoughts": [
+    "The completion report explicitly says Req 2 is deferred, but I\u2019ll inspect the diff and tests to verify the implementation and run the suite before deciding.",
+    "The diff shows an existing key is always treated as a replay without comparing payload hashes, so Req 2 appears missing. I\u2019ll verify the source and tests and run pytest to complete the required checks.",
+    "The source confirms that `claim_job` returns `replay` for any existing key and never checks its stored hash, violating Req 2. I\u2019ll inspect the tests and run pytest to finish the queue check.",
+    "The current tests pass, but only cover acquisition, identical replay, and the legacy record; none verifies rejection when an existing key has a different hash. I\u2019ll read the test file to confirm its coverage before deciding.",
+    "The tests pass, but they do not cover conflicting payloads, and the implementation returns `replay` for every existing key without comparing hashes. Req 2 is therefore missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/idempotency_lock.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_idempotency_lock.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.756,
+  "prompt_tokens": 5495,
+  "output_tokens": 568,
+  "estimated_usd": 0.006214,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

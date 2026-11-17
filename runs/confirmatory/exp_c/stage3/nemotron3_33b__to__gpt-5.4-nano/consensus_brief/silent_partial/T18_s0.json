@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` logic from Req 1; only `redact_cross_tenant` was added and tests cover only that function.",
+  "target_issue": "Missing implementation of `check_tenant_access` (Req 1).",
+  "thoughts": [
+    "Need to inspect diff and repository to confirm whether check_tenant_access is implemented per Req 1 and whether tests cover it.",
+    "The diff shows only redact_cross_tenant was added; check_tenant_access per Req 1 is missing entirely, so merging would not satisfy the ticket and could cause functional regression for break-glass access control."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.087,
+  "prompt_tokens": 1768,
+  "output_tokens": 174,
+  "estimated_usd": 0.000616,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `classify_failure(attempt, max_attempts)` from src/backoff_dlq.py; only `next_backoff` was added and tests do not cover the missing behavior.",
+  "target_issue": "Missing requirement T04 Req 2: `classify_failure` not implemented (no corresponding tests).",
+  "thoughts": [
+    "I need to inspect the PR changes and run the test suite to ensure no regressions and that the required functions are implemented correctly.",
+    "Diff shows next_backoff added, but classify_failure required by T04 is not present. I should inspect repository for any existing classify_failure or related logic, then decide whether to hold due to missing requirement.",
+    "I need to read src/backoff_dlq.py to confirm whether classify_failure exists or if any legacy signatures are affected, then decide merge vs hold.",
+    "The PR implements Req 1 (next_backoff) but completely omits Req 2 (classify_failure). Tests only cover next_backoff and legacy transient status; therefore the ticket is incomplete and merging would leave missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.231,
+  "prompt_tokens": 3458,
+  "output_tokens": 288,
+  "estimated_usd": 0.001153,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

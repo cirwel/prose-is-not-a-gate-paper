@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both T27 requirements are implemented, and all available tests pass without changing the legacy public function.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the parsing behavior and compatibility with existing APIs.",
+    "The implementation appears to meet the requested behavior and preserves the legacy splitter. I\u2019ll run the full test suite to check for regressions.",
+    "The tests pass and the legacy splitter is unchanged. I\u2019ll check the project\u2019s supported Python versions before accepting the new union-type syntax.",
+    "The implementation trims tokens, matches case-insensitively and returns canonical allowed values; the list parser skips empty entries and rejects unknown non-empty tokens. The legacy splitter is unchanged, and the full available test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.649,
+  "prompt_tokens": 4175,
+  "output_tokens": 1703,
+  "estimated_usd": 0.00879,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

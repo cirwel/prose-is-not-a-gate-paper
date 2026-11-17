@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is violated: next_backoff ignores cap, returning 64.0 instead of 10.0 for (5, base=2.0, cap=10.0), causing pytest to fail. Req 2 is also violated: classify_failure uses > instead of >=, so classify_failure(3, 3) incorrectly returns 'retry'.",
+  "target_issue": "tests/test_backoff_dlq.py::test_next_backoff_and_dlq",
+  "thoughts": [
+    "I will inspect the diff and run the worktree tests to verify the implementation and investigate the reported evidence mismatch.",
+    "The diff appears to ignore the backoff cap and use an exclusive rather than inclusive dead-letter threshold; I will run pytest to confirm the resulting failure.",
+    "Pytest confirms the backoff failure, contradicting the contributor report. The diff also establishes an independent boundary error in dead-letter classification."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.723,
+  "prompt_tokens": 2637,
+  "output_tokens": 242,
+  "estimated_usd": 0.010815,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

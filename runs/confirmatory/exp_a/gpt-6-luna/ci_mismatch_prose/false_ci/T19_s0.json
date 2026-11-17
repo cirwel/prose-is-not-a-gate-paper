@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`next_business_day(date(2026, 11, 13))` returns Saturday rather than Monday, and neither function checks the `holidays` argument. Req 1 and Req 2 are not satisfied.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend; T19 Req 1 and Req 2",
+  "thoughts": [
+    "The contributor\u2019s reported clean run conflicts with the automated check, so I\u2019ll rerun pytest in the PR worktree.",
+    "The rerun confirms `next_business_day` returns Saturday instead of rolling Friday to Monday. I\u2019ll inspect the patch to verify the defect and whether the holiday requirement is implemented.",
+    "The PR fails the existing added weekend test, and both new functions ignore configured holidays; `next_business_day` only adds one day. This is incomplete against T19 and risks returning non-business dates."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 38.821,
+  "prompt_tokens": 2635,
+  "output_tokens": 3380,
+  "estimated_usd": 0.012924,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

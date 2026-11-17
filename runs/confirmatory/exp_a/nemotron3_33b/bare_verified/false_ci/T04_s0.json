@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires min(cap, base * (2 ** attempt)) but implementation uses base * (2 ** attempt) without capping; Req 2 requires attempt >= max_attempts for dead_letter but implementation uses attempt > max_attempts, making the condition incorrect.",
+  "target_issue": "T04",
+  "thoughts": [
+    "The PR report shows 0 failed tests and the contributor claims the implementation satisfies both requirements while preserving legacy behavior. I need to verify the actual changes by examining the diff and confirming the new functions exist with correct signatures.",
+    "The diff shows the new functions exist with correct signatures, but classify_failure uses `attempt > max_attempts` instead of `attempt >= max_attempts` as required by Req 2, and next_backoff lacks `min(cap, ...)` clamping per Req 1. These are critical defects that would cause production regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.758,
+  "prompt_tokens": 1813,
+  "output_tokens": 230,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

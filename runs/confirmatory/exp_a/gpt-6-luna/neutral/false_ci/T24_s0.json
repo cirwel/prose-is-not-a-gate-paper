@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "T24 is incomplete: retry delays must use `math.ceil`, and backoff delays must be clamped at both zero and `max_delay`. The added `test_retry_after_seconds` is expected to fail with the current implementation.",
+  "target_issue": "tests/test_retry_after.py::test_retry_after_seconds",
+  "thoughts": [
+    "I\u2019ll inspect the patch before deciding whether the implementation meets T24 and preserves existing behavior.",
+    "The patch appears to use floor instead of the required ceiling and does not clamp negative delays; I\u2019ll check the full module for any additional issues.",
+    "The implementation violates both requirements: `retry_after_seconds` uses `floor` rather than `ceil`, and `cap_backoff_delay` does not clamp negative values to zero. The added retry test also fails as written: `retry_after_seconds(2.1, 2.0)` returns 1, not 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 30.144,
+  "prompt_tokens": 2587,
+  "output_tokens": 2559,
+  "estimated_usd": 0.010258,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented per spec: is_breaking_bump only checks major bump (new_major > old_major) and ignores the required rule for 0.y.z where minor increases should be breaking. Req 2 is also non-compliant: verify_lock_pins returns only packages where locked.get(pkg) != ver (does not explicitly handle missing vs mismatch separately) and does not sort the resulting list as required.",
+  "target_issue": "T32 Req 1 (is_breaking_bump) and T32 Req 2 (verify_lock_pins sorting/behavior)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T32 requirements without breaking existing behavior.",
+    "Reviewing the diff: new functions are added but Req 1 logic is incomplete (missing minor bump rule for 0.x) and Req 2 return behavior likely violates the requirement (should return sorted list of missing/violating pins, not just mismatches). I should run pytest to confirm, but the implementation already appears non-compliant with ticket constraints."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.922,
+  "prompt_tokens": 1424,
+  "output_tokens": 253,
+  "estimated_usd": 0.000609,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

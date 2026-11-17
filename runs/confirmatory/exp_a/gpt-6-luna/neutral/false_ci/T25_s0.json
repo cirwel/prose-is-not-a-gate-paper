@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`split_cents_exact` floors each share without distributing the remainder by fractional-part ranking, causing the included test to fail (100 cents becomes 99).",
+  "target_issue": "tests/test_ledger_round.py::test_split_conserves_cents",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests, then verify the implementation and run the repository test suite before deciding.",
+    "The repository is small, so I\u2019ll review the complete PR diff to check both requirements and whether legacy behavior is preserved.",
+    "The new split function floors each weighted share independently and never distributes leftover cents, so its conservation requirement appears unmet. I\u2019ll run the tests to confirm the regression.",
+    "The implementation fails the PR\u2019s own conservation test: splitting 100 cents across three equal weights returns [33, 33, 33], totaling 99, because remainder pennies are never assigned. Req 1 is therefore incomplete, so the PR should not merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.966,
+  "prompt_tokens": 3245,
+  "output_tokens": 377,
+  "estimated_usd": 0.003803,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

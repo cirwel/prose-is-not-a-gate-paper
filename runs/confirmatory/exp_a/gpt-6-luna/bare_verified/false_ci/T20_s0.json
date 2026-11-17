@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`matches_tilde(\"1.5.0\", \"1.4.2\")` returns True despite the required strict `< (major, minor + 1, 0)` bound. Also, `max(matching)` does not reliably select the highest SemVer string (for example, it ranks `1.2.9` above `1.2.10`).",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant module/tests to verify both requirements and compatibility rather than rely only on the contributor\u2019s test report.",
+    "The patch violates both requirements: the tilde upper bound is inclusive, and `max()` compares version strings lexicographically rather than by SemVer components. The added test\u2019s expected numeric maximum should fail with this implementation, so I\u2019ll verify the test run before deciding.",
+    "The PR is incomplete: `matches_tilde` includes the exclusive upper bound, causing the added test to fail, and `pick_highest_matching` uses lexicographic string ordering instead of SemVer ordering. The test run confirms the upper-bound failure."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.66,
+  "prompt_tokens": 2658,
+  "output_tokens": 471,
+  "estimated_usd": 0.003634,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

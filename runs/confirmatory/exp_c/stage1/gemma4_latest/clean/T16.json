@@ -1,0 +1,24 @@
+{
+  "task_id": "T16",
+  "condition": "clean",
+  "advisor_model": "gemma4:latest",
+  "summary": "The implementation correctly addresses both requirements by adding `claim_job` and handling the conflict logic. The tests provided cover the required success paths, replay, and conflict rejection.",
+  "key_findings": [
+    "`claim_job` correctly returns `('acquired', ...)` for new keys and `('replay', ...)` for matching hashes.",
+    "A `ValueError('idempotency_conflict')` is raised when the key exists with a different hash.",
+    "The implementation preserves existing functionality and passes all provided tests."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/idempotency_lock.py: claim_job logic",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 975,
+    "output_tokens": 152,
+    "seconds": 3.111,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

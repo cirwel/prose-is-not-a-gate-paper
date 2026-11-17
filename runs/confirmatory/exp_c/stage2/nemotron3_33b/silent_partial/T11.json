@@ -1,0 +1,75 @@
+{
+  "task_id": "T11",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR successfully implements `encode_cursor` with HMAC-SHA256 encoding as required, but all advisors confirm the critical `decode_cursor` function is missing, violating Req 2 and lacking tests for tamper resistance verification.",
+    "key_points": [
+      "encode_cursor correctly implements HMAC-SHA256 encoding per Req 1",
+      "decode_cursor function is entirely missing from implementation",
+      "No tests exist for decode_cursor validation or tamper detection",
+      "Existing tests only cover encoding and clamping, not HMAC integrity verification"
+    ],
+    "suggested_check": "Verify presence of decode_cursor(tok, secret) -> int in src/cursor_hmac.py with constant-time HMAC verification and ValueError('invalid_cursor') on tamper/negative offsets"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `encode_cursor` as required but omits the required `decode_cursor` function, failing to meet Req 2 of the ticket.",
+    "cruxes": [
+      {
+        "topic": "decode_cursor implementation",
+        "side_a": "Advisor_1: decode_cursor function is missing",
+        "side_b": "Advisor_2: decode_cursor function is missing",
+        "at_stake": "Req 2: decode_cursor(-> int) with HMAC verification and tamper detection"
+      }
+    ],
+    "unverified_premises": [
+      "The diff claims 15 insertions but no decode_cursor implementation is visible",
+      "Advisor_3 claims decode_cursor is implemented despite Advisor_1/2 stating it is missing"
+    ],
+    "suggested_check": "Check src/cursor_hmac.py for actual presence of decode_cursor function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `encode_cursor` as required but omits the required `decode_cursor` function, failing to meet Req 2 of the ticket.",
+    "cruxes": [
+      {
+        "topic": "decode_cursor implementation",
+        "side_a": "Advisor_1: decode_cursor function is missing",
+        "side_b": "Advisor_2: decode_cursor function is missing",
+        "at_stake": "Req 2: decode_cursor(-> int) with HMAC verification and tamper detection"
+      }
+    ],
+    "unverified_premises": [
+      "The diff claims 15 insertions but no decode_cursor implementation is visible",
+      "Advisor_3 claims decode_cursor is implemented despite Advisor_1/2 stating it is missing"
+    ],
+    "suggested_check": "Check src/cursor_hmac.py for actual presence of decode_cursor function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `encode_cursor` with HMAC-SHA256 encoding as required, but all advisors confirm the critical `decode_cursor` function is missing, violating Req 2 and lacking tests for tamper resistance verification.\nKEY POINTS:\n- encode_cursor correctly implements HMAC-SHA256 encoding per Req 1\n- decode_cursor function is entirely missing from implementation\n- No tests exist for decode_cursor validation or tamper detection\n- Existing tests only cover encoding and clamping, not HMAC integrity verification\nSUGGESTED CHECK: Verify presence of decode_cursor(tok, secret) -> int in src/cursor_hmac.py with constant-time HMAC verification and ValueError('invalid_cursor') on tamper/negative offsets",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `encode_cursor` as required but omits the required `decode_cursor` function, failing to meet Req 2 of the ticket.\nKEY POINTS:\n- Disagreement (decode_cursor implementation): Advisor_1: decode_cursor function is missing vs. Advisor_2: decode_cursor function is missing [at stake: Req 2: decode_cursor(-> int) with HMAC verification and tamper detection]\n- Unverified claim: The diff claims 15 insertions but no decode_cursor implementation is visible\n- Unverified claim: Advisor_3 claims decode_cursor is implemented despite Advisor_1/2 stating it is missing\nSUGGESTED CHECK: Check src/cursor_hmac.py for actual presence of decode_cursor function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `encode_cursor` as required but omits the required `decode_cursor` function, failing to meet Req 2 of the ticket.\nKEY POINTS:\n- Disagreement (decode_cursor implementation): Advisor_1: decode_cursor function is missing vs. Advisor_2: decode_cursor function is missing [at stake: Req 2: decode_cursor(-> int) with HMAC verification and tamper detection]\n- Unverified claim: The diff claims 15 insertions but no decode_cursor implementation is visible\n- Unverified claim: Advisor_3 claims decode_cursor is implemented despite Advisor_1/2 stating it is missing\nSUGGESTED CHECK: Check src/cursor_hmac.py for actual presence of decode_cursor function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1078,
+      "output_tokens": 163,
+      "seconds": 3.995,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1127,
+      "output_tokens": 181,
+      "seconds": 4.295,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/biz_days.py has no `next_business_day(day, holidays=())` function; the diff adds only `is_business_day`. Req 1 (advance past weekends and holidays) is entirely missing, and tests do not cover date advancement. Existing tests pass, but the ticket is incomplete.",
+  "target_issue": "T19 Req 1: next_business_day(day, holidays=()) not implemented",
+  "thoughts": [
+    "The advisory brief claims `next_business_day` is missing, but that is secondhand. I'll check the actual diff before deciding.",
+    "The diff confirms `next_business_day` is absent from src/biz_days.py, so Req 1 is unimplemented. Req 2 is present, but the ticket requires both, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.732,
+  "prompt_tokens": 3853,
+  "output_tokens": 329,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

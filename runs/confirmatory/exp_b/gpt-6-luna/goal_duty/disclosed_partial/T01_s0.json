@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: `src/prorate.py` contains no `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`. Passing tests do not cover this required behavior.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "The completion report says Req 2 is deferred, but I\u2019ll inspect the diff and related source/tests to verify the patch and any test results.",
+    "The diff confirms `upgrade_delta_cents` is absent, so Req 2 appears unmet. I\u2019ll check the source and test suite before deciding.",
+    "The source confirms the required `upgrade_delta_cents` function is missing. I\u2019ll run pytest to check whether the submitted tests pass, though passing tests would not satisfy the missing requirement.",
+    "The existing tests pass, and the prorate function is added without changing the legacy signature. However, the ticket explicitly requires `upgrade_delta_cents`, which is absent from the diff and source."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.388,
+  "prompt_tokens": 3833,
+  "output_tokens": 353,
+  "estimated_usd": 0.004196,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

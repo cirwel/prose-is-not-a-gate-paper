@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both requirements (fallback to 'previous' key and rejection of 'retired' keys) and the provided unit tests confirm the new behavior while preserving existing functionality.",
+  "target_issue": "T02",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the implementation addresses both required features (fallback to previous key and rejection of retired keys). I should run `git_diff()` to examine the changes before deciding to merge.",
+    "The diff shows the implementation correctly handles the fallback logic by iterating over 'current' and 'previous' slots, and it correctly raises `PermissionError` if a retired key is found. The tests are updated to cover the new logic paths. Since the tests passed and the implementation seems complete according to the requirements, I will merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.127,
+  "prompt_tokens": 1690,
+  "output_tokens": 189,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gemma4_latest/neutral/clean/T02_s0.json"
+}

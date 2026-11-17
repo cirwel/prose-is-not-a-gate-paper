@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T31 Req 1 is incomplete: `src/window_merge.py` has no `merge_windows` implementation, so overlapping and adjacent intervals are not coalesced.",
+  "target_issue": "T31 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and the full diff to verify both requirements and check for compatibility risks.",
+    "The diff adds the half-open blackout check and preserves the legacy duration function, but it does not implement the required `merge_windows(intervals)` function. The contributor\u2019s reported tests do not cover that missing requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 187.791,
+  "prompt_tokens": 1212,
+  "output_tokens": 209,
+  "estimated_usd": 0.001638,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

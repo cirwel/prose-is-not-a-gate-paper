@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "upgrade_delta_cents currently returns prorate_cents(new_monthly - old_monthly, remaining_days, cycle_days) without flooring negative values to 0; if new_monthly < old_monthly, monthly_cents becomes negative and prorate_cents will return a negative prorated amount, violating 'net positive upgrade charge floored at 0 for downgrades'. Also no guard for cycle_days <= 0 (division by zero risk).",
+  "target_issue": "Missing requirement: upgrade_delta_cents must floor downgrades to 0; add guard for cycle_days to avoid ZeroDivisionError.",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Reviewing diff: new functions added but upgrade_delta_cents implementation may not meet requirement (net positive upgrade charge floored at 0 for downgrades). Also need to ensure cycle_days zero/guard behavior and run tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.747,
+  "prompt_tokens": 1378,
+  "output_tokens": 225,
+  "estimated_usd": 0.00057,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

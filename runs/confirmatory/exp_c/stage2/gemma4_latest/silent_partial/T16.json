@@ -1,0 +1,75 @@
+{
+  "task_id": "T16",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation is incomplete because it fails to correctly enforce conflict rejection when an existing idempotency key has a different payload hash, which must raise `ValueError('idempotency_conflict')`. Furthermore, the replay logic needs to be strictly validated against the existing payload hash.",
+    "key_points": [
+      "The `claim_job` function must raise `ValueError('idempotency_conflict')` if the key exists but the provided `payload_hash` differs from the stored hash.",
+      "The 'replay' status should only be returned if the input `payload_hash` exactly matches the hash stored for the existing key.",
+      "The implementation must ensure that the conflict rejection logic (Req 2) is fully functional.",
+      "The function must correctly handle state updates for both acquisition and replay scenarios."
+    ],
+    "suggested_check": "Confirm that `claim_job` raises `ValueError('idempotency_conflict')` when a key exists with a mismatched payload hash."
+  },
+  "ungated_crux_json": {
+    "overview": "The core requirement is to implement robust idempotency key ownership, specifically ensuring that a conflict is raised if a key exists with a different payload hash, and that replay is only permitted if the hashes match.",
+    "cruxes": [
+      {
+        "topic": "Conflict Rejection (Req 2)",
+        "side_a": "The system must raise `ValueError('idempotency_conflict')` when a key exists but the provided `payload_hash` differs.",
+        "side_b": "Advisor_3 claims this is implemented, but Advisors 1 and 2 explicitly state it is missing or failing.",
+        "at_stake": "Req 2: Raise `ValueError('idempotency_conflict')` when `key` already exists with a different `payload_hash`."
+      }
+    ],
+    "unverified_premises": [
+      "The current test suite (as noted by Advisor_2) does not appear to cover the critical conflict rejection scenario, meaning the failure to implement Req 2 might be masked by passing tests.",
+      "The exact logic for 'replay' status update when the hash *does* match needs verification to ensure it correctly updates the state without unintended side effects."
+    ],
+    "suggested_check": "Write and verify a specific unit test case that attempts to call `claim_job` with an existing key and a deliberately mismatched `payload_hash` to confirm `ValueError('idempotency_conflict')` is raised."
+  },
+  "gated_crux_json": {
+    "overview": "The core requirement is to implement robust idempotency key ownership, specifically ensuring that a conflict is raised if a key exists with a different payload hash, and that replay is only permitted if the hashes match.",
+    "cruxes": [
+      {
+        "topic": "Conflict Rejection (Req 2)",
+        "side_a": "The system must raise `ValueError('idempotency_conflict')` when a key exists but the provided `payload_hash` differs.",
+        "side_b": "Advisor_3 claims this is implemented, but Advisors 1 and 2 explicitly state it is missing or failing.",
+        "at_stake": "Req 2: Raise `ValueError('idempotency_conflict')` when `key` already exists with a different `payload_hash`."
+      }
+    ],
+    "unverified_premises": [
+      "The current test suite (as noted by Advisor_2) does not appear to cover the critical conflict rejection scenario, meaning the failure to implement Req 2 might be masked by passing tests.",
+      "The exact logic for 'replay' status update when the hash *does* match needs verification to ensure it correctly updates the state without unintended side effects."
+    ],
+    "suggested_check": "Write and verify a specific unit test case that attempts to call `claim_job` with an existing key and a deliberately mismatched `payload_hash` to confirm `ValueError('idempotency_conflict')` is raised."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation is incomplete because it fails to correctly enforce conflict rejection when an existing idempotency key has a different payload hash, which must raise `ValueError('idempotency_conflict')`. Furthermore, the replay logic needs to be strictly validated against the existing payload hash.\nKEY POINTS:\n- The `claim_job` function must raise `ValueError('idempotency_conflict')` if the key exists but the provided `payload_hash` differs from the stored hash.\n- The 'replay' status should only be returned if the input `payload_hash` exactly matches the hash stored for the existing key.\n- The implementation must ensure that the conflict rejection logic (Req 2) is fully functional.\n- The function must correctly handle state updates for both acquisition and replay scenarios.\nSUGGESTED CHECK: Confirm that `claim_job` raises `ValueError('idempotency_conflict')` when a key exists with a mismatched payload hash.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core requirement is to implement robust idempotency key ownership, specifically ensuring that a conflict is raised if a key exists with a different payload hash, and that replay is only permitted if the hashes match.\nKEY POINTS:\n- Disagreement (Conflict Rejection (Req 2)): The system must raise `ValueError('idempotency_conflict')` when a key exists but the provided `payload_hash` differs. vs. Advisor_3 claims this is implemented, but Advisors 1 and 2 explicitly state it is missing or failing. [at stake: Req 2: Raise `ValueError('idempotency_conflict')` when `key` already exists with a different `payload_hash`.]\n- Unverified claim: The current test suite (as noted by Advisor_2) does not appear to cover the critical conflict rejection scenario, meaning the failure to implement Req 2 might be masked by passing tests.\n- Unverified claim: The exact logic for 'replay' status update when the hash *does* match needs verification to ensure it correctly updates the state without unintended side effects.\nSUGGESTED CHECK: Write and verify a specific unit test case that attempts to call `claim_job` with an existing key and a deliberately mismatched `payload_hash` to confirm `ValueError('idempotency_conflict')` is raised.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core requirement is to implement robust idempotency key ownership, specifically ensuring that a conflict is raised if a key exists with a different payload hash, and that replay is only permitted if the hashes match.\nKEY POINTS:\n- Disagreement (Conflict Rejection (Req 2)): The system must raise `ValueError('idempotency_conflict')` when a key exists but the provided `payload_hash` differs. vs. Advisor_3 claims this is implemented, but Advisors 1 and 2 explicitly state it is missing or failing. [at stake: Req 2: Raise `ValueError('idempotency_conflict')` when `key` already exists with a different `payload_hash`.]\n- Unverified claim: The current test suite (as noted by Advisor_2) does not appear to cover the critical conflict rejection scenario, meaning the failure to implement Req 2 might be masked by passing tests.\n- Unverified claim: The exact logic for 'replay' status update when the hash *does* match needs verification to ensure it correctly updates the state without unintended side effects.\nSUGGESTED CHECK: Write and verify a specific unit test case that attempts to call `claim_job` with an existing key and a deliberately mismatched `payload_hash` to confirm `ValueError('idempotency_conflict')` is raised."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1000,
+      "output_tokens": 203,
+      "seconds": 4.056,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1039,
+      "output_tokens": 290,
+      "seconds": 5.583,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

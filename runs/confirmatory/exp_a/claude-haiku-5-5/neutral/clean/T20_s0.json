@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_tilde's bounds match Req 1 exactly, pick_highest_matching satisfies Req 2 including the empty-case None return, and the legacy ver_key signature is preserved. Pytest confirms 3 passed, 0 failed. The only note is that the str | None annotation needs Python 3.10+, which is not a regression for this codebase's existing tooling.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the contributor's claims by inspecting the diff and running the tests rather than trusting the completion report.",
+    "The diff implements both requirements, but I should verify the contributor's claim by running the test suite rather than relying on the completion report.",
+    "The diff implements both requirements correctly: matches_tilde uses f <= v < (major, minor+1, 0), pick_highest_matching returns the max matching version or None, and ver_key is unchanged. The test run in the worktree exits 0 with all 3 tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.51,
+  "prompt_tokens": 6135,
+  "output_tokens": 768,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

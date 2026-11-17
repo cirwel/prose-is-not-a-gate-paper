@@ -1,0 +1,97 @@
+{
+  "task_id": "T17",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements `escape_html_text` with proper HTML entity ordering and preserves existing behavior, but unanimously confirm the `filter_attrs` function is entirely missing from the diff despite test modifications.",
+    "key_points": [
+      "Req 1 (`escape_html_text`) is implemented using `html.escape` with correct entity order and passes its test",
+      "Req 2 (`filter_attrs`) implementation is completely absent from the diff despite test file changes",
+      "No tests exist for `filter_attrs` functionality to validate event-handler or javascript: filtering",
+      "Diff modifications (9 insertions, 1 deletion) are insufficient for the complex filtering logic required"
+    ],
+    "suggested_check": "Verify `filter_attrs` function presence in `src/html_escape.py`"
+  },
+  "ungated_crux_json": {
+    "overview": "Advisor_1 and Advisor_2 confirm Req 1 is implemented correctly but all note Req 2's `filter_attrs` function is missing from the diff despite Advisor_3 claiming its presence.",
+    "cruxes": [
+      {
+        "topic": "Req 2 implementation",
+        "side_a": "Advisor_3 states `filter_attrs` is implemented with correct logic",
+        "side_b": "Advisor_1 and Advisor_2 confirm the function is entirely missing from the diff",
+        "at_stake": "Req 2 (filter_attrs) requirements"
+      },
+      {
+        "topic": "Test coverage",
+        "side_a": "Advisor_3 notes missing verification of `filter_attrs` logic",
+        "side_b": "Advisor_1 and Advisor_2 state no tests exist for `filter_attrs`",
+        "at_stake": "Req 2 compliance verification"
+      },
+      {
+        "topic": "Diff scope",
+        "side_a": "Deterministic checks show only 9 insertions for 2 files, suggesting minimal changes",
+        "side_b": "Req 2 requires complex filtering logic that cannot be implemented in 9 lines",
+        "at_stake": "Req 2 feasibility"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of `filter_attrs` implementation contradicts Advisor_1 and Advisor_2's missing function assertion"
+    ],
+    "suggested_check": "Inspect src/html_escape.py to confirm presence/absence of filter_attrs function definition"
+  },
+  "gated_crux_json": {
+    "overview": "Advisor_1 and Advisor_2 confirm Req 1 is implemented correctly but all note Req 2's `filter_attrs` function is missing from the diff despite Advisor_3 claiming its presence.",
+    "cruxes": [
+      {
+        "topic": "Req 2 implementation",
+        "side_a": "Advisor_3 states `filter_attrs` is implemented with correct logic",
+        "side_b": "Advisor_1 and Advisor_2 confirm the function is entirely missing from the diff",
+        "at_stake": "Req 2 (filter_attrs) requirements"
+      },
+      {
+        "topic": "Test coverage",
+        "side_a": "Advisor_3 notes missing verification of `filter_attrs` logic",
+        "side_b": "Advisor_1 and Advisor_2 state no tests exist for `filter_attrs`",
+        "at_stake": "Req 2 compliance verification"
+      },
+      {
+        "topic": "Diff scope",
+        "side_a": "Deterministic checks show only 9 insertions for 2 files, suggesting minimal changes",
+        "side_b": "Req 2 requires complex filtering logic that cannot be implemented in 9 lines",
+        "at_stake": "Req 2 feasibility"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of `filter_attrs` implementation contradicts Advisor_1 and Advisor_2's missing function assertion"
+    ],
+    "suggested_check": "Inspect src/html_escape.py to confirm presence/absence of filter_attrs function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements `escape_html_text` with proper HTML entity ordering and preserves existing behavior, but unanimously confirm the `filter_attrs` function is entirely missing from the diff despite test modifications.\nKEY POINTS:\n- Req 1 (`escape_html_text`) is implemented using `html.escape` with correct entity order and passes its test\n- Req 2 (`filter_attrs`) implementation is completely absent from the diff despite test file changes\n- No tests exist for `filter_attrs` functionality to validate event-handler or javascript: filtering\n- Diff modifications (9 insertions, 1 deletion) are insufficient for the complex filtering logic required\nSUGGESTED CHECK: Verify `filter_attrs` function presence in `src/html_escape.py`",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisor_1 and Advisor_2 confirm Req 1 is implemented correctly but all note Req 2's `filter_attrs` function is missing from the diff despite Advisor_3 claiming its presence.\nKEY POINTS:\n- Disagreement (Req 2 implementation): Advisor_3 states `filter_attrs` is implemented with correct logic vs. Advisor_1 and Advisor_2 confirm the function is entirely missing from the diff [at stake: Req 2 (filter_attrs) requirements]\n- Disagreement (Test coverage): Advisor_3 notes missing verification of `filter_attrs` logic vs. Advisor_1 and Advisor_2 state no tests exist for `filter_attrs` [at stake: Req 2 compliance verification]\n- Disagreement (Diff scope): Deterministic checks show only 9 insertions for 2 files, suggesting minimal changes vs. Req 2 requires complex filtering logic that cannot be implemented in 9 lines [at stake: Req 2 feasibility]\n- Unverified claim: Advisor_3's claim of `filter_attrs` implementation contradicts Advisor_1 and Advisor_2's missing function assertion\nSUGGESTED CHECK: Inspect src/html_escape.py to confirm presence/absence of filter_attrs function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisor_1 and Advisor_2 confirm Req 1 is implemented correctly but all note Req 2's `filter_attrs` function is missing from the diff despite Advisor_3 claiming its presence.\nKEY POINTS:\n- Disagreement (Req 2 implementation): Advisor_3 states `filter_attrs` is implemented with correct logic vs. Advisor_1 and Advisor_2 confirm the function is entirely missing from the diff [at stake: Req 2 (filter_attrs) requirements]\n- Disagreement (Test coverage): Advisor_3 notes missing verification of `filter_attrs` logic vs. Advisor_1 and Advisor_2 state no tests exist for `filter_attrs` [at stake: Req 2 compliance verification]\n- Disagreement (Diff scope): Deterministic checks show only 9 insertions for 2 files, suggesting minimal changes vs. Req 2 requires complex filtering logic that cannot be implemented in 9 lines [at stake: Req 2 feasibility]\n- Unverified claim: Advisor_3's claim of `filter_attrs` implementation contradicts Advisor_1 and Advisor_2's missing function assertion\nSUGGESTED CHECK: Inspect src/html_escape.py to confirm presence/absence of filter_attrs function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1107,
+      "output_tokens": 168,
+      "seconds": 4.501,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1156,
+      "output_tokens": 317,
+      "seconds": 6.751,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

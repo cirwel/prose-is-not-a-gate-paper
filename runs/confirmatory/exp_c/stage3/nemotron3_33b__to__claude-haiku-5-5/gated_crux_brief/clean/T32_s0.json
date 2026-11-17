@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "is_breaking_bump returns True for n[0] > o[0] and for o[0]==0 with n[1] > o[1], and returns False for patch-only bumps such as 0.1.0 to 0.1.1. verify_lock_pins returns a sorted list of declared packages whose locked value is missing (get returns None, which differs from the string) or unequal. split_ver and existing signatures are unchanged, and the worktree pytest run reports exit 0 with 3 passed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory review contains a disputed claim about is_breaking_bump, so I should verify the actual diff rather than rely on the contributor report or advisors.",
+    "The diff matches both requirements: is_breaking_bump implements the major and 0.y minor rules, and verify_lock_pins flags missing or unequal pins and sorts the result. The advisor's patch-bump concern is unfounded, since (0.1.0, 0.1.1) returns False under the code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.272,
+  "prompt_tokens": 4876,
+  "output_tokens": 1087,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

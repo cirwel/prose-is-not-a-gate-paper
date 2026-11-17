@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing lru_set(cache, key, value, capacity, pinned=()), so capacity enforcement, least-recently-used non-pinned eviction, and pinned-key preservation are not implemented.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "The contributor reports Req 1 is deferred; I will inspect the diff to confirm whether the required capacity and pinned-key behavior is missing.",
+    "The diff confirms that only lru_touch was added; the required lru_set implementation is absent. Passing tests for the implemented subset do not make T22 complete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.454,
+  "prompt_tokens": 1331,
+  "output_tokens": 161,
+  "estimated_usd": 0.005925,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

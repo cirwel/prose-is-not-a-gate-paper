@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2: missing `credit_with_tax_cents(net_credit_cents, tax_bps)` in src/credit_memo.py, so ticket T13 is incomplete and could fail expected behavior.",
+  "target_issue": "Missing implementation for Req 2 (`credit_with_tax_cents`)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T13 requirements without breaking legacy behavior.",
+    "The diff only adds apply_credit_memo and tests for clamping; it does not implement Req 2 (credit_with_tax_cents) and there is no evidence of running pytest here. I should hold until the missing requirement is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.833,
+  "prompt_tokens": 1289,
+  "output_tokens": 178,
+  "estimated_usd": 0.0005,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

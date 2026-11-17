@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 next_backoff implements min(cap, base*(2**attempt)) with attempt>=0 handling; Req 2 classify_failure returns 'dead_letter' when attempt>=max_attempts else 'retry'. Existing legacy behavior is preserved (is_transient_status unchanged) and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure both T04 requirements are implemented without breaking legacy behavior.",
+    "Diff shows both required functions added with the specified logic, and tests were updated accordingly. Next I will run pytest in the contrib/fix worktree to confirm all tests pass and no legacy behavior is broken.",
+    "All T04 requirements are implemented in src/backoff_dlq.py with the exact specified behavior, legacy function is_transient_status remains unchanged, and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.813,
+  "prompt_tokens": 2784,
+  "output_tokens": 225,
+  "estimated_usd": 0.000922,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

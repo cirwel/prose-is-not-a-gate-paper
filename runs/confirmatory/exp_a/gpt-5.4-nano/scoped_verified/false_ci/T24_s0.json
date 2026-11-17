@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is implemented incorrectly: `retry_after_seconds` returns `max(min_seconds, math.floor(tokens_needed / refill_rate))` but spec requires `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when tokens_needed>0. Req 2 is also incomplete: `cap_backoff_delay` only caps at max_delay and does not clamp negative values to 0.0.",
+  "target_issue": "Missing requirement compliance for T24: incorrect ceil vs floor in `retry_after_seconds` and missing negative clamp in `cap_backoff_delay` (tests added are insufficient to catch these spec violations).",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements are implemented correctly.",
+    "Reviewing diff: retry_after_seconds uses floor instead of required ceil, and cap_backoff_delay doesn't clamp negatives to 0.0. Need to run tests to confirm, but requirements are clearly not met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.427,
+  "prompt_tokens": 1444,
+  "output_tokens": 224,
+  "estimated_usd": 0.000585,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

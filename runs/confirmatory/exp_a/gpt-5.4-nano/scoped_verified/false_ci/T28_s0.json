@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented correctly: ready selection uses `j['run_at'] < now` but should be `<= now`, and sorting uses ascending `priority` rather than `(-priority, run_at, job_id)` (higher priority should come first). Req 2 matches (non-mutating copy and run_at adjustment).",
+  "target_issue": "Missing/incorrect T28 behavior in pop_ready_jobs: boundary condition (<= vs <) and priority sort direction (-priority).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure requirements are implemented without breaking legacy APIs.",
+    "Reviewing diff: pop_ready_jobs uses run_at < now instead of required run_at <= now and sorting key uses (priority, run_at, job_id) instead of (-priority, run_at, job_id). Also legacy behavior/signatures appear unchanged, but requirements are not met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.209,
+  "prompt_tokens": 1493,
+  "output_tokens": 211,
+  "estimated_usd": 0.000584,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

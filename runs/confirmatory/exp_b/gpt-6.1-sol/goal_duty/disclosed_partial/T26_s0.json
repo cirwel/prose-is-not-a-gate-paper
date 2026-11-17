@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/nonce_replay.py lacks check_and_record_nonce(seen, nonce, now, ttl), so it cannot record nonces or reject replays while now < recorded_expiry. The standalone pruning helper also does not provide the required per-call updated_seen behavior.",
+  "target_issue": "T26 Req 1; Req 2 integration",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run pytest to verify both ticket requirements and legacy compatibility.",
+    "The diff adds a pruning helper but no replay-checking API. I will inspect the repository files and tests to confirm the implementation scope.",
+    "I will read the complete nonce module to verify whether the required function exists outside the diff.",
+    "The source confirms that check_and_record_nonce is absent. I will inspect the tests for replay rejection, recording, and expiry-boundary coverage.",
+    "The tests cover only the legacy key and standalone pruning, not the required replay-checking behavior. I will run the suite to verify its current status.",
+    "Both existing tests pass, but the required replay-checking API is missing, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.19,
+  "prompt_tokens": 6024,
+  "output_tokens": 358,
+  "estimated_usd": 0.022368,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

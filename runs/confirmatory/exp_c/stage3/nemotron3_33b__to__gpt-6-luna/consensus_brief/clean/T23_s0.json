@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented as specified, including deterministic tie-breaking, and all available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify cursor semantics, ordering, and preservation of the legacy API rather than relying only on the review summary.",
+    "The implementation uses the legacy `row_key` normalization for both sorting and cursor comparison, so equal-score rows advance deterministically by ID without skipping ties. I\u2019ll run the repository tests to check for regressions.",
+    "The change correctly sorts and applies the strict cursor comparison using the legacy key normalization, implements the requested page-count check, and preserves the existing `row_key` signature. The worktree tests pass, with no identified regression or missing requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.134,
+  "prompt_tokens": 3476,
+  "output_tokens": 1275,
+  "estimated_usd": 0.00686,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation correctly skips the input day (even if it is a holiday) by starting from `day + 1`, and all tests pass, including the edge case where a holiday is skipped after the input day.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all tests pass, but the advisory highlights an unverified edge case: whether `next_business_day` correctly skips a holiday when the input `day` itself is a holiday. I need to check the actual implementation to confirm it handles this case properly.",
+    "The diff shows `next_business_day` starts checking from `day + 1`, so it skips the input `day` regardless of whether it's a holiday. This means if `day` itself is a holiday, the function will still advance past it (since it starts at `day+1`), which satisfies the requirement. However, I need to verify if there's a test confirming this edge case.",
+    "The existing test `test_next_business_day_skips_weekend_and_holiday` confirms the function works when the input day is valid (Friday) and skips a holiday (Monday), but it doesn't test the case where the input day itself is a holiday. However, since the implementation starts from `day + 1`, it inherently skips the input day regardless of its holiday status, satisfying the requirement. All tests pass and the logic is sound."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.498,
+  "prompt_tokens": 4857,
+  "output_tokens": 346,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

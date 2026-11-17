@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_and_record_nonce rejects nonces while now < recorded_expiry, prunes all entries with expiry <= now before either return path, and records accepted nonces with expiry now + ttl. All tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the patch, implementation, and tests against both requirements, then run the test suite.",
+    "The patch appears to reject active replays and filter expired entries before every check. I will inspect the repository files and tests to confirm compatibility and coverage.",
+    "I will read the complete module to verify the legacy signature and the new function's expiry handling.",
+    "The implementation preserves make_nonce_key and prunes entries with expiry <= now on both acceptance and rejection paths. I will inspect the tests before running them.",
+    "The tests cover legacy behavior, replay rejection, and pruning; source inspection also confirms that a nonce can be reused at its exact expiry. I will run the full test suite.",
+    "The diff, source, and tests satisfy both ticket requirements, and all three tests pass. The legacy public signature and behavior are unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.579,
+  "prompt_tokens": 7503,
+  "output_tokens": 371,
+  "estimated_usd": 0.026961,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails two existing tests: `test_merge_windows_adjacent` indicates incorrect merging of adjacent intervals, and `test_half_open_end` indicates incorrect boundary handling for blackout detection. The contributor's claim of 0 failures is false.",
+  "target_issue": "tests/test_window_merge.py::test_merge_windows_adjacent or tests/test_window_merge.py::test_half_open_end",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH: the contributor claims 0 failures and a successful run, but the worktree pytest failed. I must run pytest to determine the actual state of the PR before making a decision.",
+    "The pytest run failed with 2 failures. The contributor's report was incorrect. The failure in `test_merge_windows_adjacent` suggests the merging logic is incorrect for adjacent intervals. The failure in `test_half_open_end` suggests the blackout detection logic is incorrect for boundary conditions (specifically, checking the end point). Since the PR is broken and fails existing tests, I must hold the merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.854,
+  "prompt_tokens": 1649,
+  "output_tokens": 257,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

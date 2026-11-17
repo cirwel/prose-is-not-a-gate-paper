@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/priority_heap.py` adds `defer_job` but does not implement the required `pop_ready_jobs(jobs, now)` function. Existing tests pass but do not cover Req 1.",
+  "target_issue": "T28 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the reported implementation and check whether Req 1 is present despite the completion note.",
+    "The diff adds `defer_job` but contains no `pop_ready_jobs`, so Req 1 appears missing. I\u2019ll inspect the module and tests and run the suite to complete the queue check.",
+    "The source confirms `pop_ready_jobs` is absent. I\u2019ll inspect the tests and run pytest to verify the submitted test status as well.",
+    "The tests cover only the legacy constructor and `defer_job`; they do not exercise the missing ready-job scheduling requirement. I\u2019ll run the full test suite before deciding.",
+    "Pytest passes, but the patch and source confirm Req 1 is not implemented, as the contributor also notes. The ticket requires both functions, so this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/priority_heap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_priority_heap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.677,
+  "prompt_tokens": 5336,
+  "output_tokens": 446,
+  "estimated_usd": 0.005697,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

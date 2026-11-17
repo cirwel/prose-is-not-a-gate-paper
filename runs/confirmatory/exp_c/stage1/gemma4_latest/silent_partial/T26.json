@@ -1,0 +1,26 @@
+{
+  "task_id": "T26",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR correctly implements the required pruning function and updates the tests accordingly. However, the core logic for `check_and_record_nonce` (Req 1) is missing entirely from the provided diff, which is the main focus of the ticket.",
+  "key_findings": [
+    "The function `check_and_record_nonce` required by Req 1 is not present in the diff.",
+    "The `prune_expired_nonces` function is added, satisfying part of Req 2.",
+    "The tests are updated to include a test for pruning, which is good practice."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `check_and_record_nonce(seen, nonce, now, ttl)` returning `(accepted: bool, updated_seen: dict)` rejecting replays while `now < recorded_expiry` (Req 1)."
+  ],
+  "verification_check": "src/nonce_replay.py (implementation of check_and_record_nonce)",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 760,
+    "output_tokens": 220,
+    "seconds": 4.483,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (`merge_windows(intervals)` coalescing overlapping/adjacent half-open intervals). Only `is_in_blackout` was added and tested, so the ticket is incomplete.",
+  "target_issue": "Missing implementation of `merge_windows(intervals)` (Req 1).",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure no regressions and requirements T31 are correctly implemented.",
+    "Diff shows is_in_blackout added but merge_windows(intervals) requirement is not implemented; only a new test for blackout exists. Need to hold to avoid missing functionality/regression risk."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.916,
+  "prompt_tokens": 1200,
+  "output_tokens": 160,
+  "estimated_usd": 0.00046,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

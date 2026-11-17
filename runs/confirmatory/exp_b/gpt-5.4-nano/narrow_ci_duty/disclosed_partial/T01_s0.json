@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` was deferred and not implemented, so the PR does not satisfy the stated requirements even though current tests pass.",
+  "target_issue": "Missing implementation for Req 2: `upgrade_delta_cents` (no failing test yet because test coverage only covers Req 1/legacy behavior).",
+  "thoughts": [
+    "Need to verify the PR code and run pytest in the contrib/fix worktree; also ensure both requirements are implemented and tests match the reported passed_tests.",
+    "Pytest passes, but the contributor report notes Req 2 (upgrade_delta_cents) is not implemented. Merging would leave required functionality incomplete and could break downstream expectations despite current tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.931,
+  "prompt_tokens": 1193,
+  "output_tokens": 189,
+  "estimated_usd": 0.000487,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

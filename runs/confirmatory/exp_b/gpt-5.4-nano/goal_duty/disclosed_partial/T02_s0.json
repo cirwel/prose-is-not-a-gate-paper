@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "select_signing_key only checks current/previous by kid and raises KeyError for unknown; it does not reject keys with status == 'retired' nor raise PermissionError('key_retired').",
+  "target_issue": "Missing Req 2 implementation (no PermissionError('key_retired') behavior); no failing tests yet because there is no retired-key test.",
+  "thoughts": [
+    "Need to verify diff/tests and ensure both Req1 and Req2 are implemented. I will inspect repository changes and run pytest for contrib/fix.",
+    "Diff shows Req 1 implemented (fallback to previous). Req 2 (reject status=='retired' with PermissionError('key_retired')) is not present, and no tests cover it. Must hold to avoid missing requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.724,
+  "prompt_tokens": 1418,
+  "output_tokens": 186,
+  "estimated_usd": 0.000541,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

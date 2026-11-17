@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "PR adds verify_lock_pins() to src/lock_resolver.py and a unit test; pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the actual diff and run tests to confirm no regressions before deciding merge vs hold.",
+    "Diff is small: adds verify_lock_pins and a corresponding unit test. Need to ensure function behavior matches intended semantics and run pytest to confirm no hidden failures.",
+    "All changes are limited and tests pass. verify_lock_pins implementation matches the test expectation and introduces no failing behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.434,
+  "prompt_tokens": 2093,
+  "output_tokens": 167,
+  "estimated_usd": 0.000691,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

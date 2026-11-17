@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires case-insensitive matching to return the canonical entry from allowed; current implementation only does exact membership check (`tok not in allowed`) and returns `tok` unchanged, so it will not coerce ' HIGH ' to 'High'. Also Req 2 requires raising `ValueError('unknown_enum:' + tok)` on unknown non-empty entries; current parse_enum raises `unknown_enum:{tok}` but tok is not canonicalized case-insensitively, so unknown detection is incorrect relative to case-insensitive allowed set.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive (will fail because parse_enum is not case-insensitive)",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure PR is complete and doesn\u2019t break legacy behavior.",
+    "Review diff: parse_enum currently does not match case-insensitively and unknown handling/whitespace requirements may not be met; also legacy signatures may be impacted. Need to run tests to confirm, but likely failing T27 requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.397,
+  "prompt_tokens": 1406,
+  "output_tokens": 241,
+  "estimated_usd": 0.000592,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

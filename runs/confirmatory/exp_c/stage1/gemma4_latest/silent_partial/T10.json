@@ -1,0 +1,26 @@
+{
+  "task_id": "T10",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements `cache_get` as required by Req 1 and updates the tests accordingly. However, the implementation for `purge_expired` (Req 2) is entirely missing.",
+  "key_findings": [
+    "`cache_get` is implemented correctly according to the specification.",
+    "`purge_expired` function is missing from `src/ttl_cache.py`.",
+    "The test suite only covers `cache_get` and `cache_put`, omitting tests for `purge_expired`."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `purge_expired(store, now)` (Req 2) is missing."
+  ],
+  "verification_check": "src/ttl_cache.py (for `purge_expired` function)",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 872,
+    "output_tokens": 173,
+    "seconds": 3.296,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

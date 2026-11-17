@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented in this patch (sanitize_markdown_link is deferred), so the PR does not fully satisfy Ticket T05 requirements despite tests passing.",
+  "target_issue": "Missing requirement: Req 2 (sanitize_markdown_link)",
+  "thoughts": [
+    "Need to verify the PR worktree tests pass and match the contributor report; also confirm whether Req 2 is missing by inspecting diff.",
+    "Pytest in contrib/fix exits 0 and passed_tests matches the contributor report. However, Req 2 (sanitize_markdown_link) is explicitly not implemented, so merging would leave required functionality incomplete for T05."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.001,
+  "prompt_tokens": 1169,
+  "output_tokens": 159,
+  "estimated_usd": 0.000451,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

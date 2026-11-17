@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing check_and_record_nonce(seen, nonce, now, ttl). The PR neither records accepted nonces with expiry nor rejects replays within the TTL window, and pruning is not integrated into the required operation.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the changes and relevant tests to verify replay protection, expiry pruning, and legacy compatibility.",
+    "The diff adds only a pruning helper, not the required check-and-record API. I\u2019ll confirm the module has no existing implementation of that function.",
+    "The module preserves the legacy function and adds correct standalone pruning, but the required replay-protection operation is absent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.206,
+  "prompt_tokens": 2198,
+  "output_tokens": 210,
+  "estimated_usd": 0.009114,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

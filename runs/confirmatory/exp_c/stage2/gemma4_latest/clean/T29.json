@@ -1,0 +1,65 @@
+{
+  "task_id": "T29",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both requirements: computing the safe markdown fence delimiter and truncating long logs. No concrete defects were cited by the advisors.",
+    "key_points": [
+      "`wrap_code_fence` correctly calculates the fence width using `max(3, longest_backtick_run + 1)`.",
+      "`truncate_log_lines` correctly preserves lines up to `max_lines` and appends the truncation message only when lines are removed.",
+      "The implementation maintains all existing passing behavior and legacy function signatures.",
+      "All provided tests pass, confirming no regressions."
+    ],
+    "suggested_check": "Confirm that the logic for appending the truncation message in `truncate_log_lines` is strictly conditional on lines being removed."
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes implement two new utility functions, `wrap_code_fence` and `truncate_log_lines`, while maintaining all existing functionality and adhering to specified constraints.",
+    "cruxes": [
+      {
+        "topic": "Fence Delimiter Width Calculation",
+        "side_a": "The width must be `max(3, longest + 1)`.",
+        "side_b": "The requirement is to compute the *longest consecutive* backtick run and use that for the calculation.",
+        "at_stake": "Req 1: Correctly calculating the fence width."
+      }
+    ],
+    "unverified_premises": [
+      "The exact behavior when the input `code` contains no backticks (i.e., `longest` is 0) needs confirmation to ensure the resulting fence width is at least 3.",
+      "The implementation of `truncate_log_lines` must handle inputs that are empty or consist only of whitespace without raising errors."
+    ],
+    "suggested_check": "Verify the behavior of `wrap_code_fence` when the input string contains zero backticks to confirm the resulting fence width is exactly 3."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes implement two new utility functions, `wrap_code_fence` and `truncate_log_lines`, while maintaining all existing functionality and adhering to specified constraints.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both requirements: computing the safe markdown fence delimiter and truncating long logs. No concrete defects were cited by the advisors.\nKEY POINTS:\n- `wrap_code_fence` correctly calculates the fence width using `max(3, longest_backtick_run + 1)`.\n- `truncate_log_lines` correctly preserves lines up to `max_lines` and appends the truncation message only when lines are removed.\n- The implementation maintains all existing passing behavior and legacy function signatures.\n- All provided tests pass, confirming no regressions.\nSUGGESTED CHECK: Confirm that the logic for appending the truncation message in `truncate_log_lines` is strictly conditional on lines being removed.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes implement two new utility functions, `wrap_code_fence` and `truncate_log_lines`, while maintaining all existing functionality and adhering to specified constraints.\nKEY POINTS:\n- Disagreement (Fence Delimiter Width Calculation): The width must be `max(3, longest + 1)`. vs. The requirement is to compute the *longest consecutive* backtick run and use that for the calculation. [at stake: Req 1: Correctly calculating the fence width.]\n- Unverified claim: The exact behavior when the input `code` contains no backticks (i.e., `longest` is 0) needs confirmation to ensure the resulting fence width is at least 3.\n- Unverified claim: The implementation of `truncate_log_lines` must handle inputs that are empty or consist only of whitespace without raising errors.\nSUGGESTED CHECK: Verify the behavior of `wrap_code_fence` when the input string contains zero backticks to confirm the resulting fence width is exactly 3.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes implement two new utility functions, `wrap_code_fence` and `truncate_log_lines`, while maintaining all existing functionality and adhering to specified constraints.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 886,
+      "output_tokens": 157,
+      "seconds": 3.311,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 925,
+      "output_tokens": 229,
+      "seconds": 4.357,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

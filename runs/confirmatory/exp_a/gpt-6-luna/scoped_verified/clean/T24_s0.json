@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`src/retry_after.py` references `math.ceil` without importing `math`; `retry_after_seconds(2.1, 2.0)` will fail with `NameError`.",
+  "target_issue": "tests/test_retry_after.py::test_retry_after_seconds",
+  "thoughts": [
+    "I\u2019ll inspect the PR diff to verify the requested API behavior and compatibility.",
+    "The new function calls `math.ceil`, but the diff does not add a `math` import, so any positive-token call will raise `NameError`. The added test exercises that path and should fail, making this PR incomplete despite the reported test result."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.049,
+  "prompt_tokens": 1479,
+  "output_tokens": 1448,
+  "estimated_usd": 0.005816,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

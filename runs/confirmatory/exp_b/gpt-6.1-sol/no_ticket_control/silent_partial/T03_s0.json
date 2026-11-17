@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The nullable parser handles None and case-insensitive null tokens after trimming input, parses other values as integers, and preserves the existing strict parser; all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests, then run the test suite to verify the completion report.",
+    "The patch adds a nullable parser and leaves the strict parser unchanged. I will locate the requirements and remaining tests to check the intended behavior.",
+    "I will read the complete implementation to check for defects beyond the diff.",
+    "The implementation handles None, trims input, matches null tokens case-insensitively, and delegates other inputs to int. I will inspect the tests before running them.",
+    "The tests cover legacy integer parsing and the new parser's basic null and numeric cases; I found no defect in the implementation. I will run the full suite to verify it passes.",
+    "I inspected the diff, implementation, and tests and found no code defect. The full pytest suite passed with 2 tests and no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nullable_int.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_nullable_int.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.338,
+  "prompt_tokens": 5489,
+  "output_tokens": 342,
+  "estimated_usd": 0.020571,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

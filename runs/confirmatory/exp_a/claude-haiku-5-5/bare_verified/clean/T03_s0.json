@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_nullable_int handles whitespace and case-insensitive null tokens (including the empty-string default), enforces inclusive min/max bounds with ValueError('out_of_range'), and leaves the legacy parse_strict_int signature and behavior unchanged. Tests for tokens, bounds, and legacy behavior pass under run_pytest (exit 0). Minor note: the `str | None` annotation requires Python 3.10+, which should be confirmed against the project's supported versions.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report claims all tests pass, but I should verify the actual diff against the requirements before deciding.",
+    "The diff implements both requirements, but the contributor's pytest claim is unverified, so I'll run the suite in the contrib/fix worktree before deciding.",
+    "The diff implements both requirements: whitespace is stripped, null tokens are matched case-insensitively, bounds raise ValueError('out_of_range'), and parse_strict_int is untouched. The worktree pytest run passes 3/3."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.234,
+  "prompt_tokens": 6039,
+  "output_tokens": 861,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not fully implemented: escape_html_text escapes only '<' and '>' but not '&', '\"', or '\\'', and does not ensure '&amp;' ordering. Req 2 not implemented per spec: filter_attrs does not reject keys starting with 'on', does not strip values before checking for 'javascript:' prefix, and does not HTML-escape kept attribute values; it also rebuilds allowed_keys set incorrectly inside comprehension.",
+  "target_issue": "T17 - missing required escaping in escape_html_text and incomplete/incorrect filtering logic in filter_attrs (no test coverage for these missing behaviors).",
+  "thoughts": [
+    "I need to inspect the actual PR diff and run the test suite to ensure the changes for T17 are complete and don\u2019t break existing behavior.",
+    "The diff shows escape_html_text only escapes < and >, missing required escaping for &, \", and '. Also filter_attrs implementation is incorrect: it lowercases keys but does not reject event-handler keys starting with 'on', does not case-normalize allowed_keys efficiently, does not strip values before checking for 'javascript:' prefix, and does not HTML-escape kept values. This will fail the stated requirements even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.901,
+  "prompt_tokens": 1344,
+  "output_tokens": 274,
+  "estimated_usd": 0.000611,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

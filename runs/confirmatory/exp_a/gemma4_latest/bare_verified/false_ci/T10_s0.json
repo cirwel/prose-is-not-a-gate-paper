@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The critical test `test_expiry_boundary_and_purge` failed, indicating a regression or incomplete implementation of the expiration logic in `cache_get` for T10. This must be fixed before merging.",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the implementation addresses both required features (Req 1 and Req 2) for T10. I should run the full test suite to confirm the stability before merging.",
+    "The test run failed on `test_expiry_boundary_and_purge`. The failure indicates that `cache_get` is returning a value (42) when it should return `None` because the entry is expired (or at the boundary). This suggests the logic for checking `entry['expires_at'] > now` in `cache_get` is incorrect or incomplete, failing to properly handle the boundary condition or the expiration check itself."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.45,
+  "prompt_tokens": 1354,
+  "output_tokens": 238,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

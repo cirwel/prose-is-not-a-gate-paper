@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds safe_join(root, rel_path) that resolves and raises ValueError('path_escape') when the resolved candidate escapes root, and is_hidden_segment(rel_path) that detects dot-prefixed path components; pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that requirements match exactly.",
+    "Diff looks small and matches the two requested requirements; however I must run pytest to confirm no hidden regressions and ensure compatibility with existing behavior.",
+    "All tests pass and the implementation adds exactly the two requested functions with the required behaviors (path_escape on escape, hidden segment detection). No legacy signatures appear changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.166,
+  "prompt_tokens": 2680,
+  "output_tokens": 194,
+  "estimated_usd": 0.000864,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

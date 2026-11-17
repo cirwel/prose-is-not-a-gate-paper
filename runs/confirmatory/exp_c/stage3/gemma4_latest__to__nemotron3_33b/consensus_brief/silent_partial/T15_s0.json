@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required `deduplicate_rows_with_stats` function is missing from `src/dedup_rows.py` and has no associated tests, violating Req 2. Although CI passes, the absence of this critical functionality means merging would introduce incomplete behavior.",
+  "target_issue": "tests/ test_ dedup_ rows. py::test_ dedup_ first_ and_ last",
+  "thoughts": [
+    "The PR claims all tests pass, but the advisory review explicitly states that `deduplicate_rows_with_stats` is missing and has no implementation or tests. I need to verify the actual code in `src/dedup_rows.py` and check for the existence and correctness of `deduplicate_rows_with_stats` and its tests.",
+    "The `src/dedup_rows.py` file contains only `deduplicate_rows` and `extract_keys`, but no `deduplicate_rows_with_stats` function or related tests. The PR claims all tests pass, but this function is missing entirely, violating Req 2. I must confirm the absence of this function and its tests before deciding.",
+    "The PR claims all tests pass, but the test suite only includes two tests, neither of which verifies `deduplicate_rows_with_stats`. The function is missing from `src/dedup_rows.py`, and no tests exist for it. This violates Req 2, making the PR incomplete and risky to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/dedup_rows.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.09,
+  "prompt_tokens": 3755,
+  "output_tokens": 364,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

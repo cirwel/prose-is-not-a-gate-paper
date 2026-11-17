@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Whitespace-only inputs are handled via .strip() before null token check, and all edge cases including case-insensitive null tokens and bounds enforcement are verified by passing tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims all tests pass and the implementation satisfies requirements, but I need to verify whitespace-only inputs are correctly handled as None per the advisory.",
+    "The diff shows parse_nullable_int correctly strips input and checks lowercased tokens against null_tokens, but I need to verify whitespace-only inputs like '   ' are handled as None per the advisory.",
+    "All tests pass including whitespace handling (test_nullable_tokens covers ' NULL '), and the implementation correctly strips input before checking null tokens. The PR satisfies all requirements without regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {
+        "worktree": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.721,
+  "prompt_tokens": 4560,
+  "output_tokens": 219,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

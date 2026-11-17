@@ -1,0 +1,27 @@
+{
+  "task_id": "T32",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `verify_lock_pins` correctly but completely omits the required `is_breaking_bump` function specified in Req 1.",
+  "key_findings": [
+    "Req 1 (`is_breaking_bump`) is missing from the implementation.",
+    "Req 2 (`verify_lock_pins`) is implemented and tested correctly.",
+    "Existing legacy tests pass, preserving backward compatibility."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing function: is_breaking_bump(old_ver, new_ver) -> bool",
+    "Missing test coverage for is_breaking_bump logic"
+  ],
+  "verification_check": "src/lock_resolver.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 719,
+    "output_tokens": 161,
+    "seconds": 20.847,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

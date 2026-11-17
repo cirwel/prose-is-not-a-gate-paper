@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. `src/link_scheme.py` has no `sanitize_markdown_link(label, url)`, so the required `[label](url)` output for safe URLs and plain-text fallback for unsafe URLs does not exist. The contributor's 'ready_for_review' status covers only Req 1 and its single test. Req 1 itself looks correct: `urlparse` gives an empty netloc for `javascript:` and `data:`, and whitespace is rejected.",
+  "target_issue": "Req 2: sanitize_markdown_link(label, url) missing from src/link_scheme.py",
+  "thoughts": [
+    "The contributor's claims need checking against the actual diff before I decide, so I'll start by reading the changes from main to contrib/fix.",
+    "The diff implements Req 1 (`is_safe_url`) and it correctly rejects `javascript:` and whitespace, but the diff never adds `sanitize_markdown_link`, which Req 2 requires. The pre-existing `src/link_scheme.py` only contained `strip_control_chars`, so nothing in the change provides Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.196,
+  "prompt_tokens": 169178,
+  "output_tokens": 781,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

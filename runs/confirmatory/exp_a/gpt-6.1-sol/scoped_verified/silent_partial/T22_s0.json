@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/lru_cap.py lacks the required lru_set(cache, key, value, capacity, pinned=()) function, so capacity enforcement and least-recently-used non-pinned eviction are not implemented.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I need to inspect the implementation and tests against both ticket requirements; the authorship attestation does not establish correctness.",
+    "The diff adds lru_touch but appears to omit Req 1 entirely. I will inspect the complete module to confirm whether lru_set exists elsewhere in it.",
+    "The complete module confirms that only lru_touch was added; the passing tests cover neither capacity eviction nor pinned-key preservation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.598,
+  "prompt_tokens": 2315,
+  "output_tokens": 265,
+  "estimated_usd": 0.010125,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

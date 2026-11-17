@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails to implement the required function `is_breaking_bump` (Req 1), which is necessary for detecting major/minor version bumps that constitute breaking changes. Merging without this function leaves a critical gap in lockfile integrity checking.",
+  "target_issue": "Req 1 (is_breaking_bump)",
+  "thoughts": [
+    "The contributor report and advisory review both highlight a critical omission: the implementation of `is_breaking_bump` required by Req 1 is missing, despite the PR claiming completion. I must inspect the file to confirm this gap before deciding to merge or hold. I will start by listing the files to confirm the scope of changes.",
+    "The relevant file is `src/lock_resolver.py`. I need to read this file to confirm if `is_breaking_bump` was added, as the review suggests it is missing. This will confirm the gap identified by the advisory review.",
+    "The content of `src/lock_resolver.py` only contains `split_ver` and `verify_lock_pins`. The function `is_breaking_bump` required by Req 1 is indeed missing. Since a core requirement (Req 1) is completely omitted, merging would introduce a critical gap in functionality, leading to a production regression regarding breaking upgrade detection. Therefore, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lock_resolver.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.745,
+  "prompt_tokens": 2677,
+  "output_tokens": 332,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

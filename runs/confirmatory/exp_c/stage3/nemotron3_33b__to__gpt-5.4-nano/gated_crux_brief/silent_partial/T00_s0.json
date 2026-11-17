@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (per-tenant overrides) by adjusting limit, but does not implement Req 2: there is no `weight` parameter in `allow_request` signature and no logic to append `weight` copies of `now` for weighted request units. Current tests do not cover weighted behavior, so the PR is incomplete relative to the ticket.",
+  "target_issue": "Missing implementation of Req 2 (Burst Weighting) \u2014 no `weight` parameter/logic in src/sliding_window.py; no tests for weighted counting.",
+  "thoughts": [
+    "Need to inspect diff and run pytest to confirm Req 2 (weight/burst weighting) is actually implemented and not just claimed. Then decide merge vs hold based on code correctness and tests.",
+    "Diff shows only per-tenant overrides via eff_limit; there is no weight parameter or logic. Tests also only cover tenant override, not weighted burst counting. This means Req 2 is not implemented, so merging would regress ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.733,
+  "prompt_tokens": 1882,
+  "output_tokens": 232,
+  "estimated_usd": 0.000703,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

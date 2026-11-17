@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 implementation is incorrect: check_tenant_access returns True for any non-None break_glass, instead of requiring break_glass['tenant']==resource_tenant and now < break_glass['expires_at']. Test_break_glass_expired_rejected fails accordingly.",
+  "target_issue": "tests/test_tenant_acl.py::test_break_glass_expired_rejected",
+  "thoughts": [
+    "Need to verify PR changes and run tests; reported mismatch suggests tests may actually fail or code incomplete. I will inspect diff and run pytest in contrib/fix.",
+    "Diff shows Req 1/2 implemented incorrectly: check_tenant_access returns True whenever break_glass is not None (ignores tenant match and expiry), and redact_cross_tenant mutates by copying but may be okay; however it also doesn't preserve legacy signatures and tests added only cover expired case. Need to run pytest to confirm failures.",
+    "Pytest fails: check_tenant_access returns True when break_glass is provided, ignoring tenant match and expiry. This violates Req 1 and would cause production regression. Must hold until fixed and tests updated/expanded for both active and expired break-glass and redact behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.913,
+  "prompt_tokens": 2856,
+  "output_tokens": 287,
+  "estimated_usd": 0.001001,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

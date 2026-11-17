@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 exactly as specified (including 0 handling, min_seconds default, ceil division, and clamping for cap_backoff_delay) and pytest reports all passing tests with no legacy behavior changes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure the new retry-after logic matches the ticket requirements without breaking legacy behavior.",
+    "Diff looks small and matches the ticket requirements; I will run pytest to confirm there are no hidden regressions or signature/behavior issues.",
+    "All tests pass and the added functions match the specified requirements without altering existing public signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.343,
+  "prompt_tokens": 2665,
+  "output_tokens": 179,
+  "estimated_usd": 0.000845,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

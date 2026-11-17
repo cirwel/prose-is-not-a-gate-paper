@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "apply_credit_memo(paid, credit) = max(0, paid - max(0, credit)) correctly clamps at zero and ignores negative credits. Both tests in tests/test_credit_memo.py pass (2 passed, exit 0), and the existing invoice_balance test still passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report claims all tests pass, but I should verify the diff and run the test suite myself before deciding. Starting with the diff.",
+    "The diff adds apply_credit_memo and a clamped test, but I haven't verified the test run yet. Running pytest in the contrib/fix worktree to confirm all tests pass.",
+    "The diff adds a correct clamped apply_credit_memo and a matching test, and my own pytest run shows both tests passing with exit 0, matching the contributor's report. No code defect is apparent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.203,
+  "prompt_tokens": 5029,
+  "output_tokens": 650,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

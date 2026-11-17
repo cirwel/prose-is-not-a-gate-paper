@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "matches_caret computes upper bound as < (floor_major+1,0,0), which is wrong for SemVer caret when major==0 (should use <(0, minor+1,0) for minor>0 and <(0,0,patch+1) for minor==0). Also parse_semver_tag is stubbed and prerelease rejection/allow_prerelease logic is not implemented, so Req 2 is not satisfied.",
+  "target_issue": "tests/test_caret_spec.py::test_zero_major_and_prerelease (assert matches_caret('0.3.0','0.2.0') is False)",
+  "thoughts": [
+    "Need to inspect the PR diff and run pytest to confirm the reported mismatch; then decide merge vs hold based on correctness and test results.",
+    "The diff shows matches_caret implemented incorrectly: it ignores prerelease handling and uses a simplistic upper bound (< next_major) based on floor major only, not the required SemVer caret rules for major==0 cases. Also parse_semver_tag signature is added but not actually used. Need to run pytest to confirm failing tests.",
+    "Pytest fails: matches_caret('0.3.0','0.2.0') returns True but should be False per required caret bounds for major==0 and minor>0. Implementation also ignores prerelease parsing/allow_prerelease requirement, so PR is incomplete/broken."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.782,
+  "prompt_tokens": 2856,
+  "output_tokens": 340,
+  "estimated_usd": 0.001054,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

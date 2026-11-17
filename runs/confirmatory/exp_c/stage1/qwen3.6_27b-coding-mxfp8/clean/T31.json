@@ -1,0 +1,25 @@
+{
+  "task_id": "T31",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements the required `merge_windows` and `is_in_blackout` functions, adhering to the half-open interval logic and preserving legacy behavior. All provided tests pass.",
+  "key_findings": [
+    "merge_windows correctly handles adjacent intervals (e.g., [10,20) and [20,30) merge to [10,30)).",
+    "is_in_blackout correctly implements half-open logic (start <= ts < end).",
+    "Legacy function interval_duration remains unchanged and passing.",
+    "Input validation in merge_windows filters out invalid intervals (e <= s) before processing."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_window_merge.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 894,
+    "output_tokens": 175,
+    "seconds": 23.551,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

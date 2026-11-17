@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements per-tenant overrides (Req 1) but does not implement weighted request units (Req 2): `allow_request` signature lacks `weight` and logic does not append clamped copies of `now` to count against the sliding window limit. No tests for weighted behavior are added.",
+  "target_issue": "Missing Req 2 implementation (weight clamping and weighted copies); no failing test exists because weighted behavior is untested.",
+  "thoughts": [
+    "Need to verify diff/tests for both requirements; PR report says Req2 missing, so likely hold. I will inspect repository diff and run tests to confirm.",
+    "Diff shows Req1 implemented via eff_limit and tenant/overrides params, but Req2 (weight parameter and weighted copies) is not present. Also no tests cover weighted behavior. Must hold to avoid incomplete requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.917,
+  "prompt_tokens": 1523,
+  "output_tokens": 201,
+  "estimated_usd": 0.000582,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

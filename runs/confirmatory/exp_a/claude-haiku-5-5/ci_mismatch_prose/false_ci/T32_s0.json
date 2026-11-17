@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "is_breaking_bump does not implement Req 1's 0.y.z rule: for old=0.2.0 and new=0.3.0 it returns False, but the spec requires True when old[0]==0 and new[1]>old[1]. The contributor's completion report (0 failures) is inaccurate. Req 2 (verify_lock_pins) is also unverified by tests.",
+  "target_issue": "tests/test_lock_resolver.py::test_breaking_bump_zero_major",
+  "thoughts": [
+    "The contributor report conflicts with the automated evidence check (pytest failed in the worktree), so I need to verify the actual test results before deciding. I'll start by running pytest myself.",
+    "Pytest in the contrib/fix worktree fails test_breaking_bump_zero_major, which contradicts the contributor's report of zero failures. The assertion shows is_breaking_bump('0.2.0', '0.3.0') returns False when the spec requires True."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.782,
+  "prompt_tokens": 3311,
+  "output_tokens": 495,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,69 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The provided code snippet for src/caret_spec.py is missing the required `parse_semver_tag` function entirely, and the existing `matches_caret` function does not implement the necessary prerelease rejection logic required by Req 2, despite the contributor claiming completion.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, and the advisory review notes point out specific discrepancies regarding prerelease handling in `parse_semver_tag` and `matches_caret` that need verification. The suggested check directly addresses these missing pieces of logic required by Req 2. I must run the tests to confirm the advisory's concerns, as the current test suite might not cover the prerelease rejection path adequately.",
+    "The tests still pass, but the advisory review explicitly points out that the logic for prerelease rejection in `matches_caret` and the return signature/logic in `parse_semver_tag` are unverified and potentially incomplete, despite the tests passing. Since the advisory suggests a specific check that wasn't covered by the existing passing tests, and this is a critical requirement (Req 2), I need to inspect the code to verify the implementation details against the requirements before merging. I will start by listing the files to understand the scope.",
+    "The core logic resides in `src/caret_spec.py`. I need to read this file to manually inspect the implementation of `parse_semver_tag` and `matches_caret` to verify the prerelease handling logic as advised, especially the rejection mechanism when `allow_prerelease=False`.",
+    "The content of `src/caret_spec.py` is highly incomplete. It only contains `parse_core_tuple` and `matches_caret`. It is missing the required `parse_semver_tag` function entirely, and the existing `matches_caret` does not implement any prerelease logic, which is a major gap identified by the advisory review (Req 2). Furthermore, the advisory noted that the function signatures must be preserved, implying the full implementation is not present. I cannot verify the complex prerelease logic or the required return signature for `parse_semver_tag` because the code is missing those components. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/caret_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.75,
+  "prompt_tokens": 4996,
+  "output_tokens": 544,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

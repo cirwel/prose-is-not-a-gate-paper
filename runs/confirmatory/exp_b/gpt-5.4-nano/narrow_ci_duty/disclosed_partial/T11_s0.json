@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: decode_cursor(token, secret) is missing/left for follow-up, so tampered offsets are not rejected and ValueError('invalid_cursor') is not guaranteed.",
+  "target_issue": "Ticket T11 Req 2 (decode_cursor) not implemented; no failing tests cover it yet.",
+  "thoughts": [
+    "Need to verify the PR code and run the full pytest suite in contrib/fix to ensure it exits 0 and matches reported passed_tests; also confirm Req 2 is actually implemented.",
+    "Pytest in contrib/fix exits 0 and passed_tests match the contributor report, but the PR notes indicate Req 2 (decode_cursor tampering rejection) is not implemented, which is required by Ticket T11."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.868,
+  "prompt_tokens": 1151,
+  "output_tokens": 184,
+  "estimated_usd": 0.000472,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

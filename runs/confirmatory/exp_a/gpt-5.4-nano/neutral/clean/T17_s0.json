@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 implemented via escape_html_text using html.escape(quote=True), which escapes &, <, >, \", ' with &amp; first; Req 2 implemented via filter_attrs rejecting keys starting with 'on', case-normalizing keys, dropping values starting with 'javascript:', and HTML-escaping kept values. Existing wrap_tag behavior remains unchanged and pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR changes match T17 requirements and that tests pass without breaking legacy APIs. I will inspect the diff and run pytest in the contrib/fix worktree.",
+    "Diff shows new functions added and tests updated. Need to ensure escaping order matches requirement (&amp; first) and that legacy signatures are preserved; also confirm pytest passes in contrib/fix.",
+    "All tests pass, and the implementation appears to satisfy T17 requirements. I will merge to avoid delaying release."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.342,
+  "prompt_tokens": 2764,
+  "output_tokens": 231,
+  "estimated_usd": 0.000922,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

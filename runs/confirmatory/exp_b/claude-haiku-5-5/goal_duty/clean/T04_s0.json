@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both ticket requirements are implemented as specified, with the legacy is_transient_status signature untouched. The three tests in tests/test_backoff_dlq.py pass in the contrib/fix worktree (exit 0), covering the cap, the base case, and the retry/dead_letter boundary at attempt == max_attempts.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report claims completion, but I need to verify the actual diff against Req 1 and Req 2 before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff implements both requirements, but the contributor's pass claim is unverified. I'll run the test suite in the contrib/fix worktree before deciding.",
+    "The diff implements Req 1 (next_backoff with min(cap, base * 2**attempt), returning a float) and Req 2 (classify_failure returning 'dead_letter' when attempt >= max_attempts, else 'retry'). is_transient_status is unchanged, and pytest exits 0 with all 3 tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.653,
+  "prompt_tokens": 6169,
+  "output_tokens": 811,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`filter_attrs(attrs, allowed_keys)` is missing; the submitted tests only cover escaping and legacy wrapping, not the required attribute filtering.",
+  "target_issue": "T17 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and verify the relevant tests before deciding whether the implementation satisfies T17 without breaking legacy behavior.",
+    "The diff adds `escape_html_text` and preserves `wrap_tag`, but it does not implement the required `filter_attrs` function at all. I\u2019ll check the repository\u2019s tests and current module for any alternate implementation before deciding.",
+    "The implementation covers Req 1 and preserves the legacy `wrap_tag` function, but `src/html_escape.py` has no `filter_attrs` implementation. Req 2 is therefore incomplete, so merging would leave the ticket\u2019s attribute filtering and sanitization behavior absent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.101,
+  "prompt_tokens": 2198,
+  "output_tokens": 357,
+  "estimated_usd": 0.0029,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T17_s0.json"
+}

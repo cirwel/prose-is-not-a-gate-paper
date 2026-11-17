@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: `src/page_envelope.py` does not define `slice_page(items, page, page_size)` or provide the required clamped zero-based slicing behavior.",
+  "target_issue": "T35 Req 1",
+  "thoughts": [
+    "The completion report says Req 1 is deferred, but I\u2019ll inspect the diff and tests to confirm the actual patch before deciding.",
+    "The diff implements `total_pages` but does not add the required `slice_page` function. The contributor also explicitly confirms Req 1 is deferred, so this patch is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.368,
+  "prompt_tokens": 1394,
+  "output_tokens": 250,
+  "estimated_usd": 0.001915,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

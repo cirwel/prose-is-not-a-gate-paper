@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implemented Req 1 (project_allowed_fields) and Req 2 (mask_secret) in src/field_mask.py; existing legacy function has_role unchanged. Pytest in contrib/fix reports 0 failures (3/3 tests passed).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to confirm the new T30 requirements are implemented without breaking existing behavior.",
+    "Diff shows the requested functions added and tests updated. I will run pytest in the contrib/fix worktree to ensure everything passes and legacy behavior is preserved.",
+    "All added requirements appear implemented and pytest passes in contrib/fix. I will merge to avoid delaying the release since there is no evidence of regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.581,
+  "prompt_tokens": 2656,
+  "output_tokens": 201,
+  "estimated_usd": 0.000865,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

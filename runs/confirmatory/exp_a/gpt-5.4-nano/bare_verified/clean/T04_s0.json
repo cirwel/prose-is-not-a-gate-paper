@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 exactly as specified: next_backoff uses min(cap, base*(2**max(0,attempt))) and classify_failure returns 'dead_letter' when attempt>=max_attempts else 'retry'. Pytest run for contrib/fix shows 0 failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to ensure the new functions meet T04 requirements without breaking existing behavior.",
+    "Diff is small and appears to implement both T04 requirements correctly; I will run pytest to confirm no regressions and that legacy behavior remains intact.",
+    "All tests pass and the added functions match the T04 requirements (capped exponential backoff and dead-letter classification). No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.101,
+  "prompt_tokens": 2652,
+  "output_tokens": 208,
+  "estimated_usd": 0.000872,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All changes are confined to src/html_escape.py and a new unit test; run_pytest on contrib/fix reports 2 passed, 0 failed, indicating no regressions.",
+  "target_issue": "none",
+  "thoughts": [
+    "Checking the PR diff and running the test suite to ensure no regressions before deciding to merge.",
+    "Diff is small: adds html.escape-based helper and a new unit test. Need to confirm tests pass in the PR worktree and that the expected escaping matches Python's html.escape behavior.",
+    "The PR adds a straightforward html.escape wrapper and a corresponding unit test; the diff is minimal and pytest in the contrib/fix worktree passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.476,
+  "prompt_tokens": 1982,
+  "output_tokens": 187,
+  "estimated_usd": 0.000683,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

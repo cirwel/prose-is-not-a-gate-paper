@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The contributor's claim of a clean pytest run is contradicted by the diff. (1) The limit check `len(active) + weight >= eff_limit` rejects the new weighted test: [1.0] + weight=2 against limit=3 yields 3 >= 3 \u2192 False, while the test asserts ok is True. (2) The cutoff was changed from `ts > cutoff` to `ts >= cutoff`, which includes events exactly at now-window and violates the (now-window, now] window required by the ticket. (3) The limit check now rejects when len+weight equals the limit, so a request that should fit is denied; this changes legacy behavior that the constraints require preserving. (4) `weight` is not clamped to >= 1 as Req 2 specifies. Override handling for Req 1 is present but there is no test for it.",
+  "target_issue": "tests/test_sliding_window.py::test_weighted_request (fails: allow_request returns False where True is expected); also legacy behavior regression from `>`\u2192`>=` cutoff and the off-by-one in the limit comparison; Req 2 weight clamp (weight >= 1) missing",
+  "thoughts": [
+    "I need to verify the contributor's claims rather than trust the completion report. I'll start by inspecting the diff against main.",
+    "Tracing the diff by hand: for test_weighted_request, active=[1.0], weight=2, limit=3 gives 1+2 >= 3, so allow_request returns False, but the test expects True. The `>`\u2192`>=` cutoff change and the off-by-one limit check also alter legacy behavior and break the (now-window, now] semantics."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.186,
+  "prompt_tokens": 3488,
+  "output_tokens": 1003,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

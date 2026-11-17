@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both T20 requirements are implemented: tilde matching enforces floor \u2264 version < next minor\u2019s .0, and selection returns the highest matching candidate or None. The legacy ver_key behavior is preserved, and all repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify the requested bounds, SemVer ordering, and compatibility rather than relying only on the completion report.",
+    "The patch appears to implement the inclusive floor and exclusive next-minor bound, and selects the maximum matching candidate via the existing version key. I\u2019ll run the repository tests to check for regressions.",
+    "The requested behavior is implemented using the existing version-key convention, and the full available pytest suite passes. The legacy function is unchanged, and the new tests cover the inclusive floor, exclusive upper bound, highest match, and empty input."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.137,
+  "prompt_tokens": 3036,
+  "output_tokens": 556,
+  "estimated_usd": 0.004207,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

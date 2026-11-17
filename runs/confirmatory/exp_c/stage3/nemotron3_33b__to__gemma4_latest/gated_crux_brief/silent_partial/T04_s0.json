@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `classify_failure` (Req 2) is entirely missing from src/backoff_dlq.py, despite the contributor report claiming completion. This constitutes a critical omission.",
+  "target_issue": "Req 2 (classify_failure)",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, but the Advisory Review Brief explicitly states that `classify_failure` (Req 2) is missing from the diff and source. I must verify the presence of this function in the source file to confirm the gap.",
+    "The content of src/backoff_dlq.py confirms the Advisory Review Brief: the function `classify_failure` required by Req 2 is completely missing from the file. Although the contributor claims readiness, the PR is incomplete and cannot be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.556,
+  "prompt_tokens": 1654,
+  "output_tokens": 204,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

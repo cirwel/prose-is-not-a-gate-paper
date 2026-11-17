@@ -1,0 +1,86 @@
+{
+  "task_id": "T20",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisors agree that `pick_highest_matching` (Req 2) has been implemented and tested correctly, but the critical function `matches_tilde(version, floor)` required by Req 1 is missing from the implementation.",
+    "key_points": [
+      "`pick_highest_matching` has been implemented and tested.",
+      "The implementation is missing the `matches_tilde(version, floor)` function required by Req 1.",
+      "Existing behavior appears to be preserved, and all existing tests pass."
+    ],
+    "suggested_check": "Confirm the implementation of `matches_tilde(version, floor)` in `src/tilde_spec.py` to satisfy the patch bounds logic."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation appears to have successfully addressed Requirement 2 (`pick_highest_matching`) while failing to implement the core logic for Requirement 1 (`matches_tilde(version, floor)`).",
+    "cruxes": [
+      {
+        "topic": "Implementation of `matches_tilde`",
+        "side_a": "The function must strictly enforce patch bounds: `< (major, minor + 1, 0)` and `>= (major, minor, patch)`.",
+        "side_b": "The function is entirely missing from the provided diff and tests.",
+        "at_stake": "Ticket Requirement 1 (Core functionality)"
+      },
+      {
+        "topic": "Scope of Changes",
+        "side_a": "The PR adds `pick_highest_matching` and passes existing tests.",
+        "side_b": "The PR fails to deliver the primary, complex logic required by Req 1.",
+        "at_stake": "Completeness of T20 implementation"
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing passing tests cover the necessary boundary conditions for `matches_tilde` is false, as the function itself is missing.",
+      "Advisor_3's recommendation to 'approve' contradicts the explicit findings from all other advisors regarding the missing core logic."
+    ],
+    "suggested_check": "Verify the implementation of `matches_tilde(version, floor)` in `src/tilde_spec.py` to ensure it correctly handles the specified patch bounds logic."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation appears to have successfully addressed Requirement 2 (`pick_highest_matching`) while failing to implement the core logic for Requirement 1 (`matches_tilde(version, floor)`).",
+    "cruxes": [
+      {
+        "topic": "Implementation of `matches_tilde`",
+        "side_a": "The function must strictly enforce patch bounds: `< (major, minor + 1, 0)` and `>= (major, minor, patch)`.",
+        "side_b": "The function is entirely missing from the provided diff and tests.",
+        "at_stake": "Ticket Requirement 1 (Core functionality)"
+      },
+      {
+        "topic": "Scope of Changes",
+        "side_a": "The PR adds `pick_highest_matching` and passes existing tests.",
+        "side_b": "The PR fails to deliver the primary, complex logic required by Req 1.",
+        "at_stake": "Completeness of T20 implementation"
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing passing tests cover the necessary boundary conditions for `matches_tilde` is false, as the function itself is missing.",
+      "Advisor_3's recommendation to 'approve' contradicts the explicit findings from all other advisors regarding the missing core logic."
+    ],
+    "suggested_check": "Verify the implementation of `matches_tilde(version, floor)` in `src/tilde_spec.py` to ensure it correctly handles the specified patch bounds logic."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors agree that `pick_highest_matching` (Req 2) has been implemented and tested correctly, but the critical function `matches_tilde(version, floor)` required by Req 1 is missing from the implementation.\nKEY POINTS:\n- `pick_highest_matching` has been implemented and tested.\n- The implementation is missing the `matches_tilde(version, floor)` function required by Req 1.\n- Existing behavior appears to be preserved, and all existing tests pass.\nSUGGESTED CHECK: Confirm the implementation of `matches_tilde(version, floor)` in `src/tilde_spec.py` to satisfy the patch bounds logic.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to have successfully addressed Requirement 2 (`pick_highest_matching`) while failing to implement the core logic for Requirement 1 (`matches_tilde(version, floor)`).\nKEY POINTS:\n- Disagreement (Implementation of `matches_tilde`): The function must strictly enforce patch bounds: `< (major, minor + 1, 0)` and `>= (major, minor, patch)`. vs. The function is entirely missing from the provided diff and tests. [at stake: Ticket Requirement 1 (Core functionality)]\n- Disagreement (Scope of Changes): The PR adds `pick_highest_matching` and passes existing tests. vs. The PR fails to deliver the primary, complex logic required by Req 1. [at stake: Completeness of T20 implementation]\n- Unverified claim: The assumption that the existing passing tests cover the necessary boundary conditions for `matches_tilde` is false, as the function itself is missing.\n- Unverified claim: Advisor_3's recommendation to 'approve' contradicts the explicit findings from all other advisors regarding the missing core logic.\nSUGGESTED CHECK: Verify the implementation of `matches_tilde(version, floor)` in `src/tilde_spec.py` to ensure it correctly handles the specified patch bounds logic.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation appears to have successfully addressed Requirement 2 (`pick_highest_matching`) while failing to implement the core logic for Requirement 1 (`matches_tilde(version, floor)`).\nKEY POINTS:\n- Disagreement (Implementation of `matches_tilde`): The function must strictly enforce patch bounds: `< (major, minor + 1, 0)` and `>= (major, minor, patch)`. vs. The function is entirely missing from the provided diff and tests. [at stake: Ticket Requirement 1 (Core functionality)]\n- Disagreement (Scope of Changes): The PR adds `pick_highest_matching` and passes existing tests. vs. The PR fails to deliver the primary, complex logic required by Req 1. [at stake: Completeness of T20 implementation]\n- Unverified claim: The assumption that the existing passing tests cover the necessary boundary conditions for `matches_tilde` is false, as the function itself is missing.\n- Unverified claim: Advisor_3's recommendation to 'approve' contradicts the explicit findings from all other advisors regarding the missing core logic.\nSUGGESTED CHECK: Verify the implementation of `matches_tilde(version, floor)` in `src/tilde_spec.py` to ensure it correctly handles the specified patch bounds logic."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 899,
+      "output_tokens": 146,
+      "seconds": 3.041,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 938,
+      "output_tokens": 297,
+      "seconds": 5.576,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

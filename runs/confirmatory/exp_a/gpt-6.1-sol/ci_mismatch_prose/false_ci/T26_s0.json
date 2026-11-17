@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_and_record_nonce always returns True, accepting replays before recorded expiry and overwriting their expiry. It also retains expired entries instead of pruning them on every call. The unused pruning helper incorrectly retains entries with expiry == now.",
+  "target_issue": "tests/test_nonce_replay.py::test_replay_rejected; T26 Req 1 and Req 2",
+  "thoughts": [
+    "I will inspect the patch and run the test suite to verify nonce replay handling, expiry pruning, and compatibility.",
+    "The patch unconditionally accepts every nonce and does not invoke expiry pruning; the pruning helper also retains entries at the expiry boundary. I will run pytest to confirm the reported replay failure.",
+    "Pytest confirms the replay test fails, and inspection shows both ticket requirements are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.978,
+  "prompt_tokens": 2560,
+  "output_tokens": 216,
+  "estimated_usd": 0.010272,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

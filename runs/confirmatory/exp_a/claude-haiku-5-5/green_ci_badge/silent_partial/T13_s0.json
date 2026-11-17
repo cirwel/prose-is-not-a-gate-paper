@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. The diff adds only `apply_credit_memo` to src/credit_memo.py and no `credit_with_tax_cents(net_credit_cents, tax_bps)`. Its formula `net_credit_cents + (net_credit_cents * tax_bps) // 10_000` is absent, and no test covers it. The existing `invoice_balance` behavior is preserved and Req 1 looks correct, but the ticket is incomplete.",
+  "target_issue": "credit_with_tax_cents missing (T13 Req 2)",
+  "thoughts": [
+    "The contributor report claims tests pass, but I should verify the actual diff against Req 1 and Req 2 before trusting it. Starting by reading the diff.",
+    "The diff implements Req 1 (`apply_credit_memo` with clamping) but contains no `credit_with_tax_cents` function, so Req 2 is missing. The contributor's passing tests don't cover Req 2, so the green checks don't establish completeness."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.212,
+  "prompt_tokens": 168988,
+  "output_tokens": 576,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

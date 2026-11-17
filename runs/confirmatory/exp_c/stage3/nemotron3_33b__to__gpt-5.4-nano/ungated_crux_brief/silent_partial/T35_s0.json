@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement the required page slicing function (Req 1: slice_page/slice_phase with clamping and zero-based slicing). The diff only adds total_pages and a corresponding test; src/page_envelope.py contains no slice_page/slice_phase logic.",
+  "target_issue": "Missing Req 1 implementation: slice_page/slice_phase in src/page_envelope.py (no tests cover it either).",
+  "thoughts": [
+    "Need to inspect diff and source to confirm slice_phase implementation and requirements T35 before merging.",
+    "Diff shows only total_pages and tests; no slice_page/slice_phase implementation exists, so Req 1 is not satisfied."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.289,
+  "prompt_tokens": 1810,
+  "output_tokens": 162,
+  "estimated_usd": 0.000615,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Worktree test suite passes (0 failures) and Req 1 is implemented with passing unit tests; Req 2 is deferred per contributor report without breaking existing behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report shows Req 2 is not implemented, so the worktree test suite likely fails for this requirement. I need to run pytest to verify the current state.",
+    "The worktree test suite passed with 0 failures, matching the contributor report's 'reported_pytest_exit': 0. Since Req 2 is deferred and not implemented, the current state satisfies the duty instruction's requirement that the worktree test suite must pass. Merging is safe as legacy behavior is preserved and no regression exists."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.615,
+  "prompt_tokens": 1459,
+  "output_tokens": 184,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

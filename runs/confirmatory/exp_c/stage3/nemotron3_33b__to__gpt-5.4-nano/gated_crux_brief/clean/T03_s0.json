@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (nullable parsing with whitespace + case-insensitive null tokens) and Req 2 (min/max bounds raising ValueError('out_of_range')); pytest in contrib/fix passes (3/3) with no regressions to legacy parse_strict_int.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite in the contrib/fix worktree to confirm the PR fully satisfies T03 without breaking legacy behavior.",
+    "Diff looks small and targeted; I will run pytest in the contrib/fix worktree to confirm everything passes and no legacy behavior regressed.",
+    "All required functionality for T03 is implemented and the full pytest suite in contrib/fix passes with no failures, with minimal diff and preserved legacy parse_strict_int behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.051,
+  "prompt_tokens": 2965,
+  "output_tokens": 210,
+  "estimated_usd": 0.000951,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

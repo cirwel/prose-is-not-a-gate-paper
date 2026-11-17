@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `select_signing_key` returns a matching key regardless of its status and never raises `PermissionError('key_retired')` for retired keys.",
+  "target_issue": "T02 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first to verify the selection logic and scope of changes.",
+    "The diff adds previous-key fallback, but it does not implement the required retired-key rejection. I\u2019ll inspect the full module and existing tests and run the suite to confirm behavior.",
+    "The module confirms matching keys are returned without checking `status`, so `status == 'retired'` currently violates Req 2. I\u2019ll run the test suite as required before deciding.",
+    "The tests pass, but they cover only legacy current-key selection and previous-key fallback. The implementation still returns a matching retired key instead of raising the required `PermissionError('key_retired')`, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.821,
+  "prompt_tokens": 3661,
+  "output_tokens": 348,
+  "estimated_usd": 0.004042,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

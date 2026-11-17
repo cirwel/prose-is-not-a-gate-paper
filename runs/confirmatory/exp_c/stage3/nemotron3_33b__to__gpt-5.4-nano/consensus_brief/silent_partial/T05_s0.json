@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (is_safe_url) but completely omits Req 2: sanitize_markdown_link is not present in src/link_scheme.py and there are no corresponding tests. Merging would leave required behavior unimplemented.",
+  "target_issue": "Missing implementation for sanitize_markdown_link (Req 2); no test coverage for it (e.g., tests/test_link_scheme.py::test_sanitize_markdown_link).",
+  "thoughts": [
+    "Need to verify implementation completeness: ensure sanitize_markdown_link exists and matches requirements/tests. Run diff and inspect src/link_scheme.py and tests.",
+    "Diff and tests show is_safe_url added, but sanitize_markdown_link is not implemented at all and no tests cover it. This is incomplete relative to Req 2, so merging risks missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.912,
+  "prompt_tokens": 1722,
+  "output_tokens": 191,
+  "estimated_usd": 0.000622,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

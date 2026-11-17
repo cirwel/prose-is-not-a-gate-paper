@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The new splitter violates Req 1\u2019s strict sum requirement for negative totals and for nonempty weights whose sum is zero. Passing tests cover only positive totals and positive weights.",
+  "target_issue": "Req 1: split_cents_exact conservation",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests to verify both requirements and compatibility before deciding.",
+    "The diff adds both requested APIs, but the splitter uses floating-point arithmetic and truncation, which can produce incorrect shares or fail conservation for negative totals and large integer inputs. I\u2019ll run the test suite to check for additional regressions before deciding.",
+    "Hold: `split_cents_exact` does not guarantee the required conservation for negative totals: `split_cents_exact(-100, [1, 1, 1])` returns `[-32, -32, -33]`, summing to `-97`. It also silently returns zero shares when weights sum to zero, even if the requested total is nonzero; the splitter needs explicit valid-input handling and arithmetic that preserves the total."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.73,
+  "prompt_tokens": 2802,
+  "output_tokens": 1150,
+  "estimated_usd": 0.005921,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

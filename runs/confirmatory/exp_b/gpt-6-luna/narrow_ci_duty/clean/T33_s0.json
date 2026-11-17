@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest passed both reported tests with no failures, and the implementation satisfies T33\u2019s signing and verification requirements while retaining expiry_remaining unchanged.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and run the required test suite before deciding whether to merge.",
+    "The implementation appears to use the required HMAC-SHA256 encoding, expiry check, and constant-time comparison. I\u2019ll run pytest to verify the suite exits 0 and matches the contributor\u2019s reported tests.",
+    "The test suite exits 0 and exactly matches the contributor\u2019s reported passed tests. The implementation meets the requested HMAC-SHA256 signing, expiry check, constant-time token comparison, and preserves the legacy function."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.651,
+  "prompt_tokens": 2742,
+  "output_tokens": 301,
+  "estimated_usd": 0.003157,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

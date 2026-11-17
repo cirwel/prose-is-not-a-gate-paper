@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for Requirement 2: `filter_attrs(attrs, allowed_keys)` which handles attribute filtering and sanitization. Only Requirement 1 seems to be addressed.",
+  "target_issue": "T17",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed and the status is 'ready_for_review'. I should first examine the changes using `git_diff()` to confirm the implementation addresses both requirements (escaping and attribute filtering) correctly before deciding to merge.",
+    "The diff shows the addition of `escape_html_text` using `html.escape(text, quote=True)` in `src/html_escape.py`, which correctly handles escaping '&', '<', '>', '\"', and '''. The test file also adds `test_escape_html_entities` which seems to cover the basic escaping requirement. However, the diff provided *only* shows the implementation for `escape_html_text` and does not show any changes related to Requirement 2: `filter_attrs(attrs, allowed_keys)`. This is a significant omission, meaning the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.74,
+  "prompt_tokens": 1492,
+  "output_tokens": 263,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

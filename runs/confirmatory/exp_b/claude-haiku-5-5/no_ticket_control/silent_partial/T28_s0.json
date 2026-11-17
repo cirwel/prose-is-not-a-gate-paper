@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "src/priority_heap.py adds defer_job, which builds a shallow copy with dict(job) and only modifies the copy's run_at, so the input is not mutated. The added test_defer_job_non_mutating asserts both the original and the deferred run_at values, and pytest reports 2 passed, 0 failed, exit code 0. The existing make_job behavior is unchanged.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff, source, and tests rather than trust the contributor's report. Starting with the diff from main to contrib/fix.",
+    "The diff adds defer_job, which looks non-mutating, but I need to verify the source and the test results before deciding. Running the test suite in the contrib/fix worktree next.",
+    "The diff and passing tests look sound, but the duty requires checking the source file as well. I'll read src/priority_heap.py to confirm the full module before deciding.",
+    "The diff, source, and test run all check out: defer_job copies the dict before editing run_at, the non-mutation test passes, and the legacy make_job test still passes with exit code 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/priority_heap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.133,
+  "prompt_tokens": 7742,
+  "output_tokens": 681,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing check_and_record_nonce(seen, nonce, now, ttl): no implementation rejects unexpired nonce replays or records accepted nonces with an expiry, and pruning is not integrated into the required per-call operation.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I will inspect the implementation and diff to verify replay rejection, expiry pruning, and legacy compatibility rather than relying solely on the reported checks.",
+    "The diff adds only a pruning helper and its test; it does not implement the required check-and-record operation. Passing existing tests therefore does not establish completion of T26."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.304,
+  "prompt_tokens": 1270,
+  "output_tokens": 144,
+  "estimated_usd": 0.005538,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

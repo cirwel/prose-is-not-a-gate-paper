@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requirements are implemented as specified, and the legacy function signature and behavior are preserved. Non-blocking caveat: hmac.compare_digest raises TypeError when the token or expected value contains non-ASCII characters, so verify_path_token can raise instead of returning False for a malformed token. Consider encoding both values to bytes before comparison in a follow-up.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief and contributor report are summaries, so I should verify the actual diff before judging the implementation.",
+    "The diff matches both requirements: the HMAC-SHA256 hex digest is over the specified message, and expiry uses `now <= expires_at` with `compare_digest`. I'll confirm the test result in the worktree before deciding.",
+    "The diff matches Req 1 (lowercase hex HMAC-SHA256 over f'{path}:{int(expires_at)}') and Req 2 (expiry check, then hmac.compare_digest). Pytest passes 2/2 and the legacy expiry_remaining function is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.425,
+  "prompt_tokens": 7036,
+  "output_tokens": 1184,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

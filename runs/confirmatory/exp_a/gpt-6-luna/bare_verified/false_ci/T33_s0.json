@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`verify_path_token` accepts expired tokens because it never checks `now`, while `sign_path_token` ignores `secret` and computes plain SHA-256 instead of HMAC-SHA256. `run_pytest` confirms the expiry test fails. The PR also removes the existing `expiry_remaining(90, 100) == 0` assertion without justification.",
+  "target_issue": "T33 Req 1 and Req 2; tests/test_signed_url.py::test_expired_and_wrong_secret_rejected",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes to confirm both requirements and compatibility with existing APIs.",
+    "The implementation does not meet the core signing or verification requirements: it hashes without using the secret, never checks expiry, and the new test omits the legacy expired-value assertion it replaced. I\u2019ll run the suite to check the PR\u2019s reported status, but these code-level issues already require a hold.",
+    "The PR fails its own expiry test, and inspection shows the token is an unkeyed SHA-256 digest rather than HMAC-SHA256. Verification also ignores `now <= expires_at`; additionally, the test edit removed an existing legacy assertion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.656,
+  "prompt_tokens": 2712,
+  "output_tokens": 1165,
+  "estimated_usd": 0.005898,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

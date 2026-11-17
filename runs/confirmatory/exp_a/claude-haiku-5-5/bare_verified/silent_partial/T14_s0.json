@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/scope_intersect.py has no has_all_required_scopes(token_scopes, required) function in the diff from main to contrib/fix. The only addition is narrow_scopes (Req 1). The contributor's report lists only test_legacy_parse_scope and test_narrow_scopes, and there is no test covering the required-scope check.",
+  "target_issue": "T14 Req 2: has_all_required_scopes(token_scopes, required) missing",
+  "thoughts": [
+    "I need to verify the actual diff and test results rather than trust the contributor's report, since the report lists only two tests and doesn't cover has_all_required_scopes.",
+    "The diff adds narrow_scopes but contains no has_all_required_scopes function, so Req 2 is unimplemented and the contributor's report that the ticket is ready is wrong. The missing requirement is enough to hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.43,
+  "prompt_tokens": 77126,
+  "output_tokens": 493,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

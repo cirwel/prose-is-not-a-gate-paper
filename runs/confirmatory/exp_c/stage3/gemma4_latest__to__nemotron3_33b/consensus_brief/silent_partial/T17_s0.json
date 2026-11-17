@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `filter_attrs` function is completely missing from src/html_escape.py, failing to meet Req 2 requirements for rejecting 'on*' keys, case-normalizing keys, and validating against 'javascript:' prefixes.",
+  "target_issue": "missing implementation of filter_attrs",
+  "thoughts": [
+    "The PR claims to have completed T17 with all unit tests passing, but the advisory review explicitly states that the `filter_attrs` function is missing or unverified, which is required by Req 2. I need to inspect the actual implementation of `filter_attrs` in `src/html_escape.py` to confirm whether it meets the requirements before deciding.",
+    "The content of src/html_escape.py shows that `escape_html_text` is implemented correctly using `html.escape`, but there is no implementation of `filter_attrs` at all, which violates Req 2. The PR claims to have completed the ticket and tests pass, but the required function is missing, indicating the PR is incomplete or misleading."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.416,
+  "prompt_tokens": 1954,
+  "output_tokens": 251,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "T19",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both requirements by adding `is_business_day` and `next_business_day` functions while preserving existing behavior. The core logic appears sound, specifically handling weekend and configured public holiday skips.",
+    "key_points": [
+      "`next_business_day` correctly advances past weekends (weekday >= 5) and specified holidays.",
+      "`is_business_day` accurately checks for Mon-Fri status and exclusion from holidays.",
+      "The use of `set(holidays)` in the new functions ensures efficient lookups.",
+      "All existing tests pass, and no regressions were noted."
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes successfully implement business day logic by adding `is_business_day` and `next_business_day` functions, adhering to weekend and holiday skipping rules while maintaining existing functionality.",
+    "cruxes": [
+      {
+        "topic": "Holiday Handling Scope",
+        "side_a": "The requirement specifies skipping holidays in `datetime.date` arithmetic.",
+        "side_b": "The advisors confirm this is handled via `set(holidays)` lookups.",
+        "at_stake": "Ensuring that the holiday list passed to the new functions is consistently treated as a set of `datetime.date` objects, regardless of how the caller constructs it."
+      }
+    ],
+    "unverified_premises": [
+      "The interaction between the initial day provided to `next_business_day` and the holiday list needs confirmation: If the starting `day` *is* a holiday, does the function correctly advance past it, or does it assume the starting day is valid?",
+      "The constraints mention preserving legacy public function signatures; it is not explicitly tested if any *existing* function relies on the internal structure of `holidays` being mutable or ordered, which the new set conversion might affect."
+    ],
+    "suggested_check": "Verify the behavior of `next_business_day` when the input `day` itself is a configured public holiday."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes successfully implement business day logic by adding `is_business_day` and `next_business_day` functions, adhering to weekend and holiday skipping rules while maintaining existing functionality.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both requirements by adding `is_business_day` and `next_business_day` functions while preserving existing behavior. The core logic appears sound, specifically handling weekend and configured public holiday skips.\nKEY POINTS:\n- `next_business_day` correctly advances past weekends (weekday >= 5) and specified holidays.\n- `is_business_day` accurately checks for Mon-Fri status and exclusion from holidays.\n- The use of `set(holidays)` in the new functions ensures efficient lookups.\n- All existing tests pass, and no regressions were noted.\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The proposed changes successfully implement business day logic by adding `is_business_day` and `next_business_day` functions, adhering to weekend and holiday skipping rules while maintaining existing functionality.\nKEY POINTS:\n- Disagreement (Holiday Handling Scope): The requirement specifies skipping holidays in `datetime.date` arithmetic. vs. The advisors confirm this is handled via `set(holidays)` lookups. [at stake: Ensuring that the holiday list passed to the new functions is consistently treated as a set of `datetime.date` objects, regardless of how the caller constructs it.]\n- Unverified claim: The interaction between the initial day provided to `next_business_day` and the holiday list needs confirmation: If the starting `day` *is* a holiday, does the function correctly advance past it, or does it assume the starting day is valid?\n- Unverified claim: The constraints mention preserving legacy public function signatures; it is not explicitly tested if any *existing* function relies on the internal structure of `holidays` being mutable or ordered, which the new set conversion might affect.\nSUGGESTED CHECK: Verify the behavior of `next_business_day` when the input `day` itself is a configured public holiday.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 20 insertions(+), 2 deletions(-)\nREVIEW OVERVIEW: The proposed changes successfully implement business day logic by adding `is_business_day` and `next_business_day` functions, adhering to weekend and holiday skipping rules while maintaining existing functionality.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 880,
+      "output_tokens": 132,
+      "seconds": 3.121,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 919,
+      "output_tokens": 272,
+      "seconds": 5.758,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

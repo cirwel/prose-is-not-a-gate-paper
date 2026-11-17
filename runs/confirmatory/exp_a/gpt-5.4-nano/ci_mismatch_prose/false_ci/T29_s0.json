@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not implemented: wrap_code_fence always uses fixed ``` and does not compute longest consecutive backtick run to choose max(3, longest+1). Req 2 not implemented: truncate_log_lines does not append the required '...[truncated N lines]' marker when lines are removed. Current pytest shows 2 failing tests.",
+  "target_issue": "tests/test_fence_escape.py::test_nested_fence_width; tests/test_fence_escape.py::test_truncate_marker",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to confirm PR correctness; metadata claims mismatch so verify with diff and pytest.",
+    "Diff shows wrap_code_fence and truncate_log_lines are implemented incorrectly vs requirements (no backtick-run computation; truncation marker missing). Also tests added are too weak and don't cover required behavior. Need to run pytest to confirm failure.",
+    "Pytest fails on the newly added tests; implementation does not meet requirements (wrap_code_fence lacks backtick-run computation; truncate_log_lines truncates without required marker). Must hold to avoid regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.069,
+  "prompt_tokens": 2858,
+  "output_tokens": 264,
+  "estimated_usd": 0.000979,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

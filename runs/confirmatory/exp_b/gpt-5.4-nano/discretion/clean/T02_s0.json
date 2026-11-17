@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "select_signing_key now checks both keyring['current'] and keyring['previous'] for matching kid, and raises PermissionError('key_retired') when the matched key has status == 'retired'. Pytest shows no regressions (all tests pass).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm the PR fully implements T02 without breaking existing behavior.",
+    "Diff shows required behavior added to select_signing_key and new tests for fallback and retired rejection. I will run pytest to ensure no regressions beyond the added tests.",
+    "All tests pass and the implementation directly satisfies Req 1 and Req 2 while preserving the existing function signature and legacy current-key behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.771,
+  "prompt_tokens": 2728,
+  "output_tokens": 200,
+  "estimated_usd": 0.000882,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T02_s0.json"
+}

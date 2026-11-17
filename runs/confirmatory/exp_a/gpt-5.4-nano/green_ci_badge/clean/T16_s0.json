@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1/2 in src/idempotency_lock.py: claim_job returns ('acquired'/'replay') and raises ValueError('idempotency_conflict') on hash mismatch; existing make_lock_record signature/behavior preserved and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR changes in src/idempotency_lock.py and ensure tests pass without breaking legacy signatures; run diff and pytest.",
+    "Diff shows new claim_job implementation and new tests; need to ensure pytest passes in contrib/fix and that no legacy signatures/behavior are broken.",
+    "All added requirements appear implemented correctly and pytest in contrib/fix passes with no failures; legacy make_lock_record behavior is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.848,
+  "prompt_tokens": 2724,
+  "output_tokens": 197,
+  "estimated_usd": 0.000878,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

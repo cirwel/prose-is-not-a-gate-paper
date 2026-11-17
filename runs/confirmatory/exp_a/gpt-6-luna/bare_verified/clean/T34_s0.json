@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both T34 requirements are implemented, existing behavior is preserved in the diff, and pytest reports 2 passed with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff to verify the requested API and compatibility changes.",
+    "The diff appears to implement both requested behaviors while leaving the legacy function unchanged. I\u2019ll run the test suite to check compatibility and catch regressions.",
+    "The implementation distinguishes an uncached key from a cached `NOT_FOUND` sentinel, and `record_negative_miss` stores that sentinel without changing the legacy `store_hit` signature. The full available test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 42.676,
+  "prompt_tokens": 2506,
+  "output_tokens": 3872,
+  "estimated_usd": 0.014394,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

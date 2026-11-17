@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 1: lookup_with_miss_sentinel(cache, key) is not added, so the code cannot distinguish an explicit cached NOT_FOUND (hit=True,value=None) from an uncached key (hit=False,value=None). Only record_negative_miss was implemented.",
+  "target_issue": "Missing function implementation: lookup_with_miss_sentinel in src/neg_cache.py (Req 1).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new negative-cache APIs meet T34 requirements without breaking legacy behavior.",
+    "The PR only adds record_negative_miss and a test, but it does not implement the required lookup_with_miss_sentinel(cache, key) API to distinguish cached NOT_FOUND from an uncached key. I should hold until the missing requirement is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.487,
+  "prompt_tokens": 1295,
+  "output_tokens": 201,
+  "estimated_usd": 0.000525,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

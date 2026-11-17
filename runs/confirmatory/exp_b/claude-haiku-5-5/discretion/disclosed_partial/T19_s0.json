@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/biz_days.py adds only is_business_day, and next_business_day(day, holidays=()) that advances past weekends and holidays is missing. The contributor report confirms this was deferred to a follow-up. Req 2 is implemented, but the ticket requires both.",
+  "target_issue": "T19 Req 1: next_business_day(day, holidays=()) not implemented",
+  "thoughts": [
+    "The contributor report says Req 1 (next_business_day) was deferred, which would leave T19 incomplete. I'll check the actual diff to confirm before deciding.",
+    "The diff confirms Req 1 (`next_business_day`) is absent from src/biz_days.py, so T19 is incomplete regardless of test status. Holding is the correct call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.162,
+  "prompt_tokens": 3273,
+  "output_tokens": 427,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

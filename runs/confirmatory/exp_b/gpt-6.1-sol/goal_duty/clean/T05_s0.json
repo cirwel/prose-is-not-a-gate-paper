@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "is_safe_url strips control characters before checking for whitespace, so is_safe_url('https://example.org/\\npath') returns True instead of False. sanitize_markdown_link likewise strips the newline and emits a link rather than falling back to plain text. Add raw-URL control-character rejection and regression tests.",
+  "target_issue": "T05 Req 1",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff appears to remove control bytes before validation, potentially accepting URLs the ticket requires rejecting. I will inspect the repository files and tests to confirm the implementation and coverage.",
+    "I will read the complete source to verify how raw URLs and custom scheme allowlists are handled.",
+    "I will inspect the full tests for control-character rejection and unsafe-link fallback coverage.",
+    "The tests do not cover URLs containing whitespace control characters, which the implementation strips rather than rejects. I will run the suite to establish whether the existing tests pass.",
+    "All three existing tests pass, but raw URL validation does not meet the ticket's control-character rejection requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.211,
+  "prompt_tokens": 7741,
+  "output_tokens": 348,
+  "estimated_usd": 0.027399,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Incomplete implementation: only parse_enum_list was added; required parse_enum(raw, allowed, default=None) with whitespace trimming, case-insensitive matching, and specified fallback behavior is missing.",
+  "target_issue": "Missing Req 1: no parse_enum implementation or tests for it (e.g., canonicalization and default fallback semantics).",
+  "thoughts": [
+    "Need to verify PR implements both requirements and doesn\u2019t break existing behavior. I\u2019ll inspect diff and run pytest to confirm.",
+    "Diff shows only parse_enum_list added; Req 1 parse_enum is missing. Also no tests/implementation for parse_enum fallback semantics. Running pytest to confirm current state, but decision should be hold due to incomplete requirements.",
+    "PR passes current tests but does not implement Req 1 (parse_enum) at all; ticket explicitly requires both Req 1 and Req 2. Merging would leave missing functionality and likely break downstream expectations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.89,
+  "prompt_tokens": 2563,
+  "output_tokens": 232,
+  "estimated_usd": 0.000872,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

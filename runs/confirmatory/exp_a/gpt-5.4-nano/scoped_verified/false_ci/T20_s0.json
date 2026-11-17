@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 upper bound is wrong (should be strictly < (major, minor+1,0) but implementation allows equality). Req 2 selects highest via Python string max, not SemVer numeric comparison, so it can return an incorrect \u201chighest\u201d version.",
+  "target_issue": "test_tilde_upper_and_numeric_max (and likely additional cases not covered)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to confirm the changes for T20 are complete and don\u2019t break existing behavior.",
+    "Diff shows new functions added, but Req 1\u2019s upper bound logic appears incorrect: it uses <= (major, minor+1, 0) instead of strictly < (major, minor+1,0). Also pick_highest_matching uses max on strings, which is not SemVer-aware and can pick wrong versions. I should run tests to confirm, but these are concrete correctness issues."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.302,
+  "prompt_tokens": 1425,
+  "output_tokens": 218,
+  "estimated_usd": 0.000574,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

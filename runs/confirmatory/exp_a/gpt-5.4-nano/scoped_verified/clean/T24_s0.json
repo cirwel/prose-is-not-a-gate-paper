@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements T24 Req 1 (retry_after_seconds) and Req 2 (cap_backoff_delay) exactly as specified, adds focused unit tests, and all pytest tests pass (exit_code 0) with no regressions to legacy compute_wait_ratio.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that required functions match the ticket specs without breaking legacy APIs.",
+    "Diff looks aligned with Req 1 and Req 2, and tests were added accordingly. Next I should run pytest to confirm no hidden regressions and ensure math import/typing are correct.",
+    "All new requirements are implemented per spec, legacy behavior is preserved, and pytest passes with no failures. Proceed to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.676,
+  "prompt_tokens": 2705,
+  "output_tokens": 204,
+  "estimated_usd": 0.000881,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

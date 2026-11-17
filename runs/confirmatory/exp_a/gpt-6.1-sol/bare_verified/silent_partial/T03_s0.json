@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_nullable_int does not accept min_val or max_val or enforce inclusive bounds. Calls with either required keyword raise TypeError instead of validating values and raising ValueError('out_of_range') for out-of-range integers.",
+  "target_issue": "T03 Req 2",
+  "thoughts": [
+    "I will inspect the implementation and diff to verify nullable parsing, bounds enforcement, and legacy compatibility.",
+    "The new parser handles null tokens, but its signature and implementation omit the required optional bounds entirely."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.196,
+  "prompt_tokens": 1292,
+  "output_tokens": 141,
+  "estimated_usd": 0.005568,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

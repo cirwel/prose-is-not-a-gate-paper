@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) with correct ceil/max logic and cap_backoff_delay(delay, max_delay=30.0) with proper clamping, while preserving existing compute_wait_ratio behavior; pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR diff and run tests to ensure no regressions and requirements are implemented correctly.",
+    "Diff shows new functions added and tests updated; need to ensure math import exists and run pytest to confirm no regressions.",
+    "All tests pass and the diff implements both T24 requirements exactly; no legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.407,
+  "prompt_tokens": 2621,
+  "output_tokens": 179,
+  "estimated_usd": 0.000834,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

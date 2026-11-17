@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required functionality: select_signing_key(...) does not reject keys with status == 'retired' by raising PermissionError('key_retired').",
+  "target_issue": "Ticket T02 Req 2 (retired key rejection) not covered/implemented; no failing test exists yet.",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the requested key rotation behavior is implemented without breaking existing functionality.",
+    "Diff shows Req1 implemented (current/previous fallback) but Req2 (reject status=='retired' with PermissionError('key_retired')) is not present. I will run pytest to confirm current tests pass, but missing required behavior means we should hold.",
+    "Req2 is not implemented in src/keyring_rotator.py (no check for status=='retired' and no PermissionError('key_retired')). Even though tests pass, merging would violate the ticket requirements and risk future production behavior regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.276,
+  "prompt_tokens": 2385,
+  "output_tokens": 243,
+  "estimated_usd": 0.00084,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

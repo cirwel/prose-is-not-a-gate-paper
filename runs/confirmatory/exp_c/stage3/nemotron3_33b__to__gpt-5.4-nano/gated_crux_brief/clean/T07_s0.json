@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Implementation likely mishandles '*' with step qualifiers: it sets lo=min_v, hi=max_v but does not validate that the step qualifier exists/works for '*' beyond basic range expansion; also boundary validation is only exercised for a single out-of-bounds range case. No tests cover cases like '* /step' (e.g., '*/15'), wildcard with step, or out-of-bounds endpoints in 'a-b/step' where only one endpoint is invalid.",
+  "target_issue": "Missing tests for expand_cron_field wildcard step handling (e.g., expr='*/15' with min_v/max_v) and for out-of-bounds range endpoints (e.g., '10-60/2' with max_v=59).",
+  "thoughts": [
+    "Need to verify PR correctness by inspecting diff and running pytest to ensure wildcard and bounds behavior are solid, then decide merge vs hold.",
+    "Diff is small and tests pass, but I need to confirm behavior for wildcard '*' with step and for out-of-bounds endpoints in ranges; current tests only cover one range OOB and basic expansion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.424,
+  "prompt_tokens": 2184,
+  "output_tokens": 253,
+  "estimated_usd": 0.000799,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

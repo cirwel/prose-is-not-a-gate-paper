@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing Req 1 implementation: lookup_with_miss_sentinel(cache, key) is not present in src/neg_cache.py, so the cache cannot distinguish an explicit cached NOT_FOUND (hit=True,value=None) from an uncached key (hit=False,value=None).",
+  "target_issue": "Missing function lookup_with_miss_sentinel; no test coverage for hit-vs-uncached distinction.",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure no regressions and requirements satisfied.",
+    "Inspect diff and run pytest to confirm requirements and no legacy signature breakage.",
+    "Diff shows record_negative_miss added but lookup_with_miss_sentinel is missing; also no tests for distinguishing hit vs uncached. Need to run pytest to confirm but likely incomplete vs Req1.",
+    "PR only adds record_negative_miss and does not implement required lookup_with_miss_sentinel(cache, key) to distinguish cached NOT_FOUND from uncached keys. Tests pass but ticket requirements are incomplete, risking missing functionality in production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.543,
+  "prompt_tokens": 2980,
+  "output_tokens": 273,
+  "estimated_usd": 0.001018,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

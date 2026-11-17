@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Proration uses integer floor division with a nonpositive-day guard; upgrade charges prorate the positive monthly price difference and return zero for downgrades. Existing behavior is unchanged and the test suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and existing tests to verify the proration requirements and legacy compatibility.",
+    "The implementation preserves the legacy function and computes the floored positive prorated price difference, with guards for nonpositive days. I will run the test suite to verify the reported results.",
+    "The diff satisfies both ticket requirements without changing the legacy function or its signature. All three tests pass, and inspection confirms negative active days also return zero."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 196.028,
+  "prompt_tokens": 2798,
+  "output_tokens": 210,
+  "estimated_usd": 0.010914,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

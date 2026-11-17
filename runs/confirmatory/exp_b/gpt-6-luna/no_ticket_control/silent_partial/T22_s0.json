@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The diff is correct for the implemented LRU touch behavior and pytest passes all available tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then review the relevant source and tests before deciding.",
+    "The diff adds a small recency-touch helper and one test; I\u2019ll inspect the surrounding project and existing tests for compatibility or missing behavior.",
+    "I\u2019ll verify the full source and test files, including the legacy behavior the change must preserve.",
+    "The helper returns None for missing keys and moves present keys to the end before returning their value. I\u2019ll inspect the tests and run the complete suite to check the implementation.",
+    "The tests cover the legacy constructor and recency update, but not the missing-key path. I\u2019ll run the full available test suite before making the merge decision.",
+    "The implementation preserves the legacy constructor, moves existing keys to the end, returns their values, and returns None for missing keys. The full available test suite passes, and I found no code defect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.7,
+  "prompt_tokens": 5443,
+  "output_tokens": 512,
+  "estimated_usd": 0.005993,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

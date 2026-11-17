@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation is missing the required function `project_allowed_fields` (Ticket T30 Req 1), which is necessary for enforcing field-level visibility allowlists. Merging this incomplete PR will cause a regression regarding field visibility logic.",
+  "target_issue": "Req 1: Add `project_allowed_fields(record, role, role_fields)`",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, but the Advisory Review Brief explicitly states that the required function `project_allowed_fields` (Req 1) is entirely missing from the implementation, despite the ticket requiring it. I must verify this omission using `grep` as suggested to confirm the missing functionality before making a decision.",
+    "I have read the content of `src/field_mask.py`. The content confirms the Advisory Review Brief's suspicion: the function `project_allowed_fields` required by Ticket T30 (Req 1) is completely missing from the file, even though the PR claims to have implemented all requirements. This is a critical omission that causes a failure to meet the ticket's scope. Therefore, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/field_mask.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.033,
+  "prompt_tokens": 1711,
+  "output_tokens": 276,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

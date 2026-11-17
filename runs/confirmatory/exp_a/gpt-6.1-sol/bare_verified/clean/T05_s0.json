@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "is_safe_url('https://example.org/\\npath') returns True because strip_control_chars removes the newline before validation, violating the requirement to reject whitespace control characters. sanitize_markdown_link likewise turns this unsafe input into a link rather than returning plain label text.",
+  "target_issue": "T05 Req 1",
+  "thoughts": [
+    "I will inspect the implementation and tests against both requirements and check for legacy behavior regressions.",
+    "The URL guard strips control characters before validation, potentially accepting inputs that Req 1 explicitly requires rejecting. I will run the existing tests to check the reported baseline.",
+    "All three existing tests pass, but they do not cover control characters in URLs. Inspection shows that validation removes these characters rather than rejecting the original input."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.607,
+  "prompt_tokens": 2762,
+  "output_tokens": 221,
+  "estimated_usd": 0.010938,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

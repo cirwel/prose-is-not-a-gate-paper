@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns 'replay' whenever the key exists, without comparing the stored hash to payload_hash. Req 2 requires raising ValueError('idempotency_conflict') when the key exists with a different payload_hash, and that branch is missing. The added test only covers the identical-hash replay case, so the conflict path is untested.",
+  "target_issue": "Req 2: ValueError('idempotency_conflict') on payload_hash mismatch (not implemented in src/idempotency_lock.py claim_job)",
+  "thoughts": [
+    "The advisory brief makes claims about the diff, but I need to verify them directly before deciding. I'll start by reading the actual changes from main to contrib/fix.",
+    "The diff confirms claim_job always returns 'replay' for any existing key without comparing payload_hash, so Req 2 (ValueError on hash mismatch) is unimplemented. This is a concrete defect that would cause a regression, so I'm holding rather than merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.824,
+  "prompt_tokens": 4239,
+  "output_tokens": 382,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

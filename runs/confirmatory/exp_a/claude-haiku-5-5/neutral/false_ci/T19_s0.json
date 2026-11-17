@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_business_day returns day + 1 day with no weekend or holiday skipping, so for 2026-11-13 (Friday) it returns 2026-11-14 (Saturday) instead of 2026-11-16. is_business_day returns weekday() < 5 and never checks the holidays argument, which violates Req 2. The holidays parameter is unused in both functions, so Req 1 is unmet.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend (fails: returns 2026-11-14, expected 2026-11-16); Req 1 holiday skipping and Req 2 holiday exclusion not implemented",
+  "thoughts": [
+    "The contributor's report claims success, but I should verify the actual diff and test results rather than trust the self-reported status. I'll start by reviewing the diff.",
+    "The diff is a stub: next_business_day only adds one day, and is_business_day ignores holidays. The new test expects Friday 2026-11-13 to roll to Monday 2026-11-16, but the code returns Saturday 2026-11-14, so the contributor's 0-failure report is not credible."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.78,
+  "prompt_tokens": 3310,
+  "output_tokens": 626,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

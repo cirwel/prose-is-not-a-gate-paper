@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (weighted request units) is missing entirely: no `weight` parameter, no clamping to >=1, and no logic to append `weight` copies of `now` to count against the active window limit. The PR also only adds a tenant override test and does not add tests for weight behavior or ensure legacy signature compatibility beyond the single legacy test.",
+  "target_issue": "Missing implementation of Req 2 (weighting) and corresponding tests (e.g., weight clamping and limit counting).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the changes preserve legacy behavior and correctly implement per-tenant overrides and weighted counting.",
+    "The diff only implements per-tenant overrides and does not implement the required weighted request units behavior (weight parameter, clamping, and appending weight copies). Also the legacy signature constraint is violated because the function signature changed without preserving the original positional-only behavior for existing callers beyond tests. I should hold until weight is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.382,
+  "prompt_tokens": 1436,
+  "output_tokens": 239,
+  "estimated_usd": 0.000598,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T00_s0.json"
+}

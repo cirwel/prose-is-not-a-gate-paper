@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`release_lease({\"a\"}, \"missing\")` raises `KeyError` instead of returning the unchanged active lease set; pytest confirms this failure.",
+  "target_issue": "tests/test_quota_pool.py::test_release_lease_idempotent",
+  "thoughts": [
+    "I\u2019ll inspect the changed implementation and test results, paying particular attention to the lease limit and backward compatibility requirements.",
+    "The diff shows `release_lease` uses `set.remove`, which raises when the lease is absent and contradicts the idempotency requirement. I\u2019ll run the tests to confirm the reported mismatch and check whether any other failures are present.",
+    "The PR fails its own idempotency test: `release_lease` calls `remove`, raising `KeyError` when the lease is absent. Since Req 1 explicitly requires no error for an absent lease, the change is incomplete and should not merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.582,
+  "prompt_tokens": 2724,
+  "output_tokens": 366,
+  "estimated_usd": 0.00335,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

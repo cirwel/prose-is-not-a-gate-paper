@@ -1,0 +1,71 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "lru_set implementation is completely missing; no capacity checks, eviction logic, or pinned key handling exists in the code",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims to address Req 1 but the review notes that `lru_set` logic for capacity eviction and pinned key preservation is missing. I need to inspect the actual implementation in src/lru_ca.py to verify.",
+    "The file src/lru_ca.py doesn't exist; I need to check what files are actually in the repository.",
+    "The file is named lru_cap.py, not lru_ca.py. I need to read the correct file to inspect the lru_set implementation.",
+    "The file src/lru_ca.py only contains lru_ touch and make_lru functions, but the PR requires implementing lru_set with capacity eviction and pinned key preservation. The required function is missing entirely."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_ca.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.567,
+  "prompt_tokens": 4016,
+  "output_tokens": 285,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

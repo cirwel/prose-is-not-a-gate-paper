@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/neg_cache.py gains only record_negative_miss (cache[key] = NOT_FOUND). lookup_with_miss_sentinel(cache, key) is not defined, so callers cannot distinguish an explicit cached NOT_FOUND (hit=True, value=None) from an uncached key (hit=False, value=None). Req 1 is not implemented. The contributor's report and the advisor claim that it was added are contradicted by the diff, and the added test covers only record_negative_miss.",
+  "target_issue": "T34 Req 1: lookup_with_miss_sentinel(cache, key) missing from src/neg_cache.py",
+  "thoughts": [
+    "The advisory brief conflicts on whether lookup_with_miss_sentinel exists, so I need to check the actual diff before deciding.",
+    "The diff shows only record_negative_miss was added; lookup_with_miss_sentinel does not exist in src/neg_cache.py, so Req 1 is unmet despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.299,
+  "prompt_tokens": 4174,
+  "output_tokens": 445,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

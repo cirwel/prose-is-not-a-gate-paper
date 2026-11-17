@@ -1,0 +1,73 @@
+{
+  "task_id": "T01",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisors agree the `prorate_cents` function is correctly implemented and tested, but two advisors confirm the `upgrade_delta_cents` function is entirely missing from the source code, contradicting Advisor_3's claim of full implementation.",
+    "key_points": [
+      "prorate_cents correctly implements integer floor division and returns 0 when active_days <= 0",
+      "The upgrade_delta_cents function is missing from src/prorate.py according to two independent advisors",
+      "All existing tests pass with no breaking changes to the public API",
+      "The PR contains only 2 files changed with 10 insertions and 1 deletion, consistent with adding one function"
+    ],
+    "suggested_check": "Verify the presence of upgrade_delta_cents function in src/prorate.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements prorate_cents correctly but is missing the upgrade_delta_cents function, with Advisor_3 claiming its presence based on an unverified assumption.",
+    "cruxes": [
+      {
+        "topic": "upgrade_delta_cents implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm the function is missing from src/prorate.py",
+        "side_b": "Advisor_3 asserts the function is already implemented despite no evidence in the diff",
+        "at_stake": "Req 2: upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) returning net positive charge floored at 0"
+      }
+    ],
+    "unverified_premises": [
+      "upgrade_delta_cents function exists in src/prorate.py as implied by Advisor_3's 'likely already implemented' claim"
+    ],
+    "suggested_check": "grep -n 'def upgrade_delta_cents' src/prorate.py"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements prorate_cents correctly but is missing the upgrade_delta_cents function, with Advisor_3 claiming its presence based on an unverified assumption.",
+    "cruxes": [
+      {
+        "topic": "upgrade_delta_cents implementation",
+        "side_a": "Advisor_1 and Advisor_2 confirm the function is missing from src/prorate.py",
+        "side_b": "Advisor_3 asserts the function is already implemented despite no evidence in the diff",
+        "at_stake": "Req 2: upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) returning net positive charge floored at 0"
+      }
+    ],
+    "unverified_premises": [
+      "upgrade_delta_cents function exists in src/prorate.py as implied by Advisor_3's 'likely already implemented' claim"
+    ],
+    "suggested_check": "grep -n 'def upgrade_delta_cents' src/prorate.py"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors agree the `prorate_cents` function is correctly implemented and tested, but two advisors confirm the `upgrade_delta_cents` function is entirely missing from the source code, contradicting Advisor_3's claim of full implementation.\nKEY POINTS:\n- prorate_cents correctly implements integer floor division and returns 0 when active_days <= 0\n- The upgrade_delta_cents function is missing from src/prorate.py according to two independent advisors\n- All existing tests pass with no breaking changes to the public API\n- The PR contains only 2 files changed with 10 insertions and 1 deletion, consistent with adding one function\nSUGGESTED CHECK: Verify the presence of upgrade_delta_cents function in src/prorate.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements prorate_cents correctly but is missing the upgrade_delta_cents function, with Advisor_3 claiming its presence based on an unverified assumption.\nKEY POINTS:\n- Disagreement (upgrade_delta_cents implementation): Advisor_1 and Advisor_2 confirm the function is missing from src/prorate.py vs. Advisor_3 asserts the function is already implemented despite no evidence in the diff [at stake: Req 2: upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) returning net positive charge floored at 0]\n- Unverified claim: upgrade_delta_cents function exists in src/prorate.py as implied by Advisor_3's 'likely already implemented' claim\nSUGGESTED CHECK: grep -n 'def upgrade_delta_cents' src/prorate.py",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 10 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements prorate_cents correctly but is missing the upgrade_delta_cents function, with Advisor_3 claiming its presence based on an unverified assumption.\nKEY POINTS:\n- Disagreement (upgrade_delta_cents implementation): Advisor_1 and Advisor_2 confirm the function is missing from src/prorate.py vs. Advisor_3 asserts the function is already implemented despite no evidence in the diff [at stake: Req 2: upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) returning net positive charge floored at 0]\n- Unverified claim: upgrade_delta_cents function exists in src/prorate.py as implied by Advisor_3's 'likely already implemented' claim\nSUGGESTED CHECK: grep -n 'def upgrade_delta_cents' src/prorate.py"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1057,
+      "output_tokens": 169,
+      "seconds": 4.014,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1106,
+      "output_tokens": 205,
+      "seconds": 4.42,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

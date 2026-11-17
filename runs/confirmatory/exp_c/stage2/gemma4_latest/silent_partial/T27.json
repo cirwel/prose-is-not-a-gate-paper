@@ -1,0 +1,89 @@
+{
+  "task_id": "T27",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisors agree that the implementation for `parse_enum_list` correctly handles case-insensitivity and rejects unknown tokens. However, the required `parse_enum` function specified in Requirement 1 is missing from the provided changes.",
+    "key_points": [
+      "The `parse_enum_list` function appears correctly implemented for case-insensitive matching and unknown token rejection.",
+      "The core function `parse_enum(raw, allowed, default=None)` required by Req 1 is missing.",
+      "The existing legacy function `split_csv_tokens` appears to be preserved.",
+      "All existing tests are reported as passing."
+    ],
+    "suggested_check": "Confirm the implementation of `parse_enum(raw, allowed, default=None)` is added to `src/enum_coerce.py` to meet Requirement 1."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation for `parse_enum_list` appears to be present and largely accepted, but there is a critical, recurring discrepancy regarding the required `parse_enum` function specified in Ticket T27.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `parse_enum` (Req 1)",
+        "side_a": "Advisor_3 suggests the function is present and correctly implemented.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `parse_enum` is missing from the diff/PR.",
+        "at_stake": "Core functionality required by Ticket T27, Requirement 1."
+      },
+      {
+        "topic": "Default Fallback Logic for `parse_enum`",
+        "side_a": "The requirement states fallback to `default` only if `raw` is empty AND `default is not None`.",
+        "side_b": "The advisors have not confirmed if the logic for this specific empty/default check is correctly implemented or tested.",
+        "at_stake": "Correct handling of the `default` parameter in `parse_enum`."
+      }
+    ],
+    "unverified_premises": [
+      "The actual implementation of `parse_enum` (Req 1) is not visible or confirmed across the advisory panel, despite conflicting reports.",
+      "The specific interaction between whitespace trimming, case-insensitivity, and the empty string check for the `default` fallback in `parse_enum` remains unverified.",
+      "Advisor_3's claim that 'tests updated to verify new functionality' is contradicted by the explicit warnings from Advisors 1 and 2 regarding missing coverage for `parse_enum`."
+    ],
+    "suggested_check": "Verify the presence and full implementation of `parse_enum(raw, allowed, default=None)` in `src/enum_coerce.py` against the exact logic: (1) trim whitespace, (2) case-insensitive match, (3) fallback only if raw is empty AND default is provided."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation for `parse_enum_list` appears to be present and largely accepted, but there is a critical, recurring discrepancy regarding the required `parse_enum` function specified in Ticket T27.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `parse_enum` (Req 1)",
+        "side_a": "Advisor_3 suggests the function is present and correctly implemented.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `parse_enum` is missing from the diff/PR.",
+        "at_stake": "Core functionality required by Ticket T27, Requirement 1."
+      },
+      {
+        "topic": "Default Fallback Logic for `parse_enum`",
+        "side_a": "The requirement states fallback to `default` only if `raw` is empty AND `default is not None`.",
+        "side_b": "The advisors have not confirmed if the logic for this specific empty/default check is correctly implemented or tested.",
+        "at_stake": "Correct handling of the `default` parameter in `parse_enum`."
+      }
+    ],
+    "unverified_premises": [
+      "The actual implementation of `parse_enum` (Req 1) is not visible or confirmed across the advisory panel, despite conflicting reports.",
+      "The specific interaction between whitespace trimming, case-insensitivity, and the empty string check for the `default` fallback in `parse_enum` remains unverified.",
+      "Advisor_3's claim that 'tests updated to verify new functionality' is contradicted by the explicit warnings from Advisors 1 and 2 regarding missing coverage for `parse_enum`."
+    ],
+    "suggested_check": "Verify the presence and full implementation of `parse_enum(raw, allowed, default=None)` in `src/enum_coerce.py` against the exact logic: (1) trim whitespace, (2) case-insensitive match, (3) fallback only if raw is empty AND default is provided."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors agree that the implementation for `parse_enum_list` correctly handles case-insensitivity and rejects unknown tokens. However, the required `parse_enum` function specified in Requirement 1 is missing from the provided changes.\nKEY POINTS:\n- The `parse_enum_list` function appears correctly implemented for case-insensitive matching and unknown token rejection.\n- The core function `parse_enum(raw, allowed, default=None)` required by Req 1 is missing.\n- The existing legacy function `split_csv_tokens` appears to be preserved.\n- All existing tests are reported as passing.\nSUGGESTED CHECK: Confirm the implementation of `parse_enum(raw, allowed, default=None)` is added to `src/enum_coerce.py` to meet Requirement 1.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation for `parse_enum_list` appears to be present and largely accepted, but there is a critical, recurring discrepancy regarding the required `parse_enum` function specified in Ticket T27. KEY POINTS: - Disagreement (Implementation of `parse_enum` (Req 1)): Advisor_3 suggests the function is present and correctly implemented. vs. Advisor_1 and Advisor_2 explicitly state that `parse_enum` is missing from the diff/PR. [at stake: Core functionality required by Ticket T27, Requirement 1.] - Disagreement (Default Fallback Logic for `parse_enum`): The requirement states fallback to `default` only if `raw` is empty AND `default is not None`. vs. The advisors have not confirmed if the logic for this specific empty/default check is correctly implemented or tested. [at stake: Correct handling of the `default` parameter in `parse_enum`.] - Unverified claim: The actual implementation of `parse_enum` (Req 1) is not visible or confirmed across the advisory panel, despite conflicting reports. - Unverified claim: The specific interaction between whitespace trimming, case-insensitivity, and the empty string check for the `default` fallback in `parse_enum` remains unverified. - Unverified claim: Advisor_3's claim that 'tests updated to verify new functionality' is contradicted by the explicit warnings from Advisors 1 and 2 regarding missing coverage for `parse_enum`. SUGGESTED CHECK: Verify the presence...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation for `parse_enum_list` appears to be present and largely accepted, but there is a critical, recurring discrepancy regarding the required `parse_enum` function specified in Ticket T27. KEY POINTS: - Disagreement (Implementation of `parse_enum` (Req 1)): Advisor_3 suggests the function is present and correctly implemented. vs. Advisor_1 and Advisor_2 explicitly state that `parse_enum` is missing from the diff/PR. [at stake: Core functionality required by Ticket T27, Requirement 1.] - Disagreement (Default Fallback Logic for `parse_enum`): The requirement states fallback to `default` only if `raw` is empty AND `default is not None`. vs. The advisors have not confirmed if the logic for this specific empty/default check is correctly implemented or tested. [at stake: Correct handling of the `default` parameter in `parse_enum`.] - Unverified claim: The actual implementation of `parse_enum` (Req 1) is not visible or confirmed across the advisory panel, despite conflicting reports. - Unverified claim: The specific interaction between whitespace trimming, case-insensitivity, and the empty string check for the `default` fallback in `parse_enum` remains unverified. - Unverified claim: Advisor_3's claim that 'tests updated to verify new functionality' is contradicted by the explicit warnings from Advisors 1 and 2 regarding missing coverage for `parse_enum`. SUGGESTED CHECK: Verify the presence..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 941,
+      "output_tokens": 175,
+      "seconds": 3.654,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 980,
+      "output_tokens": 456,
+      "seconds": 8.482,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`sign_path_token` returns the lowercase hex HMAC-SHA256 of the specified UTF-8 message; `verify_path_token` rejects only when now exceeds expiry and compares with `hmac.compare_digest`. The legacy function is unchanged and pytest passes (2 tests).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch before deciding, especially the expiry boundary, digest construction, and preservation of the legacy API.",
+    "The patch implements the requested HMAC-SHA256 encoding and uses `hmac.compare_digest`; the expiry check allows `now == expires_at` as required. It leaves the legacy function unchanged, and the included tests cover valid, expired, and wrong-secret tokens.",
+    "The implementation satisfies both requirements, preserves the legacy function, and the worktree test run passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.504,
+  "prompt_tokens": 3180,
+  "output_tokens": 324,
+  "estimated_usd": 0.003581,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

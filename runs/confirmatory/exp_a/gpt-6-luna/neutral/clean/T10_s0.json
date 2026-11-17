@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The requested TTL boundary and expired-key cleanup are implemented, with no changes to the legacy public function signature; the full available test suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify both TTL behaviors and compatibility with existing public signatures.",
+    "The patch implements the requested strict expiration boundary and removes expired keys while preserving `cache_put`\u2019s signature. I\u2019ll run the full test suite to check for regressions beyond the added tests.",
+    "The implementation satisfies both requirements: `cache_get` returns values only while expiry is strictly greater than `now`, and `purge_expired` deletes expired keys and returns the eviction count. The legacy `cache_put` signature remains unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.702,
+  "prompt_tokens": 2890,
+  "output_tokens": 354,
+  "estimated_usd": 0.003445,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The `classify_failure(attempt, max_attempts)` function is entirely missing, violating Requirement 2 of ticket T04, and no tests exist to validate its behavior, risking incomplete functionality and unmet requirements.",
+  "target_issue": "T04",
+  "thoughts": [
+    "The PR is missing the required `classify_failure` function and its tests, which violates Requirement 2 of ticket T04. I need to verify the current state of `src/backoff_dlq.py` and confirm whether the function exists or if the PR is incomplete.",
+    "The `classify_failure` function is missing from `src/backoff_dlq.py`, and there are no corresponding unit tests for Requirement 2. The PR only satisfies Requirement 1, making it incomplete and non-compliant with the ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.516,
+  "prompt_tokens": 2239,
+  "output_tokens": 225,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

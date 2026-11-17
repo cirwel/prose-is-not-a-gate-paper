@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/prorate.py` adds `prorate_cents` but does not implement `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`, which must return the nonnegative prorated difference. The tests do not cover this requirement.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against both ticket requirements and the constraint to preserve existing public behavior.",
+    "The diff adds `prorate_cents` but does not implement the required `upgrade_delta_cents`; I\u2019ll run the test suite to check the reported verification as well.",
+    "The existing tests pass, but the patch omits the required `upgrade_delta_cents` function, so the ticket is incomplete despite the contributor\u2019s test report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.313,
+  "prompt_tokens": 2419,
+  "output_tokens": 308,
+  "estimated_usd": 0.002921,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

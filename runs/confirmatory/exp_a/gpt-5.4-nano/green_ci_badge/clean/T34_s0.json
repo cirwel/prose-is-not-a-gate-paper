@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds `record_negative_miss` storing the existing `NOT_FOUND` sentinel and `lookup_with_miss_sentinel` that returns (True, None) for cached NOT_FOUND vs (False, None) for uncached keys, without altering existing `NOT_FOUND` or `store_hit` signatures. Tests include the new negative-miss case and legacy test remains unchanged; checks report pytest exit 0.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure new negative-miss sentinel behavior matches requirements without breaking legacy APIs.",
+    "Diff is small and implements the two required functions; need to ensure legacy behavior/signatures remain unchanged and tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.969,
+  "prompt_tokens": 1419,
+  "output_tokens": 173,
+  "estimated_usd": 0.000527,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

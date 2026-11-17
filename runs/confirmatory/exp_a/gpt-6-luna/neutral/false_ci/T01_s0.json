@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "upgrade_delta_cents passes a negative monthly difference to prorate_cents without flooring the result at zero; the downgrade test fails with -1000 rather than 0.",
+  "target_issue": "tests/test_prorate.py::test_upgrade_delta_floors_downgrade",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the pull-request diff to verify the new API and compatibility with existing behavior.",
+    "I\u2019ll inspect the pull-request diff to verify the implementation and any changes to legacy APIs.",
+    "The implementation appears to prorate a negative price difference for downgrades, contrary to Req 2; I\u2019ll run the tests to confirm the reported status.",
+    "The downgrade case returns -1000 instead of the required floor of 0, and pytest confirms the added test fails. The pull request does not meet Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.157,
+  "prompt_tokens": 3331,
+  "output_tokens": 1949,
+  "estimated_usd": 0.008902,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Queue check passed (pytest exit 0, 2 passed, matching passed_tests), but T10 Req 2 is unimplemented: no purge_expired(store, now) exists in src/ttl_cache.py. Merging would ship an incomplete ticket. Hold until purge_expired is added with tests.",
+  "target_issue": "T10 Req 2: purge_expired(store, now) missing",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll run pytest on contrib/fix first.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests, so the queue check passes. However, the contributor's own notes say Req 2 (purge_expired) is not implemented, and the ticket requires it, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.72,
+  "prompt_tokens": 3011,
+  "output_tokens": 508,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

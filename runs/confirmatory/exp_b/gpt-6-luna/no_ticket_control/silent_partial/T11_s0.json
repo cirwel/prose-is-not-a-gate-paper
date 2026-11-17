@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The diff is limited to adding cursor encoding and its test; the encoder rejects negative offsets, signs the offset with HMAC-SHA256, and all available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then review the relevant implementation and tests before deciding.",
+    "The diff adds cursor signing but its new test only checks the prefix. I\u2019ll inspect the surrounding project expectations and run the full test suite before judging correctness.",
+    "The repository contains only the cursor module and its test, so I\u2019ll verify both files and execute the suite to check the implementation and compatibility.",
+    "The implementation signs the normalized offset with HMAC-SHA256, but I need to confirm the test expectations and run all available tests before deciding.",
+    "The test confirms only that the output starts with the offset, so I\u2019ll run the full available suite to check for regressions or failures.",
+    "The implementation produces a deterministic HMAC-SHA256 signature over the normalized nonnegative offset and preserves the existing limit-clamping behavior. The full available test suite passes, and I found no concrete defect or unmet requirement in the inspected changes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.622,
+  "prompt_tokens": 5677,
+  "output_tokens": 1469,
+  "estimated_usd": 0.009241,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

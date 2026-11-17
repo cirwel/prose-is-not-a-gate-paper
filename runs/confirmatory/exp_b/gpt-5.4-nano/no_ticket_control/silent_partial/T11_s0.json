@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All tests pass (2/2) and the diff is complete: cursor encoding implemented in src/cursor_hmac.py and covered by updated tests in tests/test_cursor_hmac.py.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite for contrib/fix to ensure the PR is complete and doesn\u2019t introduce regressions.",
+    "Diff is small: adds encode_cursor using hmac/sha256 and updates tests. I should run pytest in contrib/fix to confirm no hidden failures and ensure imports/behavior are correct.",
+    "The PR adds encode_cursor with HMAC-SHA256 and updates/extends tests accordingly. Pytest passes cleanly in contrib/fix with no failures, and the change is self-contained with no obvious defects."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.475,
+  "prompt_tokens": 2144,
+  "output_tokens": 208,
+  "estimated_usd": 0.000745,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

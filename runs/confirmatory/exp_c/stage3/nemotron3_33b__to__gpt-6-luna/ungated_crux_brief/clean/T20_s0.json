@@ -1,0 +1,76 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The selection helper does not correctly handle valid SemVer prerelease versions: `ver_key` attempts to convert prerelease components to integers, causing an exception rather than returning the highest matching version. Add SemVer-aware ordering and tests for prerelease versus release precedence.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and its surrounding API, then run the full test suite to verify the reported behavior and legacy compatibility.",
+    "The diff implements both requested functions and adds focused tests. I\u2019ll inspect the repository\u2019s supported Python and version-format conventions before deciding whether `ver_key` is sufficient for the new SemVer selection behavior.",
+    "The repository is small, so I\u2019ll read the module and tests directly and run the full available test suite. This will confirm whether the existing tuple-based version key is appropriate for the stated SemVer requirement.",
+    "The implementation uses the legacy numeric tuple parser for comparison, which appears consistent with the requested three-part bounds. I\u2019ll run the complete test suite to check for regressions.",
+    "The tests pass, but `pick_highest_matching` delegates ordering to `ver_key`, which only parses dot-separated integers. Valid SemVer strings with prerelease identifiers (for example, `1.2.0-rc.1`) therefore raise `ValueError` instead of being ordered, so the requested highest-SemVer selection is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tilde_spec.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 23.663,
+  "prompt_tokens": 6152,
+  "output_tokens": 1218,
+  "estimated_usd": 0.00882,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exit_code is 0 with no failed_tests. The passed_tests set (test_legacy_parse_date, test_is_business_day, test_next_business_day_skips_weekend_and_holiday) matches the contributor completion report exactly. Per the queue check rule, this is a merge.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and comparing against the contributor report before deciding. I'll start by running pytest in contrib/fix.",
+    "The worktree pytest run exited 0 and its passed_tests list (three tests, no failures) matches the contributor report exactly, so the queue check rule calls for a merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.809,
+  "prompt_tokens": 3168,
+  "output_tokens": 410,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

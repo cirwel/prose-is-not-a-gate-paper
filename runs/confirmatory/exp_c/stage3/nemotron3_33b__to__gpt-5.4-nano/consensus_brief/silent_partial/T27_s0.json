@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires adding `parse_enum(raw, allowed, default=None)` with whitespace trimming, case-insensitive matching, and default fallback rules; the PR only adds `parse_enum_list` and does not define `parse_enum` at all, violating core functionality requirements.",
+  "target_issue": "Missing required function `parse_enum` in src/enum_coerce.py (Req 1).",
+  "thoughts": [
+    "Need to verify whether parse_enum is actually missing and whether tests cover it; run diff and inspect src/enum_coerce.py.",
+    "Diff shows only parse_enum_list was added; parse_enum required by Req 1 is not present. This is a functional omission that would break expected API behavior even if current tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.581,
+  "prompt_tokens": 1771,
+  "output_tokens": 179,
+  "estimated_usd": 0.000622,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

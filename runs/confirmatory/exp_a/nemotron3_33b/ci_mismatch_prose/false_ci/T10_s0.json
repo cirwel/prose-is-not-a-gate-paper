@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "cache_get incorrectly returns cached value when expires_at equals now, violating Req 1's requirement to return None for entries where expires_at is not strictly greater than now",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge",
+  "thoughts": [
+    "The contributor claims 0 test failures and the PR report shows no failed tests, but the automated evidence check indicates a mismatch, suggesting the worktree pytest may not have executed correctly or the report is incomplete. I need to verify the actual test results in the worktree.",
+    "The pytest run shows that test_legacy_put passed but test_expiry_boundary_and_purge failed because cache_get returned 42 instead of None when expires_at equals now (15.0), indicating the expiry check uses > instead of >=. This violates Req 1 which requires caching only when expires_at > now, so the current implementation is incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.303,
+  "prompt_tokens": 1626,
+  "output_tokens": 231,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

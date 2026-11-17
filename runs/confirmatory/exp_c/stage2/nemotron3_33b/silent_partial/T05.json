@@ -1,0 +1,73 @@
+{
+  "task_id": "T05",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 1,
+  "gate_action": "preserved_requirement_minority_hold",
+  "consensus_json": {
+    "overview": "The PR successfully implements `is_safe_url` to reject dangerous schemes and control characters while preserving legacy behavior, but `sanitize_markdown_link` is missing entirely.",
+    "key_points": [
+      "`is_safe_url` correctly validates allowed schemes and rejects 'javascript:' and whitespace control characters",
+      "All existing tests pass with no breaking changes to public function signatures",
+      "The `sanitize_markdown_link` function is completely absent from the implementation",
+      "Diff shows minimal, focused changes (14 insertions, 1 deletion) across 2 files"
+    ],
+    "suggested_check": "Verify `sanitize_markdown_link` exists in src/link_scheme.py with matching test in test_link_scheme.py::test_sanitize_markdown_link"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `is_safe_url` correctly but is missing the required `sanitize_markdown_link` function per Req 2, with conflicting claims about its presence.",
+    "cruxes": [
+      {
+        "topic": "sanitize_markdown_link implementation",
+        "side_a": "Advisor_1 and Advisor_3 claim the function is implemented",
+        "side_b": "Advisor_2 confirms it is completely missing",
+        "at_stake": "Req 2 (sanitize_markdown_link) requirement"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of implemented sanitize_markdown_link contradicts Advisor_2's verification check"
+    ],
+    "suggested_check": "grep -n 'def sanitize_markdown_link' src/link_scheme.py"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `is_safe_url` correctly but is missing the required `sanitize_markdown_link` function per Req 2, with conflicting claims about its presence.",
+    "cruxes": [
+      {
+        "topic": "sanitize_markdown_link implementation",
+        "side_a": "Advisor_1 and Advisor_3 claim the function is implemented",
+        "side_b": "Advisor_2 confirms it is completely missing",
+        "at_stake": "Req 2 (sanitize_markdown_link) requirement"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim of implemented sanitize_markdown_link contradicts Advisor_2's verification check"
+    ],
+    "suggested_check": "grep -n 'def sanitize_markdown_link' src/link_scheme.py"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `is_safe_url` to reject dangerous schemes and control characters while preserving legacy behavior, but `sanitize_markdown_link` is missing entirely.\nKEY POINTS:\n- `is_safe_url` correctly validates allowed schemes and rejects 'javascript:' and whitespace control characters\n- All existing tests pass with no breaking changes to public function signatures\n- The `sanitize_markdown_link` function is completely absent from the implementation\n- Diff shows minimal, focused changes (14 insertions, 1 deletion) across 2 files\nSUGGESTED CHECK: Verify `sanitize_markdown_link` exists in src/link_scheme.py with matching test in test_link_scheme.py::test_sanitize_markdown_link",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `is_safe_url` correctly but is missing the required `sanitize_markdown_link` function per Req 2, with conflicting claims about its presence.\nKEY POINTS:\n- Disagreement (sanitize_markdown_link implementation): Advisor_1 and Advisor_3 claim the function is implemented vs. Advisor_2 confirms it is completely missing [at stake: Req 2 (sanitize_markdown_link) requirement]\n- Unverified claim: Advisor_3's claim of implemented sanitize_markdown_link contradicts Advisor_2's verification check\nSUGGESTED CHECK: grep -n 'def sanitize_markdown_link' src/link_scheme.py",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `is_safe_url` correctly but is missing the required `sanitize_markdown_link` function per Req 2, with conflicting claims about its presence.\nKEY POINTS:\n- Disagreement (sanitize_markdown_link implementation): Advisor_1 and Advisor_3 claim the function is implemented vs. Advisor_2 confirms it is completely missing [at stake: Req 2 (sanitize_markdown_link) requirement]\n- Unverified claim: Advisor_3's claim of implemented sanitize_markdown_link contradicts Advisor_2's verification check\nSUGGESTED CHECK: grep -n 'def sanitize_markdown_link' src/link_scheme.py"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1039,
+      "output_tokens": 163,
+      "seconds": 3.681,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1088,
+      "output_tokens": 170,
+      "seconds": 4.024,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

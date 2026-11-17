@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request implements only Req 2 (parse_query_pairs) and does not add the required Req 1 function canonical_query(pairs, strip_keys=('utm_source','utm_medium'))->str. Merging would leave the ticket\u2019s core canonicalization behavior unimplemented.",
+  "target_issue": "Missing implementation for T21 Req 1: canonical_query()",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm whether Req 1 is implemented; merging without it risks missing required functionality for T21.",
+    "Diff shows only parse_query_pairs added; canonical_query (Req 1) is missing. Even if tests pass, merging would leave T21 incomplete and likely break downstream expectations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.78,
+  "prompt_tokens": 1306,
+  "output_tokens": 169,
+  "estimated_usd": 0.000496,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation of `split_cents_exact` in the diff uses simple integer division and does not correctly implement the complex logic required by Req 1: distributing remainder pennies one-by-one from the highest fractional part (ties broken by lowest index).",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that `pytest` ran cleanly with 0 failures, and the required tests for T25 passed. I should run `git_diff()` to review the actual code changes against `main` before merging, as the test success only confirms the current state of `contrib/fix` relative to the tests, not necessarily the full integration.",
+    "The diff shows the addition of `split_cents_exact` and `reconcile_ledger` to `src/ledger_round.py`, and corresponding updates to `tests/test_ledger_round.py`. The implementation of `split_cents_exact` in the diff (`[(total_cents * w) // total_w for w in weights]`) is incorrect as it uses integer division and does not implement the specified logic of distributing remainders one-by-one from the highest fractional part. The test `test_split_conserves_cents` only checks if the sum equals the total, which the current implementation *might* pass for simple cases but doesn't validate the complex remainder distribution logic required by Req 1. I must hold the PR because the implementation for Req 1 is demonstrably wrong based on the requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.475,
+  "prompt_tokens": 1606,
+  "output_tokens": 342,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

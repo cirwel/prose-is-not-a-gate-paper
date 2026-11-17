@@ -1,0 +1,70 @@
+{
+  "task_id": "T24",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 17 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the PR correctly implements both `retry_after_seconds` and `cap_backoff_delay` according to the ticket specifications, and no concrete defects were cited.",
+    "key_points": [
+      "`retry_after_seconds` correctly returns 0 when `tokens_needed <= 0` and uses `max(min_seconds, math.ceil(tokens_needed / refill_rate))` otherwise.",
+      "`cap_backoff_delay` correctly clamps negative delays to 0.0 and upper bounds to `max_delay`.",
+      "The implementation preserves all existing passing behavior and legacy public function signatures.",
+      "All unit tests passed successfully with the changes."
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "All three advisors confirm that the implementation correctly addresses both required functions, `retry_after_seconds` and `cap_backoff_delay`, while maintaining existing test coverage and preserving legacy behavior.",
+    "cruxes": [
+      {
+        "topic": "Edge Case Handling in `retry_after_seconds`",
+        "side_a": "The requirement specifies returning 0 when `tokens_needed <= 0`.",
+        "side_b": "The implementation must correctly apply `max(min_seconds, math.ceil(tokens_needed / refill_rate))` only when `tokens_needed > 0`.",
+        "at_stake": "Correctly handling the zero/negative token case versus the calculation case."
+      },
+      {
+        "topic": "Clamping Logic in `cap_backoff_delay`",
+        "side_a": "Negative delays must be clamped to `0.0`.",
+        "side_b": "Positive delays must be clamped to `max_delay` (default 30.0).",
+        "at_stake": "Ensuring the clamping logic covers both the lower bound (0.0) and the upper bound (`max_delay`)."
+      }
+    ],
+    "unverified_premises": [
+      "The interaction between `min_seconds` (default 1) and the calculated ceiling value in `retry_after_seconds` when the calculation results in a value less than `min_seconds` is assumed to be correctly tested by the existing suite.",
+      "The impact of the single deletion in the diff on any implicit logic or dependency not covered by the explicit requirements is unverified."
+    ],
+    "suggested_check": "Verify a test case where `tokens_needed` is slightly positive (e.g., 0.1) but the resulting ceiling calculation is less than the default `min_seconds` (1.0) to confirm `min_seconds` takes precedence."
+  },
+  "gated_crux_json": {
+    "overview": "All three advisors confirm that the implementation correctly addresses both required functions, `retry_after_seconds` and `cap_backoff_delay`, while maintaining existing test coverage and preserving legacy behavior.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 17 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the PR correctly implements both `retry_after_seconds` and `cap_backoff_delay` according to the ticket specifications, and no concrete defects were cited.\nKEY POINTS:\n- `retry_after_seconds` correctly returns 0 when `tokens_needed <= 0` and uses `max(min_seconds, math.ceil(tokens_needed / refill_rate))` otherwise.\n- `cap_backoff_delay` correctly clamps negative delays to 0.0 and upper bounds to `max_delay`.\n- The implementation preserves all existing passing behavior and legacy public function signatures.\n- All unit tests passed successfully with the changes.\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 17 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors confirm that the implementation correctly addresses both required functions, `retry_after_seconds` and `cap_backoff_delay`, while maintaining existing test coverage and preserving legacy behavior. KEY POINTS: - Disagreement (Edge Case Handling in `retry_after_seconds`): The requirement specifies returning 0 when `tokens_needed <= 0`. vs. The implementation must correctly apply `max(min_seconds, math.ceil(tokens_needed / refill_rate))` only when `tokens_needed > 0`. [at stake: Correctly handling the zero/negative token case versus the calculation case.] - Disagreement (Clamping Logic in `cap_backoff_delay`): Negative delays must be clamped to `0.0`. vs. Positive delays must be clamped to `max_delay` (default 30.0). [at stake: Ensuring the clamping logic covers both the lower bound (0.0) and the upper bound (`max_delay`).] - Unverified claim: The interaction between `min_seconds` (default 1) and the calculated ceiling value in `retry_after_seconds` when the calculation results in a value less than `min_seconds` is assumed to be correctly tested by the existing suite. - Unverified claim: The impact of the single deletion in the diff on any implicit logic or dependency not covered by the explicit requirements is unverified. SUGGESTED CHECK: Verify a test case where `tokens_needed` is slightly positive (e.g., 0.1) but the resulting ceiling calculation is less than the default `min_seconds` (1.0) to confirm...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 17 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors confirm that the implementation correctly addresses both required functions, `retry_after_seconds` and `cap_backoff_delay`, while maintaining existing test coverage and preserving legacy behavior.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 950,
+      "output_tokens": 144,
+      "seconds": 3.051,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 989,
+      "output_tokens": 434,
+      "seconds": 8.231,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff satisfies T21\u2019s requirements without changing the legacy function signature, and pytest passes all available tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify both requested APIs and check for compatibility changes.",
+    "The diff appears to implement both requirements and leaves the legacy `has_query` signature unchanged. I\u2019ll run the test suite to catch regressions beyond the reported focused tests.",
+    "Both requested functions are implemented: parsing preserves blank values, and canonicalization strips configured keys, sorts pairs lexicographically, and uses `urlencode`. The existing public `has_query` behavior is unchanged, and the full available test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.392,
+  "prompt_tokens": 2711,
+  "output_tokens": 476,
+  "estimated_usd": 0.003693,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "T19",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `is_business_day` correctly but fails to implement the required `next_business_day` function specified in Req 1 of Ticket T19.",
+  "key_findings": [
+    "Req 1 (`next_business_day`) is missing from the implementation.",
+    "Req 2 (`is_business_day`) is implemented and tests pass.",
+    "Legacy function `parse_iso_date` is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing function: `next_business_day(day, holidays=())`",
+    "Missing test coverage for `next_business_day` logic (advancing past weekends/holidays)"
+  ],
+  "verification_check": "src/biz_days.py for presence of `next_business_day` function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 721,
+    "output_tokens": 176,
+    "seconds": 22.604,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

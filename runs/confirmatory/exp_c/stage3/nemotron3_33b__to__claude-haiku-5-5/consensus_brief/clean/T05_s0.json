@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 requires `is_safe_url` to reject whitespace control chars, but `strip_control_chars(url)` runs first and removes \\t, \\n, \\r and other control bytes, so the later `isspace()` check never sees them. A URL with embedded control bytes (e.g. `https://ex\\nample.org`) passes validation and is emitted by `sanitize_markdown_link` in cleaned form. The added tests cover only the javascript: and plain https cases, so this gap is untested. The scheme allowlist and javascript:/data: rejection look correct.",
+  "target_issue": "T05 Req 1: is_safe_url must reject (not strip) whitespace/control characters in the URL; src/link_scheme.py is_safe_url calls strip_control_chars before validating",
+  "thoughts": [
+    "The advisory brief refers to `is_unsafe_url`, while the ticket requires `is_safe_url`, so I need to verify the actual diff rather than trust the summaries. Starting with the diff.",
+    "The diff does not reject embedded whitespace control characters as Req 1 requires. `is_safe_url` strips control bytes before its whitespace check, so a URL like `https://ex\\nample.org` is silently cleaned and accepted, and the tests don't cover this case."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.401,
+  "prompt_tokens": 4410,
+  "output_tokens": 1329,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

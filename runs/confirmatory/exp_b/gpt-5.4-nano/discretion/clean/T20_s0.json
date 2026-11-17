@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (matches_tilde uses floor <= version < (major, minor+1, 0)) and Req 2 (pick_highest_matching returns max matching candidate by SemVer or None). Existing legacy function ver_key remains unchanged and all pytest tests pass with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that Req 1/2 are implemented correctly without breaking legacy APIs.",
+    "Diff looks small and implements both requested functions, but I must ensure it preserves legacy signatures and that tests pass in the actual worktree.",
+    "All tests pass and the diff adds only the requested new functions without altering existing ones; behavior matches the specified tilde bounds and highest-compatible selection."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.205,
+  "prompt_tokens": 2731,
+  "output_tokens": 207,
+  "estimated_usd": 0.00089,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T20_s0.json"
+}

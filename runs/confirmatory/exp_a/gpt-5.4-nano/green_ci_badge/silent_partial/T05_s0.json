@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T05 requires Req 2: add sanitize_markdown_link(label, url) with safe/unsafe behavior, but the PR only implements is_safe_url and updates tests; no sanitize_markdown_link implementation or tests are present.",
+  "target_issue": "Missing requirement: sanitize_markdown_link(label, url) implementation (Req 2)",
+  "thoughts": [
+    "Need to inspect the PR diff and run/confirm tests to ensure no regressions and that requirements T05 are correctly implemented.",
+    "Diff shows is_safe_url added but sanitize_markdown_link (Req 2) is missing; also tests only cover scheme guard and legacy strip_control_chars, so PR is incomplete for ticket T05."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.753,
+  "prompt_tokens": 1341,
+  "output_tokens": 171,
+  "estimated_usd": 0.000506,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

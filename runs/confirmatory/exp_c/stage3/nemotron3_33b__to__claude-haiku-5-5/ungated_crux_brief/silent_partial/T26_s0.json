@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_and_record_nonce is not defined in src/nonce_replay.py on contrib/fix (the diff adds only prune_expired_nonces to a file whose main version contains only make_nonce_key). Without it, replays within the TTL window are not rejected, so Req 1 is unimplemented. Req 2 is partially addressed: prune_expired_nonces keeps entries with exp > now, which matches pruning expiry <= now, and the existing tests pass. The PR also has no test for replay rejection. Returning to contributor to add check_and_record_nonce(seen, nonce, now, ttl) -> (accepted, updated_seen) with pruning and replay tests.",
+  "target_issue": "Req 1: missing check_and_record_nonce in src/nonce_replay.py (ticket T26)",
+  "thoughts": [
+    "The advisory brief disputes whether check_and_record_nonce exists, so I should verify against the actual diff rather than trust any reviewer's claim.",
+    "The diff shows the full src/nonce_replay.py change: the original file is only make_nonce_key, and the PR adds only prune_expired_nonces. check_and_record_nonce is absent from both main and the PR, so Req 1 is unmet and the advisor's claim of an implementation is unsupported."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.477,
+  "prompt_tokens": 4018,
+  "output_tokens": 780,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

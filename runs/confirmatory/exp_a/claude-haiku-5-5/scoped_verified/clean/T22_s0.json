@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Code review and an independent pytest run (exit 0, 3/3 passed) confirm both requirements. Legacy `make_lru` is preserved. Minor edge cases (e.g., all keys pinned allows the cache to exceed capacity) are not covered by the ticket's requirements.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the diff and run tests myself rather than trust the self-reported status. Starting with the diff.",
+    "The diff looks plausible, but the contributor's report is self-asserted, so I need to run the test suite in the worktree myself before deciding.",
+    "The diff implements Req 1 and Req 2 correctly: `lru_touch` uses `move_to_end` and returns the value or None, and `lru_set` evicts the first non-pinned key in LRU order. The legacy `make_lru` signature is untouched and all 3 tests pass in my own run."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.386,
+  "prompt_tokens": 6664,
+  "output_tokens": 714,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

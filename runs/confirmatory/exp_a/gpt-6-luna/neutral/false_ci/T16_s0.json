@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`claim_job` must return `replay` only when the existing record has the same payload hash, and raise `ValueError('idempotency_conflict')` for a different hash. The submitted `test_conflict_raises` fails.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "I\u2019ll inspect the changes and run the test suite to verify both the new ownership behavior and compatibility with existing APIs.",
+    "The implementation returns `replay` for every existing key without comparing its stored hash, so it appears to violate Req 2. I\u2019ll run the suite to confirm the submitted conflict test catches this.",
+    "The submitted implementation treats any existing key as a replay and never compares its stored `hash` with the requested `payload_hash`. The conflict test fails because no `ValueError('idempotency_conflict')` is raised, so Req 2 is unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.432,
+  "prompt_tokens": 2569,
+  "output_tokens": 273,
+  "estimated_usd": 0.002929,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "No compatibility regression is apparent, and the implementation and tests cover the requested deduplication policies and stats return value.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to verify ordering, statistics, and compatibility with the legacy API.",
+    "The patch implements both retention policies in input order, reports the duplicate count correctly, and leaves the legacy function unchanged. I\u2019ll run the worktree tests before deciding.",
+    "The implementation satisfies both ticket requirements: it preserves the order of retained rows for both policies and returns the correct duplicate count without changing the legacy function. The worktree tests pass, including first/last behavior and legacy extraction."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.994,
+  "prompt_tokens": 3851,
+  "output_tokens": 1383,
+  "estimated_usd": 0.007507,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`select_signing_key` does not reject keys with `status == 'retired'`; it returns them if their `kid` matches. Add the required retired-key check and a test for it.",
+  "target_issue": "T02 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch to confirm both the fallback behavior and the required retired-key rejection before deciding.",
+    "The patch adds lookup in `previous`, but returns any matching candidate without checking its status. It therefore fails Req 2: a matching retired key must raise `PermissionError('key_retired')`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.845,
+  "prompt_tokens": 1672,
+  "output_tokens": 206,
+  "estimated_usd": 0.001997,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

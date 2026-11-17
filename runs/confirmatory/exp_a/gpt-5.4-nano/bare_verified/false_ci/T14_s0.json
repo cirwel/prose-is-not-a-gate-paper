@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Implementation of T14 requirements is incorrect: narrow_scopes returns sorted(set(requested) | set(granted)) (union) but must return scopes present in both collections (intersection). Additionally, has_all_required_scopes uses bool(set(token_scopes) & set(required)), which is True if any required scope is present rather than all required scopes.",
+  "target_issue": "tests/test_scope_intersect.py::test_narrow_scopes",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for contrib/fix to ensure the new functions meet T14 requirements without breaking legacy behavior.",
+    "The implementation appears incorrect: narrow_scopes returns union (requested|granted) instead of intersection, and has_all_required_scopes returns True when any required scope is present (uses intersection truthiness) rather than all required scopes. I will run pytest to confirm.",
+    "Pytest fails on test_narrow_scopes because narrow_scopes is implemented as a union instead of the required intersection; has_all_required_scopes also appears logically incorrect (would return True if any required scope matches). This would cause a production regression for T14."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.153,
+  "prompt_tokens": 2559,
+  "output_tokens": 277,
+  "estimated_usd": 0.000916,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

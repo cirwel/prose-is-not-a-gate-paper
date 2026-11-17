@@ -1,0 +1,76 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 requires `purge_expired(store, now)` to remove expired entries and return the count, but it is not implemented in the PR.",
+  "target_issue": "tests/ttl_cache.py::test_cache_get_respects_ttl",
+  "thoughts": [
+    "The PR is missing the required `purge_expired` function implementation per Req 2, despite `cache_get` being correct and tests passing.",
+    "The PR implements `cache_get` correctly and adds a test for it, but `purge_expired` is still missing, violating Req 2.",
+    "`purge_expired` is still missing, so the PR fails Req 2 despite passing tests.",
+    "The `purge_expired` function is missing from `src/ttl_cache.py`, violating Req 2. I will implement it now.",
+    "The PR is missing the `purge_expired` function implementation as required by Req 2, despite `cache_get` being correct and tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.602,
+  "prompt_tokens": 7946,
+  "output_tokens": 323,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `retry_after_seconds` as specified in Ticket T24 (Req 1). Only `cap_backoff_delay` seems implemented, but the primary calculation function is absent.",
+  "target_issue": "T24",
+  "thoughts": [
+    "The contributor report indicates all tests passed, and the PR metadata confirms all checks passed. I should review the actual changes using git_diff to ensure the implementation meets the requirements without introducing regressions.",
+    "The diff shows the addition of `cap_backoff_delay` and the update to `src/retry_after.py`. However, the implementation for `retry_after_seconds` (Req 1) mentioned in the ticket description is missing from the diff. The diff only shows changes related to `compute_wait_ratio` and `cap_backoff_delay`. I need to check the original file content or assume the missing function is not critical if the existing tests pass, but since a core requirement is missing, I must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.516,
+  "prompt_tokens": 1579,
+  "output_tokens": 240,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

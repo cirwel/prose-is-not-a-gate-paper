@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: the PR adds no `lru_set(cache, key, value, capacity, pinned=())`, so it cannot enforce capacity or preserve pinned keys during eviction. The passing tests cover only the legacy constructor and `lru_touch`.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against the ticket before relying on the contributor\u2019s test report.",
+    "The diff implements `lru_touch` but does not add the required `lru_set` capacity eviction behavior. I\u2019ll check the repository files and run the tests to verify whether any requirement is otherwise covered.",
+    "The diff shows no `lru_set`; I\u2019ll inspect the module and tests and run the suite to confirm the implementation and test status.",
+    "The module confirms `lru_set` is missing. I\u2019ll inspect the tests and run pytest before making the merge decision.",
+    "The added tests cover the legacy constructor and `lru_touch`, but not the required capacity eviction and pinned-key behavior. I\u2019ll run pytest to complete the check; the missing `lru_set` requirement already means this PR cannot be merged.",
+    "The existing tests pass, but they do not cover Req 1. `src/lru_cap.py` has no `lru_set`, so capacity eviction and pinned-key preservation are not implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.869,
+  "prompt_tokens": 6173,
+  "output_tokens": 484,
+  "estimated_usd": 0.006487,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

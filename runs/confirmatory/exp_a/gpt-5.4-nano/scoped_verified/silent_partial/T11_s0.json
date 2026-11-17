@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements only Req 1 (encode_cursor) and adds a superficial test; it does not add Req 2 (decode_cursor with constant-time HMAC verification and ValueError('invalid_cursor') on tampering/negative offsets). This is incomplete relative to ticket T11 and could cause production regressions when decode_cursor behavior is expected.",
+  "target_issue": "Missing decode_cursor implementation and required tampering/negative-offset validation (tests/test_cursor_hmac.py::test_decode_cursor* not present).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new cursor HMAC encoding/decoding meets T11 requirements without breaking existing behavior.",
+    "The diff only adds encode_cursor and a minimal test; it does not implement decode_cursor or tamper/constant-time validation required by T11, so merging would leave functionality incomplete and potentially insecure."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.809,
+  "prompt_tokens": 1320,
+  "output_tokens": 208,
+  "estimated_usd": 0.000539,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

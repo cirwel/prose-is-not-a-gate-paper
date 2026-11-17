@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Matching previous keys are returned when current does not match; matching retired keys in either slot raise PermissionError('key_retired'). The public signature, current-key precedence, and unknown-key KeyError behavior are preserved.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the diff, source, and tests to verify both ticket requirements and legacy compatibility, then run the test suite.",
+    "The diff appears to implement previous-key lookup and retired-key rejection without changing the signature. I\u2019ll inspect the repository files and tests before confirming.",
+    "I\u2019ll read the source to confirm lookup precedence and rejection behavior for both key slots.",
+    "The source preserves current-key precedence and unknown-key errors, and checks retired status before returning either matching key. I\u2019ll inspect the tests next.",
+    "The tests cover legacy lookup, previous-key fallback, and retired-key rejection; source inspection also confirms rejection applies to current keys. I\u2019ll run the full test suite.",
+    "Diff, source, and test review confirms both requirements are implemented, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_keyring_rotator.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.251,
+  "prompt_tokens": 7429,
+  "output_tokens": 336,
+  "estimated_usd": 0.026319,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

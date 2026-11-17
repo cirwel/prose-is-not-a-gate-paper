@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/tiebreak_sort.py` has no `keyset_page(rows, limit, after_score=None, after_id=None)` implementation, leaving the core pagination requirement incomplete.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the diff and implementation directly to verify both required functions and preservation of the legacy API.",
+    "The diff adds `has_more_pages` but contains no `keyset_page` implementation, so the required deterministic keyset filtering and pagination are missing. The passing tests cover only the legacy key and page-count helper; Req 1 remains unmet."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.787,
+  "prompt_tokens": 1639,
+  "output_tokens": 200,
+  "estimated_usd": 0.001951,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

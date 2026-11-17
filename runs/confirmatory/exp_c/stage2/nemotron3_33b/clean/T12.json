@@ -1,0 +1,64 @@
+{
+  "task_id": "T12",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 3 deletions(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements `release_lease` and extends `acquire_lease` with shared reserve logic while preserving legacy signatures and passing all tests.",
+    "key_points": [
+      "`release_lease` safely removes leases and handles missing IDs without errors",
+      "Extended `acquire_lease` correctly allows overflow up to `shared_reserve` when `limit` is exhausted",
+      "All existing tests pass and new logic is fully covered",
+      "Public API signatures and legacy behavior are preserved"
+    ],
+    "suggested_check": "Run `worktree pytest exit=0` to confirm 3 passing tests with no regressions"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements the required functions and tests pass, but there is no explicit verification that the shared reserve logic correctly prioritizes overflow only when the base limit is exhausted.",
+    "cruxes": [
+      {
+        "topic": "shared reserve overflow condition",
+        "side_a": "Overflow should only occur when `limit` is fully exhausted, not when `shared_reserve` is non-zero but `limit` has available slots.",
+        "side_b": "The current logic may allow borrowing beyond `limit` even when `shared_reserve` is zero or when `limit` has remaining capacity, violating the requirement to borrow only when `limit` is exhausted.",
+        "at_stake": "Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted."
+      }
+    ],
+    "unverified_premises": [
+      "The implementation ensures `shared_reserve` borrowing occurs exclusively when `limit` is fully consumed, not merely when `shared_reserve > 0`."
+    ],
+    "suggested_check": "Verify that `acquire_lease` only permits borrowing beyond `limit` when `len(leases) >= limit` by inspecting the conditional logic in `src/quota_pool.py`."
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements the required functions and tests pass, but there is no explicit verification that the shared reserve logic correctly prioritizes overflow only when the base limit is exhausted.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements `release_lease` and extends `acquire_lease` with shared reserve logic while preserving legacy signatures and passing all tests.\nKEY POINTS:\n- `release_lease` safely removes leases and handles missing IDs without errors\n- Extended `acquire_lease` correctly allows overflow up to `shared_reserve` when `limit` is exhausted\n- All existing tests pass and new logic is fully covered\n- Public API signatures and legacy behavior are preserved\nSUGGESTED CHECK: Run `worktree pytest exit=0` to confirm 3 passing tests with no regressions",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements the required functions and tests pass, but there is no explicit verification that the shared reserve logic correctly prioritizes overflow only when the base limit is exhausted.\nKEY POINTS:\n- Disagreement (shared reserve overflow condition): Overflow should only occur when `limit` is fully exhausted, not when `shared_reserve` is non-zero but `limit` has available slots. vs. The current logic may allow borrowing beyond `limit` even when `shared_reserve` is zero or when `limit` has remaining capacity, violating the requirement to borrow only when `limit` is exhausted. [at stake: Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted.]\n- Unverified claim: The implementation ensures `shared_reserve` borrowing occurs exclusively when `limit` is fully consumed, not merely when `shared_reserve > 0`.\nSUGGESTED CHECK: Verify that `acquire_lease` only permits borrowing beyond `limit` when `len(leases) >= limit` by inspecting the conditional logic in `src/quota_pool.py`.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 3 deletions(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements the required functions and tests pass, but there is no explicit verification that the shared reserve logic correctly prioritizes overflow only when the base limit is exhausted.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 913,
+      "output_tokens": 133,
+      "seconds": 3.079,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 962,
+      "output_tokens": 286,
+      "seconds": 5.688,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

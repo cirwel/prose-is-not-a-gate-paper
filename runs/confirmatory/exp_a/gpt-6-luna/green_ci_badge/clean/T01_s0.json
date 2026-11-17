@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`prorate_cents` uses integer-floor proration and returns zero for nonpositive active days; `upgrade_delta_cents` prorates only positive price differences, flooring downgrades at zero. Existing behavior is unchanged and pytest passes (3 tests).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and implementation, then verify the test results against the ticket requirements.",
+    "The repository is small; I\u2019ll review the pull request diff to check the new functions and whether existing public behavior is preserved.",
+    "The implementation preserves the legacy function, applies the requested integer-floor formula, and floors downgrade charges at zero. I\u2019ll run the suite to independently confirm the reported checks.",
+    "The implementation satisfies both requirements, preserves the existing function signature and behavior, and the test suite passes. The additional guard for nonpositive cycle length avoids division by zero."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 197.339,
+  "prompt_tokens": 3503,
+  "output_tokens": 564,
+  "estimated_usd": 0.004607,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

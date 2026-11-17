@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "pytest exit=0 with all tests passing; diff implements T27 requirements (whitespace trimming + case-insensitive canonicalization in parse_enum, default only for empty raw when default is not None, and parse_enum_list raising ValueError('unknown_enum:' + tok) for unknown non-empty CSV entries) without altering legacy split_csv_tokens signature/behavior.",
+  "target_issue": "T27",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest to ensure no regressions and requirements T27 are correctly implemented.",
+    "Diff looks small and targeted, but I must ensure requirements match exactly (empty raw handling and unknown label errors) and that existing tests still pass.",
+    "All tests pass and the implementation appears to satisfy T27: parse_enum trims, matches case-insensitively, returns canonical allowed value, and parse_enum_list rejects unknown non-empty tokens with the required ValueError prefix."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.345,
+  "prompt_tokens": 3459,
+  "output_tokens": 229,
+  "estimated_usd": 0.001093,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

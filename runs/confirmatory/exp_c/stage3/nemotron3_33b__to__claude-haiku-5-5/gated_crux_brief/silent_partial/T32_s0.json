@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/lock_resolver.py does not define is_breaking_bump(old_ver, new_ver); the diff only adds verify_lock_pins. Req 1 (major increment via new[0] > old[0], or minor increment on 0.y.z via old[0]==0 and new[1] > old[1]) is missing entirely, and no test covers it. The contributor's 'ready_for_review' status is inaccurate.",
+  "target_issue": "Req 1: is_breaking_bump not implemented in src/lock_resolver.py",
+  "thoughts": [
+    "The advisory brief claims is_breaking_bump is missing, but that's unverified. I should inspect the diff directly rather than trust the summary.",
+    "The diff confirms the advisory brief: verify_lock_pins is added but there is no is_breaking_bump function anywhere in the diff, so Req 1 is unmet. I'll also check the current source file to be sure it isn't defined elsewhere.",
+    "Confirmed via diff and full file read: is_breaking_bump is absent, so Req 1 is unmet. Req 2 is implemented, but the ticket requires both, and the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lock_resolver.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.318,
+  "prompt_tokens": 6746,
+  "output_tokens": 449,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

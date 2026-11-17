@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. `expand_cron_field` never raises `ValueError('cron_out_of_bounds')`. For example, `expand_cron_field(\"75\", 0, 59)` returns `[75]` and `expand_cron_field(\"0-100\", 0, 59)` returns a list containing values above max_v, with no error. The added test only covers an in-bounds case, so the contributor's passing report does not show Req 2 is met.",
+  "target_issue": "Req 2: missing out-of-bounds validation raising ValueError('cron_out_of_bounds') for literals and range endpoints in src/cron_steps.py",
+  "thoughts": [
+    "I need to inspect the actual diff before judging; the contributor's report alone isn't evidence that Req 1 and Req 2 are met.",
+    "The diff has no bounds check: `expand_cron_field` never compares literals or range endpoints against min_v/max_v, so Req 2 is unmet regardless of the passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.208,
+  "prompt_tokens": 3428,
+  "output_tokens": 423,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

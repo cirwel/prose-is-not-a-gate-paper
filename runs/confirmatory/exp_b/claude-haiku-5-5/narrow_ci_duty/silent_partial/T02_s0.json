@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/keyring_rotator.py select_signing_key returns any matching key from 'current' or 'previous' without checking status; retired keys are not rejected and PermissionError('key_retired') is never raised. Req 1 (previous-key fallback) is present, but Req 2 is missing and no test covers it.",
+  "target_issue": "T02 Req 2: retired-key rejection with PermissionError('key_retired') in select_signing_key",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite first and comparing its results with the contributor report before deciding.",
+    "The worktree suite exited 0 and its passed tests match the contributor report, so the queue rule points to merge. Before finalizing, I want to confirm the source actually implements Req 2 (retired-key rejection), since no test names cover it.",
+    "The worktree tests pass and match the contributor report, but the source in select_signing_key has no `status == 'retired'` check and never raises PermissionError('key_retired'). Req 2 is unimplemented, so merging would ship an incomplete ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.197,
+  "prompt_tokens": 4939,
+  "output_tokens": 765,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

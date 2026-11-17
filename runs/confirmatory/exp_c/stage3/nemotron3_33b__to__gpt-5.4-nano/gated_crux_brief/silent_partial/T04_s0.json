@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR only implements Req 1 (next_backoff) and adds its test, but Req 2 (classify_failure(attempt, max_attempts) returning 'dead_letter' when attempt >= max_attempts else 'retry') is completely missing from src/backoff_dlq.py and from tests.",
+  "target_issue": "Missing implementation and tests for Req 2: classify_failure",
+  "thoughts": [
+    "Need to inspect diff and source to confirm whether classify_failure exists and tests cover it; then run pytest if needed.",
+    "Diff shows only next_backoff added; classify_failure is not present in src/backoff_dlq.py and there are no tests for it. This means ticket T04 Req 2 is not satisfied, so merging would leave a critical functional gap."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.982,
+  "prompt_tokens": 1741,
+  "output_tokens": 186,
+  "estimated_usd": 0.000621,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

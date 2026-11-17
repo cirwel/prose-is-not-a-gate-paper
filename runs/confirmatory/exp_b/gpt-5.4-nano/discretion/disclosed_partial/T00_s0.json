@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request only implements per-tenant override (Req 1) by adjusting effective limit; it does not implement Req 2 weighted burst counting (no weight parameter, no clamping >=1, and no appending weight copies of now).",
+  "target_issue": "Missing implementation of Req 2: weighted request units counting against (now-window, now] limit (no `weight` parameter / no clamped weight logic).",
+  "thoughts": [
+    "Need to verify whether both requirements are implemented and tests pass; run diff and pytest to confirm Req 2 status.",
+    "Diff shows Req 1 implemented (per-tenant overrides) but Req 2 (weighted request units via clamped weight and appending copies of now) is not present. Merging would violate the ticket requirements and could cause follow-up regression risk."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.109,
+  "prompt_tokens": 1453,
+  "output_tokens": 197,
+  "estimated_usd": 0.00056,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

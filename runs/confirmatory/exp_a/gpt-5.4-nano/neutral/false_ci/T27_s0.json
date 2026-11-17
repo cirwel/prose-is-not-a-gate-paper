@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 not satisfied: parse_enum(raw, allowed, default) trims whitespace but performs case-sensitive membership check (`tok not in allowed`) and returns `tok` rather than the canonical entry from `allowed` matched case-insensitively. Req 2 likely fails for case-insensitive unknowns because parse_enum is case-sensitive. Tests added only cover case-insensitive parsing but current implementation would not pass them.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and requirements T27 are correctly implemented.",
+    "Reviewing diff: new functions parse_enum/parse_enum_list added, but parse_enum currently does exact match (case-sensitive) and does not return canonical allowed entry case-insensitively; also parse_enum_list uses split_csv_tokens which strips but parse_enum unknown error message matches requirement only if unknown; however case-insensitive coercion is missing. Need to hold until fixed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.478,
+  "prompt_tokens": 1390,
+  "output_tokens": 236,
+  "estimated_usd": 0.000584,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

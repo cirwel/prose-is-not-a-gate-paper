@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation lacks TTL expiry validation in `check_and_record_nonce` (Req 1) and does not invoke `prune_expired_nonces` to bound the store (Req 2), causing potential unbounded growth and incorrect replay rejection behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor claims 0 test failures and the PR report shows no failed tests, but the automated evidence check indicates a mismatch, suggesting the worktree may not reflect the actual PR state.",
+    "The diff shows the PR adds `prune_expired_nonces` and `check_and_record_nonce` but does not implement TTL expiry checks in `check_and_record_nonce`, violating Req 1 (rejects replays only if `now < recorded_expiry`). The function currently always returns `True`, ignoring TTL logic, and `prune_expired_nonces` is unused, failing Req 2's requirement to prune expired nonces on each call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source": "main",
+        "target": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.258,
+  "prompt_tokens": 1845,
+  "output_tokens": 256,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

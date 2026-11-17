@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The changes implement the requested comparisons and preserve the legacy function; pytest reports all 3 tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against the ticket requirements and existing API behavior.",
+    "The diff appears to implement both requested behaviors. I\u2019ll run the full test suite to check for regressions and verify the reported result.",
+    "The implementation satisfies both requirements: breaking bumps are detected by major-version increases or minor increases within major version zero, and pin mismatches are returned sorted. Existing `split_ver` behavior is unchanged, and the full test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.699,
+  "prompt_tokens": 2944,
+  "output_tokens": 1528,
+  "estimated_usd": 0.007245,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

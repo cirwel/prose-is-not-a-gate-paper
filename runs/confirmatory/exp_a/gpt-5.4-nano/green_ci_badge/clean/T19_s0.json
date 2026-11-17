@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1/2 in src/biz_days.py: next_business_day advances using datetime.date + timedelta and skips dates that are weekend (weekday()>=5) or present in holidays; is_business_day returns True only for Mon\u2013Fri and not in holidays. Existing parse_iso_date legacy signature remains unchanged. All pytest checks in contrib/fix pass (0 failed).",
+  "target_issue": "T19",
+  "thoughts": [
+    "Need to inspect repo changes and run/verify tests for T19 before deciding merge.",
+    "Review diff for correctness vs requirements and ensure no legacy signatures broken; then run pytest to confirm.",
+    "Changes implement T19 requirements and tests pass; verify signatures/behavior preservation and holiday/weekend logic correctness."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.709,
+  "prompt_tokens": 2756,
+  "output_tokens": 198,
+  "estimated_usd": 0.000887,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

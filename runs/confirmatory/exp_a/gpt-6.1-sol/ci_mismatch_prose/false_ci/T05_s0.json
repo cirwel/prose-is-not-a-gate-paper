@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "sanitize_markdown_link unconditionally renders unsafe URLs, producing '[click](javascript:alert(1))' instead of plain 'click', and does not strip label control characters. is_safe_url only checks prefixes, so it accepts disallowed schemes such as 'httpsx:' and URLs containing control characters.",
+  "target_issue": "tests/test_link_scheme.py::test_unsafe_url_fallback",
+  "thoughts": [
+    "I will inspect the changes and run the tests, focusing on URL validation, legacy compatibility, and the reported evidence mismatch.",
+    "The diff shows prefix matching instead of scheme validation and unconditional link rendering, which appears to violate both requirements. I will run pytest to confirm the unsafe-link regression.",
+    "Pytest confirms the reported clean run is inaccurate: the unsafe-URL fallback test fails. Inspection also shows incomplete scheme validation and no label control-character stripping."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.028,
+  "prompt_tokens": 2500,
+  "output_tokens": 287,
+  "estimated_usd": 0.010944,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

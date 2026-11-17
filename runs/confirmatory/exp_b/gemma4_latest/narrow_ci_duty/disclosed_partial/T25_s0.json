@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1 (split_cents_exact) is explicitly noted as not implemented in this patch, meaning the PR is incomplete relative to the ticket scope.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and deferred to a follow-up, even though the overall status is 'ready_for_review'. I must run pytest to verify the current state against the required check rule.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 1 is not implemented, which is a functional gap preventing full completion according to the ticket requirements. Since the core requirement (Req 1) is missing, I must hold the PR despite the tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.487,
+  "prompt_tokens": 1329,
+  "output_tokens": 188,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/backoff_dlq.py` adds `next_backoff` but does not add `classify_failure(attempt, max_attempts)`, which must return `'dead_letter'` when the attempt limit is reached and `'retry'` otherwise.",
+  "target_issue": "T04 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the PR diff and relevant tests/source to verify both requirements and compatibility with existing behavior.",
+    "The diff adds `next_backoff` but does not implement required `classify_failure`; the contributor\u2019s tests also omit that requirement. I\u2019ll run the suite to confirm the repository state before deciding.",
+    "The existing tests pass, but the required dead-letter classification function is absent from the PR. Since consumers cannot route exceeded jobs as specified, this is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.025,
+  "prompt_tokens": 2430,
+  "output_tokens": 284,
+  "estimated_usd": 0.002852,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

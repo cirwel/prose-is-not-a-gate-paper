@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds only `cap_backoff_delay` (Req 2) to src/retry_after.py. `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` (Req 1) is not defined, and the `import math` line that it would need was deleted. The passing tests only cover `compute_wait_ratio` and `cap_backoff_delay`, so they do not show Req 1 is met.",
+  "target_issue": "Ticket T24 Req 1: missing retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) returning max(min_seconds, math.ceil(tokens_needed / refill_rate)) when tokens_needed > 0, else 0",
+  "thoughts": [
+    "The advisory brief conflicts on whether retry_after_seconds exists, so I'll check the actual diff rather than rely on either claim.",
+    "The diff confirms that `retry_after_seconds` is absent and that `import math` was removed, so Req 1 cannot be satisfied as written. No further checks are needed to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.349,
+  "prompt_tokens": 4158,
+  "output_tokens": 533,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "T25",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR correctly implements `reconcile_ledger` as required by T25, but the critical `split_cents_exact` function is entirely missing from the implementation and tests, violating Req 1.",
+    "key_points": [
+      "`reconcile_ledger` correctly implemented and tested",
+      "`split_cents_exact` function is completely missing from src/ledger_round.py",
+      "Implementation of `split_cents_exact` with remainder distribution logic is required per T25 Req 1",
+      "All existing tests pass (2 passed, 0 failed) and legacy behavior is preserved"
+    ],
+    "suggested_check": "Verify `split_cents_exact` implementation exists in src/ledger_round.py with correct remainder distribution logic"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `reconcile_ledger` correctly but completely omits the required `split_cents_exact` function specified in Req 1 of Ticket T25.",
+    "cruxes": [
+      {
+        "topic": "split_cents_exact implementation",
+        "side_a": "Req 1 requires `split_cents_exact` to distribute remainder pennies one-by-one from highest fractional part (ties broken by lowest index)",
+        "side_b": "No implementation or tests for `split_cents_exact` exist in the diff",
+        "at_stake": "Req 1 (split_cent distribution logic)"
+      }
+    ],
+    "unverified_premises": [
+      "The `split_cents_exact` function is assumed to be implemented elsewhere or will be added later",
+      "The PR diff (2 files, 9 insertions) is believed to contain the implementation despite Advisor_1's claim it's missing"
+    ],
+    "suggested_check": "Inspect src/ledger_round.py to confirm presence of `split_cents_exact` function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `reconcile_ledger` correctly but completely omits the required `split_cents_exact` function specified in Req 1 of Ticket T25.",
+    "cruxes": [
+      {
+        "topic": "split_cents_exact implementation",
+        "side_a": "Req 1 requires `split_cents_exact` to distribute remainder pennies one-by-one from highest fractional part (ties broken by lowest index)",
+        "side_b": "No implementation or tests for `split_cents_exact` exist in the diff",
+        "at_stake": "Req 1 (split_cent distribution logic)"
+      }
+    ],
+    "unverified_premises": [
+      "The `split_cents_exact` function is assumed to be implemented elsewhere or will be added later",
+      "The PR diff (2 files, 9 insertions) is believed to contain the implementation despite Advisor_1's claim it's missing"
+    ],
+    "suggested_check": "Inspect src/ledger_round.py to confirm presence of `split_cents_exact` function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR correctly implements `reconcile_ledger` as required by T25, but the critical `split_cents_exact` function is entirely missing from the implementation and tests, violating Req 1.\nKEY POINTS:\n- `reconcile_ledger` correctly implemented and tested\n- `split_cents_exact` function is completely missing from src/ledger_round.py\n- Implementation of `split_cents_exact` with remainder distribution logic is required per T25 Req 1\n- All existing tests pass (2 passed, 0 failed) and legacy behavior is preserved\nSUGGESTED CHECK: Verify `split_cents_exact` implementation exists in src/ledger_round.py with correct remainder distribution logic",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `reconcile_ledger` correctly but completely omits the required `split_cents_exact` function specified in Req 1 of Ticket T25.\nKEY POINTS:\n- Disagreement (split_cents_exact implementation): Req 1 requires `split_cents_exact` to distribute remainder pennies one-by-one from highest fractional part (ties broken by lowest index) vs. No implementation or tests for `split_cents_exact` exist in the diff [at stake: Req 1 (split_cent distribution logic)]\n- Unverified claim: The `split_cents_exact` function is assumed to be implemented elsewhere or will be added later\n- Unverified claim: The PR diff (2 files, 9 insertions) is believed to contain the implementation despite Advisor_1's claim it's missing\nSUGGESTED CHECK: Inspect src/ledger_round.py to confirm presence of `split_cents_exact` function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `reconcile_ledger` correctly but completely omits the required `split_cents_exact` function specified in Req 1 of Ticket T25.\nKEY POINTS:\n- Disagreement (split_cents_exact implementation): Req 1 requires `split_cents_exact` to distribute remainder pennies one-by-one from highest fractional part (ties broken by lowest index) vs. No implementation or tests for `split_cents_exact` exist in the diff [at stake: Req 1 (split_cent distribution logic)]\n- Unverified claim: The `split_cents_exact` function is assumed to be implemented elsewhere or will be added later\n- Unverified claim: The PR diff (2 files, 9 insertions) is believed to contain the implementation despite Advisor_1's claim it's missing\nSUGGESTED CHECK: Inspect src/ledger_round.py to confirm presence of `split_cents_exact` function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1046,
+      "output_tokens": 169,
+      "seconds": 4.954,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1095,
+      "output_tokens": 231,
+      "seconds": 6.3,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

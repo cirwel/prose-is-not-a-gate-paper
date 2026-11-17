@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pytest reports `tests/test_html_escape.py::test_escape_ampersand_and_js_href` failing because `escape_html_text` leaves `&` unchanged. The implementation also fails Req 1 for `\"` and `'`, and Req 2 because it neither rejects `on*` keys nor strips/checks JavaScript-prefixed values or HTML-escapes kept values.",
+  "target_issue": "T17 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes to verify both requirements and compatibility.",
+    "The diff already appears to omit required escaping and attribute filtering; I\u2019ll run the test suite to check for additional regressions.",
+    "The PR fails its own ampersand-escaping test, and the implementation also omits escaping quotes/apostrophes and filtering event-handler or JavaScript-valued attributes. It does not meet T17, so it should not merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.98,
+  "prompt_tokens": 2524,
+  "output_tokens": 1345,
+  "estimated_usd": 0.006323,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

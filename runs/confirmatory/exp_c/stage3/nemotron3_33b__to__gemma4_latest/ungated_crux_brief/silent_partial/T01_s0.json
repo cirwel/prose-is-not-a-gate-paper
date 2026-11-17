@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `upgrade_delta_cents` (for Requirement 2) is missing from `src/prorate.py`, preventing a complete implementation of Ticket T01.",
+  "target_issue": "Req 2: upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) returning net positive upgrade charge floored at 0",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, and the advisory review confirms the worktree pytest exit code is 0. However, the review overview explicitly states that `upgrade_delta_cents` (required by Req 2) is missing from `src/prorate.py`, despite an advisory claiming otherwise. I must verify the actual content of `src/prorate.py` to confirm the missing function before merging. I will use `list_files` first to confirm the file structure, and then read the file to check for the function definition.",
+    "The file structure is confirmed. The critical file is `src/prorate.py`. I need to read this file to verify if `upgrade_delta_cents` exists, as the advisory review suggests it is missing, which would block the merge for Requirement 2.",
+    "I have read `src/prorate.py`. The content confirms that `prorate_cents` is present, but the required function `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` is indeed missing, as stated by the advisory review. Since Requirement 2 is not implemented, I cannot merge the PR, even though the existing tests passed against the partial implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.841,
+  "prompt_tokens": 2803,
+  "output_tokens": 395,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

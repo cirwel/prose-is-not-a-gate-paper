@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest in contrib/fix passes (3/3) with no failing tests, and the diff implements T22 requirements: lru_touch uses move_to_end and lru_set evicts least-recently-used non-pinned keys when capacity is exceeded while preserving OrderedDict recency order.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure no regressions and requirements are correctly implemented.",
+    "Diff looks mostly correct, but lru_set signature uses pinned default as tuple[str,...] | set[str] and eviction loop uses next((k for k in cache if k not in pin_set), None) which is O(n) but acceptable; need to run pytest to confirm no hidden regressions and ensure capacity edge cases (e.g., capacity<=0) are handled as expected by existing tests.",
+    "All added tests pass and legacy make_lru behavior remains intact. The implementation meets Req 1 (LRU eviction skipping pinned keys, OrderedDict recency via move_to_end) and Req 2 (lru_touch returns value/None and updates recency)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.747,
+  "prompt_tokens": 3082,
+  "output_tokens": 275,
+  "estimated_usd": 0.001046,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

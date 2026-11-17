@@ -1,0 +1,57 @@
+{
+  "task_id": "T20",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds `matches_tilde` with strict patch bounds and `pick_highest_matching` while preserving legacy behavior and passing all tests.",
+    "key_points": [
+      "`matches_tilde` enforces >= floor and < next minor version bounds",
+      "`pick_highest_matching` correctly returns highest matching version or None",
+      "All existing tests pass with 3/3 success and 0 failures",
+      "Legacy ver_key function remains unchanged and passes its test"
+    ],
+    "suggested_check": "Run worktree pytest to verify 3 passed, 0 failed"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors approve the implementation of tilde patch bounds and highest matching version selection with no reported issues or missing functionality.",
+    "cruxes": [],
+    "unverified_premises": [
+      "Assumption that existing ver_Key tests cover all legacy edge cases without regression risk"
+    ],
+    "suggested_check": "Run full test suite with legacy ver_Key tests to confirm no regressions"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors approve the implementation of tilde patch bounds and highest matching version selection with no reported issues or missing functionality.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds `matches_tilde` with strict patch bounds and `pick_highest_matching` while preserving legacy behavior and passing all tests.\nKEY POINTS:\n- `matches_tilde` enforces >= floor and < next minor version bounds\n- `pick_highest_matching` correctly returns highest matching version or None\n- All existing tests pass with 3/3 success and 0 failures\n- Legacy ver_key function remains unchanged and passes its test\nSUGGESTED CHECK: Run worktree pytest to verify 3 passed, 0 failed",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors approve the implementation of tilde patch bounds and highest matching version selection with no reported issues or missing functionality.\nKEY POINTS:\n- Unverified claim: Assumption that existing ver_Key tests cover all legacy edge cases without regression risk\nSUGGESTED CHECK: Run full test suite with legacy ver_Key tests to confirm no regressions",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 22 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors approve the implementation of tilde patch bounds and highest matching version selection with no reported issues or missing functionality.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 963,
+      "output_tokens": 130,
+      "seconds": 3.448,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1012,
+      "output_tokens": 82,
+      "seconds": 2.517,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

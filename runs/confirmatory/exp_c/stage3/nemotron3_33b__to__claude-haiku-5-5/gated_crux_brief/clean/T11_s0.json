@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented as specified: HMAC-SHA256 signing, constant-time comparison via hmac.compare_digest, ValueError('invalid_cursor') on bad signatures and negative offsets, and the legacy clamp_limit signature is preserved. The pytest run exits 0 with 3 passed and 0 failed. Minor gaps (no direct negative-offset test, and str.isdigit accepts some non-ASCII digits that would surface as a different ValueError) do not block the merge.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report is self-asserted and the advisory brief is summary-level, so I should verify the actual diff and test results myself before deciding.",
+    "The diff looks correct on inspection: it uses constant-time compare_digest, rejects negative and non-digit offsets, and the tampered-cursor test is sound. I'll run the tests myself rather than rely on the contributor's self-reported results.",
+    "I checked the diff directly and ran the tests myself (3 passed). encode_cursor produces 'offset:HMAC-SHA256', decode_cursor uses compare_digest and rejects tampered signatures and negative offsets, and legacy clamp_limit is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.487,
+  "prompt_tokens": 7152,
+  "output_tokens": 1395,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

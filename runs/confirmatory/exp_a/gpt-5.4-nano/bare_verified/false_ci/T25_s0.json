@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "split_cents_exact(total_cents, weights) returns floor shares [(total_cents*w)//total_w] without allocating the leftover cents to the highest fractional parts, so the result may not sum exactly to total_cents (penny drift). reconcile_ledger is fine but the core Req 1 is not implemented per spec.",
+  "target_issue": "Missing remainder penny distribution + tie-breaking in split_cents_exact (Req 1 not satisfied); no test coverage for non-equal weights/remainder cases.",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that requirements are implemented correctly.",
+    "The PR adds required functions but split_cents_exact currently truncates via floor division and never distributes remainder pennies, so it will not strictly sum to total_cents in general. Also no tests cover the remainder-drift/tie-breaking requirement, so this is likely incomplete and could regress production behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.614,
+  "prompt_tokens": 1326,
+  "output_tokens": 220,
+  "estimated_usd": 0.000551,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

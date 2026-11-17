@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds sign_path_token/verify_path_token per T33 using HMAC-SHA256 over f'{path}:{int(expires_at)}', returns lowercase hex, verifies time-bounded validity with now<=expires_at, and uses hmac.compare_digest for constant-time equality. Existing behavior (expiry_remaining) remains unchanged; pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that constant-time verification and legacy signatures are preserved.",
+    "Diff looks straightforward and matches the ticket requirements (HMAC-SHA256 over path:expires_at, lowercase hex, constant-time compare, and time-bounded check). Need to run pytest to confirm no legacy behavior regressions.",
+    "All tests pass and the implementation matches Req 1 and Req 2, including constant-time compare_digest and the now<=expires_at check. No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.967,
+  "prompt_tokens": 2676,
+  "output_tokens": 234,
+  "estimated_usd": 0.000903,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T33_s0.json"
+}

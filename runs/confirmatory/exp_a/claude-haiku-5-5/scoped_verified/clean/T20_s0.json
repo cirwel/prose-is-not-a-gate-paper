@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_tilde enforces >= floor and < (major, minor+1, 0) as T20 Req 1 requires. pick_highest_matching returns max by ver_key over predicate-matching candidates and None when nothing matches, per Req 2. The legacy ver_key is unchanged. run_pytest exited 0 with 3/3 passing, including the new tests for both requirements. The commit signature only attests authorship, so the merge rests on the diff and the test run.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the diff and run the tests myself rather than trust the contributor's self-report or the commit signature, which only attests authorship.",
+    "The diff implements both requirements correctly on inspection, but I should confirm with the test suite rather than rely on the contributor's self-report.",
+    "The diff matches both requirements: matches_tilde uses f <= v < (major, minor+1, 0), pick_highest_matching returns the max or None, and ver_key is untouched. The 3 tests pass on my run, and the existing signature is preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.737,
+  "prompt_tokens": 105275,
+  "output_tokens": 752,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "decode_cursor function is missing entirely, and no tests verify HMAC validation or tampering rejection as required by Req 2",
+  "target_issue": "decode_cursor implementation and tampering validation",
+  "thoughts": [
+    "The PR claims all tests pass, but the review notes critical missing implementation and test coverage for `decode_cursor`, which is required by Req 2. I need to verify the actual code changes and test coverage before deciding.",
+    "The diff shows `encode_cursor` was added correctly, but `decode_cursor` is completely missing. The test file only added a test for `encode_cursor` and `clamp_limit`, with no test for `decode_cursor` or tampering validation. The PR claims all tests pass, but this is impossible without `decode_cursor` implementation.",
+    "The PR passes only 2 tests, both of which cover existing functionality (clamp_limit and encode_cursor). There is no implementation of decode_cursor and no tests for tampering validation, which violates Req 2. The claim that 'all tests pass' is false since critical security requirements are unimplemented and untested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {
+        "worktree": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.667,
+  "prompt_tokens": 4311,
+  "output_tokens": 299,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

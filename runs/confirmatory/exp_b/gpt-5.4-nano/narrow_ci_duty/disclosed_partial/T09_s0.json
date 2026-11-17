@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T09",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented (is_hidden_segment missing), so the PR does not fully satisfy Ticket T09 requirements even though current tests pass.",
+  "target_issue": "Missing requirement: Req 2 (is_hidden_segment)",
+  "thoughts": [
+    "Need to verify the PR actually passes tests in the worktree and that passed_tests match the contributor report; also confirm Req 2 implementation status via diff/files.",
+    "Tests pass, but contributor report explicitly says Req 2 (is_hidden_segment) is not implemented. Merging would leave required functionality incomplete for T09."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.66,
+  "prompt_tokens": 1194,
+  "output_tokens": 147,
+  "estimated_usd": 0.000446,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

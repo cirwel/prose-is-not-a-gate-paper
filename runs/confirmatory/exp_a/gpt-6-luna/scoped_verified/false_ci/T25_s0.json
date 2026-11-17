@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`split_cents_exact` floors each share and omits remainder distribution, causing the included test to fail (99 instead of 100) and violating Req 1.",
+  "target_issue": "tests/test_ledger_round.py::test_split_conserves_cents",
+  "thoughts": [
+    "I\u2019ll inspect the change and relevant tests to verify both ticket requirements and legacy compatibility.",
+    "The implementation floors each weighted share and never distributes leftover cents, so the added conservation test appears to fail for 100 cents split three ways. I\u2019ll run the suite to confirm and check for any other failures.",
+    "The PR fails its own conservation test: splitting 100 cents across three equal weights returns [33, 33, 33], totaling 99. Req 1 also specifically requires remainder pennies allocated by fractional-part order, which is not implemented; the passing legacy sum test and reconcile implementation do not offset this failure."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.165,
+  "prompt_tokens": 2583,
+  "output_tokens": 402,
+  "estimated_usd": 0.003353,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

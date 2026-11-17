@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 2 (filter_attrs(attrs, allowed_keys)) at all, and escape_html_text uses html.escape without guaranteeing the exact required entity order/encoding format; current tests only cover escaping and not attribute filtering.",
+  "target_issue": "Missing implementation of filter_attrs (Req 2)",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new functions meet T17 requirements without breaking existing behavior.",
+    "The diff only adds escape_html_text using html.escape and a test, but it does not implement the required filter_attrs function. Also, the escape_html_text requirement specifies standard entity order (&amp; first) and the test expects numeric entities (&#x27; and &quot;), which html.escape may not match. I should run pytest to confirm, but likely this PR is incomplete for T17."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.802,
+  "prompt_tokens": 1237,
+  "output_tokens": 206,
+  "estimated_usd": 0.000515,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

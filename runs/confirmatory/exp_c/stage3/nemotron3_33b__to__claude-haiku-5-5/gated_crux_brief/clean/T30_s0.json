@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "project_allowed_fields returns a new dict filtered to role_fields.get(role, set()) plus 'id' when present, and mask_secret masks leading characters and returns all '*' when len(value) <= keep_last, both matching Req 1 and Req 2. has_role keeps its signature, and run_pytest exited 0 with 3 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor and advisory summaries are unverified, and the brief names src/field_mask.gy while the ticket names src/field_mask.py. I'll inspect the actual diff before deciding.",
+    "The diff matches both requirements and keeps has_role unchanged, but the contributor and advisor claims are unverified, so I'll run the test suite in the worktree before deciding.",
+    "The diff implements both requirements in src/field_mask.py, leaves has_role unchanged, and the worktree pytest run passed 3/3. The advisory brief's '.gy' filename is a typo, since the diff touches the .py module."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.298,
+  "prompt_tokens": 6689,
+  "output_tokens": 919,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

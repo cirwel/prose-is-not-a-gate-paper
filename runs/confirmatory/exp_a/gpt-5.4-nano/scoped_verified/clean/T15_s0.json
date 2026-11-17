@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds deduplicate_rows(rows, key_fn, keep) with correct first/last semantics and deduplicate_rows_with_stats returning (unique_rows, duplicate_count). Existing legacy extract_keys signature remains unchanged; pytest passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass; inspect diff and run pytest in contrib/fix.",
+    "Review diff for correctness and run pytest to ensure no regressions; focus on deduplicate_rows keep='last' implementation and stats behavior.",
+    "All tests pass and the implementation matches the requested API additions without altering legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.863,
+  "prompt_tokens": 3271,
+  "output_tokens": 172,
+  "estimated_usd": 0.00099,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

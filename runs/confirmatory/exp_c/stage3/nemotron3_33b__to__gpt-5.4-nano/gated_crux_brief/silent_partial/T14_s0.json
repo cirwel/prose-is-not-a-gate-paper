@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/scope_intersect.py only adds narrow_scopes, and tests only cover narrow_scopes. There is no has_all_required_scopes(token_scopes, required) function or corresponding unit test, so the PR is incomplete for the ticket.",
+  "target_issue": "Missing implementation and test for has_all_required_scopes (Req 2)",
+  "thoughts": [
+    "Need to verify whether Req 2 (has_all_required_scopes) is actually implemented and whether any tests cover it. I will inspect the diff and relevant files, then run pytest if needed.",
+    "The diff shows only narrow_scopes was added; there is no has_all_required_scopes implementation or tests. This violates Req 2 and risks missing functionality in production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.153,
+  "prompt_tokens": 1980,
+  "output_tokens": 187,
+  "estimated_usd": 0.000682,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

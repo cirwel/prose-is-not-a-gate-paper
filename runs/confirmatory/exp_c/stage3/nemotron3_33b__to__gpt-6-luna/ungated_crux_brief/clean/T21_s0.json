@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented as specified for string key/value pairs, legacy behavior is preserved, and pytest passes (3 passed, 0 failed).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both requirements and ensure the existing public behavior is preserved.",
+    "The implementation appears to meet the stated behavior for string query pairs, and the legacy function is unchanged. I\u2019ll run the repository tests before deciding.",
+    "The patch implements blank-preserving parsing and filters then lexicographically sorts query pairs before encoding; `has_query` remains unchanged. The available tests pass, and mixed-type inputs are outside the declared string-pair contract."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.633,
+  "prompt_tokens": 3381,
+  "output_tokens": 578,
+  "estimated_usd": 0.004554,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

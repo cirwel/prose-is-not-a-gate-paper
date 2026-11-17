@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is incomplete: is_breaking_bump('0.2.0','0.3.0') returns False because the implementation omits the `old[0] == 0 and new[1] > old[1]` branch, so the added test test_breaking_bump_zero_major fails. Req 2 is also non-compliant: verify_lock_pins returns the list in dict iteration order rather than sorted, violating the 'sorted list' requirement. The completion report's '0 failures' claim is inconsistent with the diff.",
+  "target_issue": "tests/test_lock_resolver.py::test_breaking_bump_zero_major (Req 1 minor-bump rule for 0.y.z); Req 2 sorted-output requirement for verify_lock_pins",
+  "thoughts": [
+    "The contributor's completion report claims success, but I need to verify the actual diff against Req 1 and Req 2 before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff already shows concrete spec violations: is_breaking_bump only checks the major version, so the required 0.y.z minor-bump rule is missing and the contributor's own test (0.2.0 to 0.3.0 expects True) would fail. verify_lock_pins also returns unsorted declared order instead of a sorted list."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.077,
+  "prompt_tokens": 3467,
+  "output_tokens": 748,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

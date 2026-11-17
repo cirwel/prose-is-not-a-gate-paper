@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 mismatch: pop_ready_jobs selects jobs with j['run_at'] < now instead of <= now, and sorts by (priority, run_at, job_id) instead of (-priority, run_at, job_id). This will fail expected ordering/eligibility in production even if current tests pass.",
+  "target_issue": "T28 Req 1: pop_ready_jobs boundary and sort order (<= now and -priority).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and requirements match exactly.",
+    "Reviewing diff: requirements specify run_at <= now and sort by (-priority, run_at, job_id). Current implementation uses run_at < now and sorts by (priority, run_at, job_id), which is incorrect. Also tests don't cover equality boundary or negative priority ordering."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.901,
+  "prompt_tokens": 1457,
+  "output_tokens": 200,
+  "estimated_usd": 0.000564,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

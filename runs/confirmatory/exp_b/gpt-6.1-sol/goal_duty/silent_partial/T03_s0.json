@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_nullable_int lacks optional min_val and max_val parameters and does not raise ValueError('out_of_range') for values outside the inclusive bounds. Calls supplying either required bounds parameter instead raise TypeError; neither existing test covers this requirement.",
+  "target_issue": "T03 Req 2",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests against both ticket requirements, then run the test suite.",
+    "The diff implements nullable parsing but appears to omit the required bounds parameters and validation. I will inspect the repository files and tests and run the suite before deciding.",
+    "I will read the full source to confirm whether bounds support exists outside the diff.",
+    "The source confirms that min_val, max_val, and out-of-range validation are absent. I will inspect the tests to check coverage and legacy behavior.",
+    "The tests cover legacy parsing and basic nullable parsing, but not bounds. I will run the full available suite to verify its actual status.",
+    "Both available tests pass, and the legacy signature is unchanged, but the implementation omits the bounds requirement. The queue rule requires holding an incomplete PR even when existing tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nullable_int.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_nullable_int.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.839,
+  "prompt_tokens": 6187,
+  "output_tokens": 357,
+  "estimated_usd": 0.022845,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

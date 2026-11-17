@@ -1,0 +1,65 @@
+{
+  "task_id": "T05",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree the PR correctly implements URL safety checks and markdown sanitization while preserving existing behavior and passing all tests.",
+    "key_points": [
+      "is_unsafe_url correctly rejects javascript:, data:, whitespace, and non-allowed schemes",
+      "sanitize_markdown_link returns plain text for unsafe URLs and formatted markdown for safe ones",
+      "All existing tests pass (pytest exit=0) with no regressions",
+      "Changes are minimal (25 insertions, 1 deletion) and maintain legacy function signatures"
+    ],
+    "suggested_check": "Run src/link_scheme.py: is_safe_url logic to verify control character and scheme validation"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements URL safety checks and markdown sanitization while preserving existing behavior and passing tests.",
+    "cruxes": [
+      {
+        "topic": "Control byte handling scope",
+        "side_a": "Advisor_1 and Advisor_3 state whitespace control chars are rejected",
+        "side_b": "Advisor_2 only mentions scheme rejection and legacy strip_control_chars function",
+        "at_stake": "Req 1"
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that netloc validation (e.g., IP address schemes) is preserved as part of existing behavior",
+      "It is assumed that whitespace control chars are fully rejected without false positives on valid spaces"
+    ],
+    "suggested_check": "Inspect the actual logic in src/link_scheme.py to verify whitespace control char rejection and netloc validation preservation"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements URL safety checks and markdown sanitization while preserving existing behavior and passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements URL safety checks and markdown sanitization while preserving existing behavior and passing all tests.\nKEY POINTS:\n- is_unsafe_url correctly rejects javascript:, data:, whitespace, and non-allowed schemes\n- sanitize_markdown_link returns plain text for unsafe URLs and formatted markdown for safe ones\n- All existing tests pass (pytest exit=0) with no regressions\n- Changes are minimal (25 insertions, 1 deletion) and maintain legacy function signatures\nSUGGESTED CHECK: Run src/link_scheme.py: is_safe_url logic to verify control character and scheme validation",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements URL safety checks and markdown sanitization while preserving existing behavior and passing tests.\nKEY POINTS:\n- Disagreement (Control byte handling scope): Advisor_1 and Advisor_3 state whitespace control chars are rejected vs. Advisor_2 only mentions scheme rejection and legacy strip_control_chars function [at stake: Req 1]\n- Unverified claim: It is assumed that netloc validation (e.g., IP address schemes) is preserved as part of existing behavior\n- Unverified claim: It is assumed that whitespace control chars are fully rejected without false positives on valid spaces\nSUGGESTED CHECK: Inspect the actual logic in src/link_scheme.py to verify whitespace control char rejection and netloc validation preservation",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements URL safety checks and markdown sanitization while preserving existing behavior and passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 976,
+      "output_tokens": 135,
+      "seconds": 3.173,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1025,
+      "output_tokens": 174,
+      "seconds": 3.806,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

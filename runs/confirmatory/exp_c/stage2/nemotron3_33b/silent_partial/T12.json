@@ -1,0 +1,73 @@
+{
+  "task_id": "T12",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR successfully implements `release_lease` to cleanly remove active leases without errors, but fails to add the required `shared_reserve` fallback logic in `acquire_lease` despite preserving the existing signature.",
+    "key_points": [
+      "Req 1 (release_lease) is correctly implemented and passes tests",
+      "Req 2 (shared_lease fallback) is missing from the diff and tests",
+      "acquire_lease signature remains unchanged, contradicting the requirement to add shared_reserve support",
+      "Only 2 legacy-focused tests exist with no validation for shared_lease functionality"
+    ],
+    "suggested_check": "Verify src/quota_pool.py acquire_lease signature and body for shared_reserve parameter and borrowing logic beyond limit"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `release_lease` correctly but omits the `shared_lease` fallback logic in `acquire_lease` as required by Req 2, with conflicting advisor opinions on whether the diff covers the necessary changes.",
+    "cruxes": [
+      {
+        "topic": "Req 2 Implementation",
+        "side_a": "Advisor_1 and Advisor_3 claim shared_lease fallback is implemented",
+        "side_b": "Advisor_2 states the logic is entirely missing from signature and body",
+        "at_stake": "Req 2 (shared_lease fallback)"
+      }
+    ],
+    "unverified_premises": [
+      "The diff's 8 insertions may include hidden shared_lease logic not visible in the summary"
+    ],
+    "suggested_check": "Inspect the actual diff of src/quota_pool.py to confirm presence of shared_lease logic in acquire_lease body and signature"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `release_lease` correctly but omits the `shared_lease` fallback logic in `acquire_lease` as required by Req 2, with conflicting advisor opinions on whether the diff covers the necessary changes.",
+    "cruxes": [
+      {
+        "topic": "Req 2 Implementation",
+        "side_a": "Advisor_1 and Advisor_3 claim shared_lease fallback is implemented",
+        "side_b": "Advisor_2 states the logic is entirely missing from signature and body",
+        "at_stake": "Req 2 (shared_lease fallback)"
+      }
+    ],
+    "unverified_premises": [
+      "The diff's 8 insertions may include hidden shared_lease logic not visible in the summary"
+    ],
+    "suggested_check": "Inspect the actual diff of src/quota_pool.py to confirm presence of shared_lease logic in acquire_lease body and signature"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `release_lease` to cleanly remove active leases without errors, but fails to add the required `shared_reserve` fallback logic in `acquire_lease` despite preserving the existing signature.\nKEY POINTS:\n- Req 1 (release_lease) is correctly implemented and passes tests\n- Req 2 (shared_lease fallback) is missing from the diff and tests\n- acquire_lease signature remains unchanged, contradicting the requirement to add shared_reserve support\n- Only 2 legacy-focused tests exist with no validation for shared_lease functionality\nSUGGESTED CHECK: Verify src/quota_pool.py acquire_lease signature and body for shared_reserve parameter and borrowing logic beyond limit",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `release_lease` correctly but omits the `shared_lease` fallback logic in `acquire_lease` as required by Req 2, with conflicting advisor opinions on whether the diff covers the necessary changes.\nKEY POINTS:\n- Disagreement (Req 2 Implementation): Advisor_1 and Advisor_3 claim shared_lease fallback is implemented vs. Advisor_2 states the logic is entirely missing from signature and body [at stake: Req 2 (shared_lease fallback)]\n- Unverified claim: The diff's 8 insertions may include hidden shared_lease logic not visible in the summary\nSUGGESTED CHECK: Inspect the actual diff of src/quota_pool.py to confirm presence of shared_lease logic in acquire_lease body and signature",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `release_lease` correctly but omits the `shared_lease` fallback logic in `acquire_lease` as required by Req 2, with conflicting advisor opinions on whether the diff covers the necessary changes.\nKEY POINTS:\n- Disagreement (Req 2 Implementation): Advisor_1 and Advisor_3 claim shared_lease fallback is implemented vs. Advisor_2 states the logic is entirely missing from signature and body [at stake: Req 2 (shared_lease fallback)]\n- Unverified claim: The diff's 8 insertions may include hidden shared_lease logic not visible in the summary\nSUGGESTED CHECK: Inspect the actual diff of src/quota_pool.py to confirm presence of shared_lease logic in acquire_lease body and signature"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1069,
+      "output_tokens": 157,
+      "seconds": 3.939,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1118,
+      "output_tokens": 192,
+      "seconds": 4.464,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

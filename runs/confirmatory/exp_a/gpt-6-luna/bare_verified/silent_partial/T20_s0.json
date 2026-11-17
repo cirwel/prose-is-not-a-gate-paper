@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The patch adds `pick_highest_matching` but does not implement `matches_tilde`, leaving Req 1 unmet.",
+  "target_issue": "T20 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch against the ticket requirements and check for compatibility or correctness issues.",
+    "The diff implements highest-match selection but contains no `matches_tilde` implementation, which is an explicit requirement. I\u2019ll run the tests to check the reported status, though passing tests would not address the missing API.",
+    "The tests pass, but they cover only the legacy key and selection helper. The required `matches_tilde(version, floor)` function is absent, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.853,
+  "prompt_tokens": 2364,
+  "output_tokens": 301,
+  "estimated_usd": 0.002855,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

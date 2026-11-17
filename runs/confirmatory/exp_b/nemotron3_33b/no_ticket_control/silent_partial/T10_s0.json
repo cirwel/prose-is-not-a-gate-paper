@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All tests pass and the diff shows a valid TTL cache get implementation with no regressions",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR report indicates all unit tests pass and the contributor claims completion, but I need to verify the actual diff against main to confirm no regressions exist before merging.",
+    "The diff shows a new cache_get function that correctly implements TTL validation and a corresponding test that verifies it respects TTL, with no changes to existing functionality; since the contributor reported all tests pass and the diff appears clean, I need to run pytest to confirm no regressions."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.378,
+  "prompt_tokens": 3059,
+  "output_tokens": 191,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

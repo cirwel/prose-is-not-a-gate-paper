@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The patch implements T17\u2019s escaping and attribute-filtering behavior without changing the legacy public function, and pytest passes with no regressions reported.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch directly to verify it meets the ticket and preserves the legacy API, rather than relying only on the completion report.",
+    "The patch adds both requested functions and leaves the legacy `wrap_tag` signature and behavior unchanged. The attribute filter rejects normalized `on` keys and stripped `javascript:` values, then escapes retained values; I\u2019ll verify the worktree tests before deciding.",
+    "The implementation meets both requirements: `html.escape(..., quote=True)` escapes the requested characters, and the filter normalizes keys, rejects event-handler keys and stripped JavaScript-prefixed values, and escapes retained values. The legacy wrapper is unchanged, and all three worktree tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.182,
+  "prompt_tokens": 3349,
+  "output_tokens": 858,
+  "estimated_usd": 0.005425,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

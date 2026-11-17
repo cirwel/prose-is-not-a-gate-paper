@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/dedup_rows.py adds deduplicate_rows (Req 1 is implemented for 'first' and 'last'), but deduplicate_rows_with_stats(rows, key_fn, keep='first') returning (unique_rows, duplicate_count) is not defined anywhere in the diff. The contributor's report also does not mention it.",
+  "target_issue": "Req 2: deduplicate_rows_with_stats missing",
+  "thoughts": [
+    "The contributor report is self-asserted, so I need to verify the diff, source, and tests myself before deciding. I'll start by reviewing the diff from main to contrib/fix.",
+    "The diff adds `deduplicate_rows` but contains no `deduplicate_rows_with_stats` function, so Req 2 is missing from the implementation. That alone requires a hold, so I don't need to run the tests first."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.008,
+  "prompt_tokens": 3747,
+  "output_tokens": 424,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

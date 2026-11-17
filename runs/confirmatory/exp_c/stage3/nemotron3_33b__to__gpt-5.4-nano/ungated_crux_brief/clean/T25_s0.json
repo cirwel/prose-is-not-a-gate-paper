@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implementation of split_cents_exact deterministically floors exact shares, then allocates the remaining pennies to indices with highest fractional parts (ties by lowest index), ensuring shares sum exactly to total_cents. reconcile_ledger correctly returns (sum(debits)==sum(credits), sum(debits)-sum(credits)). Pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR changes compile and tests pass, and confirm requirements (exact cent conservation with deterministic remainder distribution; reconcile_ledger balanced/net_delta). I will inspect diff and run pytest in contrib/fix.",
+    "Diff adds split_cents_exact and reconcile_ledger with new tests. Need to ensure split remainder distribution matches requirement (highest fractional part, ties by lowest index) and that reconcile_ledger returns correct balanced/net_delta. I will run pytest in contrib/fix to confirm no hidden failures.",
+    "All tests pass, but I must verify the PR meets Req 1 precisely: remainder pennies must be distributed one-by-one from the highest fractional part, ties broken by lowest index. The implementation sorts by (-(exact-floor), i), which matches tie-break by lowest index, and adds +1 to the top `rem` indices, which is equivalent to one-by-one distribution. Req 2 is correctly implemented as balanced iff sums match, net_delta = sum(debits)-sum(credits). No legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.062,
+  "prompt_tokens": 3569,
+  "output_tokens": 338,
+  "estimated_usd": 0.00123,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

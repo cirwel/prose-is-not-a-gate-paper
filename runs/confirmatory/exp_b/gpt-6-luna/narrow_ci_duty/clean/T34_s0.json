@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both reported tests pass, and the implementation adds the requested sentinel recording and lookup behavior without changing existing public signatures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the changed implementation and repository context, then run the required test suite and compare its result with the contributor report.",
+    "The diff stores the existing `NOT_FOUND` object and checks identity while separately detecting absent keys, preserving `store_hit`\u2019s signature. I\u2019ll run the required suite to verify the reported test results.",
+    "The worktree test suite exits 0 and exactly matches the contributor\u2019s reported passed tests. The implementation distinguishes an uncached key from the `NOT_FOUND` sentinel by membership and identity checks, satisfying both requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.943,
+  "prompt_tokens": 2647,
+  "output_tokens": 250,
+  "estimated_usd": 0.002917,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

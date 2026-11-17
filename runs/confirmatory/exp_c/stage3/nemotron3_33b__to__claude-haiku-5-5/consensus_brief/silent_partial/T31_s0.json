@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/window_merge.py has no merge_windows(intervals) function to coalesce overlapping or adjacent half-open [start, end) intervals. Only is_in_blackout (Req 2) was added, with 2 passing tests that do not exercise merging. (The advisory brief's name 'merge_rooms' is a mismatch; the ticket requires merge_windows.)",
+  "target_issue": "Req 1: merge_windows(intervals) missing from src/window_merge.py",
+  "thoughts": [
+    "The advisory brief names a function `merge_rooms` that doesn't match the ticket's `merge_windows`, so I should verify the actual diff rather than rely on the summary.",
+    "The diff shows only is_in_blackout was added; merge_windows (Req 1) is absent, so the ticket is incomplete. I'll finalize a hold rather than merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.403,
+  "prompt_tokens": 3826,
+  "output_tokens": 397,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

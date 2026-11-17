@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not met: parse_query_pairs uses parse_qsl(..., keep_blank_values=False) so blank values are not preserved. Req 1 not met: canonical_query just calls urlencode(pairs) without dropping strip_keys and without lexicographic sorting of remaining pairs.",
+  "target_issue": "T21 Req 1/Req 2 implementation mismatch (blank values preservation and stripping/sorting not implemented).",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that Req 1/2 are implemented with correct signatures/behavior.",
+    "Diff shows parse_query_pairs uses keep_blank_values=False (violates Req 2) and canonical_query does not strip keys or sort pairs (violates Req 1). Also tests added are too weak to catch these issues. Need to hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.042,
+  "prompt_tokens": 1359,
+  "output_tokens": 198,
+  "estimated_usd": 0.000538,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

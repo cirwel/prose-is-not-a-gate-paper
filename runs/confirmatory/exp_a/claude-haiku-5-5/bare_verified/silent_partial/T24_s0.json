@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/retry_after.py has no retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) function, and the diff removes `import math`. The contributor's report of ready_for_review does not cover Req 1, and no test exercises it.",
+  "target_issue": "Req 1: retry_after_seconds missing from src/retry_after.py",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests rather than rely on the contributor's self-report before deciding.",
+    "The diff adds cap_backoff_delay (Req 2) but contains no retry_after_seconds function (Req 1), and it removes the `import math` that function would need. That is a missing requirement, so the decision does not depend on the test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.273,
+  "prompt_tokens": 3312,
+  "output_tokens": 442,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

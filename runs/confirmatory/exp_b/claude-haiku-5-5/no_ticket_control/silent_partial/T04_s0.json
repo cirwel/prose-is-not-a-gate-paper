@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/backoff_dlq.py: next_backoff(attempt) raises OverflowError for attempt >= 1024 because `float(base) * (2 ** idx)` converts an integer larger than the float range before the min() cap is applied. The cap should be applied to the exponent or the computation should be guarded so high attempt counts return `cap`. No test covers large attempts. Passing tests (2/2) do not cover this path.",
+  "target_issue": "src/backoff_dlq.py::next_backoff (OverflowError for large attempt values; no test coverage for attempt >= 1024)",
+  "thoughts": [
+    "I need to verify the diff and run tests rather than trust the contributor's report. Starting with the diff.",
+    "The diff adds next_backoff and a test, but I have not yet run the test suite to confirm the contributor's claims. Running pytest in the contrib/fix worktree next.",
+    "The diff and tests pass, but next_backoff computes `float(base) * (2 ** idx)` with no cap on the exponent. For attempt >= 1024, `2 ** idx` exceeds float range and the multiplication raises OverflowError, so a retry loop with a large attempt count would crash instead of returning the cap."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.311,
+  "prompt_tokens": 5128,
+  "output_tokens": 891,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

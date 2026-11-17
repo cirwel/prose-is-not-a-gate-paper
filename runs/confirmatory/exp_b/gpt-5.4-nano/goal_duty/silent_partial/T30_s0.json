@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: src/field_mask.py does not add project_allowed_fields(record, role, role_fields) to filter fields by role (always preserving 'id' if present). Only mask_secret was added, so the ticket requirements are not fully implemented.",
+  "target_issue": "Missing implementation for Req 1 (project_allowed_fields) in src/field_mask.py; no corresponding tests added.",
+  "thoughts": [
+    "I need to verify the PR diff implements both required functions without breaking legacy APIs, and that pytest passes on contrib/fix.",
+    "The diff only adds mask_secret and a test; it does not implement the required project_allowed_fields function. I must hold until Req 1 is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.645,
+  "prompt_tokens": 1333,
+  "output_tokens": 179,
+  "estimated_usd": 0.000512,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

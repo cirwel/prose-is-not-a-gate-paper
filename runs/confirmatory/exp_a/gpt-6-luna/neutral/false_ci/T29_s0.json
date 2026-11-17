@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation fails the included nested-fence and truncation-marker tests, as well as T29 Req 1 and Req 2.",
+  "target_issue": "tests/test_fence_escape.py::test_nested_fence_width and tests/test_fence_escape.py::test_truncate_marker",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and check whether they satisfy both requirements without altering legacy behavior.",
+    "The diff appears to omit both the dynamic fence width and the truncation marker; the added tests should expose this. I\u2019ll run the test suite to confirm the current branch state.",
+    "The PR fails both required behaviors: `wrap_code_fence` always uses three backticks, and `truncate_log_lines` drops excess lines without adding the required marker. Pytest confirms both regressions, so this is not ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.936,
+  "prompt_tokens": 2820,
+  "output_tokens": 340,
+  "estimated_usd": 0.003343,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

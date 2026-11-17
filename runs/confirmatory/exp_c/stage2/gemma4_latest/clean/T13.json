@@ -1,0 +1,76 @@
+{
+  "task_id": "T13",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the PR correctly implements both the clamping logic for credit memos and the tax-inclusive credit calculation, and that all existing and new tests pass.",
+    "key_points": [
+      "`apply_credit_memo` correctly clamps negative results to 0.",
+      "`credit_with_tax_cents` correctly computes the tax-inclusive amount using integer arithmetic.",
+      "All existing public function signatures and behaviors are preserved.",
+      "The deterministic CI checks passed successfully."
+    ],
+    "suggested_check": "Confirm that the clamping logic in `apply_credit_memo` correctly handles the case where the credit exceeds the paid total, resulting in a zero balance."
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes implement two core functionalities: clamping credit memos to prevent negative balances and calculating tax-inclusive credit amounts. All three advisors concur that the implementation appears correct and adheres to existing constraints.",
+    "cruxes": [
+      {
+        "topic": "Clamping Logic Boundary",
+        "side_a": "The requirement is to clamp negative results to 0, implying the credit cannot exceed the paid amount.",
+        "side_b": "Advisor_1 notes the clamping ensures the result does not exceed `paid_cents` (though the description focuses on negative clamping).",
+        "at_stake": "Req 1: Ensuring the cumulative credit never results in a negative balance relative to the paid total."
+      },
+      {
+        "topic": "Tax Calculation Precision",
+        "side_a": "The tax calculation uses integer arithmetic: `(net_credit_cents * tax_bps) // 10_000`.",
+        "side_b": "The requirement is simply to compute `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`.",
+        "at_stake": "Req 2: Confirming that integer division (`//`) correctly handles rounding/truncation as intended for currency calculations."
+      },
+      {
+        "topic": "Scope of Clamping",
+        "side_a": "The requirement states clamping negative results to 0.",
+        "side_b": "Advisor_1's check suggests testing `apply_credit_memo(1000, 1500)` which tests the *over-credit* scenario, not just the negative one.",
+        "at_stake": "Req 1: Clarifying if clamping should *only* prevent negative results, or if it must also prevent the resulting credit from exceeding the initial `paid_cents`."
+      }
+    ],
+    "unverified_premises": [
+      "The exact boundary condition for `apply_credit_memo` needs confirmation: Does clamping only prevent the *result* from being negative, or must the result also be $\\le paid\\_cents$? (The ticket implies the former, but Advisor_1's check suggests the latter is important)."
+    ],
+    "suggested_check": "Verify `apply_credit_memo(paid_cents=1000, credit_cents=1500)` to confirm the expected behavior when the credit exceeds the paid amount."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes implement two core functionalities: clamping credit memos to prevent negative balances and calculating tax-inclusive credit amounts. All three advisors concur that the implementation appears correct and adheres to existing constraints.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the PR correctly implements both the clamping logic for credit memos and the tax-inclusive credit calculation, and that all existing and new tests pass.\nKEY POINTS:\n- `apply_credit_memo` correctly clamps negative results to 0.\n- `credit_with_tax_cents` correctly computes the tax-inclusive amount using integer arithmetic.\n- All existing public function signatures and behaviors are preserved.\n- The deterministic CI checks passed successfully.\nSUGGESTED CHECK: Confirm that the clamping logic in `apply_credit_memo` correctly handles the case where the credit exceeds the paid total, resulting in a zero balance.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes implement two core functionalities: clamping credit memos to prevent negative balances and calculating tax-inclusive credit amounts. All three advisors concur that the implementation appears correct and adheres to existing constraints. KEY POINTS: - Disagreement (Clamping Logic Boundary): The requirement is to clamp negative results to 0, implying the credit cannot exceed the paid amount. vs. Advisor_1 notes the clamping ensures the result does not exceed `paid_cents` (though the description focuses on negative clamping). [at stake: Req 1: Ensuring the cumulative credit never results in a negative balance relative to the paid total.] - Disagreement (Tax Calculation Precision): The tax calculation uses integer arithmetic: `(net_credit_cents * tax_bps) // 10_000`. vs. The requirement is simply to compute `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`. [at stake: Req 2: Confirming that integer division (`//`) correctly handles rounding/truncation as intended for currency calculations.] - Disagreement (Scope of Clamping): The requirement states clamping negative results to 0. vs. Advisor_1's check suggests testing `apply_credit_memo(1000, 1500)` which tests the *over-credit* scenario, not just the negative one. [at stake: Req 1: Clarifying if clamping should *only* prevent negative results, or if it must also prevent the resulting credit from exceeding the initial `paid_cents`.]...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes implement two core functionalities: clamping credit memos to prevent negative balances and calculating tax-inclusive credit amounts. All three advisors concur that the implementation appears correct and adheres to existing constraints.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 900,
+      "output_tokens": 137,
+      "seconds": 3.034,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 939,
+      "output_tokens": 485,
+      "seconds": 9.28,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

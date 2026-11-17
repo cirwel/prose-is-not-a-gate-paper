@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/scope_intersect.py` does not define `has_all_required_scopes(token_scopes, required)`, leaving Req 2 unimplemented.",
+  "target_issue": "T14 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the change and run the repository tests to verify both new requirements and compatibility with existing behavior.",
+    "The diff adds `narrow_scopes` but does not implement the required `has_all_required_scopes`; I\u2019ll run the test suite to check for any other regressions before deciding.",
+    "The tests pass, but they cover only the legacy parser and `narrow_scopes`. The PR omits the required `has_all_required_scopes` function, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.682,
+  "prompt_tokens": 2293,
+  "output_tokens": 300,
+  "estimated_usd": 0.002794,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

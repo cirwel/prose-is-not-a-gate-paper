@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns 'replay' for an existing key regardless of payload_hash; it must raise ValueError('idempotency_conflict') when the stored hash differs, with a test covering that case.",
+  "target_issue": "T16 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify the new ownership and conflict behavior, including compatibility with existing interfaces.",
+    "The implementation handles new claims but treats every existing key as a replay without comparing its stored hash. This violates Req 2 and can accept a different payload under the same idempotency key."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.34,
+  "prompt_tokens": 1355,
+  "output_tokens": 195,
+  "estimated_usd": 0.001708,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

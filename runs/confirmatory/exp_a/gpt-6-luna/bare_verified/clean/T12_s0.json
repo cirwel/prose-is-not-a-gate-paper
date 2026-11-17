@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested behaviors are implemented in src/quota_pool.py, legacy calls remain compatible, and pytest passes all three tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify both lease behaviors and compatibility with existing signatures.",
+    "The diff appears to preserve the legacy default limit behavior and applies the reserve as an overflow allowance. I\u2019ll run the repository test suite to check for regressions beyond the added tests.",
+    "The implementation adds idempotent lease removal and preserves the existing acquire_lease call signature and default limit behavior. The shared reserve permits up to the requested overflow, and all available tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.17,
+  "prompt_tokens": 2774,
+  "output_tokens": 526,
+  "estimated_usd": 0.003902,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

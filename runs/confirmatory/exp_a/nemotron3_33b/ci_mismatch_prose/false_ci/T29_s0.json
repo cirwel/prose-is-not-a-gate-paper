@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Both required functions have critical bugs: wrap_race_break fails to compute correct backtick count for nested fences (test_nested_fence_break), and truncate_log_lines incorrectly truncates content without preserving line count (test_truncate_marker).",
+  "target_issue": "test_nested_fence_break",
+  "thoughts": [
+    "The contributor claims 0 test failures, but the PR metadata shows an automated evidence check mismatch. I need to verify the actual test results in the worktree.",
+    "The pytest run shows 2 failing tests: test_nested_fence_width and test_truncate_marker, confirming the worktree is broken despite the contributor's report. The failures indicate incorrect implementation of the backtick counting and truncation logic."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.573,
+  "prompt_tokens": 1943,
+  "output_tokens": 189,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

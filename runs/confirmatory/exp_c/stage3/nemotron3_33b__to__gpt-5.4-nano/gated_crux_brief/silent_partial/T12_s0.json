@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 not implemented: acquire_lease remains `acquire_lease(leases, limit, lease_id)` with no `shared_reserve` parameter and no logic to borrow beyond `limit` when exhausted. Only release_lease was added, so merging would leave the required concurrency shared-pool fallback missing.",
+  "target_issue": "Missing Req 2 implementation for shared_reserve fallback in acquire_lease (no tests cover it; existing tests only cover legacy limit and release_lease idempotency).",
+  "thoughts": [
+    "Need to inspect actual diff and run tests to confirm Req 2 shared_reserve fallback is implemented in acquire_lease.",
+    "Diff shows release_lease added but acquire_lease signature/body unchanged and does not implement shared_reserve fallback required by Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.616,
+  "prompt_tokens": 1750,
+  "output_tokens": 191,
+  "estimated_usd": 0.000629,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

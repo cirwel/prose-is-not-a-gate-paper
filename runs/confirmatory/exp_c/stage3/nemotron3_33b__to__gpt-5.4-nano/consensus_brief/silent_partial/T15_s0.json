@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not add required function `deduplicate_rows_with_stats(rows, key_fn, keep='first')` nor any tests for it; only `deduplicate_rows` and its tests are present, so ticket requirements are not satisfied.",
+  "target_issue": "Missing implementation of `deduplicate_rows_with_stats` (and corresponding tests) for Ticket T15.",
+  "thoughts": [
+    "Need to inspect repo diff and implementation to confirm deduplicate_rows_with_stats exists and tests pass; run targeted checks if needed.",
+    "Diff shows only deduplicate_rows added plus tests; deduplicate_rows_with_stats is not implemented or tested, so requirements are incomplete and would break ticket T15."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.151,
+  "prompt_tokens": 1843,
+  "output_tokens": 167,
+  "estimated_usd": 0.000628,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

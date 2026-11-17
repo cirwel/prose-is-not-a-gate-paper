@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (apply_credit_memo clamps cumulative credit so it cannot exceed paid_cents) and Req 2 (credit_with_tax_cents computes net + pro-rata tax via integer bps math). Existing legacy function invoice_balance and its test remain unchanged and passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify PR diff and run pytest to ensure no regressions and requirements are correctly implemented without breaking legacy signatures.",
+    "Diff is small and implements both requested functions with clamping and tax bps math; need to run pytest to confirm no regressions and that legacy behavior remains intact.",
+    "All tests pass and the PR adds only the two new functions required by T13 without changing existing public signatures or behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.153,
+  "prompt_tokens": 2526,
+  "output_tokens": 199,
+  "estimated_usd": 0.000831,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

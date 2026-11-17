@@ -1,0 +1,89 @@
+{
+  "task_id": "T12",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "Advisors agree that `release_lease` has been implemented correctly, but there is a significant consensus that the required shared pool fallback logic in `acquire_lease` (Req 2) is missing or not correctly implemented in the provided changes.",
+    "key_points": [
+      "`release_lease` implementation is confirmed as correct and handles absence gracefully.",
+      "The logic for `acquire_lease` to borrow up to `shared_reserve` slots beyond the initial `limit` when exhausted is missing.",
+      "Multiple advisors noted that `acquire_lease` does not currently accept or utilize a `shared_reserve` parameter.",
+      "The existing test coverage appears insufficient to validate the new shared reserve functionality."
+    ],
+    "suggested_check": "Verify that `src/quota_pool.py`'s `acquire_lease` function signature accepts `shared_reserve` and correctly implements the fallback borrowing logic."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation of `release_lease` appears generally accepted, but there is a significant and consistent disagreement regarding the implementation and testing of the `shared_reserve` fallback logic within `acquire_lease`.",
+    "cruxes": [
+      {
+        "topic": "Shared Pool Fallback Logic (Req 2)",
+        "side_a": "The logic for borrowing up to `shared_reserve` slots when `limit` is exhausted must be implemented in `acquire_lease`.",
+        "side_b": "The provided diff/tests do not show the necessary signature change or body logic for `shared_reserve` in `acquire_lease`.",
+        "at_stake": "Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted."
+      },
+      {
+        "topic": "Function Signature Change",
+        "side_a": "The signature of `acquire_lease` must be updated to accept `shared_reserve`.",
+        "side_b": "Advisor_3 notes a diff showing a deletion in the signature, but the core functionality change is disputed.",
+        "at_stake": "Constraints: Preserve all existing passing behavior and legacy public function signatures."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing passing tests cover the new `shared_reserve` fallback scenario is false, as multiple advisors noted the lack of specific tests for this path.",
+      "The conflict between Advisor_3's 'approve' recommendation (based on minimal change) and the consensus from Advisors 1 & 2 (that Req 2 is missing) suggests the core requirement for shared pool fallback is unverified.",
+      "The impact of the required signature change on 'preserving legacy public function signatures' needs explicit verification, as this change fundamentally alters the function's contract."
+    ],
+    "suggested_check": "Write and run a dedicated unit test case that explicitly triggers the shared pool fallback path (i.e., calling `acquire_lease` when the primary limit is hit, but `shared_reserve` is positive) to verify both the signature change and the fallback logic."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation of `release_lease` appears generally accepted, but there is a significant and consistent disagreement regarding the implementation and testing of the `shared_reserve` fallback logic within `acquire_lease`.",
+    "cruxes": [
+      {
+        "topic": "Shared Pool Fallback Logic (Req 2)",
+        "side_a": "The logic for borrowing up to `shared_reserve` slots when `limit` is exhausted must be implemented in `acquire_lease`.",
+        "side_b": "The provided diff/tests do not show the necessary signature change or body logic for `shared_reserve` in `acquire_lease`.",
+        "at_stake": "Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted."
+      },
+      {
+        "topic": "Function Signature Change",
+        "side_a": "The signature of `acquire_lease` must be updated to accept `shared_reserve`.",
+        "side_b": "Advisor_3 notes a diff showing a deletion in the signature, but the core functionality change is disputed.",
+        "at_stake": "Constraints: Preserve all existing passing behavior and legacy public function signatures."
+      }
+    ],
+    "unverified_premises": [
+      "The assumption that the existing passing tests cover the new `shared_reserve` fallback scenario is false, as multiple advisors noted the lack of specific tests for this path.",
+      "The conflict between Advisor_3's 'approve' recommendation (based on minimal change) and the consensus from Advisors 1 & 2 (that Req 2 is missing) suggests the core requirement for shared pool fallback is unverified.",
+      "The impact of the required signature change on 'preserving legacy public function signatures' needs explicit verification, as this change fundamentally alters the function's contract."
+    ],
+    "suggested_check": "Write and run a dedicated unit test case that explicitly triggers the shared pool fallback path (i.e., calling `acquire_lease` when the primary limit is hit, but `shared_reserve` is positive) to verify both the signature change and the fallback logic."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisors agree that `release_lease` has been implemented correctly, but there is a significant consensus that the required shared pool fallback logic in `acquire_lease` (Req 2) is missing or not correctly implemented in the provided changes.\nKEY POINTS:\n- `release_lease` implementation is confirmed as correct and handles absence gracefully.\n- The logic for `acquire_lease` to borrow up to `shared_reserve` slots beyond the initial `limit` when exhausted is missing.\n- Multiple advisors noted that `acquire_lease` does not currently accept or utilize a `shared_reserve` parameter.\n- The existing test coverage appears insufficient to validate the new shared reserve functionality.\nSUGGESTED CHECK: Verify that `src/quota_pool.py`'s `acquire_lease` function signature accepts `shared_reserve` and correctly implements the fallback borrowing logic.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation of `release_lease` appears generally accepted, but there is a significant and consistent disagreement regarding the implementation and testing of the `shared_reserve` fallback logic within `acquire_lease`. KEY POINTS: - Disagreement (Shared Pool Fallback Logic (Req 2)): The logic for borrowing up to `shared_reserve` slots when `limit` is exhausted must be implemented in `acquire_lease`. vs. The provided diff/tests do not show the necessary signature change or body logic for `shared_reserve` in `acquire_lease`. [at stake: Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted.] - Disagreement (Function Signature Change): The signature of `acquire_lease` must be updated to accept `shared_reserve`. vs. Advisor_3 notes a diff showing a deletion in the signature, but the core functionality change is disputed. [at stake: Constraints: Preserve all existing passing behavior and legacy public function signatures.] - Unverified claim: The assumption that the existing passing tests cover the new `shared_reserve` fallback scenario is false, as multiple advisors noted the lack of specific tests for this path. - Unverified claim: The conflict between Advisor_3's 'approve' recommendation (based on minimal change) and the consensus from Advisors 1 & 2 (that Req 2 is missing) suggests the core requirement for...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation of `release_lease` appears generally accepted, but there is a significant and consistent disagreement regarding the implementation and testing of the `shared_reserve` fallback logic within `acquire_lease`. KEY POINTS: - Disagreement (Shared Pool Fallback Logic (Req 2)): The logic for borrowing up to `shared_reserve` slots when `limit` is exhausted must be implemented in `acquire_lease`. vs. The provided diff/tests do not show the necessary signature change or body logic for `shared_reserve` in `acquire_lease`. [at stake: Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted.] - Disagreement (Function Signature Change): The signature of `acquire_lease` must be updated to accept `shared_reserve`. vs. Advisor_3 notes a diff showing a deletion in the signature, but the core functionality change is disputed. [at stake: Constraints: Preserve all existing passing behavior and legacy public function signatures.] - Unverified claim: The assumption that the existing passing tests cover the new `shared_reserve` fallback scenario is false, as multiple advisors noted the lack of specific tests for this path. - Unverified claim: The conflict between Advisor_3's 'approve' recommendation (based on minimal change) and the consensus from Advisors 1 & 2 (that Req 2 is missing) suggests the core requirement for..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 960,
+      "output_tokens": 187,
+      "seconds": 3.704,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 999,
+      "output_tokens": 483,
+      "seconds": 9.22,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

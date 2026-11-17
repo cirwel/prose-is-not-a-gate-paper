@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`, which is a core requirement of ticket T21. Only `parse_query_pairs` seems to be implemented based on the diff.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the status is 'ready_for_review'. I should first examine the changes using `git_diff()` to ensure the implementation meets the requirements before deciding to merge.",
+    "The diff shows the addition of `parse_query_pairs` and updates to `has_query` usage in tests. However, the diff does not show the implementation for `canonical_query` (Req 1), which is a key part of ticket T21. The contributor report claims all tests pass, but I cannot verify the implementation of the canonicalization function, nor can I see the full context of the changes in `src/query_canon.py` beyond the diff provided. I must run the tests to confirm the reported success and then check for the missing function implementation.",
+    "The tests passed again, confirming the changes in the diff. However, the diff provided only shows the implementation for `parse_query_pairs` and does not show the implementation for the required `canonical_query` function (Req 1). Since this is a core requirement of T21, and I cannot see its implementation, I must hold the PR until the full code for `canonical_query` is visible and verified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.208,
+  "prompt_tokens": 2836,
+  "output_tokens": 371,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

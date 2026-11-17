@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 exactly as specified (prorate_cents returns 0 when active_days<=0; upgrade_delta_cents returns 0 for downgrades and uses prorated difference for upgrades). Existing legacy function full_cycle_total is unchanged and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in the contrib/fix worktree to ensure no regressions and requirements are correctly implemented.",
+    "Diff looks small and requirements appear implemented, but I should still run pytest in the contrib/fix worktree to confirm no hidden regressions.",
+    "Pytest in contrib/fix passes (3/3) and the diff adds only the requested functions without changing existing signatures or behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.042,
+  "prompt_tokens": 3318,
+  "output_tokens": 204,
+  "estimated_usd": 0.001033,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

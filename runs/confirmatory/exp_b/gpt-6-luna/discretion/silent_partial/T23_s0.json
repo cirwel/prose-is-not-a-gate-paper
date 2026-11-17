@@ -1,0 +1,48 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is unimplemented: `src/tiebreak_sort.py` has no `keyset_page(rows, limit, after_score=None, after_id=None)` to sort, filter strictly after the cursor, and return the limited page.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the changed code and relevant tests to verify the cursor ordering, strict tie-break filtering, and compatibility with existing APIs.",
+    "The PR adds `has_more_pages` but does not implement the required `keyset_page` function, so deterministic cursor filtering and pagination are missing. This is an incomplete change and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.758,
+  "prompt_tokens": 1273,
+  "output_tokens": 265,
+  "estimated_usd": 0.001866,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/silent_partial/T23_s0.json"
+}

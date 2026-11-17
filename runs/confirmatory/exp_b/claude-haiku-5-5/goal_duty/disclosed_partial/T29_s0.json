@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "wrap_code_fence(code, lang='') is not implemented: the diff to src/fence_escape.py only adds truncate_log_lines. The contributor report explicitly defers Req 1 to a follow-up, so the ticket requirement is missing. Req 2 (truncate_log_lines) appears implemented, and the legacy normalize_newlines is untouched.",
+  "target_issue": "Req 1: wrap_code_fence missing",
+  "thoughts": [
+    "The contributor report says Req 1 (wrap_code_fence) was deferred, but I need to verify this against the actual diff before deciding.",
+    "The diff confirms Req 1 (wrap_code_fence) is absent from src/fence_escape.py, and the ticket requires it, so the PR cannot merge. I'll hold with Req 1 as the missing requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.051,
+  "prompt_tokens": 3520,
+  "output_tokens": 441,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

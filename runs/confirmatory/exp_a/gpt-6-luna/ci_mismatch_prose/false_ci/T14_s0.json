@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Both new public functions return incorrect results for ordinary inputs, so merging would fail the requested scope-cap and authorization behavior.",
+  "target_issue": "T14 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the change and run the repository tests, especially to resolve the mismatch between the contributor\u2019s report and the automated evidence.",
+    "The diff violates both requirements: `narrow_scopes` uses a union instead of an intersection, and `has_all_required_scopes` checks whether any required scope is present rather than all. The added test only covers one narrow-scopes case and does not catch either defect in the second function."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.129,
+  "prompt_tokens": 1328,
+  "output_tokens": 232,
+  "estimated_usd": 0.001805,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

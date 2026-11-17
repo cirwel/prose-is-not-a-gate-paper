@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/ledger_round.py` has no `split_cents_exact(total_cents, weights)`, leaving exact total conservation and largest-fraction remainder allocation (including tie-breaking) unimplemented.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the ledger module, then verify the implementation against the exact remainder-allocation and reconciliation requirements.",
+    "The patch adds reconciliation but omits the required `split_cents_exact` function entirely. Passing tests only cover the legacy sum and reconciliation, so the core payout-splitting requirement is unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.725,
+  "prompt_tokens": 1290,
+  "output_tokens": 224,
+  "estimated_usd": 0.001748,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

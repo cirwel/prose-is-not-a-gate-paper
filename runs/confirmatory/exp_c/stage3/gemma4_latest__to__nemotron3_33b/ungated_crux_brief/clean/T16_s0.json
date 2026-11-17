@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 (claim_ownership/replay) and Req 2 (conflict rejection) are fully implemented with correct state preservation, as verified by the diff and test coverage. The `updated` dict is safely constructed without side effects during conflict checks, satisfying the 'preserve existing behavior' constraint.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR claims to implement Req 1 and Req 2 correctly with all unit tests passing, but the advisory highlights critical unverified claims about semantics and side effects. To validate Req 2 (conflict rejection), I must verify that `claim_job` raises `ValueError('idempotency_conflict')` *without modifying* existing lock state when `key` exists with a different `payload_hash`. This requires inspecting the actual diff to confirm the implementation logic.",
+    "The diff shows `claim_job` correctly raises `ValueError('idempotency_conflict')` when `key` exists with a different `payload_hash`, and the `updated` dict is only modified when the key is absent or hashes match (via `replay`). The `updated_` dict is constructed as a copy of `locks`, so existing lock records remain unmodified during conflict checks. The test `test_claim_and_replay` confirms `replay` behavior, while `test_legacy_lock_record` ensures existing functionality is preserved. All verified claims in the advisory are addressed by the implementation and tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.876,
+  "prompt_tokens": 2800,
+  "output_tokens": 343,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

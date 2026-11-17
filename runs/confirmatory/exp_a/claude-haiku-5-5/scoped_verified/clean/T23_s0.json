@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "keyset_page uses the same row_key ordering for the sort and the cutoff comparison, so ties at the same score resume at the correct id (verified by hand against the tie test: page 1 is [a], page 2 is [b, c]). has_more_pages matches Req 2 exactly. row_key and the existing import are preserved, and run_pytest exits 0 with 3/3 passing. Minor gap: if only one of after_score/after_id is supplied, the filter is silently skipped rather than rejected, but this is not a Req 1 violation.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report claims completion, but I need to verify the actual diff against Req 1 and Req 2 before deciding.",
+    "The diff implements both requirements plausibly, but the contributor's pass claim needs confirmation. I'll run the test suite in the contrib/fix worktree before deciding.",
+    "The diff implements both requirements: keyset_page sorts by (-score, id), filters strictly after the cutoff tuple so tied scores are not skipped, and returns rows[:limit]; has_more_pages returns total > limit. row_key and the legacy import are unchanged, and the three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.199,
+  "prompt_tokens": 80550,
+  "output_tokens": 1080,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tiebreak_sort.py is missing keyset_page(rows, limit, after_score=None, after_id=None), so deterministic sorting, strict cursor filtering across ties, and limited page results are not implemented.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I will inspect the diff and relevant tests to verify cursor ordering, tie handling, and legacy compatibility.",
+    "The diff implements has_more_pages correctly and leaves row_key unchanged, but it does not add the required keyset_page function. Passing the reported tests does not establish completion because they do not cover Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.38,
+  "prompt_tokens": 1249,
+  "output_tokens": 160,
+  "estimated_usd": 0.005667,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

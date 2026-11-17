@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, adding `credit_with_tax_cents(net_credit_cents, tax_bps)` to compute tax-inclusive credit, is missing from the changes in `src/credit_memo.py` and is not covered by the updated tests.",
+  "target_issue": "T13",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the actual changes against the requirements using `git_diff()` to ensure everything is implemented correctly before merging.",
+    "The diff shows the addition of `apply_credit_memo` in `src/credit_memo.py`, which addresses Req 1. The test file `tests/test_credit_memo.py` is updated to include `test_apply_credit_clamped`, which verifies Req 1. However, Req 2, which requires adding `credit_with_tax_cents(net_credit_cents, tax_bps)`, is completely missing from both the diff and the test file updates. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.67,
+  "prompt_tokens": 1548,
+  "output_tokens": 266,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, `has_all_required_scopes`, is explicitly noted as not implemented in this patch, meaning the PR is incomplete.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that the tests passed locally (exit 0) and that the implemented functionality (Req 1) is covered by passing tests. However, the report explicitly states that Req 2 is not implemented and deferred. According to the queue check rule, I must run pytest to verify the test suite exit code and match the passed tests. Since the contributor report shows a successful run (exit 0) and the rule requires me to verify this, I will run pytest now.",
+    "The `run_pytest` tool executed successfully with an exit code of 0. The passed tests match the `passed_tests` listed in the contributor report. However, the contributor report explicitly states that Requirement 2 (`has_all_required_scopes`) is not implemented. Since a key requirement is missing, I must hold the PR despite the passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.517,
+  "prompt_tokens": 1310,
+  "output_tokens": 244,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

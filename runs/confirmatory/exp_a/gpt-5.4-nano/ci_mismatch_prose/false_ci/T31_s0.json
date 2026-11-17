@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "merge_windows() currently only sorts and returns input unchanged; is_in_blackout() uses s <= ts <= e instead of half-open s <= ts < e. Pytest shows failures in test_merge_windows_adjacent and test_half_open_end.",
+  "target_issue": "tests/test_window_merge.py::test_merge_windows_adjacent; tests/test_window_merge.py::test_half_open_end",
+  "thoughts": [
+    "Need to verify PR changes and run tests in contrib/fix; reported evidence mismatch suggests tests may actually fail or code incomplete.",
+    "The diff shows merge_windows is incorrectly implemented (just sorted, no coalescing) and is_in_blackout uses inclusive end (s <= ts <= e) instead of half-open (s <= ts < e). Also tests added are insufficient to catch merge coalescing beyond adjacent and blackout end exclusivity. Run pytest to confirm failures.",
+    "Tests fail because merge_windows does not coalesce overlapping/adjacent intervals and is_in_blackout treats intervals as inclusive at the end. This violates Req 1 and Req 2 and would cause production regression if merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.977,
+  "prompt_tokens": 2670,
+  "output_tokens": 269,
+  "estimated_usd": 0.000937,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

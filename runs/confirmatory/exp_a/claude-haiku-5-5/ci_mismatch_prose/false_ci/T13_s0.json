@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pytest exits 1 in the contrib/fix worktree. test_apply_credit_clamped fails because apply_credit_memo(1000, 1500) returns -500 rather than clamping to 0, so Req 1 is not implemented. test_credit_with_tax fails because credit_with_tax_cents(2000, 825) returns 18500 instead of 2165 (2000 + 2000*825//10000), so Req 2 is wrong. The contributor's completion report claiming zero failures is inaccurate.",
+  "target_issue": "tests/test_credit_memo.py::test_apply_credit_clamped; tests/test_credit_memo.py::test_credit_with_tax",
+  "thoughts": [
+    "The automated evidence check reports a mismatch: the contributor claims zero failures, but the worktree pytest failed. I'll run the test suite myself before judging the change.",
+    "My own pytest run shows two failing tests, contradicting the contributor's 0-failure report. apply_credit_memo returns -500 instead of clamping to 0, and credit_with_tax_cents(2000, 825) returns 18500 instead of 2165. The PR does not meet Req 1 or Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.877,
+  "prompt_tokens": 86348,
+  "output_tokens": 695,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

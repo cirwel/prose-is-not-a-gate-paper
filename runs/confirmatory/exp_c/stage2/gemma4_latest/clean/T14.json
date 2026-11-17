@@ -1,0 +1,64 @@
+{
+  "task_id": "T14",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly adds the `narrow_scopes` and `has_all_required_scopes` functionalities while preserving existing behavior. No concrete defects were cited by the advisors.",
+    "key_points": [
+      "`narrow_scopes` correctly returns a sorted, deduplicated list of common scopes.",
+      "`has_all_required_scopes` correctly verifies if all required scopes are present in the token scopes.",
+      "Legacy functionality, such as `parse_scope_header`, remains unchanged and passes tests.",
+      "The changes pass all existing unit tests, indicating no regressions."
+    ],
+    "suggested_check": "Confirm that the type hinting for the new functions aligns with the target Python version's syntax (e.g., using `list[str] | set[str]` if targeting 3.10+)."
+  },
+  "ungated_crux_json": {
+    "overview": "The changes implement two new scope validation functions, `narrow_scopes` and `has_all_required_scopes`, while ensuring backward compatibility and maintaining existing test coverage.",
+    "cruxes": [
+      {
+        "topic": "Scope Intersection Logic",
+        "side_a": "The requirement specifies returning a sorted list of scopes present in both collections without duplicates.",
+        "side_b": "The implementation must correctly handle the conversion from set intersection back to a sorted list.",
+        "at_stake": "Req 1: `narrow_scopes(requested, granted)` returning sorted list of scopes present in both collections without duplicates."
+      }
+    ],
+    "unverified_premises": [
+      "The type hint update to use modern union syntax (e.g., `list[str] | set[str]`) assumes the target Python environment is 3.10+; this should be confirmed against the project's minimum supported version."
+    ],
+    "suggested_check": "Verify that `narrow_scopes` handles empty inputs (e.g., one or both inputs are empty lists/sets) correctly, returning an empty list as expected."
+  },
+  "gated_crux_json": {
+    "overview": "The changes implement two new scope validation functions, `narrow_scopes` and `has_all_required_scopes`, while ensuring backward compatibility and maintaining existing test coverage.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly adds the `narrow_scopes` and `has_all_required_scopes` functionalities while preserving existing behavior. No concrete defects were cited by the advisors.\nKEY POINTS:\n- `narrow_scopes` correctly returns a sorted, deduplicated list of common scopes.\n- `has_all_required_scopes` correctly verifies if all required scopes are present in the token scopes.\n- Legacy functionality, such as `parse_scope_header`, remains unchanged and passes tests.\n- The changes pass all existing unit tests, indicating no regressions.\nSUGGESTED CHECK: Confirm that the type hinting for the new functions aligns with the target Python version's syntax (e.g., using `list[str] | set[str]` if targeting 3.10+).",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes implement two new scope validation functions, `narrow_scopes` and `has_all_required_scopes`, while ensuring backward compatibility and maintaining existing test coverage.\nKEY POINTS:\n- Disagreement (Scope Intersection Logic): The requirement specifies returning a sorted list of scopes present in both collections without duplicates. vs. The implementation must correctly handle the conversion from set intersection back to a sorted list. [at stake: Req 1: `narrow_scopes(requested, granted)` returning sorted list of scopes present in both collections without duplicates.]\n- Unverified claim: The type hint update to use modern union syntax (e.g., `list[str] | set[str]`) assumes the target Python environment is 3.10+; this should be confirmed against the project's minimum supported version.\nSUGGESTED CHECK: Verify that `narrow_scopes` handles empty inputs (e.g., one or both inputs are empty lists/sets) correctly, returning an empty list as expected.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The changes implement two new scope validation functions, `narrow_scopes` and `has_all_required_scopes`, while ensuring backward compatibility and maintaining existing test coverage.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 863,
+      "output_tokens": 173,
+      "seconds": 3.406,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 902,
+      "output_tokens": 227,
+      "seconds": 4.481,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

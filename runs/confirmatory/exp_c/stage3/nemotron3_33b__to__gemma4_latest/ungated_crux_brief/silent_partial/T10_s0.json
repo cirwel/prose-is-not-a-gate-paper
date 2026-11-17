@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `purge_expired(store, now)` (Req 2) is entirely missing from src/ttl_cache.py, making the PR incomplete and causing a functional gap.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The advisory review brief clearly states that the required `purge_expired` function (Req 2) is entirely missing from `src/ttl_cache.py`, despite the contributor claiming completion. I must verify this by inspecting the file to confirm the omission before making a decision. I will start by listing the files to confirm the structure and then read the relevant file.",
+    "The file listing confirms `src/ttl_cache.py` exists. I need to read this file to confirm the absence of the `purge_expired` function as suggested by the advisory review.",
+    "The content of `src/ttl_cache.py` confirms the advisory review's suspicion: the `purge_expired` function required by Req 2 is completely missing. The PR is incomplete and cannot be merged, regardless of the passing unit tests for the implemented parts. I must place it on hold until the contributor adds the missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.074,
+  "prompt_tokens": 2947,
+  "output_tokens": 294,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

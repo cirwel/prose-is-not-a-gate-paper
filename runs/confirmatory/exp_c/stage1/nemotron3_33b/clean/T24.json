@@ -1,0 +1,25 @@
+{
+  "task_id": "T24",
+  "condition": "clean",
+  "advisor_model": "nemotron3:33b",
+  "summary": "The PR correctly implements both required functions with proper logic and clamping, and all existing tests pass, indicating no regressions.",
+  "key_findings": [
+    "req 1: retry_after_seconds returns max(min_seconds, ceil(tokens_needed / refill_rate)) when tokens_needed > 0 else 0",
+    "req 2: cap_backoff_delay clamps negative to 0.0 and upper bounds to max_delay",
+    "diff shows 2 files changed with 17 insertions and 1 deletion, matching constraints",
+    "all 3 existing tests pass with no failures"
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "src/retry_after.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "nemotron3:33b",
+    "prompt_tokens": 1119,
+    "output_tokens": 163,
+    "seconds": 3.532,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

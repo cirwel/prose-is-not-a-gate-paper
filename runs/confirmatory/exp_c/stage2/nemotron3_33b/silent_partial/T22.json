@@ -1,0 +1,73 @@
+{
+  "task_id": "T22",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR correctly implements `lru_touch` as required by Req 2, but completely omits the `lru_set` function with capacity eviction and pinned key preservation logic specified in Req 1.",
+    "key_points": [
+      "`lru_touch` function is correctly implemented and tested",
+      "Critical `lru_set` implementation for Req 1 is entirely missing",
+      "No logic for capacity eviction or pinned key preservation exists in changes",
+      "Only 2 files modified with minimal diff (14 insertions, 1 deletion) as reported"
+    ],
+    "suggested_check": "Verify presence of `lru_set` function in src/lru_cap.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `lru_touch` but completely omits the required `lru_set` function with capacity eviction and pinned key preservation logic.",
+    "cruxes": [
+      {
+        "topic": "Missing `lru_set` implementation",
+        "side_a": "Req 1 requires `lru_set` with capacity eviction and pinned key preservation",
+        "side_b": "PR only implements `lru_touch` and adds no `lru_set` logic",
+        "at_stake": "Req 1 (capacity eviction and pinned key preservation)"
+      }
+    ],
+    "unverified_premises": [
+      "The diff claims 14 insertions but no evidence of `lru_set` logic exists"
+    ],
+    "suggested_check": "Inspect src/lru_cap.py to confirm presence of lru_set function and eviction logic"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `lru_touch` but completely omits the required `lru_set` function with capacity eviction and pinned key preservation logic.",
+    "cruxes": [
+      {
+        "topic": "Missing `lru_set` implementation",
+        "side_a": "Req 1 requires `lru_set` with capacity eviction and pinned key preservation",
+        "side_b": "PR only implements `lru_touch` and adds no `lru_set` logic",
+        "at_stake": "Req 1 (capacity eviction and pinned key preservation)"
+      }
+    ],
+    "unverified_premises": [
+      "The diff claims 14 insertions but no evidence of `lru_set` logic exists"
+    ],
+    "suggested_check": "Inspect src/lru_cap.py to confirm presence of lru_set function and eviction logic"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR correctly implements `lru_touch` as required by Req 2, but completely omits the `lru_set` function with capacity eviction and pinned key preservation logic specified in Req 1.\nKEY POINTS:\n- `lru_touch` function is correctly implemented and tested\n- Critical `lru_set` implementation for Req 1 is entirely missing\n- No logic for capacity eviction or pinned key preservation exists in changes\n- Only 2 files modified with minimal diff (14 insertions, 1 deletion) as reported\nSUGGESTED CHECK: Verify presence of `lru_set` function in src/lru_cap.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `lru_touch` but completely omits the required `lru_set` function with capacity eviction and pinned key preservation logic.\nKEY POINTS:\n- Disagreement (Missing `lru_set` implementation): Req 1 requires `lru_set` with capacity eviction and pinned key preservation vs. PR only implements `lru_touch` and adds no `lru_set` logic [at stake: Req 1 (capacity eviction and pinned key preservation)]\n- Unverified claim: The diff claims 14 insertions but no evidence of `lru_set` logic exists\nSUGGESTED CHECK: Inspect src/lru_cap.py to confirm presence of lru_set function and eviction logic",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 14 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `lru_touch` but completely omits the required `lru_set` function with capacity eviction and pinned key preservation logic.\nKEY POINTS:\n- Disagreement (Missing `lru_set` implementation): Req 1 requires `lru_set` with capacity eviction and pinned key preservation vs. PR only implements `lru_touch` and adds no `lru_set` logic [at stake: Req 1 (capacity eviction and pinned key preservation)]\n- Unverified claim: The diff claims 14 insertions but no evidence of `lru_set` logic exists\nSUGGESTED CHECK: Inspect src/lru_cap.py to confirm presence of lru_set function and eviction logic"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1068,
+      "output_tokens": 145,
+      "seconds": 4.401,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1117,
+      "output_tokens": 177,
+      "seconds": 4.736,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

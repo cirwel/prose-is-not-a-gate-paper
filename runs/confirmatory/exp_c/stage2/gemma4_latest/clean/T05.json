@@ -1,0 +1,72 @@
+{
+  "task_id": "T05",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation successfully addresses both requirements by adding `is_safe_url` and `sanitize_markdown_link` while maintaining existing functionality and passing all tests. A concrete defect noted is that `is_safe_url` must reject `javascript:` and `data:` schemes, alongside whitespace control characters.",
+    "key_points": [
+      "`is_safe_url` correctly rejects disallowed schemes (e.g., `javascript:`, `data:`) and control characters.",
+      "`sanitize_markdown_link` correctly formats safe URLs as markdown or strips the link entirely for unsafe ones.",
+      "The implementation preserves all existing passing behavior and legacy function signatures.",
+      "All unit tests passed with no regressions observed."
+    ],
+    "suggested_check": "Confirm that `is_safe_url` logic explicitly handles whitespace control characters as required."
+  },
+  "ungated_crux_json": {
+    "overview": "The proposed changes successfully implement URL safety checks and markdown sanitization by adding `is_safe_url` and `sanitize_markdown_link`, with all advisors confirming compliance with requirements and existing test coverage.",
+    "cruxes": [
+      {
+        "topic": "Control Character Stripping Scope",
+        "side_a": "The requirement specifies rejecting 'whitespace control chars' in `is_safe_url`.",
+        "side_b": "Advisor_2 notes that the 'Legacy strip_control_chars function remains unchanged and passes its test,' implying control character stripping might be handled in two places or that the scope of stripping is ambiguous.",
+        "at_stake": "Req 1: Rejecting whitespace control chars."
+      },
+      {
+        "topic": "Fallback Mechanism for Unsafe Links",
+        "side_a": "Req 2 requires returning `clean_label` (plain text) when unsafe.",
+        "side_b": "Advisor_3 confirms this fallback, but the exact mechanism for determining 'plain text' vs. 'link' needs confirmation if the label itself contains characters that might be misinterpreted.",
+        "at_stake": "Req 2: Returning plain text for unsafe URLs."
+      }
+    ],
+    "unverified_premises": [
+      "The definition of 'whitespace control chars' is not explicitly defined (e.g., does it include NUL, TAB, or only characters matching regex whitespace classes?).",
+      "It is assumed that the existing `strip_control_chars` function handles *all* necessary control character stripping, and that `is_safe_url` only needs to check for their *presence* rather than performing the stripping itself.",
+      "The interaction between scheme validation (e.g., checking for `javascript:`) and control character validation needs to be confirmed to ensure one doesn't bypass the other."
+    ],
+    "suggested_check": "Verify that `is_safe_url` explicitly tests for and rejects URLs containing known control characters (e.g., using regex character classes like `\u0000-\u001f`) *before* or *in conjunction with* scheme validation."
+  },
+  "gated_crux_json": {
+    "overview": "The proposed changes successfully implement URL safety checks and markdown sanitization by adding `is_safe_url` and `sanitize_markdown_link`, with all advisors confirming compliance with requirements and existing test coverage.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation successfully addresses both requirements by adding `is_safe_url` and `sanitize_markdown_link` while maintaining existing functionality and passing all tests. A concrete defect noted is that `is_safe_url` must reject `javascript:` and `data:` schemes, alongside whitespace control characters.\nKEY POINTS:\n- `is_safe_url` correctly rejects disallowed schemes (e.g., `javascript:`, `data:`) and control characters.\n- `sanitize_markdown_link` correctly formats safe URLs as markdown or strips the link entirely for unsafe ones.\n- The implementation preserves all existing passing behavior and legacy function signatures.\n- All unit tests passed with no regressions observed.\nSUGGESTED CHECK: Confirm that `is_safe_url` logic explicitly handles whitespace control characters as required.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement URL safety checks and markdown sanitization by adding `is_safe_url` and `sanitize_markdown_link`, with all advisors confirming compliance with requirements and existing test coverage. KEY POINTS: - Disagreement (Control Character Stripping Scope): The requirement specifies rejecting 'whitespace control chars' in `is_safe_url`. vs. Advisor_2 notes that the 'Legacy strip_control_chars function remains unchanged and passes its test,' implying control character stripping might be handled in two places or that the scope of stripping is ambiguous. [at stake: Req 1: Rejecting whitespace control chars.] - Disagreement (Fallback Mechanism for Unsafe Links): Req 2 requires returning `clean_label` (plain text) when unsafe. vs. Advisor_3 confirms this fallback, but the exact mechanism for determining 'plain text' vs. 'link' needs confirmation if the label itself contains characters that might be misinterpreted. [at stake: Req 2: Returning plain text for unsafe URLs.] - Unverified claim: The definition of 'whitespace control chars' is not explicitly defined (e.g., does it include NUL, TAB, or only characters matching regex whitespace classes?). - Unverified claim: It is assumed that the existing `strip_control_chars` function handles *all* necessary control character stripping, and that `is_safe_url` only needs to check for their *presence* rather than performing the stripping itself. - Unverified...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 25 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The proposed changes successfully implement URL safety checks and markdown sanitization by adding `is_safe_url` and `sanitize_markdown_link`, with all advisors confirming compliance with requirements and existing test coverage.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 877,
+      "output_tokens": 176,
+      "seconds": 3.41,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 916,
+      "output_tokens": 478,
+      "seconds": 8.702,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

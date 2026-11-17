@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires case-insensitive matching to return canonical allowed entry; current parse_enum only does tok in allowed (case-sensitive) and will raise ValueError for inputs like \" HIGH \". Req 2 requires raising ValueError('unknown_enum:' + tok) on unknown non-empty entries; current parse_enum raises ValueError(f\"unknown_enum:{tok}\") but parse_enum_list passes split_csv_tokens outputs (already stripped) so message is OK, however the case-insensitive requirement is not met, causing regression risk.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure PR meets T27 requirements without breaking legacy behavior.",
+    "Diff shows parse_enum is case-sensitive and parse_enum_list uses parse_enum without enforcing the required error message format for unknown tokens; also new tests only cover case-insensitive parsing but implementation doesn't satisfy it. Need to run pytest to confirm, but likely failing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.126,
+  "prompt_tokens": 1369,
+  "output_tokens": 230,
+  "estimated_usd": 0.000573,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

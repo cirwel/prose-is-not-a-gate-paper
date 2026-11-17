@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: select_signing_key(...) returns matching keys from current/previous without checking cand['status']=='retired' and raising PermissionError('key_retired'). This will fail the added test_retired_key_rejected and violates the ticket requirements.",
+  "target_issue": "tests/test_keyring_rotator.py::test_retired_key_rejected",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm the PR fully implements T02 without breaking existing behavior.",
+    "Diff shows select_signing_key now checks current then previous, but it does not implement the required retired-key rejection (no status check or PermissionError). Tests added only cover retired rejection but the implementation would not satisfy it, so I will hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.906,
+  "prompt_tokens": 1359,
+  "output_tokens": 183,
+  "estimated_usd": 0.000522,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

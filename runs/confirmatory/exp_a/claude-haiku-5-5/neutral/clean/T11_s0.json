@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 2 requires tampered cursors to raise ValueError('invalid_cursor'). In decode_cursor, a token with a non-ASCII signature (e.g. '40:\u00e9') reaches hmac.compare_digest(expected, sig) with str arguments containing non-ASCII characters, which raises TypeError, so a tampered cursor escapes as a 500-class error rather than being rejected. Also, raw_off.isdigit() accepts Unicode digits such as '\u00b2' that int() rejects, producing a non-invalid_cursor ValueError. The contributor's pass report could not be independently confirmed, and the added tests cover only a numeric offset change, not malformed or non-ASCII signatures.",
+  "target_issue": "decode_cursor: non-ASCII signature raises TypeError instead of ValueError('invalid_cursor') (Req 2); isdigit() accepts non-ASCII digits (Req 2)",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the diff and test run myself before deciding. Starting with the diff.",
+    "run_pytest is not an available tool, so I can't verify the contributor's test claim directly. Reading the diff, decode_cursor passes the attacker-supplied signature straight into hmac.compare_digest as a str, which raises TypeError on non-ASCII input instead of ValueError('invalid_cursor')."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.968,
+  "prompt_tokens": 189974,
+  "output_tokens": 1452,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

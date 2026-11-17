@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: acquire_lease is still defined as acquire_lease(leases, limit, lease_id) with no shared_reserve parameter or logic to borrow beyond limit only when limit is exhausted. Additionally, the diff shows no preservation of the legacy public signature (it should accept shared_reserve with a default while keeping existing call sites working).",
+  "target_issue": "Missing implementation for shared_reserve fallback in acquire_lease (Req 2).",
+  "thoughts": [
+    "I need to inspect the diff and run the test suite to ensure the PR fully satisfies T12 without breaking existing behavior.",
+    "The PR adds release_lease but does not implement Req 2 (shared_reserve fallback) and also changes acquire_lease signature without preserving legacy signature/behavior. I should hold until requirements are fully implemented and tests cover shared_reserve behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.794,
+  "prompt_tokens": 1336,
+  "output_tokens": 205,
+  "estimated_usd": 0.000539,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

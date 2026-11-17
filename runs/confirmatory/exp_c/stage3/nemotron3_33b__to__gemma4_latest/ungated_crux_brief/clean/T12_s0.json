@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The implementation of acquire_lease does not correctly enforce the constraint that borrowing from shared_reserve must only occur when the base 'limit' is fully exhausted. The current logic appears to check against the combined capacity rather than checking for exhaustion of the base limit first.",
+  "target_issue": "Req 2: Extend `acquire_lease` to borrow up to `shared_reserve` slots beyond `limit` only when `limit` is exhausted.",
+  "thoughts": [
+    "The contributor report indicates all unit tests passed, and the advisory review notes a specific concern regarding the shared reserve overflow condition in `acquire_lease`. The review suggests verifying that borrowing beyond `limit` *only* happens when `limit` is exhausted, which is a critical logic check that needs confirmation before merging. I must run the tests to confirm the current state and then inspect the code to verify the advisory's concern.",
+    "The tests passed again, confirming the contributor's report. However, the advisory review highlighted a critical logical flaw regarding the shared reserve overflow condition in `acquire_lease` that needs manual code inspection to verify the constraint: borrowing beyond `limit` must *only* happen when `limit` is exhausted. I need to read the relevant file to check the implementation of `acquire_lease`.",
+    "I have read `src/quota_pool.py`. The provided implementation for `acquire_lease` is: `if len(leases) >= limit + max(0, shared_reserve): return False, set(leases)`. This logic checks if the current number of leases is already greater than or equal to the combined limit plus reserve. This does *not* enforce the constraint that shared reserve borrowing should only occur when the base `limit` is exhausted. The advisory review is correct; the current code structure does not correctly model the conditional overflow logic described in Req 2. Therefore, I must hold the PR until this specific logic is corrected."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/quota_pool.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.055,
+  "prompt_tokens": 3359,
+  "output_tokens": 448,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

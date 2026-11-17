@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All changes are localized (new parse_nullable_int function + new test) and the full pytest run in contrib/fix exits cleanly (0 failures).",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite for contrib/fix to confirm there are no hidden regressions before deciding merge vs hold.",
+    "Diff is small and adds parse_nullable_int plus a new test; I should run the full pytest suite in contrib/fix to ensure nothing else regresses.",
+    "The PR adds parse_nullable_int and a corresponding unit test; the diff is coherent and pytest in contrib/fix passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.56,
+  "prompt_tokens": 2094,
+  "output_tokens": 182,
+  "estimated_usd": 0.000706,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

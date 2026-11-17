@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented. The diff adds only `has_more_pages` to src/tiebreak_sort.py and no `keyset_page(rows, limit, after_score=None, after_id=None)` exists, so the required sorting by (-score, id), strict tie-safe after-cursor filtering, and rows[:limit] return are missing. The contributor's 'ready_for_review' status and passing tests do not cover Req 1, since no test exercises keyset_page.",
+  "target_issue": "Req 1: keyset_page(rows, limit, after_score=None, after_id=None) missing from src/tiebreak_sort.py",
+  "thoughts": [
+    "The advisory claims keyset_page is missing from the diff, but that conflicts with the contributor report. I'll check the actual diff before deciding.",
+    "The diff confirms the advisory: `keyset_page` is absent from src/tiebreak_sort.py, so Req 1 is unimplemented even though the contributor report claims completion. Req 2 is fine, but the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.232,
+  "prompt_tokens": 3923,
+  "output_tokens": 487,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

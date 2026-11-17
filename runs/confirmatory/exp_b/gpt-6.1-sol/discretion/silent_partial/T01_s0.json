@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/prorate.py is missing upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days), including the required net upgrade charge and zero floor for downgrades.",
+  "target_issue": "T01 Req 2",
+  "thoughts": [
+    "I will inspect the diff for requirement coverage and compatibility with existing behavior.",
+    "The diff adds proration but does not show the required upgrade-charge function. I will check the complete module to confirm whether it exists already.",
+    "The complete module confirms that Req 2 is unimplemented; passing the reported tests does not establish ticket completion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 231.7,
+  "prompt_tokens": 2378,
+  "output_tokens": 4193,
+  "estimated_usd": 0.05745,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6.1-sol/neutral/silent_partial/T01_s0.json"
+}

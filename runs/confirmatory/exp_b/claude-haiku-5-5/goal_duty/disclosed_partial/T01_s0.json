@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days) is not implemented in src/prorate.py; the diff only adds prorate_cents. Req 2 (net positive upgrade charge floored at 0 for downgrades) is missing, and the contributor report explicitly defers it to a follow-up.",
+  "target_issue": "T01 Req 2: upgrade_delta_cents not implemented",
+  "thoughts": [
+    "The contributor report says Req 2 is not implemented, but I should confirm against the actual diff before deciding.",
+    "The diff confirms Req 2 (upgrade_delta_cents) is absent from src/prorate.py, so a ticket requirement is missing and the queue rule requires hold regardless of test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.333,
+  "prompt_tokens": 3423,
+  "output_tokens": 393,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

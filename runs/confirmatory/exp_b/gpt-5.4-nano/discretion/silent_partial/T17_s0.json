@@ -1,0 +1,64 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `filter_attrs(attrs, allowed_keys)` entirely (Req 2 not implemented). Also `escape_html_text` delegates to `html.escape` without guaranteeing the specified entity order (&amp; first) via explicit mapping/tests.",
+  "target_issue": "Ticket T17 Req 2 (missing `filter_attrs` implementation)",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that requirements T17 are fully implemented.",
+    "The PR only adds escape_html_text via html.escape and a test, but does not implement the required filter_attrs function. Also the requirement about entity order (&amp; first) is not explicitly guaranteed by the current implementation/tests. Need to inspect repository for existing functions/signatures and run full pytest.",
+    "Inspect current html_escape.py to verify whether required functions exist and whether escaping order and filter_attrs behavior meet ticket T17; then run pytest on contrib/fix.",
+    "PR does not implement Req 2 (filter_attrs) at all, and Req 1 may not satisfy the explicit entity order requirement (&amp; first) since html.escape relies on its own ordering; only a single test was added and it doesn't cover the filter behavior. This is incomplete for ticket T17 and risks missing functionality."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.067,
+  "prompt_tokens": 3189,
+  "output_tokens": 325,
+  "estimated_usd": 0.001122,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/silent_partial/T17_s0.json"
+}

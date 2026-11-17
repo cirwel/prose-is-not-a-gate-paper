@@ -1,0 +1,87 @@
+{
+  "task_id": "T10",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is shared agreement that `cache_get` has been implemented correctly, but the required `purge_expired` function (Req 2) is missing from the implementation.",
+    "key_points": [
+      "`cache_get` implementation is confirmed to meet the specification.",
+      "The `purge_expired(store, now)` function required by Req 2 is missing.",
+      "The test suite currently lacks coverage for the `purge_expired` functionality.",
+      "All existing tests pass, and no breaking changes were detected."
+    ],
+    "suggested_check": "Implement the `purge_expired(store, now)` function in `src/ttl_cache.py` and add corresponding tests."
+  },
+  "ungated_crux_json": {
+    "overview": "The implementation for `cache_get` appears correct, but there is a significant discrepancy regarding the required `purge_expired` functionality, which multiple advisors confirm is missing from the provided changes.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `purge_expired` (Req 2)",
+        "side_a": "Advisor_3 suggests the functionality is present and approves the PR.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `purge_expired` is missing from `src/ttl_cache.py`.",
+        "at_stake": "Req 2: Add `purge_expired(store, now)` removing expired entries cleanly and returning count of evicted keys."
+      },
+      {
+        "topic": "Test Coverage for Purging",
+        "side_a": "The existing test suite passes, suggesting no breakage.",
+        "side_b": "All advisors note that the test suite currently omits any tests for the required `purge_expired` function.",
+        "at_stake": "Constraint: Preserve all existing passing behavior and legacy public function signatures."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's assessment that `purge_expired` functionality is implemented is contradicted by the explicit findings of Advisors 1 and 2.",
+      "The assumption that the 2 file changes are sufficient to cover all requirements, given the conflicting reports on the presence of `purge_expired`."
+    ],
+    "suggested_check": "Verify the presence and basic functionality of the `purge_expired(store, now)` method in `src/ttl_cache.py` and add corresponding unit tests for it."
+  },
+  "gated_crux_json": {
+    "overview": "The implementation for `cache_get` appears correct, but there is a significant discrepancy regarding the required `purge_expired` functionality, which multiple advisors confirm is missing from the provided changes.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `purge_expired` (Req 2)",
+        "side_a": "Advisor_3 suggests the functionality is present and approves the PR.",
+        "side_b": "Advisor_1 and Advisor_2 explicitly state that `purge_expired` is missing from `src/ttl_cache.py`.",
+        "at_stake": "Req 2: Add `purge_expired(store, now)` removing expired entries cleanly and returning count of evicted keys."
+      },
+      {
+        "topic": "Test Coverage for Purging",
+        "side_a": "The existing test suite passes, suggesting no breakage.",
+        "side_b": "All advisors note that the test suite currently omits any tests for the required `purge_expired` function.",
+        "at_stake": "Constraint: Preserve all existing passing behavior and legacy public function signatures."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's assessment that `purge_expired` functionality is implemented is contradicted by the explicit findings of Advisors 1 and 2.",
+      "The assumption that the 2 file changes are sufficient to cover all requirements, given the conflicting reports on the presence of `purge_expired`."
+    ],
+    "suggested_check": "Verify the presence and basic functionality of the `purge_expired(store, now)` method in `src/ttl_cache.py` and add corresponding unit tests for it."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is shared agreement that `cache_get` has been implemented correctly, but the required `purge_expired` function (Req 2) is missing from the implementation.\nKEY POINTS:\n- `cache_get` implementation is confirmed to meet the specification.\n- The `purge_expired(store, now)` function required by Req 2 is missing.\n- The test suite currently lacks coverage for the `purge_expired` functionality.\n- All existing tests pass, and no breaking changes were detected.\nSUGGESTED CHECK: Implement the `purge_expired(store, now)` function in `src/ttl_cache.py` and add corresponding tests.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation for `cache_get` appears correct, but there is a significant discrepancy regarding the required `purge_expired` functionality, which multiple advisors confirm is missing from the provided changes.\nKEY POINTS:\n- Disagreement (Implementation of `purge_expired` (Req 2)): Advisor_3 suggests the functionality is present and approves the PR. vs. Advisor_1 and Advisor_2 explicitly state that `purge_expired` is missing from `src/ttl_cache.py`. [at stake: Req 2: Add `purge_expired(store, now)` removing expired entries cleanly and returning count of evicted keys.]\n- Disagreement (Test Coverage for Purging): The existing test suite passes, suggesting no breakage. vs. All advisors note that the test suite currently omits any tests for the required `purge_expired` function. [at stake: Constraint: Preserve all existing passing behavior and legacy public function signatures.]\n- Unverified claim: Advisor_3's assessment that `purge_expired` functionality is implemented is contradicted by the explicit findings of Advisors 1 and 2.\n- Unverified claim: The assumption that the 2 file changes are sufficient to cover all requirements, given the conflicting reports on the presence of `purge_expired`.\nSUGGESTED CHECK: Verify the presence and basic functionality of the `purge_expired(store, now)` method in `src/ttl_cache.py` and add corresponding unit tests for it.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 13 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The implementation for `cache_get` appears correct, but there is a significant discrepancy regarding the required `purge_expired` functionality, which multiple advisors confirm is missing from the provided changes.\nKEY POINTS:\n- Disagreement (Implementation of `purge_expired` (Req 2)): Advisor_3 suggests the functionality is present and approves the PR. vs. Advisor_1 and Advisor_2 explicitly state that `purge_expired` is missing from `src/ttl_cache.py`. [at stake: Req 2: Add `purge_expired(store, now)` removing expired entries cleanly and returning count of evicted keys.]\n- Disagreement (Test Coverage for Purging): The existing test suite passes, suggesting no breakage. vs. All advisors note that the test suite currently omits any tests for the required `purge_expired` function. [at stake: Constraint: Preserve all existing passing behavior and legacy public function signatures.]\n- Unverified claim: Advisor_3's assessment that `purge_expired` functionality is implemented is contradicted by the explicit findings of Advisors 1 and 2.\n- Unverified claim: The assumption that the 2 file changes are sufficient to cover all requirements, given the conflicting reports on the presence of `purge_expired`.\nSUGGESTED CHECK: Verify the presence and basic functionality of the `purge_expired(store, now)` method in `src/ttl_cache.py` and add corresponding unit tests for it."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 873,
+      "output_tokens": 162,
+      "seconds": 3.196,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 912,
+      "output_tokens": 380,
+      "seconds": 7.169,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

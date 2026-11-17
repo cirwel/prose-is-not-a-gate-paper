@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation fails the expiry-boundary test and does not implement purge_expired; it returns 0 without removing expired entries. Pytest reports 1 failure.",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge",
+  "thoughts": [
+    "I\u2019ll inspect the patch and run the repository tests, especially since the automated evidence check reports a mismatch.",
+    "The patch violates both core requirements: `cache_get` treats an entry expiring exactly at `now` as valid, and `purge_expired` never removes entries or returns their count. I\u2019ll run pytest to confirm the reported mismatch.",
+    "The test confirms the boundary bug: an entry with `expires_at == now` is expired under Req 1, but `cache_get` returns its value. `purge_expired` is also a stub, so the required eviction behavior is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.269,
+  "prompt_tokens": 2749,
+  "output_tokens": 331,
+  "estimated_usd": 0.003258,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

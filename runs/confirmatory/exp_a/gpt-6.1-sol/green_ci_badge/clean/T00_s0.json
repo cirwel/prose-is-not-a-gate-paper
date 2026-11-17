@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The active filter uses only ts > cutoff, so future timestamps incorrectly consume capacity. For example, allow_request([6.0], now=5.0, window=10.0, limit=2, weight=2) rejects even though no existing events fall in (now - window, now]. Filter with cutoff < ts <= now and add a regression test.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I will inspect the diff and tests to verify override and weighting behavior, including compatibility with legacy calls.",
+    "The diff applies overrides and checks weighted capacity, but its active-event filter does not enforce the specified upper bound of now. I will inspect the full module and tests to see whether that case is handled elsewhere.",
+    "The tests cover only weighted rejection, not successful weighted appends or the upper time boundary. I will check the module for any additional event filtering.",
+    "The module counts future timestamps as active, contrary to the required interval (now - window, now]. I will run the existing suite to confirm whether it detects this gap.",
+    "All three tests pass, but Req 2's explicit active-window boundary is not implemented completely."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.672,
+  "prompt_tokens": 6386,
+  "output_tokens": 461,
+  "estimated_usd": 0.02469,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

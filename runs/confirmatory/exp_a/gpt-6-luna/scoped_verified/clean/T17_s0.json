@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`escape_html_text` uses standard HTML escaping with quote escaping. `filter_attrs` lowercases keys, rejects event-handler keys and stripped JavaScript-prefixed values, retains only allowed keys, and escapes retained values; pytest passes all three tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and tests, then run the test suite to verify both requirements and legacy behavior.",
+    "The repository is small; I\u2019ll review the implementation and its tests for escaping order, attribute filtering details, and compatibility.",
+    "The implementation appears to satisfy the main behavior, but I\u2019ll check the test expectations and diff for edge cases or compatibility changes before deciding.",
+    "The diff preserves `wrap_tag` and uses Python\u2019s standard HTML escaping, with ampersands escaped before generated entities; the attribute logic also normalizes keys and rejects event handlers and JavaScript-prefixed values. I\u2019ll run pytest to validate the repository tests.",
+    "The implementation meets both requirements, preserves the legacy `wrap_tag` signature and behavior, and all repository tests pass. No blocking issue is evident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.48,
+  "prompt_tokens": 4797,
+  "output_tokens": 736,
+  "estimated_usd": 0.006192,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

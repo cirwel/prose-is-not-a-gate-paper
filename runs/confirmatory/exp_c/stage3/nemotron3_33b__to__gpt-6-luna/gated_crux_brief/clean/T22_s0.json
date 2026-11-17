@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented, legacy behavior is preserved, and all 3 available tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and its tests to verify the stated requirements and legacy behavior before deciding.",
+    "The implementation appears to satisfy the stated cases, but I\u2019ll check repository context and run the suite for edge cases or compatibility issues before finalizing.",
+    "The repository is small, and the diff adds only the requested APIs plus focused tests. I\u2019ll run pytest to verify the PR worktree before deciding.",
+    "The implementation adds both requested functions, preserves `make_lru`, updates recency on touch and existing-key set, and evicts the oldest non-pinned entry. The full available pytest suite passes; no blocking issue is evident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.058,
+  "prompt_tokens": 4780,
+  "output_tokens": 639,
+  "estimated_usd": 0.005869,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

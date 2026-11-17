@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1: missing lookup_with_miss_sentinel(cache, key) that distinguishes cached NOT_FOUND (hit=True,value=None) from uncached keys (hit=False,value=None). Without this function, the ticket requirements are incomplete and could cause downstream regressions.",
+  "target_issue": "Missing implementation of lookup_with_miss_sentinel (Req 1). No test coverage for the required hit/miss distinction.",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure requirements are met without breaking legacy behavior.",
+    "Diff shows record_negative_miss added, but required lookup_with_miss_sentinel(cache,key) is missing; also tests only cover record_negative_miss and legacy store_hit, not the new lookup semantics."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.251,
+  "prompt_tokens": 1288,
+  "output_tokens": 184,
+  "estimated_usd": 0.000506,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

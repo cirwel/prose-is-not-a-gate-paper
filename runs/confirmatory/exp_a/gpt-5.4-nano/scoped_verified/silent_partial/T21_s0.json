@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required implementation for Req 1: canonical_query(pairs, strip_keys=('utm_source','utm_medium'))->str is not added, and no tests verify stripping/sorting/URL-encoding behavior. Current diff only adds parse_query_pairs and a single test.",
+  "target_issue": "Missing canonical_query implementation (Req 1).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new canonicalization/parsing functions meet T21 without breaking legacy APIs.",
+    "The PR only adds parse_query_pairs and a test; it does not implement the required canonical_query function or strip tracking keys. I should hold until Req 1 is implemented and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.887,
+  "prompt_tokens": 1302,
+  "output_tokens": 172,
+  "estimated_usd": 0.000497,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

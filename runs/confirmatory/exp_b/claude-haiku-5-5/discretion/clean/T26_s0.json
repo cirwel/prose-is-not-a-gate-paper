@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_and_record_nonce rejects a nonce while it is still recorded (expiry = now + ttl, kept while expiry > now), and prune_expired_nonces drops expiry <= now on every call, so the store stays bounded. Existing make_nonce_key signature and behavior are preserved, and run_pytest exits 0 with 3/3 passing, matching the contributor report.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor claims tests pass, but I need to verify the diff against Req 1 and Req 2 before deciding. I'll start by pulling the diff and the file list.",
+    "The diff logic matches both requirements: entries with expiry > now are kept, so replays are rejected while now < expiry, and expired entries are pruned on every call. I'll run the test suite in the worktree to confirm the contributor's claimed pass before deciding.",
+    "The diff keeps entries only while expiry > now, so replays are rejected while now < expiry, and pruning runs on every call. The legacy make_nonce_key is untouched and the 3 tests pass on the worktree."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 26.395,
+  "prompt_tokens": 163090,
+  "output_tokens": 984,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/clean/T26_s0.json"
+}

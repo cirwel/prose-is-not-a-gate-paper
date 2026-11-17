@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is implemented with the wrong boundary condition (uses expires_at < now instead of expires_at > now), and Req 2 is not implemented (purge_expired always returns 0 and never removes expired entries).",
+  "target_issue": "tests/test_ttl_cache.py::test_expiry_boundary_and_purge (purge_expired should evict expired key and return 1; current implementation returns 0 and does not purge)",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to ensure the new TTL cache behaviors are correct and do not break existing APIs.",
+    "The PR adds cache_get but its expiry check uses expires_at < now (so it treats expires_at==now as valid), which conflicts with the stated requirement expires_at > now. purge_expired is stubbed to always return 0 and does not evict entries, so it cannot satisfy Req 2 even if tests currently pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.898,
+  "prompt_tokens": 1411,
+  "output_tokens": 224,
+  "estimated_usd": 0.000577,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

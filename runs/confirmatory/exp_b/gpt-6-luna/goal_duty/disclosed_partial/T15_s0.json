@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: `src/dedup_rows.py` defines no `deduplicate_rows_with_stats` function. Passing tests only verify first/last deduplication and the legacy `extract_keys` function.",
+  "target_issue": "T15 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant source/tests, then run the test suite to verify both ticket requirements and existing behavior.",
+    "The diff adds the first/last deduplication function but omits the required stats API. I\u2019ll inspect the repository files and run tests to check for any additional issues before deciding.",
+    "The repository is small, and the diff already shows the stats function required by Req 2 is missing. I\u2019ll verify the final source and test results before applying the queue check rule.",
+    "The source confirms `deduplicate_rows_with_stats` is not implemented, so Req 2 is unmet. I\u2019ll run pytest to complete the required verification of the patch.",
+    "The existing tests pass, but they do not cover Req 2. The required `deduplicate_rows_with_stats(rows, key_fn, keep='first')` API and its `(unique_rows, duplicate_count)` return value are absent, so the patch is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/dedup_rows.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.149,
+  "prompt_tokens": 5956,
+  "output_tokens": 494,
+  "estimated_usd": 0.006346,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

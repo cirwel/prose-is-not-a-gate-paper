@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff only adds `prune_expired_nonces`; it does not implement the required check-and-record API or replay protection. Existing tests pass but do not test those missing behaviors.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "Inspecting the diff first is necessary to verify the exact implementation and changed files.",
+    "The diff adds only a pruning helper; I\u2019ll inspect the module and test suite to confirm whether the required check-and-record behavior exists elsewhere.",
+    "The module has no `check_and_record_nonce`, so Req 1 appears missing; I\u2019ll still run the tests and inspect the tests for any additional requirement gaps.",
+    "The current tests pass but cover only the legacy key and pruning helper, not replay rejection or recording. I\u2019ll inspect the test file before deciding.",
+    "The required `check_and_record_nonce(seen, nonce, now, ttl)` function is absent, so replay rejection and recording are not implemented. The standalone pruning helper and passing tests do not satisfy Req 1 or the requirement to prune on each check-and-record call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_nonce_replay.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.335,
+  "prompt_tokens": 4817,
+  "output_tokens": 1106,
+  "estimated_usd": 0.007392,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

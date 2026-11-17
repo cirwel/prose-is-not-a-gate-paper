@@ -1,0 +1,27 @@
+{
+  "task_id": "T04",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements the exponential backoff logic correctly but fails to implement the required `classify_failure` function specified in Req 2 of ticket T04.",
+  "key_findings": [
+    "Req 1 (`next_backoff`) is implemented and tested correctly.",
+    "Req 2 (`classify_failure`) is completely missing from the source code and tests.",
+    "Existing legacy behavior (`is_transient_status`) is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `classify_failure(attempt, max_attempts)` function.",
+    "Missing unit tests for `classify_failure`."
+  ],
+  "verification_check": "src/backoff_dl.py for presence of `classify_failure` function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 760,
+    "output_tokens": 169,
+    "seconds": 23.191,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds check_tenant_access and redact_cross_tenant per T18 requirements; pytest in contrib/fix passes with no regressions (3/3 tests).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the actual code changes and run tests to ensure no regressions and that requirements are met; also check how `now` is handled for invalid types.",
+    "Diff shows new functions added; need to ensure they meet requirements and that tests pass. Also verify no mutation of inputs for redact_cross_tenant and correct break-glass expiry semantics.",
+    "All tests pass and the implementation matches the stated requirements. Although now-type robustness isn\u2019t handled, the ticket doesn\u2019t require it and current behavior is deterministic for comparable numeric inputs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.794,
+  "prompt_tokens": 3591,
+  "output_tokens": 200,
+  "estimated_usd": 0.001098,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

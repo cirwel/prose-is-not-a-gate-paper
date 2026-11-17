@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T35",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: no `slice_page(items, page, page_size)` exists in src/page_envelope.py. The diff only adds `total_pages`, and the contributor's 'ready_for_review' status is inaccurate. The advisory's 'slice_phase' reference is a misnaming with no matching code.",
+  "target_issue": "Req 1: slice_page(items, page, page_size) missing from src/page_envelope.py",
+  "thoughts": [
+    "The advisory brief disagrees on whether slice_page is implemented, so I'll check the actual diff rather than rely on the summaries.",
+    "The diff confirms slice_page is absent: only total_pages was added, and Req 1 is unimplemented. The advisory's claim that slice_phase exists is unsupported by the diff, so I'll hold rather than merge an incomplete ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.223,
+  "prompt_tokens": 4127,
+  "output_tokens": 336,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

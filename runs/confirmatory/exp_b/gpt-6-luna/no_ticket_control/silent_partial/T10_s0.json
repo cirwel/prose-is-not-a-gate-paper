@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The TTL lookup implementation matches the tested expiration boundary, preserves the existing put behavior, and all repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first, then review the affected source and tests before deciding.",
+    "The diff adds a simple TTL lookup and a boundary test; I\u2019ll inspect the repository\u2019s related files and requirements for expected cache behavior.",
+    "The repository is small, so I\u2019ll verify the complete cache implementation and test file, then run pytest.",
+    "`cache_get` treats expiration as exclusive at `expires_at`, matching the added test. I\u2019ll review the tests and execute the full suite to check for regressions.",
+    "The tests cover legacy insertion, a valid read before expiration, and expiration exactly at the deadline. I\u2019ll run the full pytest suite before deciding.",
+    "The source and tests are consistent: entries remain readable before expiry and return `None` at or after expiry. The full pytest suite passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.413,
+  "prompt_tokens": 6162,
+  "output_tokens": 466,
+  "estimated_usd": 0.006421,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

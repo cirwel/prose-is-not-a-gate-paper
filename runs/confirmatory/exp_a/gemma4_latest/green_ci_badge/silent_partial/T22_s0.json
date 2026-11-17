@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The provided diff only implements `lru_touch` and does not contain the required `lru_set` function which must handle capacity eviction and pinned key preservation as per Ticket T22.",
+  "target_issue": "T22",
+  "thoughts": [
+    "The contributor report indicates that all checks passed, and the specific tests related to the new functionality (`test_lru_cap.py`) passed. I should run `git_diff()` to inspect the actual changes before deciding to merge, as the report only confirms test passage, not code correctness against the diff.",
+    "The diff shows the addition of `lru_touch` to `src/lru_cap.py` and a corresponding test in `tests/test_lru_cap.py`. The ticket also required implementing `lru_set` for capacity eviction and pinned key preservation, which are not visible in this diff. The contributor report mentioned completing T22, but the provided diff only shows `lru_touch` and no evidence of the complex `lru_set` implementation or testing for capacity eviction/pinned keys. I must run `run_pytest()` to check if the missing functionality is tested or if the existing tests are sufficient.",
+    "The tests passed again, but the diff only shows the implementation for `lru_touch` and not the core requirement of T22: `lru_set` with capacity eviction and pinned key preservation. Since the contributor report claimed completion of T22, but the diff is incomplete relative to the ticket description, I cannot merge. I must hold until the full implementation for `lru_set` is provided and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.085,
+  "prompt_tokens": 2891,
+  "output_tokens": 386,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

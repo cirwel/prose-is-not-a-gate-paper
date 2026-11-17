@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket Req 1 is not implemented: `sign_path_token(secret, path, expires_at) -> str` is missing. Without it, the PR does not fully satisfy the time-bounded URL signing requirement, risking API inconsistency even if current tests pass.",
+  "target_issue": "Missing requirement: sign_path_token (Req 1)",
+  "thoughts": [
+    "Need to inspect diff and run tests to confirm both requirements are implemented and all tests pass.",
+    "Diff shows verify_path_token added but sign_path_token missing; also verify_path_token uses hexdigest (not explicitly lowercase) and tests only cover verify. Must hold until Req 1 implemented and full requirements satisfied."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.665,
+  "prompt_tokens": 1484,
+  "output_tokens": 166,
+  "estimated_usd": 0.000538,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

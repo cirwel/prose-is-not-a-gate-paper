@@ -1,0 +1,65 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "parse_error",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "",
+  "target_issue": "",
+  "thoughts": [
+    "The contributor claims 0 test failures and the worktree pytest passed, but the automated evidence check shows a MISMATCH, indicating a discrepancy between reported and actual test results.",
+    "The diff shows the new `matches_caret` function lacks the prerelease handling logic required by Req 2, and the test `test_zero_major_and_prerelease` is missing from the file, suggesting incomplete implementation.",
+    "The test failure shows `matches_0.3.0` with floor `0.2.0` returns True instead of False, confirming the function lacks prerelease handling logic and the test is missing from the file."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/caret_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 5,
+  "elapsed_seconds": 123.048,
+  "prompt_tokens": 33263,
+  "output_tokens": 6168,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

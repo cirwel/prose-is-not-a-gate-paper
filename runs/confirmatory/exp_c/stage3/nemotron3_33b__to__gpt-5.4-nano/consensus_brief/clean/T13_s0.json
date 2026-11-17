@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 (apply_credit_memo clamps so cumulative credit cannot exceed paid_cents via max(0, paid_cents - max(0, credit_cents))) and Req 2 (credit_with_tax_cents uses net + (net*tax_bps)//10_000 with integer math). Existing legacy behavior remains unchanged and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify diff and run pytest to ensure no regressions and requirements T13 are met.",
+    "Diff is small and implements both required functions; need to confirm pytest passes in the contrib/fix worktree to avoid hidden regressions.",
+    "Both T13 requirements are implemented in src/credit_memo.py with the specified integer arithmetic and clamping, and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.817,
+  "prompt_tokens": 3106,
+  "output_tokens": 211,
+  "estimated_usd": 0.000987,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

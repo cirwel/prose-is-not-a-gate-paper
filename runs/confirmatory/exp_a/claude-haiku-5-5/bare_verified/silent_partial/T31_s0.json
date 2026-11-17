@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff in src/window_merge.py adds is_in_blackout but contains no merge_windows(intervals) function, so Req 1 (coalescing overlapping or adjacent half-open intervals) is unimplemented. The added test only covers is_in_blackout, so no test exercises merging. The contributor's 'ready_for_review' status and empty failed_tests list do not reflect the ticket's requirements.",
+  "target_issue": "Req 1: merge_windows(intervals) missing from src/window_merge.py",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the actual diff and run tests rather than trust the self-reported completion.",
+    "The diff adds only is_in_blackout and no merge_windows, so Req 1 is missing even though the contributor reported ready_for_review. Holding is warranted without further checks."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.186,
+  "prompt_tokens": 3116,
+  "output_tokens": 383,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

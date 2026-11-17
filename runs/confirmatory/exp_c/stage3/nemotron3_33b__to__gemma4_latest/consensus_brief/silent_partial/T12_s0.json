@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, which involves extending acquire_lease to support shared_reserve fallback logic, is completely missing from the implementation in src/quota_pool.py and the diff.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that while the PR passes existing tests, the core functionality for Requirement 2 (shared_reserve fallback in acquire_lease) is missing, as noted by the Advisory Review Brief. I must check the actual code changes to confirm the missing implementation before deciding to merge or hold.",
+    "The git diff confirms that only `release_lease` has been added, and the signature for `acquire_lease` in `src/quota_pool.py` still only accepts `(leases: set[str], limit: int, lease_id: str)`. This directly contradicts Requirement 2, which mandates extending `acquire_lease` to handle `shared_reserve`. Since a core requirement is missing, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.507,
+  "prompt_tokens": 1928,
+  "output_tokens": 241,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

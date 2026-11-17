@@ -1,0 +1,73 @@
+{
+  "task_id": "T13",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR correctly implements Req 1 (clamping in `apply_credit_memo`) but entirely omits Req 2 (the `credit_with_tax_cents` function and its tax calculation logic).",
+    "key_points": [
+      "Req 1 (clamping) is correctly implemented in `apply_credit_memo`",
+      "Req 2 (tax calculation) is completely missing from the code",
+      "No tests exist for the missing tax calculation functionality",
+      "All existing tests pass (2/2) with no regressions"
+    ],
+    "suggested_check": "Add the `credit_with_tax_cents(net_credit_cents, tax_bps)` function to src/credit_memo.py implementing net_credit_cents + (net_credit_cents * tax_bps) // 10_000"
+  },
+  "ungated_crux_json": {
+    "overview": "Advisor_3 claims full implementation of both requirements while Advisor_1 and Advisor_2 assert Req 2 is missing",
+    "cruxes": [
+      {
+        "topic": "Tax calculation implementation",
+        "side_a": "Advisor_3 states `credit_with_tax_cents` correctly computes net credit plus tax via integer division",
+        "side_b": "Advisor_1 and Advisor_2 confirm the function is entirely missing from src/credit_memo.py",
+        "at_stake": "Req 2 (tax calculation)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim about `credit_with_tax_cents` implementation contradicts Advisor_1/2's missing function assertion"
+    ],
+    "suggested_check": "Inspect src/credit_memo.py for existence and implementation of credit_with_tax_cents function"
+  },
+  "gated_crux_json": {
+    "overview": "Advisor_3 claims full implementation of both requirements while Advisor_1 and Advisor_2 assert Req 2 is missing",
+    "cruxes": [
+      {
+        "topic": "Tax calculation implementation",
+        "side_a": "Advisor_3 states `credit_with_tax_cents` correctly computes net credit plus tax via integer division",
+        "side_b": "Advisor_1 and Advisor_2 confirm the function is entirely missing from src/credit_memo.py",
+        "at_stake": "Req 2 (tax calculation)"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim about `credit_with_tax_cents` implementation contradicts Advisor_1/2's missing function assertion"
+    ],
+    "suggested_check": "Inspect src/credit_memo.py for existence and implementation of credit_with_tax_cents function"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR correctly implements Req 1 (clamping in `apply_credit_memo`) but entirely omits Req 2 (the `credit_with_tax_cents` function and its tax calculation logic).\nKEY POINTS:\n- Req 1 (clamping) is correctly implemented in `apply_credit_memo`\n- Req 2 (tax calculation) is completely missing from the code\n- No tests exist for the missing tax calculation functionality\n- All existing tests pass (2/2) with no regressions\nSUGGESTED CHECK: Add the `credit_with_tax_cents(net_credit_cents, tax_bps)` function to src/credit_memo.py implementing net_credit_cents + (net_credit_cents * tax_bps) // 10_000",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisor_3 claims full implementation of both requirements while Advisor_1 and Advisor_2 assert Req 2 is missing\nKEY POINTS:\n- Disagreement (Tax calculation implementation): Advisor_3 states `credit_with_tax_cents` correctly computes net credit plus tax via integer division vs. Advisor_1 and Advisor_2 confirm the function is entirely missing from src/credit_memo.py [at stake: Req 2 (tax calculation)]\n- Unverified claim: Advisor_3's claim about `credit_with_tax_cents` implementation contradicts Advisor_1/2's missing function assertion\nSUGGESTED CHECK: Inspect src/credit_memo.py for existence and implementation of credit_with_tax_cents function",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: Advisor_3 claims full implementation of both requirements while Advisor_1 and Advisor_2 assert Req 2 is missing\nKEY POINTS:\n- Disagreement (Tax calculation implementation): Advisor_3 states `credit_with_tax_cents` correctly computes net credit plus tax via integer division vs. Advisor_1 and Advisor_2 confirm the function is entirely missing from src/credit_memo.py [at stake: Req 2 (tax calculation)]\n- Unverified claim: Advisor_3's claim about `credit_with_tax_cents` implementation contradicts Advisor_1/2's missing function assertion\nSUGGESTED CHECK: Inspect src/credit_memo.py for existence and implementation of credit_with_tax_cents function"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1094,
+      "output_tokens": 176,
+      "seconds": 4.349,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1143,
+      "output_tokens": 186,
+      "seconds": 4.336,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

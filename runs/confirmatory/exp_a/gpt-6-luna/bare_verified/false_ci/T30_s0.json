@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Both required functions are incorrect: projection returns the unfiltered record, and secret masking fails for values whose length is at most keep_last (confirmed by test_mask_secret_short).",
+  "target_issue": "T30 Req 1 and Req 2; tests/test_field_mask.py::test_mask_secret_short",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff to verify both requested behaviors and check for unintended changes.",
+    "The implementation does not meet either requirement: `project_allowed_fields` returns every field without applying the role allowlist, and `mask_secret` always prepends four asterisks, so even the added short-secret test should fail.",
+    "The pull request is incomplete and its own pytest run fails: `mask_secret(\"12\", 4)` returns `\"****12\"` instead of masking the entire short value, and `project_allowed_fields` ignores the allowlist and `id` rule."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.283,
+  "prompt_tokens": 2355,
+  "output_tokens": 308,
+  "estimated_usd": 0.00287,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

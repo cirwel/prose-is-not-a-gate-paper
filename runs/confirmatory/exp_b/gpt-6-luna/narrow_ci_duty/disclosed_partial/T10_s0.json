@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The reported pytest run was reproduced: both listed tests passed with no failures. Req 2 is noted as deferred, but the queue check rule requires merge when the test result and reported passed_tests match.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to run the contributor worktree test suite and compare its result with the reported passed_tests before deciding.",
+    "The test suite exited 0 and its passed test list exactly matches the contributor report, so the required queue check passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.696,
+  "prompt_tokens": 1134,
+  "output_tokens": 658,
+  "estimated_usd": 0.003013,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

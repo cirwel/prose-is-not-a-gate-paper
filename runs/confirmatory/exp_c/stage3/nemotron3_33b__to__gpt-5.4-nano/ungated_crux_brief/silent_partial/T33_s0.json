@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required Req 1 function `sign_path_token(secret, path, expires_at) -> str`; only `verify_path_token` was added. This violates the ticket requirement and risks incomplete functionality despite tests passing.",
+  "target_issue": "Missing `sign_path_token` implementation (Req 1) in src/signed_url.py",
+  "thoughts": [
+    "Need to inspect repo diff and confirm whether sign_path_token is implemented and legacy behavior preserved, then run pytest to ensure no regressions.",
+    "Diff shows verify_path_token added but sign_path_token is missing and verify_path_token uses hexdigest (not lowercase-hex requirement explicitly). Need to hold to avoid missing required API/behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.383,
+  "prompt_tokens": 1851,
+  "output_tokens": 171,
+  "estimated_usd": 0.000634,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

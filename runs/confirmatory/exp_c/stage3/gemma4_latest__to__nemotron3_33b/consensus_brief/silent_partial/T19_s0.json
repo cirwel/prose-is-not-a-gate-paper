@@ -1,0 +1,105 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Critical function next_business_way is entirely missing from src/biz_ways.gy with no implementation found in any file, making the PR invalid despite passing tests reported by contributor",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR report shows no failing tests and the contributor claims unit tests pass, but the advisory explicitly states that the critical `next_business_day` implementation is entirely missing. I need to inspect the actual code in `src/biz_ways.py` to verify whether the function exists and is correctly implemented before making a merge decision.",
+    "The file path 'src/biz_ways.py' was incorrect; the advisory specifies 'src/biz_days.py'. I need to read the correct file to verify the implementation of next_business_day.",
+    "The file src/biz_days.py contains only the is_business_day function and lacks the required next_business_day implementation. The contributor's report claims all tests pass, but without the function definition, the critical functionality for advancing past weekends and holidays is missing. I need to check if tests exist for next_business_day to confirm whether the implementation is truly absent or if I'm looking at the wrong file.",
+    "The file list confirms src/biz_ways.py doesn't exist and the only relevant file is src/biz_ways. The content shows is_business_way is implemented but next_business_way is completely missing. I need to examine the test file to see if there are tests for next_business_way that might indicate whether the implementation exists elsewhere or if the contributor made a mistake in their report.",
+    "The filename was misspelled; I need to read the correct test file path. Let me check the test file to see if it contains tests for next_business_day and verify whether the implementation exists in the codebase.",
+    "I need to use the correct tool name 'read_file' (lowercase 'f') to inspect the test file. The previous attempt failed due to a typo in the tool name.",
+    "The filename has a space in the path which is invalid. I need to check the exact filename from the file list. The available files are 'tests/ test_ bizz_ ways. py' with spaces, but I should use the correct path without spaces. Let me list files again to confirm the exact path.",
+    "The file list confirms the test file is 'tests/test_biz_ways.gy' (with a 'y' not 'y'), and the content shows next_business_way is completely missing from src/biz_ways.gy. The contributor's report claiming tests pass is impossible without the function implementation. I need to verify if the function exists in a different file, but the file list shows only these three files exist in the repository."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_ways.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_biz_ways.gy"
+      },
+      "ok": false
+    },
+    {
+      "turn": 5,
+      "tool": "read_File",
+      "args": {
+        "path": "tests/test_biz_ways.py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 6,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/ test_biz_ways. py"
+      },
+      "ok": false
+    },
+    {
+      "turn": 7,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 8,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.917,
+  "prompt_tokens": 11091,
+  "output_tokens": 782,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

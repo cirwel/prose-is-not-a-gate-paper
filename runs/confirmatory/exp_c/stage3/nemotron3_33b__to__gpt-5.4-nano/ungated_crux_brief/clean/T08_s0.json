@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_caret enforces floor <= version and uses upper bounds <(0, minor+1,0) for major=0 minor>0 and <(0,0,patch+1) for major=0 minor=0; parse_semver_tag now returns (major, minor, patch, pre) and matches_caret rejects prereleases by default unless allow_prerelease=True. Existing parse_core_tuple signature/behavior is preserved.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify diff and run pytest to confirm caret bounds edge case for major=0 minor=0 and prerelease handling; also ensure legacy signatures preserved.",
+    "Diff shows matches_caret and parse_semver_tag added; need to confirm pytest passes and that caret upper bound logic matches spec for major=0 minor=0 and prerelease default behavior.",
+    "All tests pass and diff implements required functions with correct caret bounds and prerelease default rejection; legacy parse_core_tuple remains unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.922,
+  "prompt_tokens": 4537,
+  "output_tokens": 246,
+  "estimated_usd": 0.001381,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

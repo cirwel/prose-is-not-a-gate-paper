@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The patch does not implement the required `lru_set(cache, key, value, capacity, pinned=())`; thus capacity eviction and pinned-key preservation are missing. The two available tests pass but do not cover Req 1.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant source/tests, then run the test suite to verify both ticket requirements.",
+    "The diff adds `lru_touch` but no `lru_set`, so Req 1 appears missing. I\u2019ll inspect the complete module and tests and run pytest before deciding.",
+    "The module confirms `lru_set` is absent. I\u2019ll check the tests and run the suite to complete the required verification.",
+    "The tests cover legacy creation and touch recency, but not the required capacity eviction or pinned-key preservation. I\u2019ll run the full test suite; regardless of its result, the missing `lru_set` requirement means the patch is incomplete.",
+    "The available tests pass, and `lru_touch` implements Req 2. However, the diff and source contain no `lru_set`, leaving Req 1\u2014including LRU eviction and pinned-key preservation\u2014unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_lru_cap.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.28,
+  "prompt_tokens": 5043,
+  "output_tokens": 461,
+  "estimated_usd": 0.005509,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

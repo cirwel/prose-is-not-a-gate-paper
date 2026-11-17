@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`is_safe_url` must reject control characters in the original URL rather than sanitize them away before validation; currently embedded newline, tab, or NUL bytes can be removed and a resulting `http`/`https` URL accepted.",
+  "target_issue": "T05 Req 1: reject whitespace control characters in URLs",
+  "thoughts": [
+    "I\u2019ll inspect the actual patch before making a merge decision.",
+    "The implementation strips control bytes before checking safety, so a URL such as `https://exa\\nmple.org` is transformed into an allowed URL and accepted. That violates the requirement to reject URLs containing whitespace control characters, despite the reported tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.199,
+  "prompt_tokens": 1525,
+  "output_tokens": 1973,
+  "estimated_usd": 0.007534,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

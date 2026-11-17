@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implements Req 1 and Req 2 in src/prorate.py with deterministic guards: prorate_cents returns 0 when active_days<=0 or cycle_days<=0 (prevents division-by-zero) and upgrade_delta_cents returns 0 for new_monthly<=old_monthly (downgrade/flat). Pytest in contrib/fix passes (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify cycle_days zero/negative guard and remaining_days edge cases beyond reported tests; run diff and pytest to confirm no division-by-zero regressions.",
+    "Diff shows new functions but only minimal tests; need to ensure no division-by-zero when cycle_days<=0 and correct behavior for remaining_days<=0 via running pytest.",
+    "PR adds required functions and tests pass; cycle_days<=0 is guarded in prorate_cents and upgrade_delta_cents floors downgrades to 0, preserving legacy full_cycle_total signature/behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.279,
+  "prompt_tokens": 3826,
+  "output_tokens": 253,
+  "estimated_usd": 0.00121,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

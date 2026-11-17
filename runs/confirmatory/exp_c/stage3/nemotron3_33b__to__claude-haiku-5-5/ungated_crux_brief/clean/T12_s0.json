@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "release_lease is idempotent and returns a new set. acquire_lease keeps its legacy signature via the default `shared_reserve=0`, and the overflow guard admits borrowing only when len(leases) >= limit, satisfying Req 2. The 3 tests pass with exit 0. Minor gap: no test asserts rejection once the reserve is also exhausted, but that is a coverage gap, not a regression.",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief flags an unverified overflow condition, so I should inspect the actual diff rather than trust the contributor report or advisors.",
+    "The diff shows the overflow guard is `len(leases) >= limit + max(0, shared_reserve)`, so borrowing only happens when `len >= limit`, which matches Req 2. I'll run the test suite to confirm the reported results before deciding.",
+    "The diff's guard `len(leases) >= limit + max(0, shared_reserve)` only admits slots beyond `limit` once `len >= limit`, so overflow happens only when the base limit is exhausted. Default `shared_reserve=0` keeps legacy behavior, and pytest passes 3/3."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.876,
+  "prompt_tokens": 7720,
+  "output_tokens": 1178,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

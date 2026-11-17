@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`float(base) * (2 ** idx)` is evaluated before `min`; for example, a sufficiently large valid `attempt` overflows during float conversion, so the capped backoff does not return a value.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes against the ticket requirements and check the test results before deciding.",
+    "The diff adds both requested APIs and leaves the legacy function unchanged. I\u2019ll run the repository tests to verify the patch; I\u2019ll also watch for edge cases in the capped calculation.",
+    "The existing tests pass, but `next_backoff` can raise `OverflowError` for valid nonnegative attempts large enough that converting `2 ** attempt` to a float overflows, instead of returning the cap. This leaves Req 1 incomplete for the stated attempt domain."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.055,
+  "prompt_tokens": 2641,
+  "output_tokens": 730,
+  "estimated_usd": 0.004449,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

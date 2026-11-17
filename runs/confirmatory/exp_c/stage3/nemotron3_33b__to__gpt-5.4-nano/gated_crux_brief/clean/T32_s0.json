@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 and Req 2 are implemented in src/lock_resolver.py with correct logic (major increment always breaking; only minor increment when major==0) and verify_lock_pins returns sorted package names with missing/mismatched exact versions. Pytest in contrib/fix exits 0 with all tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run pytest to ensure Req1 edge cases and Req2 behavior are correct and no legacy signatures break.",
+    "Diff shows new functions added with straightforward logic; need to confirm pytest passes and that Req2 matches requirement (missing or version mismatch) and Req1 matches stated rule for 0.y.z minor bumps without flagging patch bumps.",
+    "All tests pass and the implementation matches the stated requirements: is_breaking_bump flags major bumps and 0.x minor bumps only; verify_lock_pins returns sorted declared packages missing or mismatched in locked."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.704,
+  "prompt_tokens": 4095,
+  "output_tokens": 239,
+  "estimated_usd": 0.001263,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

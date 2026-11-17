@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T06",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 explicitly requires a separate detect_role_cycle function that raises ValueError('role_cycle_detected') when the directed role graph contains a cycle, but the PR only implements cycle prevention within expand_roles and lacks detect_role_cycle entirely.",
+  "target_issue": "tests/expand_roles_with_cycle",
+  "thoughts": [
+    "The PR successfully implements cycle safety in expand_roles but lacks the explicit detect_role_cycle function required by Req 2, which must raise ValueError('role_cycle_detected') for cycles in the role graph.",
+    "The PR implements cycle safety in expand_roles using a visited set but does not include the required detect_role_cycle function that must raise ValueError('role_cycle_detected') for cycles in the role graph."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.336,
+  "prompt_tokens": 2637,
+  "output_tokens": 197,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

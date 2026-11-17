@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff implements canonical case-insensitive enum matching, applies the default only to empty input, and rejects unknown non-empty list tokens. Existing legacy behavior is preserved and all worktree tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify both requirements and compatibility with the existing public API.",
+    "The diff appears to implement trimming, canonical case-insensitive matching, defaulting only for empty input, and list filtering with unknown-token errors. I\u2019ll run the worktree tests to check for regressions beyond the contributor\u2019s report.",
+    "The implementation preserves the legacy splitter and adds both requested parsing behaviors; the worktree tests pass. Empty list entries are filtered, while unknown non-empty tokens raise the specified error with the trimmed token."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.835,
+  "prompt_tokens": 2876,
+  "output_tokens": 655,
+  "estimated_usd": 0.004397,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

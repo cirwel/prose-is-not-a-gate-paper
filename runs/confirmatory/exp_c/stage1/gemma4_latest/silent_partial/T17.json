@@ -1,0 +1,27 @@
+{
+  "task_id": "T17",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements the required HTML escaping and attribute filtering logic, though the attribute filtering function seems entirely missing from the provided diff. The existing tests pass, but the implementation for Req 2 is not visible.",
+  "key_findings": [
+    "Req 1 (escape_html_text) is implemented using `html.escape(text, quote=True)`.",
+    "The test for Req 1 (`test_escape_html_entities`) is present and passes.",
+    "The core logic for Req 2 (`filter_attrs`) is not present in the diff.",
+    "The import statement in `src/html_escape.py` is missing the necessary function signature for attribute filtering."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `filter_attrs(attrs, allowed_keys)` as described in Req 2 is missing from the diff."
+  ],
+  "verification_check": "src/html_escape.py (for the `filter_attrs` function)",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 756,
+    "output_tokens": 214,
+    "seconds": 4.236,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

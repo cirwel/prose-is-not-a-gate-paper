@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "apply_credit_memo returns max(0, paid - max(0, credit)), so the result is clamped to [0, paid_cents] and matches Req 1. credit_with_tax_cents uses net + (net*bps)//10000 for positive inputs, matching Req 2. Legacy invoice_balance is unchanged and its test passes. Pytest exit is 0 with 3 passed, 0 failed. The negative-net guard is an unrequested choice that differs from the literal formula only for negative inputs; it is not a regression and should be noted in the ticket.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report and advisory brief are unverified claims, so I need to inspect the actual diff before deciding.",
+    "The diff is in hand, but the contributor's claims are unverified, so I should run the test suite in the worktree before deciding.",
+    "I read the diff and ran the suite: 3 tests pass, invoice_balance is untouched, and both new functions match Req 1 and Req 2 for non-negative inputs. The only deviation is that credit_with_tax_cents returns 0 for negative net credit instead of applying the literal formula, which the ticket doesn't cover."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.014,
+  "prompt_tokens": 7596,
+  "output_tokens": 992,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

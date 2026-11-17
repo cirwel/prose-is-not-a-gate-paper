@@ -1,0 +1,27 @@
+{
+  "task_id": "T11",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements the required `encode_cursor` function and updates tests accordingly. However, the critical `decode_cursor` function, required by the ticket, is missing entirely.",
+  "key_findings": [
+    "The `encode_cursor` function correctly implements HMAC-SHA256 encoding as required by Req 1.",
+    "The ticket explicitly requires the addition of `decode_cursor(token, secret) -> int` (Req 2), which is not present in the diff.",
+    "The existing tests only cover encoding and clamping, omitting verification of the decoding logic and tamper resistance."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "The required `decode_cursor(token, secret) -> int` function is missing.",
+    "The implementation must verify HMAC cleanly in constant time and raise `ValueError('invalid_cursor')` on tampering or negative offsets."
+  ],
+  "verification_check": "src/cursor_hmac.py (implementation of decode_cursor)",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 812,
+    "output_tokens": 213,
+    "seconds": 4.324,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

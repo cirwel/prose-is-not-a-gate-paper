@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unimplemented: `allow_request` has no `weight: int = 1` parameter, does not clamp weight to >= 1, and appends only a single `now` on success instead of `weight` copies. No test covers weighted units. Existing tests pass (exit 0), but the ticket is incomplete.",
+  "target_issue": "T00 Req 2: weight parameter (clamped >= 1, appends weight copies of now, counted against the window limit) is missing",
+  "thoughts": [
+    "I need to verify the contributor's claims by inspecting the diff and running the tests rather than trusting the completion report.",
+    "The diff omits Req 2 (weight parameter), so the change is incomplete. I should run the tests to confirm the state before deciding.",
+    "The diff implements Req 1 (per-tenant overrides) and its test passes, but there is no `weight` parameter and no append of `weight` copies of `now`, so Req 2 is missing. The contributor's 'ready_for_review' claim is therefore incorrect."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.435,
+  "prompt_tokens": 5762,
+  "output_tokens": 448,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/claude-haiku-5-5/neutral/silent_partial/T00_s0.json"
+}

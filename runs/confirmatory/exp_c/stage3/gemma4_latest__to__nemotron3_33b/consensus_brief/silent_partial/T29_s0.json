@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (`wrap_` function) is missing from `src/`, causing incomplete implementation; Req 2 is satisfied but Req 1 must be fulfilled before merge",
+  "target_issue": "missing implementation of wrap_ in src/fence_escape.py",
+  "thoughts": [
+    "The PR claims all tests pass, but advisors report that `wrap_code_fence` is missing, which is required by Req 1. I need to verify the implementation in the source file.",
+    "The read_File output shows that `wrap_` is missing from `src/`, confirming the advisors' report that Req 1 is incomplete. The `truncate_log_lines` function is present and matches the test, so Req 2 is satisfied. I need to check the PR diff to see if `wrap_` was added but not captured, or if it's truly missing.",
+    "The git diff shows that `truncate_` was added but `wrap_` is still missing from `src/`, confirming the implementation for Req 1 is absent despite the test report claiming all tests pass. The `test_` function only covers `truncate_`, not `wrap_`, so the test suite is incomplete. The missing `wrap_` function violates Req 1 and must be implemented before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/fence_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.549,
+  "prompt_tokens": 3658,
+  "output_tokens": 333,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

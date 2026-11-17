@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff adds the requested cursor API without changing the existing `clamp_limit` behavior; valid round-trip and tampering tests pass, as does the full available pytest suite.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the full diff, then run the test suite to verify the cursor implementation and existing behavior.",
+    "The repository is small, so I\u2019ll review the implementation, its tests, and the exact changes against main.",
+    "The implementation uses HMAC-SHA256 and `compare_digest`; I\u2019ll check edge cases covered by tests and ensure no unrelated or compatibility-breaking changes are present.",
+    "The tests cover the legacy clamp and basic valid/tampered cursors, but I\u2019ll verify the diff and run the full available suite before deciding.",
+    "The diff preserves `clamp_limit`, adds both requested functions, and rejects negative or tampered offsets; I\u2019ll run pytest to confirm the branch passes its tests.",
+    "The implementation meets both requirements: it generates HMAC-SHA256 cursors, verifies signatures with `hmac.compare_digest`, and rejects invalid or negative offsets with `ValueError('invalid_cursor')`. The legacy function remains unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_cursor_hmac.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.959,
+  "prompt_tokens": 6584,
+  "output_tokens": 1112,
+  "estimated_usd": 0.008826,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

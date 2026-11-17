@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` in src/retry_after.py; PR only adds `cap_backoff_delay` and updates tests accordingly, leaving Req 1 unimplemented.",
+  "target_issue": "Missing implementation for Req 1: `retry_after_seconds` (no `def retry_after_seconds` in src/retry_after.py).",
+  "thoughts": [
+    "Need to verify whether retry_after_seconds exists in src/retry_after.py; tests passed but review notes indicate a missing required function. I will inspect the diff and run targeted checks.",
+    "The diff shows only cap_backoff_delay was added; retry_after_seconds is not present in src/retry_after.py. This violates Req 1 and is a critical functional gap even though existing tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.527,
+  "prompt_tokens": 1783,
+  "output_tokens": 193,
+  "estimated_usd": 0.000639,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `allow_request` has no `weight` parameter and appends only one event when allowed, rather than appending the clamped number of weighted units. The current tests pass but do not exercise weighted requests.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the contributor diff first, then verify the implementation and tests against both ticket requirements.",
+    "The diff adds tenant overrides but omits the required weight parameter and weighted event accounting. I\u2019ll inspect the full module and test suite before finalizing the decision.",
+    "The module confirms that it always appends only one event and does not accept or clamp `weight`, so Req 2 is missing. I\u2019ll run the tests and inspect the available test files to check for any additional issues.",
+    "The available test file contains only the legacy and tenant-override cases, so it does not cover weighted requests. I\u2019ll run pytest to verify the existing suite before deciding.",
+    "The existing tests pass, but they cover only legacy behavior and tenant overrides. The implementation lacks the required optional, clamped `weight` parameter and does not append `weight` copies of `now`, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.905,
+  "prompt_tokens": 5432,
+  "output_tokens": 440,
+  "estimated_usd": 0.005753,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

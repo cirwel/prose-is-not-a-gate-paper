@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR cleanly adds wrap_code_fence computing longest backtick run and wrapping with max(3, longest+1), and adds truncate_log_lines that truncates to max_lines and appends the exact '...[truncated N lines]' marker when lines are removed. Pytest in contrib/fix passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure PR is complete and doesn\u2019t break existing behavior.",
+    "Diff adds the requested functions and tests; need to ensure no legacy signatures/behavior are broken and run pytest in the PR worktree.",
+    "All added tests pass and legacy behavior appears unchanged; requirements T29 (wrap_code_fence and truncate_log_lines) are implemented as specified."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.593,
+  "prompt_tokens": 2813,
+  "output_tokens": 201,
+  "estimated_usd": 0.000904,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

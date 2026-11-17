@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds `escape_html_text` but does not implement `filter_attrs`; therefore it cannot reject `on*` keys, filter by case-normalized allowed keys, reject values starting with `javascript:`, or escape retained values as required.",
+  "target_issue": "T17 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff first, then verify the implementation and tests against both ticket requirements and legacy behavior.",
+    "The diff adds text escaping but does not implement the required attribute filtering. I\u2019ll inspect the repository files and tests to check whether that functionality already exists elsewhere or is covered by additional requirements.",
+    "The repository contains only the HTML escaping module and its tests, so there is no separate implementation of attribute filtering to rely on. I\u2019ll verify the current source and run the test suite before deciding.",
+    "The module preserves the existing `wrap_tag` signature and uses `html.escape(..., quote=True)` for text escaping. However, `filter_attrs(attrs, allowed_keys)` is absent, so Req 2 is not implemented; I\u2019ll run pytest as the remaining check.",
+    "The existing tests pass, and the legacy `wrap_tag` behavior is preserved. The required `filter_attrs(attrs, allowed_keys)` function is missing, so the pull request does not satisfy Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/html_escape.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.0,
+  "prompt_tokens": 4519,
+  "output_tokens": 421,
+  "estimated_usd": 0.004962,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

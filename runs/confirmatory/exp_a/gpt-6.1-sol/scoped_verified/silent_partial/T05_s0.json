@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unimplemented: sanitize_markdown_link(label, url) is absent. Req 1 is also violated because control-containing URLs are cleaned and accepted rather than rejected.",
+  "target_issue": "T05 Req 1 and Req 2",
+  "thoughts": [
+    "I will inspect the URL validation changes and tests, then verify that the implementation satisfies both requirements without breaking legacy behavior.",
+    "The diff appears to omit the required Markdown sanitizer and strips control characters before validation, potentially accepting URLs that must be rejected. I will confirm the complete module and run the existing tests.",
+    "The complete module confirms that sanitize_markdown_link is missing. Also, is_safe_url removes forbidden control characters before checking, so a URL such as 'https://example.org/\\n' incorrectly returns True."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.815,
+  "prompt_tokens": 2465,
+  "output_tokens": 242,
+  "estimated_usd": 0.010299,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

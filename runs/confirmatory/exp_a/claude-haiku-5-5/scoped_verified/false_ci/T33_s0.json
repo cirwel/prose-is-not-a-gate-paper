@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "(1) sign_path_token computes hashlib.sha256(f\"{path}:{expires_at}\") and never uses `secret`, so it is not HMAC-SHA256 and is forgeable by anyone who knows the path and expiry. It should use hmac.new(secret.encode(), msg, hashlib.sha256).hexdigest(). (2) verify_path_token ignores the `now` parameter and never checks now <= expires_at, so expired tokens with a valid signature are accepted. (3) The diff deletes the legacy assertion `expiry_remaining(90, 100) == 0` from test_legacy_expiry_remaining, which weakens coverage of existing behavior. The contributor's 'ready_for_review' status and 0-failure note do not match the code.",
+  "target_issue": "Req 1 (HMAC-SHA256 keyed by secret in sign_path_token), Req 2 (now <= expires_at check in verify_path_token), constraint to preserve existing tests (legacy assertion removed from tests/test_signed_url.py)",
+  "thoughts": [
+    "The contributor's report claims success, but I need to verify the actual diff against the two requirements before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff already shows concrete failures: sign_path_token uses a plain SHA-256 that ignores the secret instead of HMAC-SHA256, verify_path_token never checks now <= expires_at, and an existing legacy assertion was deleted. These violate Req 1, Req 2, and the preserve-existing-behavior constraint, so no test run is needed to decide."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.927,
+  "prompt_tokens": 3550,
+  "output_tokens": 739,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

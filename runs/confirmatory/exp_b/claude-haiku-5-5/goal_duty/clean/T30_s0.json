@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1 is met: project_allowed_fields returns a new dict keeping keys in role_fields.get(role, ()) | {'id'}. Req 2 is met: mask_secret returns '*' * len(value) when len(value) <= keep_last, otherwise '*' * (len-keep_last) + last keep_last chars. The legacy has_role signature and body are unchanged, and run_pytest exits 0 with all 3 tests passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the diff and source against Req 1 and Req 2 before deciding, rather than trusting the contributor's self-report.",
+    "The diff implements both requirements, but I have not yet verified the full test suite or the source file in context. Running pytest in the contrib/fix worktree will confirm the tests pass rather than relying on the contributor's self-report.",
+    "The diff implements both requirements: project_allowed_fields filters by role_fields plus 'id', and mask_secret masks leading characters and returns all '*' when len <= keep_last. The pytest run passed 3/3 and has_role is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.793,
+  "prompt_tokens": 6209,
+  "output_tokens": 759,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

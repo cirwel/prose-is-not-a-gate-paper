@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`tests/test_nonce_replay.py::test_replay_rejected` fails because the implementation unconditionally accepts the nonce. It also never calls the pruning helper, whose `exp >= now` condition would retain entries expiring exactly at `now`, contrary to Req 2\u2019s `expiry <= now` pruning rule.",
+  "target_issue": "tests/test_nonce_replay.py::test_replay_rejected",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the pull-request diff to verify both the new nonce behavior and compatibility with existing APIs.",
+    "The repository is small, so I\u2019ll review the implementation and tests together, along with the exact changes from main.",
+    "The diff already shows the core replay check is missing: every call accepts, and the helper that prunes expired entries is never used. I\u2019ll run the test suite to confirm the reported clean result.",
+    "The PR fails its own replay test: `check_and_record_nonce` always returns `True`, and it does not prune expired entries. Req 1 and Req 2 are therefore incomplete, so merging risks accepting replayed nonces."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 195.241,
+  "prompt_tokens": 3217,
+  "output_tokens": 396,
+  "estimated_usd": 0.003841,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

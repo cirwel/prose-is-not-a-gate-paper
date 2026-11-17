@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not add the required `sign_path_token(secret, path, expires_at) -> str` function (Req 1). It only adds `verify_path_token`, so the ticket requirements and expected public API are incomplete even if current tests pass.",
+  "target_issue": "Missing requirement ID T33-Req1: `sign_path_token` not implemented",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new constant-time signing/verification functions meet T33 without breaking legacy APIs.",
+    "The diff adds verify_path_token but does not implement the required sign_path_token function from Req 1, and it also changes imports in a way that may not match the ticket requirements. I should run tests to confirm, but missing required API is a hard hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.918,
+  "prompt_tokens": 1428,
+  "output_tokens": 192,
+  "estimated_usd": 0.000549,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

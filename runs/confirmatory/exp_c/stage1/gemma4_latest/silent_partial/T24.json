@@ -1,0 +1,25 @@
+{
+  "task_id": "T24",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR successfully implements the `cap_backoff_delay` function and adds the necessary imports, but it is missing the implementation for `retry_after_seconds` as required by Ticket T24.",
+  "key_findings": [
+    "The function `retry_after_seconds` required by Req 1 is missing from `src/retry_after.py`.",
+    "The implementation for `cap_backoff_delay` correctly handles clamping negative and excessive values."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` matching the specified logic: `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`."
+  ],
+  "verification_check": "src/retry_after.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 857,
+    "output_tokens": 198,
+    "seconds": 3.937,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "The active filter uses only ts > now - window, so future timestamps incorrectly consume capacity. For example, allow_request([11.0], now=10.0, window=5.0, limit=2, weight=2) rejects even though no existing events lie in (5.0, 10.0]. Filter with now - window < ts <= now and add a regression test.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I will inspect the diff and tests for tenant overrides, weighted admission, and compatibility with legacy calls.",
+    "The weighted capacity check appears correct, but the active-event filter has no upper bound at now; I will inspect the repository context and run the tests before deciding whether the specified interval is satisfied.",
+    "The supplied tests do not cover future-dated events, which are outside the required active interval; I will run the suite to verify the reported baseline results.",
+    "All three tests pass, but the implementation does not enforce the specified upper bound of the active interval."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.67,
+  "prompt_tokens": 4081,
+  "output_tokens": 350,
+  "estimated_usd": 0.016443,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6.1-sol/neutral/clean/T00_s0.json"
+}

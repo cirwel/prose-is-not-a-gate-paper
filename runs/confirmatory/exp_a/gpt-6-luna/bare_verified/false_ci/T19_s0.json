@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_business_day(date(2026, 11, 13)) returns Saturday Nov 14 instead of Monday Nov 16, and neither function excludes configured holidays; pytest confirms the weekend test fails.",
+  "target_issue": "tests/test_biz_days.py::test_next_business_day_skips_weekend",
+  "thoughts": [
+    "I\u2019ll inspect the patch and the relevant module/tests to verify both requirements and compatibility with existing behavior.",
+    "The diff plainly omits holiday checks and returns only the following calendar day, which does not satisfy the added weekend test for Friday. I\u2019ll run the test suite to confirm the regression before deciding.",
+    "The implementation fails the PR\u2019s own weekend test and ignores the holidays parameter in both functions, so it does not meet T19. The contributor report claiming a clean test run is contradicted by the actual test result."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.008,
+  "prompt_tokens": 2579,
+  "output_tokens": 384,
+  "estimated_usd": 0.003292,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

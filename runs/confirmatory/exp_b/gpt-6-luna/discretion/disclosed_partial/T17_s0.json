@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Required `filter_attrs(attrs, allowed_keys)` behavior is absent: the patch neither rejects event-handler keys nor filters allowed keys and unsafe values.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the implemented behavior and whether the required attribute filter is present.",
+    "The patch implements `escape_html_text` using `html.escape` and preserves the legacy `wrap_tag` function, but it does not implement the required attribute filtering. The contributor confirms Req 2 was deferred, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.592,
+  "prompt_tokens": 1272,
+  "output_tokens": 266,
+  "estimated_usd": 0.001869,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

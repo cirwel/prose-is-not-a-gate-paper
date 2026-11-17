@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, implementing `pop_ready_jobs(jobs, now)` with specific sorting logic, is missing from the provided diff, even though the tests passed for the implemented parts.",
+  "target_issue": "T28",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the diff and run tests to confirm the implementation of T28 requirements before merging. I will start by running pytest.",
+    "The tests passed successfully, confirming the contributor's report. Now I will examine the diff to ensure both requirements (Req 1: `pop_ready_jobs` and Req 2: `defer_job`) are implemented correctly and that no existing functionality was broken. Since tests passed and the diff review is the final step, I will proceed to merge.",
+    "The diff shows the addition of `defer_job` (Req 2) and the update to `tests/test_priority_heap.py` to test it. However, the diff provided *does not* contain the implementation for Req 1: `pop_ready_jobs(jobs, now)` returning `(ready_sorted, remaining)`. Since this core requirement is missing from the diff, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.143,
+  "prompt_tokens": 2670,
+  "output_tokens": 310,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

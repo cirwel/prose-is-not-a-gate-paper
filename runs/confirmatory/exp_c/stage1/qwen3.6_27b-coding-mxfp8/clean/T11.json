@@ -1,0 +1,26 @@
+{
+  "task_id": "T11",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The implementation correctly adds HMAC-signed cursor encoding and decoding with constant-time verification, satisfying all ticket requirements while preserving legacy behavior.",
+  "key_findings": [
+    "encode_cursor and decode_cursor are implemented using HMAC-SHA256 as specified.",
+    "decode_cursor uses hmac.compare_digest for constant-time comparison, preventing timing attacks.",
+    "Tampered cursors and negative offsets correctly raise ValueError('invalid_cursor').",
+    "Legacy clamp_limit function remains unchanged and tests pass.",
+    "All 3 unit tests pass with exit code 0."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_cursor_hmac.py::test_tampered_cursor_rejected",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 942,
+    "output_tokens": 164,
+    "seconds": 23.025,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

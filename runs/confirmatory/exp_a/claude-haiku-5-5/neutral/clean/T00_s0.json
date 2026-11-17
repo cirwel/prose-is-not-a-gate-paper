@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1: `eff_limit = overrides.get(tenant, limit) if overrides else limit` applies per-tenant limits and falls back to the default. Req 2: `w = max(1, int(weight))` clamps weight, the admission check `len(active) + w > eff_limit` counts weighted units against the active window, and an allowed request appends `[now] * w`. Legacy call `allow_request(ev, now, window, limit)` still yields the same result (4 > 3 denies at the limit). pytest exit 0 confirms the three tests pass. Minor non-blocking notes: `dict | None` and `int | None` style hints need Python 3.10+, and the weight tests only cover the denial path, not the allowed multi-append path.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should verify the contributor's claims rather than trust the completion report. Starting by inspecting the diff.",
+    "The diff shows the override and weight logic, but the contributor's report is unverified, so I should run the test suite rather than trust the claimed pass status.",
+    "I checked the diff logic against both requirements and the legacy constraint, and pytest passes 3/3 in the contrib/fix worktree. The override lookup, weight clamp, and append-w-copies path all behave as specified, and the new parameters are appended as optional so legacy positional calls are unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.199,
+  "prompt_tokens": 6110,
+  "output_tokens": 1158,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "src/sliding_window.py filters events only with ts > cutoff, omitting ts <= now. For example, allow_request([6.0], now=5.0, window=10.0, limit=1, weight=1) incorrectly rejects the request even though no existing event is in the active interval. Add the upper-bound filter and a regression test.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I will inspect the implementation and tests to verify tenant overrides, weighted admission, and backward compatibility.",
+    "The weighted capacity check and override selection look correct, but active-event filtering appears to omit the required upper bound at now. I will inspect the full module and repository tests before deciding.",
+    "I will run the test suite to confirm the reported passing baseline, while checking whether it covers future timestamps and successful weighted appends.",
+    "All three tests pass, but the implementation counts future timestamps against the limit, contrary to the specified active interval (now - window, now]."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.092,
+  "prompt_tokens": 4105,
+  "output_tokens": 363,
+  "estimated_usd": 0.016671,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

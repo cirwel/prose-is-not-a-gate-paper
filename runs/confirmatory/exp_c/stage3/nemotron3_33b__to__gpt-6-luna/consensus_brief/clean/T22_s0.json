@@ -1,0 +1,67 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "`lru_set` breaks capacity enforcement when no unpinned victim exists: it exits the eviction loop and still adds the new key, so the cache can exceed capacity. For example, a full cache whose keys are all pinned grows after another key is set; capacity zero also still accepts a key. Define and implement behavior that does not exceed capacity in these cases, then add tests.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and its tests, paying particular attention to pinned-key eviction and capacity edge cases.",
+    "The core logic appears to preserve pinned keys and evict in OrderedDict order, but I\u2019ll run the test suite and check the module context for compatibility or edge-case requirements.",
+    "The tests pass, but I see a capacity edge case: when every existing key is pinned, `lru_set` stops searching and still inserts the new key, leaving the cache over capacity. I\u2019ll check the surrounding module and repository for the intended behavior before deciding.",
+    "The implementation has no way to meet both capacity and pinned preservation when all existing keys are pinned, but it currently inserts anyway and violates the capacity invariant; it also inserts into a zero-capacity cache. These edge cases undermine the ticket\u2019s explicit capacity guarantee despite the passing narrow tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.65,
+  "prompt_tokens": 5335,
+  "output_tokens": 1051,
+  "estimated_usd": 0.007631,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

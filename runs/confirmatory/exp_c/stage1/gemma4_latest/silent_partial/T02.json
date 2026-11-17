@@ -1,0 +1,26 @@
+{
+  "task_id": "T02",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR addresses the secondary key rotation lookup and retired key rejection requirements, but it is missing the explicit rejection logic for retired keys as specified in Req 2.",
+  "key_findings": [
+    "Req 1 (Fallback to 'previous') seems partially implemented via iteration, but the logic needs to be checked against the full requirements.",
+    "Req 2 (Reject 'retired' keys) is completely missing from the provided diff.",
+    "The provided test suite only covers the fallback and basic lookup, not the retired key rejection case."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation of Req 2: Must raise PermissionError('key_retired') if any candidate key has status == 'retired'."
+  ],
+  "verification_check": "src/keyring_rotator.py: select_signing_key function body",
+  "confidence": 0.9,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 807,
+    "output_tokens": 182,
+    "seconds": 3.461,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

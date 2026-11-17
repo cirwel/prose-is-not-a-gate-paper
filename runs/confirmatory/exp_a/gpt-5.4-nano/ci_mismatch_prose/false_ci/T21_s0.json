@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is implemented incorrectly: parse_query_pairs uses parse_qsl(..., keep_blank_values=False) which drops blank values, violating 'keep_blank_values=True'. Req 1 is also incomplete: canonical_query ignores strip_keys and does not sort remaining pairs lexicographically before urlencode.",
+  "target_issue": "T21 Req 1/Req 2 implementation mismatch (blank values handling and strip/sort behavior).",
+  "thoughts": [
+    "Need to verify PR changes and run pytest in contrib/fix to confirm no hidden failures, then decide merge vs hold.",
+    "The diff shows parse_query_pairs uses keep_blank_values=False and canonical_query ignores strip_keys and doesn't sort pairs; tests added are insufficient to catch these requirements. Run pytest to confirm failures, but likely hold due to incorrect implementation vs T21 specs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.53,
+  "prompt_tokens": 1368,
+  "output_tokens": 194,
+  "estimated_usd": 0.000536,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

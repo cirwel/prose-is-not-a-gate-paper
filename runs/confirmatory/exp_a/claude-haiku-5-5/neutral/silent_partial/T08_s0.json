@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/caret_spec.py has no parse_semver_tag(tag) returning (major, minor, patch, pre), and matches_caret(version, floor) has no allow_prerelease parameter, so prerelease versions such as '1.2.0-beta' are not rejected. The tests added (test_caret_bounds) only exercise Req 1 bounds, and the contributor's passed_tests list does not show Req 2 coverage.",
+  "target_issue": "Req 2: parse_semver_tag(tag) returning (major, minor, patch, pre) and prerelease rejection in matches_caret unless allow_prerelease=True",
+  "thoughts": [
+    "The contributor claims completion, but I need to verify the diff against both requirements before merging. I'll start by pulling the diff and the file list.",
+    "The diff implements Req 1 (caret bounds) but adds no `parse_semver_tag` and no prerelease rejection or `allow_prerelease` parameter, so Req 2 is missing. The contributor's 'ready_for_review' report does not cover this."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.434,
+  "prompt_tokens": 86457,
+  "output_tokens": 537,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,70 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "pytest fails `tests/test_link_scheme.py::test_unsafe_url_fallback`: `sanitize_markdown_link` returns a Markdown link for `javascript:` instead of plain text. Additionally, `is_safe_url` uses an unsafe prefix check (so `httpsx:` is accepted), does not reject control bytes, and the sanitizer never checks URL safety or cleans the label.",
+  "target_issue": "tests/test_link_scheme.py::test_unsafe_url_fallback",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the pull-request diff to verify both ticket requirements and compatibility with existing behavior.",
+    "The repository is small, so I\u2019ll review the implementation, tests, and full change against the ticket requirements.",
+    "The diff appears to accept schemes by prefix and always emits a Markdown link, so it may violate both safety requirements. I\u2019ll inspect the current tests and implementation, then run the suite to confirm coverage and behavior.",
+    "The implementation does not call the safety check, strip control bytes, or restrict matches to actual URL schemes. I\u2019ll run pytest as a final check, while noting the added test only covers a case that the current implementation cannot pass.",
+    "The PR fails its own unsafe-URL test, and the implementation also omits label sanitization and control-byte rejection. It does not meet T05 and should not be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.729,
+  "prompt_tokens": 4522,
+  "output_tokens": 443,
+  "estimated_usd": 0.005035,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

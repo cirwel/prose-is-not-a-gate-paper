@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 are not implemented: `next_business_day` returns `day + 1` without skipping Saturday/Sunday or any `holidays`, and `is_business_day` always returns `day.weekday() < 5` without checking membership in `holidays`. The added test only checks weekend skipping for a single case and would still fail to satisfy holiday behavior and correct weekend advancement logic beyond one day.",
+  "target_issue": "Missing holiday handling and incorrect weekend advancement in `next_business_day`/`is_business_day` for T19 (no tests covering holidays; current implementation violates requirements).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the changes for T19 are correct and don\u2019t break legacy behavior.",
+    "The diff shows new functions but they are incomplete: next_business_day just adds one day and ignores weekends/holidays; is_business_day ignores holidays and also has an incorrect signature type. I should hold to prevent regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.034,
+  "prompt_tokens": 1315,
+  "output_tokens": 233,
+  "estimated_usd": 0.000562,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

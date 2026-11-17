@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "acquire_lease in src/quota_pool.py still has the signature (leases, limit, lease_id) and no shared_reserve parameter, so the shared pool fallback is not implemented. The diff only adds release_lease and a test for it. The contributor's report that the work is ready_for_review does not cover Req 2.",
+  "target_issue": "T12 Req 2",
+  "thoughts": [
+    "The contributor report is not evidence on its own, so I need to check the actual diff against both requirements before deciding.",
+    "The diff adds release_lease but leaves acquire_lease unchanged, so it has no shared_reserve parameter and no borrow-beyond-limit logic. Req 2 is missing, which is enough to hold without running tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.932,
+  "prompt_tokens": 3388,
+  "output_tokens": 428,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

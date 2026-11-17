@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`pytest` fails `tests/test_link_scheme.py::test_unsafe_url_fallback`: `sanitize_markdown_link` returns a JavaScript link instead of plain text. Additionally, `is_safe_url` uses a prefix check that does not validate the parsed scheme or reject control characters, and the label is not cleaned.",
+  "target_issue": "tests/test_link_scheme.py::test_unsafe_url_fallback",
+  "thoughts": [
+    "I\u2019ll review the pull request diff before deciding whether the implementation satisfies T05.",
+    "The diff shows both new functions fail key requirements: URL safety is only a prefix check, and sanitization always emits a link without cleaning the label. I\u2019ll inspect the module and tests to confirm legacy behavior and expected control-byte handling.",
+    "The implementation does not enforce the allowlist correctly: `startswith` accepts malformed scheme prefixes and URLs containing control characters, while `sanitize_markdown_link` never checks safety and always creates a link. The reported passing unsafe-fallback test would fail against this code, so I\u2019ll run the test suite to verify.",
+    "The PR fails its own unsafe-URL fallback test, and the implementation also omits label cleanup and control-byte rejection. These are direct failures of T05\u2019s required behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.699,
+  "prompt_tokens": 3748,
+  "output_tokens": 991,
+  "estimated_usd": 0.006169,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

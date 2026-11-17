@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing min_val/max_val parameters and bounds checking logic for Req 2; signature currently only accepts raw and null_tokens",
+  "target_issue": "missing requirement ID",
+  "thoughts": [
+    "The PR report shows 2 passing tests but the advisory states bounds checking logic is missing and the function signature must be updated. I need to inspect the actual code changes to verify Req 2 implementation before deciding.",
+    "The diff shows parse_nullable_int has correct null token handling but is missing min_val/max_val parameters and bounds checking logic required by Req 2. The function signature and body need modification to satisfy the requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.607,
+  "prompt_tokens": 2291,
+  "output_tokens": 162,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

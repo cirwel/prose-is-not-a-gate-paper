@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All unit tests passed, and the advisory review confirmed that the implementation correctly handles case-insensitive parsing, whitespace trimming, default fallbacks, and strict validation for enum lists without breaking existing functionality.",
+  "target_issue": "T27",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the advisory review confirms the implementation meets all requirements (T27). The suggested check is to run pytest on the specific file to verify the new logic, which I will do now to confirm stability before merging.",
+    "The targeted pytest run on `tests/enum_coerce.py` passed successfully, confirming the stability of the new logic for `parse_enum` and `parse_enum_list`. Given the passing tests, the successful advisory review, and the confirmation that all requirements are met without regressions, I am confident in merging this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {
+        "pytest_args": "tests/enum_coerce.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.128,
+  "prompt_tokens": 1811,
+  "output_tokens": 213,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

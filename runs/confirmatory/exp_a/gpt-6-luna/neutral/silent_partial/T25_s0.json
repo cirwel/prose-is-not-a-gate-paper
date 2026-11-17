@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds `reconcile_ledger` but does not implement `split_cents_exact`, which must return integer shares summing exactly to the total and distribute remainder pennies by fractional-part rank with ties resolved by lowest index.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch against the ticket requirements, then verify the relevant tests rather than relying only on the contributor\u2019s report.",
+    "The diff adds `reconcile_ledger` but does not implement the required `split_cents_exact`; the submitted tests also omit that requirement. I\u2019ll run the suite to check for regressions, though passing tests cannot make the missing functionality complete.",
+    "The existing tests pass, but the implementation is incomplete against T25: `split_cents_exact(total_cents, weights)` is entirely missing. Merging would omit a required payout API and its exact remainder-distribution behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.635,
+  "prompt_tokens": 2307,
+  "output_tokens": 306,
+  "estimated_usd": 0.002824,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

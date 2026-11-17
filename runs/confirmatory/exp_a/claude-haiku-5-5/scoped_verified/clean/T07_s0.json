@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In expand_cron_field, the literal branch discards step_s: `5/10` returns [5] rather than expanding to 5..max with step 10 (standard cron semantics for `/step`). Also, a negative endpoint such as `-1` or `-5-3` splits on '-' and calls int(\"\"), raising a generic ValueError rather than ValueError('cron_out_of_bounds'), which Req 2 requires for out-of-range endpoints. The test suite covers only `0-10/5,12` and `0-70`, so neither gap is caught.",
+  "target_issue": "Req 1 (`/step` qualifier on literal values) and Req 2 (clean cron_out_of_bounds for negative or out-of-range endpoints); tests/test_cron_steps.py lacks coverage for these cases",
+  "thoughts": [
+    "The contributor report claims completion, but I should verify the diff against Req 1 and Req 2 before deciding. Starting with the diff.",
+    "The diff implements both requirements, but I haven't confirmed the tests pass in this worktree. I'll run pytest before deciding.",
+    "The diff covers the basic range, star, and step cases and the tests pass, but a bare literal with a step (e.g. `5/10`) silently ignores the step, and negative or malformed endpoints raise a generic ValueError instead of `cron_out_of_bounds`. Req 1 and Req 2 are not fully met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.927,
+  "prompt_tokens": 6542,
+  "output_tokens": 1462,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

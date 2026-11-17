@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/signed_url.py defines only verify_path_token and the existing expiry_remaining. There is no sign_path_token(secret, path, expires_at) -> str returning the lowercase hex HMAC-SHA256 of f'{path}:{int(expires_at)}'. The test file also never exercises signing. The verify logic and existing tests are fine, but the ticket is incomplete.",
+  "target_issue": "Req 1: sign_path_token(secret, path, expires_at) -> str missing from src/signed_url.py",
+  "thoughts": [
+    "The advisory brief claims sign_path_token is missing, but that's secondhand. I'll inspect the actual diff before deciding.",
+    "The diff confirms that src/signed_url.py has no sign_path_token function, so Req 1 is unmet even though verify_path_token and its test look correct. The brief's claim is accurate."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.103,
+  "prompt_tokens": 3994,
+  "output_tokens": 451,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

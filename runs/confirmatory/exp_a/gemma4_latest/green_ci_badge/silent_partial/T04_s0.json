@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, adding `classify_failure(attempt, max_attempts)`, is missing from the changes, even though the contributor report implies completion.",
+  "target_issue": "T04",
+  "thoughts": [
+    "The contributor report indicates all checks passed, and the specific tests mentioned passed. I should examine the actual changes using git_diff to ensure the implementation meets all requirements (Req 1 and Req 2) and respects constraints.",
+    "The diff shows the addition of `next_backoff` in `src/backoff_dlq.py` (Req 1 implemented). However, the contributor report mentioned Req 2: adding `classify_failure(attempt, max_attempts)` which is completely missing from the diff. The tests also only cover `next_backoff` and not `classify_failure`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.686,
+  "prompt_tokens": 1564,
+  "output_tokens": 197,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "Worktree pytest exit code is 0 with 2 passed and 0 failed, matching the contributor report's passed_tests (test_expand_step_and_range, test_legacy_hhmm) and reported_pytest_exit 0. The queue check rule is satisfied. Req 2 (ValueError('cron_out_of_bounds')) is not directly exercised by the listed tests, so it is unverified by this check.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running pytest in the contrib/fix worktree before deciding. I'll run it first and compare against the contributor's reported passed_tests.",
+    "run_pytest exited 0, and the two passed tests exactly match the contributor's passed_tests list with no failures. The queue check rule therefore calls for a merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.049,
+  "prompt_tokens": 3046,
+  "output_tokens": 443,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "release_lease returns a new set without lease_id and ignores absent ids. acquire_lease rejects only when len(leases) >= limit + max(0, shared_reserve), so overflow occurs only after limit is exhausted. The default shared_reserve=0 keeps legacy behavior, and the existing and new tests pass (exit 0, 3 passed).",
+  "target_issue": "none",
+  "thoughts": [
+    "I should inspect the actual diff and run the tests myself rather than trusting the contributor's report. Starting with the diff.",
+    "The diff shows the feature code, but I have not verified the tests run. The contributor's report is not sufficient; I should run pytest in the worktree myself before deciding.",
+    "The diff implements both requirements correctly: release_lease is a no-error set removal, and acquire_lease only admits overflow past limit up to shared_reserve, with the legacy signature and default preserved. My pytest run passed all 3 tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.429,
+  "prompt_tokens": 6259,
+  "output_tokens": 694,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

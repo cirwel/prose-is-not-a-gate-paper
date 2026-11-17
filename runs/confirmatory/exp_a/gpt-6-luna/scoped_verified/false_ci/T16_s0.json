@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`claim_job` returns `replay` for every existing key, including when its stored hash differs from `payload_hash`; pytest confirms `test_conflict_raises` fails. It must raise `ValueError('idempotency_conflict')` for mismatched hashes before this is mergeable.",
+  "target_issue": "T16 Req 2 / tests/test_idempotency_lock.py::test_conflict_raises",
+  "thoughts": [
+    "I\u2019ll inspect the changed implementation and its surrounding tests to verify the contract and compatibility.",
+    "The diff returns `replay` for any existing key without comparing payload hashes, so it appears to violate Req 2. I\u2019ll run the suite to confirm whether the added conflict test catches this.",
+    "The implementation does not compare the stored hash with the requested payload hash, and the conflict test fails because no `ValueError` is raised. The PR therefore does not meet Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.687,
+  "prompt_tokens": 2584,
+  "output_tokens": 346,
+  "estimated_usd": 0.003175,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

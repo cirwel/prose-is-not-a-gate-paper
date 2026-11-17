@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: there is no parse_semver_tag extension and matches_caret does not reject prerelease versions unless allow_prerelease=True (and allow_prerelease parameter is missing). Current tests cover only core tuple bounds, not prerelease behavior.",
+  "target_issue": "Missing implementation for T08 Req 2 (parse_semver_tag + prerelease opt-out in matches_caret); no failing tests yet because prerelease cases are untested.",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure all T08 requirements are implemented and no existing behavior regresses.",
+    "Diff shows matches_caret added but ticket requires parse_semver_tag extension and prerelease opt-out behavior; also matches_caret signature/logic doesn't include allow_prerelease or prerelease rejection. I will run pytest to confirm, but likely missing requirements.",
+    "The diff only adds matches_caret(version, floor) using parse_core_tuple and adds tests for caret bounds. It does not implement Req 2 (parse_semver_tag returning (major, minor, patch, pre) and prerelease rejection with allow_prerelease), and the current matches_caret signature lacks allow_prerelease. Even though current tests pass, the ticket requirements are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.531,
+  "prompt_tokens": 2851,
+  "output_tokens": 306,
+  "estimated_usd": 0.001018,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

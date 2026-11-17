@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/dedup_rows.py does not define deduplicate_rows_with_stats(rows, key_fn, keep='first'), so callers cannot obtain the required (unique_rows, duplicate_count) result.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the PR diff to verify the requested API and compatibility requirements.",
+    "The relevant implementation and tests are present; I\u2019ll review the changes against the ticket and legacy behavior.",
+    "The implementation covers first/last deduplication, but it omits the required stats API entirely. That leaves Req 2 unmet despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.597,
+  "prompt_tokens": 2110,
+  "output_tokens": 286,
+  "estimated_usd": 0.002603,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

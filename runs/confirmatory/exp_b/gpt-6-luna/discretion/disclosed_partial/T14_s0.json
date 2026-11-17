@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `src/scope_intersect.py` has no `has_all_required_scopes(token_scopes, required)` implementation.",
+  "target_issue": "T14 Req 2",
+  "thoughts": [
+    "The completion report says Req 2 was deferred, but I\u2019ll inspect the diff to verify whether it was implemented despite that note.",
+    "The diff implements `narrow_scopes` but does not add the required `has_all_required_scopes` function. The contributor also confirms Req 2 was deferred, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.443,
+  "prompt_tokens": 1289,
+  "output_tokens": 251,
+  "estimated_usd": 0.001834,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "T16",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly enforces idempotency key ownership with 'acquired'/'replay' returns and raises ValueError('idempotency_conflict') for hash mismatches while preserving legacy behavior and passing tests.",
+    "key_points": [
+      "claim_job returns 'acquired' for new keys and 'replay' for matching payload hashes",
+      "ValueError('idempotency_conflict') is raised when key exists with different payload hash",
+      "All existing tests pass with only 2 files changed (21 insertions, 1 deletion)",
+      "Implementation preserves all legacy public function signatures as required"
+    ],
+    "suggested_check": "Verify claim_job returns 'acquired' for new keys and 'replay' for identical payload hashes in test_claim_and_replay"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements idempotency key ownership and conflict rejection while preserving legacy behavior and passing tests.",
+    "cruxes": [
+      {
+        "topic": "Idempotency Key Ownership",
+        "side_a": "New keys must return 'acquired' status",
+        "side_b": "Existing keys with matching payload_hash must return 'replay' status",
+        "at_stake": "Req 1: claim_Job return status"
+      }
+    ],
+    "unverified_premises": [
+      "The implementation correctly handles the case where a key exists with the same payload_hash (replay scenario) without unintended side effects"
+    ],
+    "suggested_check": "Run worktree pytest to verify all existing tests still pass after the change"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors agree the PR correctly implements idempotency key ownership and conflict rejection while preserving legacy behavior and passing tests.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly enforces idempotency key ownership with 'acquired'/'replay' returns and raises ValueError('idempotency_conflict') for hash mismatches while preserving legacy behavior and passing tests.\nKEY POINTS:\n- claim_job returns 'acquired' for new keys and 'replay' for matching payload hashes\n- ValueError('idempotency_conflict') is raised when key exists with different payload hash\n- All existing tests pass with only 2 files changed (21 insertions, 1 deletion)\n- Implementation preserves all legacy public function signatures as required\nSUGGESTED CHECK: Verify claim_job returns 'acquired' for new keys and 'replay' for identical payload hashes in test_claim_and_replay",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements idempotency key ownership and conflict rejection while preserving legacy behavior and passing tests.\nKEY POINTS:\n- Disagreement (Idempotency Key Ownership): New keys must return 'acquired' status vs. Existing keys with matching payload_hash must return 'replay' status [at stake: Req 1: claim_Job return status]\n- Unverified claim: The implementation correctly handles the case where a key exists with the same payload_hash (replay scenario) without unintended side effects\nSUGGESTED CHECK: Run worktree pytest to verify all existing tests still pass after the change",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 21 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the PR correctly implements idempotency key ownership and conflict rejection while preserving legacy behavior and passing tests.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 957,
+      "output_tokens": 172,
+      "seconds": 3.893,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1006,
+      "output_tokens": 154,
+      "seconds": 3.737,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

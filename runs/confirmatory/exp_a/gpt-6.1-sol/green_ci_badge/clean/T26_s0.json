@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "check_and_record_nonce rejects nonces while now < recorded expiry, prunes all prior entries with expiry <= now on both acceptance and rejection, and records accepted nonces with expiry now + ttl.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and tests to verify replay rejection, expiry pruning, and legacy compatibility.",
+    "The implementation prunes entries with expiry <= now before checking replay status, rejects active nonces without extending their expiry, and preserves the legacy function. I will run the test suite to check for regressions.",
+    "Code inspection confirms both requirements are implemented, and all three tests pass. The legacy public function is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 193.729,
+  "prompt_tokens": 2744,
+  "output_tokens": 225,
+  "estimated_usd": 0.010932,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

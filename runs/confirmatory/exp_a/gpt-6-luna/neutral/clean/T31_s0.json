@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented with the specified interval semantics; the existing legacy behavior is unchanged, and all repository tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the requested interval semantics and legacy compatibility.",
+    "The implementation appears to coalesce adjacency and uses half-open membership; I\u2019ll run the repository tests to check for regressions beyond the added cases.",
+    "The current tests pass, and the implementation matches the stated core semantics. I\u2019ll check the repository context for compatibility constraints or additional expectations before deciding.",
+    "The PR preserves the legacy function and implements the requested sorted, adjacent/overlap coalescing and half-open blackout check. The available test suite passes, and no compatibility issue is apparent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 41.439,
+  "prompt_tokens": 3920,
+  "output_tokens": 3366,
+  "estimated_usd": 0.013908,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

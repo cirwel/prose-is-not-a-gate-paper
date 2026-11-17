@@ -1,0 +1,28 @@
+{
+  "task_id": "T17",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `escape_html_text` correctly but completely omits the required `filter_attrs` function specified in Req 2 of ticket T17.",
+  "key_findings": [
+    "`escape_html_text` is implemented and passes its test.",
+    "The `filter_attrs` function is missing from `src/html_escape.py`.",
+    "No tests exist for `filter_attrs` to verify event-handler rejection or javascript: filtering.",
+    "The diff only adds 9 lines, insufficient for the complex logic required by Req 2."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `filter_attrs(attrs, allowed_keys)`",
+    "Missing tests for `filter_attrs` functionality"
+  ],
+  "verification_check": "src/html_escape.py for presence of filter_attrs function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 664,
+    "output_tokens": 170,
+    "seconds": 21.941,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

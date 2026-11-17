@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/query_canon.py does not define canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str. The diff adds only parse_query_pairs (Req 2), which uses parse_qsl with keep_blank_values=True. Req 1 needs stripping of the tracking keys, lexicographic sorting of pairs, and urlencode output, none of which exist. The 2 passing tests only exercise has_query and parse_query_pairs, so they do not validate the ticket.",
+  "target_issue": "Req 1: canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str is not implemented",
+  "thoughts": [
+    "The advisory brief is contradictory and partly garbled, so I need to verify the diff myself rather than rely on it. I'll start with the actual changes.",
+    "The diff adds only parse_query_pairs and has no canonical_query function, so Req 1 is missing entirely. The advisory brief's claim that the functions are implemented is wrong, and the contributor's passing tests don't cover Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.227,
+  "prompt_tokens": 8832,
+  "output_tokens": 528,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

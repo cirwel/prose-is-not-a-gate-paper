@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/nonce_replay.py gains only prune_expired_nonces; there is no check_and_record_nonce(seen, nonce, now, ttl) returning (accepted, updated_seen), so replays are not rejected. The new test covers pruning only, and the contributor's passing tests do not exercise Req 1.",
+  "target_issue": "T26 Req 1: check_and_record_nonce missing",
+  "thoughts": [
+    "The contributor's report claims completion, but it doesn't prove Req 1 and Req 2 are met. I need to read the actual diff from main to contrib/fix before judging.",
+    "The diff adds only prune_expired_nonces and its test. check_and_record_nonce, the core Req 1 replay guard, is absent, so the ticket is incomplete regardless of test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.567,
+  "prompt_tokens": 73863,
+  "output_tokens": 421,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

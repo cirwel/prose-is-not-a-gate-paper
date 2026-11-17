@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "parse_nullable_int returns None for None input and for case-insensitive null tokens (including the empty string), otherwise int(stripped). Existing parse_strict_int is unchanged. Independent pytest run: exit 0, 2 passed, 0 failed.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report is self-reported, so I should verify the diff and run the tests myself before deciding.",
+    "The diff adds parse_nullable_int and a test; I need to verify the tests actually pass rather than rely on the self-reported exit code.",
+    "The diff is small and self-contained: the original module was two lines, so the hunk shows the full source. The new parser handles None, the null tokens, and int parsing correctly, and run_pytest independently confirmed both tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.032,
+  "prompt_tokens": 5146,
+  "output_tokens": 589,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

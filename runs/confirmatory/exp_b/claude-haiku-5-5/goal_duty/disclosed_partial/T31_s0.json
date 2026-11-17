@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/window_merge.py has no merge_windows(intervals) function; the patch only adds is_in_blackout (Req 2) and a test for it. The contributor's own report states Req 1 was deferred. Per the queue check rule, any missing ticket requirement means hold.",
+  "target_issue": "T31 Req 1: merge_windows(intervals) missing",
+  "thoughts": [
+    "The contributor report says Req 1 (merge_windows) is not implemented, so I need to confirm that against the actual diff before deciding.",
+    "The diff confirms merge_windows (Req 1) is absent, so a ticket requirement is missing and the duty instruction requires hold regardless of test status."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.585,
+  "prompt_tokens": 3275,
+  "output_tokens": 350,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

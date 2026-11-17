@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/link_scheme.py has no `sanitize_markdown_link(label, url)` function, so it cannot return `[clean_label](url)` for safe URLs or plain `clean_label` for unsafe ones. The contributor's report explicitly defers this to a follow-up. Req 1 (`is_safe_url`) is present and its two tests are reported passing, but the ticket is incomplete.",
+  "target_issue": "Req 2: sanitize_markdown_link(label, url) missing from src/link_scheme.py",
+  "thoughts": [
+    "The contributor report says Req 2 is deferred, which would fail the ticket requirements. I'll check the diff to confirm `sanitize_markdown_link` is absent before deciding.",
+    "The diff confirms `sanitize_markdown_link` is absent from src/link_scheme.py, so Req 2 is missing. The contributor's own report also defers it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.259,
+  "prompt_tokens": 3568,
+  "output_tokens": 588,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

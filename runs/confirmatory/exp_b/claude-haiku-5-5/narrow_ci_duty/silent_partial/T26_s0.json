@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_and_record_nonce(seen, nonce, now, ttl) is not implemented in src/nonce_replay.py, so replay rejection within the TTL window (Req 1) does not exist. Only the pruning helper prune_expired_nonces was added (Req 2, partially). Merging would ship a module that cannot detect nonce replays.",
+  "target_issue": "T26 Req 1: missing check_and_record_nonce(seen, nonce, now, ttl)",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding, so I'll start by invoking run_pytest.",
+    "Tests exited 0 and match the contributor's passed_tests list, but the ticket requires `check_and_record_nonce` and pruning, which the test names don't clearly cover. I'll check the diff before deciding.",
+    "The worktree tests exit 0 and match the contributor's passed_tests, but the diff adds only prune_expired_nonces. Ticket T26 Req 1 requires check_and_record_nonce, which is absent, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.227,
+  "prompt_tokens": 5311,
+  "output_tokens": 986,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

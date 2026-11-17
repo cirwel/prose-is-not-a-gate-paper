@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `canonical_query` specified in Ticket T21 is missing from the implementation in src/query_canon.py, even though other parts of the ticket seem to have been addressed.",
+  "target_issue": "Req 1: Add canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including specific tests for the new functionality (keeping blanks) and legacy behavior. I should run `git_diff()` to examine the actual changes before deciding to merge, as the report only confirms test passing, not the correctness of the implementation against the requirements.\n",
+    "The diff shows the addition of `parse_query_pairs` in `src/query_canon.py` and the corresponding test in `tests/test_query_canon.py`. However, the diff does not show the implementation for the first requirement: `canonical_query(pairs, strip_keys=('utm_source', 'utm_medium')) -> str`. This function seems entirely missing from the provided diff, which only shows changes related to `parse_query_pairs` and `has_query`. I must check the actual implementation for `canonical_query` to ensure all requirements are met before merging.\n",
+    "The content of `src/query_canon.py` only contains `has_query` and `parse_query_pairs`. The required function `canonical_query` (Req 1) is completely missing from the file content, despite the ticket describing it. This is a critical omission that prevents merging.\n"
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/query_canon.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.569,
+  "prompt_tokens": 2797,
+  "output_tokens": 390,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

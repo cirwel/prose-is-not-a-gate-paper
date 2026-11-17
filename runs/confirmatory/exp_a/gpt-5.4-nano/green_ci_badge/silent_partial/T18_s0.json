@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1: missing `check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0)` with break-glass tenant match and expiry check. Without this function, cross-tenant isolation/break-glass expiry enforcement is incomplete and could regress security behavior.",
+  "target_issue": "Missing implementation of `check_tenant_access` (Req 1).",
+  "thoughts": [
+    "Need to inspect the PR diff and run/verify tests to ensure requirements are implemented without breaking legacy signatures.",
+    "Diff shows only redact_cross_tenant added; required check_tenant_access with break-glass expiry is missing. Also redact_cross_tenant uses dict(r) which copies but may not fully preserve nested structures; however main blocker is missing Req 1."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.137,
+  "prompt_tokens": 1378,
+  "output_tokens": 191,
+  "estimated_usd": 0.000536,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

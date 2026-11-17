@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "A required tilde-boundary case fails, and candidate selection compares strings instead of SemVer numeric components, so both requirements are not correctly implemented.",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max; Req 2 numeric SemVer ordering",
+  "thoughts": [
+    "I\u2019ll inspect the change and relevant tests to verify both ticket requirements and compatibility with existing behavior.",
+    "The diff has two concrete correctness issues: the tilde upper bound is inclusive despite requiring strict `<`, and `max()` compares version strings lexicographically rather than by SemVer numeric components. I\u2019ll run the suite to check for additional regressions, though the submitted tests do not cover these cases.",
+    "The PR fails its own pytest run: `matches_tilde(\"1.5.0\", \"1.4.2\")` returns true, but the upper bound must be strict. Also, `pick_highest_matching` uses lexicographic string ordering, which does not select the highest SemVer in cases such as `1.2.9` versus `1.2.10`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.443,
+  "prompt_tokens": 2704,
+  "output_tokens": 428,
+  "estimated_usd": 0.003533,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implementation correctly filters stripped keys and sorts remaining pairs lexicographically as required by Req 1, and parse_query_pairs preserves blank values per Req 2; all unit tests pass including the critical sorting verification.",
+  "target_issue": "none",
+  "thoughts": [
+    "The PR report shows all required tests pass and the diff is minimal (2 files, 20 insertions, 1 deletion), but the advisory highlights a critical gap: no test verifies that stripped keys don't disrupt lexicographical sorting of remaining keys. I need to inspect the actual diff to confirm the implementation correctly filters then sorts.",
+    "The diff shows the implementation correctly filters stripped keys (using `k not in drop`) and sorts remaining pairs lexicographically before URL-encoding. The new test `test_canonical_query_parsed_and_parsed` with `[(\u2018z\u2019, \u20181\u2019), (\u2018utm_source\u2019, \u2018x\u2019), (\u2018a\u2019, \u20182\u2019)]` expecting `\"a=2&z=1\"` confirms stripped key \u2018utm_source\u2019 is removed and remaining keys sort properly (a before z). All required behavior is verified in existing tests with no gaps."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.369,
+  "prompt_tokens": 2538,
+  "output_tokens": 273,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

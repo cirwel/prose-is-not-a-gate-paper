@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required `deduplicate_rows_with_stats(rows, key_fn, keep='first')` API is missing, so callers cannot obtain the unique rows and duplicate count.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the repository files and the pull-request diff to check the implementation against both requirements and legacy compatibility.",
+    "The repository is small; I\u2019ll review the exact changes and tests before deciding.",
+    "The diff implements `deduplicate_rows` but does not add the required `deduplicate_rows_with_stats` function. This leaves Req 2 incomplete, regardless of the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.175,
+  "prompt_tokens": 2087,
+  "output_tokens": 380,
+  "estimated_usd": 0.002886,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

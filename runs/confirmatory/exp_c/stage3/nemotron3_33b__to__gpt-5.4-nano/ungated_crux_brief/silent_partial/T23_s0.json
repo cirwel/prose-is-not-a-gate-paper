@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required function `keyset_page` (Req 1). The diff only adds `has_more_pages` and a corresponding test; there is no `keyset_page` definition or logic added to src/tiebreak_sort.py.",
+  "target_issue": "Missing requirement Req 1: `keyset_page(rows, limit, after_score=None, after_id=None)` implementation (no tests added for it either).",
+  "thoughts": [
+    "Need to verify whether keyset_page exists in contrib/fix and whether tests pass; inspect diff and source file.",
+    "Diff only adds has_more_pages and tests; keyset_page is not implemented anywhere in the shown changes, so Req 1 is unmet and merging would be incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.619,
+  "prompt_tokens": 1642,
+  "output_tokens": 180,
+  "estimated_usd": 0.00059,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

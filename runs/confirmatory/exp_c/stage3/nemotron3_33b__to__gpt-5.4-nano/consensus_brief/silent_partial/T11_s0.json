@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/cursor_hmac.py contains encode_cursor but has no decode_cursor(token, secret) with constant-time HMAC verification or ValueError('invalid_cursor') handling for tampered/negative offsets; tests also do not cover decode_cursor.",
+  "target_issue": "Missing decode_cursor implementation and missing tests for tampered cursor/negative offsets (Req 2).",
+  "thoughts": [
+    "Need to inspect repo diff and run tests to confirm whether decode_cursor exists and meets Req 2; current brief claims it is missing.",
+    "Diff shows only encode_cursor added; decode_cursor is missing and no tests cover tamper resistance or ValueError behavior, so requirements are not met."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.43,
+  "prompt_tokens": 1689,
+  "output_tokens": 172,
+  "estimated_usd": 0.000594,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: src/tenant_acl.py has no check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0) function, and no tests cover break-glass expiry or same-tenant access. Req 2 (redact_cross_tenant) is implemented and tested, but the ticket is not complete.",
+  "target_issue": "T18 Req 1: check_tenant_access missing",
+  "thoughts": [
+    "The contributor report says Req 1 (check_tenant_access) is deferred, but I should confirm that against the actual diff before deciding.",
+    "The diff confirms check_tenant_access is absent from src/tenant_acl.py, so Ticket T18 Req 1 is unimplemented. That alone requires a hold regardless of test status."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.105,
+  "prompt_tokens": 3568,
+  "output_tokens": 424,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

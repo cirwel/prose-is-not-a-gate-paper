@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tilde_spec.py does not define matches_tilde(version, floor), leaving the required inclusive floor and exclusive next-minor bound unimplemented. The added tests cover only highest-version selection.",
+  "target_issue": "T20 Req 1",
+  "thoughts": [
+    "I will inspect the diff and module tests to verify the tilde bounds, version selection, and compatibility requirements.",
+    "The diff adds highest-version selection but no matches_tilde implementation; I will check the full module to confirm Req 1 is missing.",
+    "The full module confirms matches_tilde is absent, so the PR is incomplete regardless of the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tilde_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.312,
+  "prompt_tokens": 2373,
+  "output_tokens": 208,
+  "estimated_usd": 0.009615,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

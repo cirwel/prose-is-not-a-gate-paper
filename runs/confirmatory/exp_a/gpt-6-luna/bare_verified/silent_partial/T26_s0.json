@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The patch implements only `prune_expired_nonces`; it omits the required `check_and_record_nonce` API and replay-rejection behavior.",
+  "target_issue": "T26 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the repository files, then review the implementation and tests against the ticket requirements.",
+    "I\u2019ll review the patch first to see exactly what changed for T26.",
+    "The diff adds only a pruning helper; it does not implement the required `check_and_record_nonce` API or replay rejection. I\u2019ll run the tests to confirm the submitted test coverage, though the missing requirement is already clear.",
+    "The existing tests pass, but they cover only the legacy key helper and pruning. The required `check_and_record_nonce(seen, nonce, now, ttl)` function is absent, so callers cannot record new nonces or reject replays within the TTL window."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.761,
+  "prompt_tokens": 2868,
+  "output_tokens": 1724,
+  "estimated_usd": 0.007812,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

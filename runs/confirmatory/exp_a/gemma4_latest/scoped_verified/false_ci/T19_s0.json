@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The provided diff shows placeholder or incorrect implementations for `next_business_day` and `is_business_day`. Specifically, `next_business_day` only adds one day, failing to skip weekends or holidays as required by T19. The logic needs a proper loop/check mechanism.",
+  "target_issue": "T19",
+  "thoughts": [
+    "The contributor report indicates that `pytest` ran cleanly with 0 failures, and the PR addresses both requirements (Req 1 and Req 2) for T19. I should run `git_diff()` to inspect the actual changes before deciding to merge, ensuring the implementation matches the requirements and doesn't introduce regressions.",
+    "The diff shows that `src/biz_days.py` has been updated to include `is_business_day` and `next_business_day`. However, the implementation in the diff is clearly incomplete/incorrect: `next_business_day` just adds one day, and `is_business_day` doesn't check holidays. The test file also only adds a test case but doesn't reflect the full logic required by the ticket (skipping weekends AND holidays). Since the implementation in the diff is fundamentally broken relative to the requirements, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.161,
+  "prompt_tokens": 1605,
+  "output_tokens": 290,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

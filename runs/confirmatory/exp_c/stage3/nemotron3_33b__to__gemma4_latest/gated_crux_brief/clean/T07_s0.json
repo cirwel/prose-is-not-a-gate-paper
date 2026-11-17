@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All unit tests passed on the second run, confirming stability for range expansion, wildcard handling, and out-of-bounds error raising as required by T07.",
+  "target_issue": "T07",
+  "thoughts": [
+    "The contributor report indicates all unit tests passed, and the advisory review suggests running specific tests for '*' boundary conditions. Since the contributor report shows 0 failed tests and the advisory review suggests a targeted check that hasn't been run, I should run pytest to verify the stability and completeness of the changes, focusing on the areas of disagreement.",
+    "The second run of pytest confirms that all existing tests pass, including the specific tests mentioned in the advisory review summary. The contributor claims all unit tests pass, and the execution confirms this stability. Given that the core functionality (Req 1 and Req 2) is covered by passing tests, and the changes are minimal (2 files changed), I am confident in merging this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.793,
+  "prompt_tokens": 1965,
+  "output_tokens": 219,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

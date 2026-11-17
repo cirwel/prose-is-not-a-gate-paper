@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation for Requirement 2, `filter_attrs(attrs, allowed_keys)`, is missing entirely from the diff. The PR only addresses Requirement 1 and related scaffolding.",
+  "target_issue": "T17",
+  "thoughts": [
+    "The contributor report indicates all tests passed, and the PR metadata confirms all checks passed. I should first examine the changes using `git_diff()` to ensure the implementation meets the requirements before deciding to merge.",
+    "The diff shows the addition of `escape_html_text` using `html.escape(text, quote=True)` and a corresponding test case. However, the requirements for `filter_attrs` (Req 2) are completely missing from the diff and the provided test file updates. The contributor report only mentions passing tests for the existing and newly added `escape_html_text`, but the core logic for attribute filtering is absent."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.468,
+  "prompt_tokens": 1462,
+  "output_tokens": 209,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

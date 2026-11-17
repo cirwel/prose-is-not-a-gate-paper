@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "wrap_code_fence always uses three backticks instead of max(3, longest consecutive backtick run + 1). truncate_log_lines slices lines but never appends the required '...[truncated N lines]' marker. Pytest confirms both ticket tests fail.",
+  "target_issue": "tests/test_fence_escape.py::test_nested_fence_width; tests/test_fence_escape.py::test_truncate_marker",
+  "thoughts": [
+    "I\u2019ll inspect the changed implementation and its tests, then decide whether the behavior meets both ticket requirements without breaking the legacy API.",
+    "The diff shows both core requirements are incomplete: the fence is always three backticks, and truncation never appends a marker. I\u2019ll run the tests to confirm the submitted test suite catches these defects.",
+    "The submitted implementation fails both new tests and omits required behavior: it does not size the fence from the longest backtick run or append a truncation marker with the removed-line count. The legacy newline test passes, but the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.487,
+  "prompt_tokens": 2860,
+  "output_tokens": 345,
+  "estimated_usd": 0.003392,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

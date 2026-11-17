@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "parse_enum and parse_enum_list match Req 1 and Req 2 of T27. run_pytest reports 3/3 passing, including the legacy split test, so existing behavior is preserved. The only unspecified choice is that empty input with no default raises 'unknown_enum:', which is a reasonable reading of the ticket.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report claims completion, but I need to verify the actual diff against Req 1 and Req 2 before deciding.",
+    "The diff implements both requirements correctly on inspection, but I should confirm the contributor's claimed test results by running the suite in the worktree before deciding.",
+    "The diff implements Req 1 and Req 2 as specified: trimmed, case-insensitive matching returns canonical entries, default applies only to empty input, and unknown tokens raise 'unknown_enum:<tok>'. The legacy split_csv_tokens is untouched, and the test suite passes on the worktree."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.811,
+  "prompt_tokens": 6643,
+  "output_tokens": 1130,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff implements both requested functions and preserves the legacy public function. Repository tests pass with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and its tests to verify the required behavior and that existing public behavior is preserved.",
+    "The diff implements both requested helpers, retains `has_query` unchanged, and adds focused tests. I\u2019ll run the repository tests to confirm the reported clean result.",
+    "The implementation matches both ticket requirements: parsing preserves blank values, and canonicalization removes configured keys, lexicographically sorts the remaining pairs, and URL-encodes them. The existing `has_query` signature and behavior are unchanged, and all tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.281,
+  "prompt_tokens": 2973,
+  "output_tokens": 366,
+  "estimated_usd": 0.00355,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

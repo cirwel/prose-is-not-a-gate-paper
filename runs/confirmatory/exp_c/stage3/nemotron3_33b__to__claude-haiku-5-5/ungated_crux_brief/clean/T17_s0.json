@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "html.escape(text, quote=True) escapes & first, then < > \" ', which meets Req 1. filter_attrs meets Req 2: it skips keys starting with 'on', keeps only lowercased keys in allowed_keys, drops values whose stripped lowercase form starts with 'javascript:', and HTML-escapes kept values. The legacy wrap_tag signature and behavior are unchanged, and run_pytest passed all 3 tests (exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "The advisory brief contains an unverified claim about html.escape ordering, and the contributor report alone is not evidence. I'll read the actual diff before deciding.",
+    "The diff shows html.escape(quote=True), which escapes & first, and filter_attrs meets Req 2. I'll run the test suite myself rather than rely on the contributor's report.",
+    "The diff uses html.escape(quote=True), which replaces & first and covers & < > \" ', so Req 1 holds. filter_attrs rejects 'on' keys, keeps only normalized allowed keys, drops javascript: values, and escapes kept values, and wrap_tag is unchanged. The independent pytest run passed 3/3."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.118,
+  "prompt_tokens": 7411,
+  "output_tokens": 1126,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

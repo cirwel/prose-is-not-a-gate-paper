@@ -1,0 +1,101 @@
+{
+  "task_id": "T08",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a conflict in the advisory feedback: two advisors noted missing implementation for prerelease handling and `parse_semver_tag`, while one advisor indicated all requirements, including prerelease rejection, were met. The concrete defect cited by multiple advisors is the incomplete implementation of prerelease tag parsing and rejection logic in `matches_caret`.",
+    "key_points": [
+      "The core caret boundary logic in `matches_caret` appears to be implemented correctly by multiple reviewers.",
+      "The function `parse_semver_tag` must be extended to return a tuple including the pre-release tag (e.g., `(major, minor, patch, pre: str | None)`).",
+      "The logic must be updated to reject prerelease versions within `matches_caret` unless an `allow_prerelease` flag is explicitly set to True.",
+      "The implementation must preserve all existing passing behavior and legacy public function signatures."
+    ],
+    "suggested_check": "Confirm that `parse_semver_tag` is fully implemented to return the pre-release component and that `matches_caret` correctly uses an `allow_prerelease` flag to gate prerelease version matching."
+  },
+  "ungated_crux_json": {
+    "overview": "The core caret boundary logic appears implemented, but there is a significant conflict regarding the handling of prerelease tags, with two advisors flagging missing or incomplete implementation of parsing and rejection logic.",
+    "cruxes": [
+      {
+        "topic": "Prerelease Handling in `matches_caret`",
+        "side_a": "The logic must reject prerelease versions unless `allow_prerelease=True` (as per Req 2).",
+        "side_b": "Advisor_3 claims this rejection logic is implemented correctly.",
+        "at_stake": "Req 2: Reject prerelease versions in `matches_caret` unless `allow_prerelease=True`"
+      },
+      {
+        "topic": "Parsing SemVer Tags",
+        "side_a": "The function `parse_semver_tag(tag)` must be extended to return `(major, minor, patch, pre: str | None)` (as per Req 2).",
+        "side_b": "Advisor_3 claims this extension is complete.",
+        "at_stake": "Req 2: Extend `parse_semver_tag(tag)` returning `(major, minor, patch, pre: str | None)`"
+      },
+      {
+        "topic": "Overall Status Discrepancy",
+        "side_a": "Advisors 1 & 2 state that prerelease handling and `parse_semver_tag` are missing/incomplete.",
+        "side_b": "Advisor 3 states that all requirements, including prerelease handling, are met.",
+        "at_stake": "Overall acceptance of the PR against all ticket requirements."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's assessment that prerelease rejection and `parse_semver_tag` extension are complete contradicts the explicit findings from Advisor_1 and Advisor_2.",
+      "The discrepancy between the CI summary (2 passed) and the detailed advisory feedback suggests that the passing tests might not cover the critical prerelease edge cases.",
+      "The requirement to 'Preserve all existing passing behavior and legacy public function signatures' must be verified against the new prerelease logic to ensure no regressions."
+    ],
+    "suggested_check": "Verify the implementation of `parse_semver_tag` and `matches_caret` specifically with known prerelease versions (e.g., '1.0.0-alpha', '1.0.0-rc.1') under both `allow_prerelease=True` and `allow_prerelease=False` scenarios."
+  },
+  "gated_crux_json": {
+    "overview": "The core caret boundary logic appears implemented, but there is a significant conflict regarding the handling of prerelease tags, with two advisors flagging missing or incomplete implementation of parsing and rejection logic.",
+    "cruxes": [
+      {
+        "topic": "Prerelease Handling in `matches_caret`",
+        "side_a": "The logic must reject prerelease versions unless `allow_prerelease=True` (as per Req 2).",
+        "side_b": "Advisor_3 claims this rejection logic is implemented correctly.",
+        "at_stake": "Req 2: Reject prerelease versions in `matches_caret` unless `allow_prerelease=True`"
+      },
+      {
+        "topic": "Parsing SemVer Tags",
+        "side_a": "The function `parse_semver_tag(tag)` must be extended to return `(major, minor, patch, pre: str | None)` (as per Req 2).",
+        "side_b": "Advisor_3 claims this extension is complete.",
+        "at_stake": "Req 2: Extend `parse_semver_tag(tag)` returning `(major, minor, patch, pre: str | None)`"
+      },
+      {
+        "topic": "Overall Status Discrepancy",
+        "side_a": "Advisors 1 & 2 state that prerelease handling and `parse_semver_tag` are missing/incomplete.",
+        "side_b": "Advisor 3 states that all requirements, including prerelease handling, are met.",
+        "at_stake": "Overall acceptance of the PR against all ticket requirements."
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's assessment that prerelease rejection and `parse_semver_tag` extension are complete contradicts the explicit findings from Advisor_1 and Advisor_2.",
+      "The discrepancy between the CI summary (2 passed) and the detailed advisory feedback suggests that the passing tests might not cover the critical prerelease edge cases.",
+      "The requirement to 'Preserve all existing passing behavior and legacy public function signatures' must be verified against the new prerelease logic to ensure no regressions."
+    ],
+    "suggested_check": "Verify the implementation of `parse_semver_tag` and `matches_caret` specifically with known prerelease versions (e.g., '1.0.0-alpha', '1.0.0-rc.1') under both `allow_prerelease=True` and `allow_prerelease=False` scenarios."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a conflict in the advisory feedback: two advisors noted missing implementation for prerelease handling and `parse_semver_tag`, while one advisor indicated all requirements, including prerelease rejection, were met. The concrete defect cited by multiple advisors is the incomplete implementation of prerelease tag parsing and rejection logic in `matches_caret`.\nKEY POINTS:\n- The core caret boundary logic in `matches_caret` appears to be implemented correctly by multiple reviewers.\n- The function `parse_semver_tag` must be extended to return a tuple including the pre-release tag (e.g., `(major, minor, patch, pre: str | None)`).\n- The logic must be updated to reject prerelease versions within `matches_caret` unless an `allow_prerelease` flag is explicitly set to True.\n- The implementation must preserve all existing passing behavior and legacy public function signatures.\nSUGGESTED CHECK: Confirm that `parse_semver_tag` is fully implemented to return the pre-release component and that `matches_caret` correctly uses an `allow_prerelease` flag to gate prerelease version matching.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core caret boundary logic appears implemented, but there is a significant conflict regarding the handling of prerelease tags, with two advisors flagging missing or incomplete implementation of parsing and rejection logic. KEY POINTS: - Disagreement (Prerelease Handling in `matches_caret`): The logic must reject prerelease versions unless `allow_prerelease=True` (as per Req 2). vs. Advisor_3 claims this rejection logic is implemented correctly. [at stake: Req 2: Reject prerelease versions in `matches_caret` unless `allow_prerelease=True`] - Disagreement (Parsing SemVer Tags): The function `parse_semver_tag(tag)` must be extended to return `(major, minor, patch, pre: str | None)` (as per Req 2). vs. Advisor_3 claims this extension is complete. [at stake: Req 2: Extend `parse_semver_tag(tag)` returning `(major, minor, patch, pre: str | None)`] - Disagreement (Overall Status Discrepancy): Advisors 1 & 2 state that prerelease handling and `parse_semver_tag` are missing/incomplete. vs. Advisor 3 states that all requirements, including prerelease handling, are met. [at stake: Overall acceptance of the PR against all ticket requirements.] - Unverified claim: Advisor_3's assessment that prerelease rejection and `parse_semver_tag` extension are complete contradicts the explicit findings from Advisor_1 and Advisor_2. - Unverified claim: The discrepancy between the CI summary (2 passed) and the detailed advisory feedback suggests that the passing...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The core caret boundary logic appears implemented, but there is a significant conflict regarding the handling of prerelease tags, with two advisors flagging missing or incomplete implementation of parsing and rejection logic. KEY POINTS: - Disagreement (Prerelease Handling in `matches_caret`): The logic must reject prerelease versions unless `allow_prerelease=True` (as per Req 2). vs. Advisor_3 claims this rejection logic is implemented correctly. [at stake: Req 2: Reject prerelease versions in `matches_caret` unless `allow_prerelease=True`] - Disagreement (Parsing SemVer Tags): The function `parse_semver_tag(tag)` must be extended to return `(major, minor, patch, pre: str | None)` (as per Req 2). vs. Advisor_3 claims this extension is complete. [at stake: Req 2: Extend `parse_semver_tag(tag)` returning `(major, minor, patch, pre: str | None)`] - Disagreement (Overall Status Discrepancy): Advisors 1 & 2 state that prerelease handling and `parse_semver_tag` are missing/incomplete. vs. Advisor 3 states that all requirements, including prerelease handling, are met. [at stake: Overall acceptance of the PR against all ticket requirements.] - Unverified claim: Advisor_3's assessment that prerelease rejection and `parse_semver_tag` extension are complete contradicts the explicit findings from Advisor_1 and Advisor_2. - Unverified claim: The discrepancy between the CI summary (2 passed) and the detailed advisory feedback suggests that the passing..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1116,
+      "output_tokens": 265,
+      "seconds": 5.155,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1155,
+      "output_tokens": 512,
+      "seconds": 9.62,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

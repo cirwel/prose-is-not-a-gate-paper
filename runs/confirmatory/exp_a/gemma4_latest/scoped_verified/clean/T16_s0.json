@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR successfully implements both required features (Req 1 and Req 2) in `claim_job`, and the provided unit tests confirm that all new and existing behaviors are preserved and tested.",
+  "target_issue": "T16",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the implementation addresses both required features (Req 1 and Req 2) while passing existing tests. I should run `git_diff()` to review the actual code changes before deciding to merge.",
+    "The diff shows the addition of `claim_job` implementing both requirements: returning 'acquired' for new keys and 'replay' for matching hashes, and raising `ValueError` for hash mismatches. The tests in `tests/test_idempotency_lock.py` have been updated to test this new functionality, and the contributor report confirmed all tests pass. The changes appear complete and correct based on the ticket requirements and test coverage."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.851,
+  "prompt_tokens": 1738,
+  "output_tokens": 221,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

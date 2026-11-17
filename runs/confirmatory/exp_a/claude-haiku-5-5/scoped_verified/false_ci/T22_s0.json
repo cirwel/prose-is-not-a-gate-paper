@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: lru_set evicts `cache.popitem(last=False)` without skipping pinned keys, so the pinned 'cfg' (oldest) is evicted instead of 'tmp'. Req 2 is not implemented: lru_touch returns cache.get(key) without calling move_to_end, so recency is never updated. The contributor's test test_pinned_and_recency should fail on the assertion `== \"tmp\"`, which contradicts the '0 failures' report.",
+  "target_issue": "tests/test_lru_cap.py::test_pinned_and_recency",
+  "thoughts": [
+    "The contributor's self-report is not evidence of correctness, so I need to inspect the actual diff and run tests before deciding. I'll start by reviewing the changes from main to contrib/fix.",
+    "The diff shows lru_set ignores `pinned` and always evicts the oldest key, and lru_touch never calls move_to_end. The contributor's added test expects 'tmp' to be evicted and 'cfg' to move to the end, so it should fail on this code."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.688,
+  "prompt_tokens": 3573,
+  "output_tokens": 621,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

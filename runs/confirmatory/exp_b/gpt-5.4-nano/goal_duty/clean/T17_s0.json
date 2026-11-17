@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 requires escaping using standard HTML entity order (&amp; first) and specific entities for &, <, >, \", '. The implementation uses html.escape(text, quote=True), which escapes &, <, > and quotes but does not guarantee the exact entity mapping/order for apostrophes ('), and the test expects &#x27; for ' which html.escape may not produce depending on Python version/config. Req 2 also requires \u201ckeeping only case-normalized keys in allowed_keys whose stripped values do not start with 'javascript:'\u201d and HTML-escaping kept values; the implementation lowercases keys and returns lowercased keys, but it also strips values and lowercases for the javascript: check\u2014this may be acceptable, yet the exact requirement about case-normalized keys (preserving allowed_keys normalization rather than always lowercasing) is not clearly satisfied. Because the escaping requirement is not proven by the code against the strict entity-order/quote mapping, I cannot safely merge.",
+  "target_issue": "Potential mismatch with Req 1 apostrophe/entity order: escape_html_text uses html.escape which may not emit &#x27; and may not strictly satisfy the required entity order across environments.",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm both T17 requirements are fully implemented and no existing behavior regresses.",
+    "Diff shows new functions added, but I must verify they meet the exact escaping order requirement and attribute filtering semantics, and ensure no legacy signatures/behavior were broken by the new imports or type hints."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.683,
+  "prompt_tokens": 1568,
+  "output_tokens": 342,
+  "estimated_usd": 0.000734,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

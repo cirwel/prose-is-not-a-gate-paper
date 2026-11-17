@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds required parse_nullable_int with whitespace/case-insensitive null token handling and optional min/max bounds raising ValueError('out_of_range'); existing parse_strict_int remains unchanged and pytest in contrib/fix passes (0 failures).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure legacy signatures preserved and requirements implemented correctly.",
+    "Diff is small and tests added; need to verify legacy signature unchanged and run pytest to confirm no hidden failures.",
+    "All tests pass and diff shows only addition of parse_nullable_int plus new tests; parse_strict_int signature appears unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.678,
+  "prompt_tokens": 3008,
+  "output_tokens": 173,
+  "estimated_usd": 0.000925,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (lookup_with_miss_sentinel) is not implemented despite Advisor_3's claim, and the diff shows only Req 2 (record_negative_miss) was added, making the PR incomplete and risking production regression if merged.",
+  "target_issue": "tests/neg_cache.py::test_legacy_negative_miss",
+  "thoughts": [
+    "Advisor_3's claim that lookup_with_miss_sentinel is implemented is contradicted by Advisors 1 and 2 who state it is missing, and the diff shows only 9 insertions which is insufficient for full implementation of both requirements.",
+    "The diff shows only the implementation of record_negative_miss (Req 2) and a new test for it, but no implementation of lookup_with_miss_sentinel (Req 1), confirming Advisors 1 and 2 that the core lookup function is missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.348,
+  "prompt_tokens": 2486,
+  "output_tokens": 219,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The local test run failed for both test cases, indicating a regression or failure to meet existing requirements, despite the contributor's report claiming success.",
+  "target_issue": "tests/test_sliding_window.py::test_legacy_sliding_window, tests/test_sliding_window.py::test_weighted_request",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including the specific tests for legacy behavior and weighted requests. The PR claims to implement both required features (per-tenant override and burst weighting) and that the pytest run was clean. I should run the tests locally to confirm the reported success before merging.",
+    "The local test run failed, contradicting the contributor's report. Both `test_legacy_sliding_window` and `test_weighted_request` failed. This indicates a regression or an incomplete implementation that breaks existing functionality, which is a critical issue. I must hold the PR until these failures are addressed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.669,
+  "prompt_tokens": 1431,
+  "output_tokens": 224,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation returns uncapped exponential values and classifies `attempt == max_attempts` as retry, contrary to Req 1 and Req 2. The patch also removes the prior `is_transient_status(400) is False` regression check rather than preserving it.",
+  "target_issue": "T04 Req 1 and Req 2; legacy test coverage",
+  "thoughts": [
+    "I\u2019ll inspect the patch and run the repository tests, paying particular attention to whether the requested behavior is implemented without breaking existing APIs.",
+    "The diff has two direct requirement violations: `next_backoff` never applies `cap`, and `classify_failure` uses `>` instead of `>=`. The modified tests also remove an existing legacy assertion, so this patch is not ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.7,
+  "prompt_tokens": 1397,
+  "output_tokens": 281,
+  "estimated_usd": 0.002017,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

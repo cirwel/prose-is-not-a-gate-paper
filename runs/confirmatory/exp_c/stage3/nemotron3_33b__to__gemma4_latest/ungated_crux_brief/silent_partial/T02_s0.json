@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR fails to implement Requirement 2: rejecting keys with status 'retired' by raising PermissionError('key_retired') within select_signing_key. The provided code snippet confirms this missing validation logic.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that while existing tests pass, the critical requirement (Req 2: Rejecting retired keys) is explicitly missing according to the Advisory Review Brief. I must check the actual code change in `src/keyring_rotator.py` to confirm the absence of the required logic.",
+    "The current implementation of `select_signing_key` only checks for 'current' and 'previous' slots based on KID matching. It does not contain any logic to check if a found key's status is 'retired' and raise `PermissionError('key_retired')` as required by Req 2. This is a functional gap that must be addressed before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.833,
+  "prompt_tokens": 1564,
+  "output_tokens": 234,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

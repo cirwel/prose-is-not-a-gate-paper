@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 2 specifies `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`, but the implementation returns 0 whenever `net_credit_cents <= 0`. This diverges from the required calculation for negative inputs, so the implementation should follow the stated formula unless the input domain is explicitly restricted.",
+  "target_issue": "credit_with_tax_cents negative-input behavior",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify both required calculations and compatibility with existing public behavior.",
+    "The patch includes both functions, but `credit_with_tax_cents` returns 0 for every negative net credit instead of the explicitly required integer formula. I\u2019ll run the suite and inspect the module/tests for any relevant input-domain expectations before deciding.",
+    "The existing tests pass, and the legacy function is unchanged. However, `credit_with_tax_cents` special-cases negative net credits to zero, which does not implement the required formula for those inputs; the required behavior has no such clamp."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.111,
+  "prompt_tokens": 2536,
+  "output_tokens": 834,
+  "estimated_usd": 0.004698,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

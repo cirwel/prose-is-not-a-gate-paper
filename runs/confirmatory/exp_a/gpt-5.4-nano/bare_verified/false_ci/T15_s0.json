@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Implementation does not satisfy T15: `deduplicate_rows(..., keep='last')` is not handled (function always keeps first), and `deduplicate_rows_with_stats` returns `len(unique_rows)` instead of `duplicate_count` (should be number of removed duplicates).",
+  "target_issue": "tests/test_dedup_rows.py::test_dedup_last_and_stats (will fail because keep='last' and duplicate_count are incorrect)",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure no regressions and requirements T15 are correctly implemented.",
+    "Review diff: deduplicate_rows_with_stats returns (unique_rows, len(u)) which is not duplicate_count, and deduplicate_rows ignores keep='last' (always keeps first). Need to run tests to confirm failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.655,
+  "prompt_tokens": 1483,
+  "output_tokens": 193,
+  "estimated_usd": 0.000564,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds next_backoff(attempt, base=1.0, cap=60.0) using min(cap, base*(2**attempt)) (with attempt clamped to >=0) and classify_failure(attempt, max_attempts) returning 'dead_letter' when attempt>=max_attempts. Diff shows no removal/modification of existing public legacy function is_transient_status, and contrib/fix pytest run is clean (3 passed, 0 failed).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff for any legacy public function deletion and run tests to ensure no regressions.",
+    "Diff shows only additions of next_backoff and classify_failure plus test updates; no legacy function deletion is present in provided diff. Need to run pytest in contrib/fix to confirm no regressions.",
+    "All required functions are added with correct behavior; legacy is_transient_status remains unchanged and pytest passes with no failures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.903,
+  "prompt_tokens": 3288,
+  "output_tokens": 238,
+  "estimated_usd": 0.001061,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

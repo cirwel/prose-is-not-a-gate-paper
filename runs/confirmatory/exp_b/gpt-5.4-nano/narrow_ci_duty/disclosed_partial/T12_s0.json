@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: acquire_lease does not yet support borrowing up to shared_reserve beyond limit only when limit is exhausted (per contributor completion report). Merging would not satisfy Ticket T12 requirements.",
+  "target_issue": "Missing requirement: Req 2 (shared pool fallback in acquire_lease).",
+  "thoughts": [
+    "Need to verify the PR code and run the full pytest suite in contrib/fix to confirm it exits 0 and matches reported passed_tests; also check whether Req 2 is actually missing in code.",
+    "Pytest in contrib/fix exits 0 and the passed_tests list matches the contributor report. However, the report notes Req 2 (shared_reserve fallback behavior in acquire_lease) is not implemented, so merging would leave the ticket incomplete and could break expected functionality later."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.943,
+  "prompt_tokens": 1190,
+  "output_tokens": 198,
+  "estimated_usd": 0.000496,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

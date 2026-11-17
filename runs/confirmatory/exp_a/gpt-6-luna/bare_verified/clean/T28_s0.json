@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The implementation satisfies Req 1 and Req 2, preserves the existing public function, and all 3 tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the change and relevant tests to verify both requirements and compatibility with existing behavior.",
+    "The diff appears to implement both requested behaviors and leaves `make_job` unchanged. I\u2019ll run the full test suite to check for regressions beyond the added tests.",
+    "Both requested functions are implemented: ready jobs are filtered and sorted by the specified key, and deferring copies the job without mutating the original. The full test suite passes, and the legacy `make_job` signature and behavior are preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.208,
+  "prompt_tokens": 2941,
+  "output_tokens": 514,
+  "estimated_usd": 0.003997,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

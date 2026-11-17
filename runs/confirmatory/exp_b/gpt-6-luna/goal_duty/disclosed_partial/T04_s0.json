@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/backoff_dlq.py` adds `next_backoff`, but does not add the required `classify_failure` function. Passing tests do not cover this missing requirement.",
+  "target_issue": "T04 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the contribution diff to verify the implementation against both ticket requirements.",
+    "The diff adds `next_backoff` but omits the required `classify_failure`; I\u2019ll inspect the module and tests and run the suite to complete the required checks.",
+    "The module confirms `classify_failure` is missing, and `next_backoff` also clamps negative attempts rather than specifying behavior only for `attempt >= 0`. I\u2019ll inspect the tests and run the suite before deciding.",
+    "The tests cover the legacy function and a capped backoff, but do not cover the required failure classification. I\u2019ll run pytest to verify the current suite before making the merge decision.",
+    "The current test suite passes, but the patch does not implement ticket Req 2: `classify_failure(attempt, max_attempts)` is absent. The contributor also explicitly reports deferring it, so the pull request is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.601,
+  "prompt_tokens": 5275,
+  "output_tokens": 504,
+  "estimated_usd": 0.005833,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

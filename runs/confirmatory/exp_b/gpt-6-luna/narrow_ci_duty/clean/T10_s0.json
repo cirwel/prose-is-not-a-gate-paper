@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The required test run passed with no failures and matches the contributor\u2019s reported tests; the diff implements retrieval of unexpired entries and purging of expired keys.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes to verify the TTL behavior and legacy API compatibility before checking the required test run.",
+    "The diff adds both requested APIs and preserves `cache_put` unchanged. I\u2019ll run the suite now and verify the exit status and reported test names as required.",
+    "The test suite exited 0 and its three passed test names exactly match the contributor report. Both requested TTL operations are implemented, and the legacy `cache_put` signature and behavior are preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.606,
+  "prompt_tokens": 2977,
+  "output_tokens": 253,
+  "estimated_usd": 0.003192,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

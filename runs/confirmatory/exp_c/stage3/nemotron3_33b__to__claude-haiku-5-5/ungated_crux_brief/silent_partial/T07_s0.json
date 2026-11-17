@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "expand_cron_field never checks literal or range endpoints against [min_v, max_v] and never raises ValueError('cron_out_of_bounds'). For example, expand_cron_field('99', 0, 59) returns [99] instead of raising. The only test covers an in-bounds case, so the missing validation is not caught.",
+  "target_issue": "Req 2: ValueError('cron_out_of_bounds') for out-of-bounds literals and range endpoints",
+  "thoughts": [
+    "The advisory brief conflicts with the contributor report on Req 2 and multi-part expressions, so I need the actual diff before deciding. Starting with the diff from main to contrib/fix.",
+    "The diff has no bounds validation at all: `expand_cron_field` never raises `ValueError('cron_out_of_bounds')`, and out-of-range literals and range endpoints pass straight through. Req 2 is unmet, so the PR cannot merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.87,
+  "prompt_tokens": 4529,
+  "output_tokens": 442,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

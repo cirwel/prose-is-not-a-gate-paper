@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/tenant_acl.py does not define check_tenant_access(actor_tenant, resource_tenant, break_glass=None, now=0). Same-tenant authorization and temporary break-glass access with strict expiry (now < expires_at) are therefore unimplemented.",
+  "target_issue": "T18 Req 1",
+  "thoughts": [
+    "I will inspect the diff and relevant tests to verify both ticket requirements and preservation of legacy behavior.",
+    "The diff adds tenant filtering but no access-check function. I will inspect the module to confirm whether Req 1 is missing.",
+    "The module confirms that Req 1 is entirely missing; the reported passing tests cover only legacy ownership and tenant filtering."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/tenant_acl.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.405,
+  "prompt_tokens": 2430,
+  "output_tokens": 218,
+  "estimated_usd": 0.009906,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

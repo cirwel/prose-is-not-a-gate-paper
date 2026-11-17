@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_nullable_int does not accept min_val or max_val and does not enforce bounds; the contributor also confirms Req 2 was deferred.",
+  "target_issue": "T03 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the nullable parser and bounds requirement against the ticket.",
+    "The diff adds nullable-token parsing but omits the required min_val/max_val parameters and out_of_range behavior. I\u2019ll check the full source and tests, then run the suite before deciding.",
+    "The source confirms bounds are not implemented, which is a ticket requirement. I\u2019ll inspect the tests and run pytest to complete the queue check.",
+    "The implementation handles nullable tokens and preserves the legacy parser, and the available tests pass. However, the required min_val/max_val parameters and ValueError('out_of_range') behavior are absent, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nullable_int.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.01,
+  "prompt_tokens": 3731,
+  "output_tokens": 1255,
+  "estimated_usd": 0.007,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

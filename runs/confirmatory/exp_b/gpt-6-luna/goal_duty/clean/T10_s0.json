@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`cache_get` returns the value only while `expires_at > now` and returns `None` for absent or expired keys; `purge_expired` removes entries with `expires_at <= now` and returns the number removed. Existing behavior is preserved and pytest passes (3/3).",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the change against the ticket before relying on the contributor\u2019s test report.",
+    "The diff adds both requested functions and preserves `cache_put`\u2019s signature; I\u2019ll inspect the module and related tests for compatibility or missing cases.",
+    "The repository contains only the cache module and its focused test file, so I\u2019ll verify their contents and then run the suite.",
+    "The implementation uses the required strict expiry boundary (`expires_at > now`) and removes entries at or before `now`; I\u2019ll check the tests and execute pytest.",
+    "The tests cover legacy put behavior, live versus expired reads, and removing expired keys while retaining live entries. I\u2019ll run the full test suite to verify the PR state.",
+    "The diff implements both ticket requirements, preserves the legacy `cache_put` signature and behavior, and all repository tests pass. No requirement is missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_ttl_cache.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.504,
+  "prompt_tokens": 8117,
+  "output_tokens": 487,
+  "estimated_usd": 0.008053,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

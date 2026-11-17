@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 requires shares to sum strictly to `total_cents`, but negative totals can produce a non-conserving result. Use floor-based integer quotient/remainder allocation (and exact fractional comparisons) so remainder distribution conserves cents for all supported inputs.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the patch directly, focusing on remainder allocation, edge cases, and preservation of the legacy API.",
+    "The implementation fails Req 1 for negative totals: `int()` truncates shares toward zero, and the resulting negative remainder is mishandled by `order[:rem]`. For example, `split_cents_exact(-100, [1, 1, 1])` returns shares summing to -97, violating strict conservation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.517,
+  "prompt_tokens": 1926,
+  "output_tokens": 805,
+  "estimated_usd": 0.004117,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

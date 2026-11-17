@@ -1,0 +1,27 @@
+{
+  "task_id": "T30",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `mask_secret` correctly but fails to implement the required `project_allowed_fields` function specified in Req 1 of Ticket T30.",
+  "key_findings": [
+    "Req 1 (`project_allowed_fields`) is completely missing from the implementation.",
+    "Req 2 (`mask_secret`) is implemented and tested correctly.",
+    "Existing legacy behavior for `has_role` is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing function: `project_allowed_fields(record, role, role_fields)`",
+    "Missing test coverage for `project_allowed_fields`"
+  ],
+  "verification_check": "src/field_mask.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 690,
+    "output_tokens": 160,
+    "seconds": 20.71,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

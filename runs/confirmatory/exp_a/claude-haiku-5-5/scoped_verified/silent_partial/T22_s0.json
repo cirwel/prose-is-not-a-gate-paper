@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/lru_cap.py has no `lru_set(cache, key, value, capacity, pinned=())`, so there is no OrderedDict-based capacity eviction of the least-recently-used non-pinned key and no pinned-key preservation. The contributor's tests only cover `lru_touch` and the legacy `make_lru`, so the 'ready_for_review' report does not reflect ticket completeness. `lru_touch` itself matches Req 2 (returns value or None and calls move_to_end), but the PR is incomplete.",
+  "target_issue": "Req 1: lru_set(cache, key, value, capacity, pinned=()) with LRU eviction of non-pinned keys is missing",
+  "thoughts": [
+    "I should not trust the contributor's self-reported test results; I'll inspect the actual diff and run the tests myself before deciding.",
+    "The diff adds only `lru_touch`; there is no `lru_set` function, so Req 1 (capacity eviction and pinned-key preservation) is missing regardless of test status."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.501,
+  "prompt_tokens": 56175,
+  "output_tokens": 528,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

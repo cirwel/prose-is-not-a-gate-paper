@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "is_breaking_bump detects major increments and minor increments within 0.x versions; verify_lock_pins returns sorted declared package names that are missing from locked or have unequal versions. All three tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the actual diff and implementation to verify both requirements and ensure no legacy behavior or signatures were broken.",
+    "The implementation appears to meet both requirements: it detects major and 0.x minor bumps, and returns sorted declared packages that are missing or mismatched in the lockfile. I\u2019ll run the repository tests to check for regressions.",
+    "The diff implements both ticket requirements, preserves the existing split_ver signature and behavior, and the test suite passes with no regressions. The implementation is focused and complete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.284,
+  "prompt_tokens": 3631,
+  "output_tokens": 735,
+  "estimated_usd": 0.005257,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_requirement_minority_hold",
+    "stage1_hold_count": 1
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T07",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is unmet: expand_cron_field adds integer literals directly and expands range endpoints without checking that values are within [min_v, max_v] or raising ValueError('cron_out_of_bounds').",
+  "target_issue": "T07 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the implementation and tests, focusing on out-of-bounds handling and mixed comma-separated range/step expressions.",
+    "The implementation has no bounds validation: integer literals are added directly, and range endpoints are used without checking `min_v`/`max_v`, so Req 2 is unmet. It also silently treats a stepped single integer such as `5/2` as just `5`; the current tests cover neither this syntax nor out-of-bounds cases.",
+    "The existing tests pass, but they do not exercise the required boundary validation. The implementation accepts out-of-bounds literals and range endpoints without raising the required ValueError, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.052,
+  "prompt_tokens": 3492,
+  "output_tokens": 537,
+  "estimated_usd": 0.004512,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

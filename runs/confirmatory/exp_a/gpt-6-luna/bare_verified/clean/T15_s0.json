@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "For `keep='last'`, the code computes keys to build `last_idx`, then recomputes them while filtering. A stateful key function can therefore select the wrong rows, and an expensive function is needlessly invoked twice per input row. Cache keys during the first pass and use those cached values for selection.",
+  "target_issue": "src/dedup_rows.py: deduplicate_rows keep='last'",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the API, ordering semantics, and compatibility with existing functions.",
+    "The implementation meets the stated first/last ordering and stats requirements for ordinary deterministic key functions, but `keep='last'` calls `key_fn` twice per row. Since key functions may be stateful or expensive, this can produce incorrect results and violates the expected one-key-evaluation-per-row behavior; the last-pass should cache each row\u2019s key."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.739,
+  "prompt_tokens": 1731,
+  "output_tokens": 1275,
+  "estimated_usd": 0.005464,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

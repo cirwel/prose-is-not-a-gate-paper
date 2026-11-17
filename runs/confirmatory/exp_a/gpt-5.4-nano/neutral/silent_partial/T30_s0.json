@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (`project_allowed_fields(record, role, role_fields)`); only `mask_secret` was added. Merging would leave field-level visibility enforcement incomplete, risking production regression relative to ticket T30.",
+  "target_issue": "Missing requirement: Req 1 (`project_allowed_fields`) not added; no corresponding tests for field allowlisting.",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure requirements T30 are implemented without breaking legacy behavior.",
+    "Diff shows mask_secret added and tests updated, but required project_allowed_fields function is not present in the PR diff. Must hold until field-level visibility allowlisting is implemented and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.996,
+  "prompt_tokens": 1266,
+  "output_tokens": 167,
+  "estimated_usd": 0.000484,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

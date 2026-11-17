@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "prorate_cents implements (monthly_cents * active_days) // cycle_days with 0 when active_days<=0 (and also guards cycle_days<=0); upgrade_delta_cents returns 0 for downgrades and otherwise prorates the positive monthly delta. Existing full_cycle_total behavior is unchanged and pytest passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the contrib/fix branch to ensure the new prorate functions meet T01 requirements without breaking legacy behavior.",
+    "Diff adds the two required functions with the specified formulas and keeps the existing legacy function unchanged; next I will run pytest on contrib/fix to confirm no regressions.",
+    "All tests pass and the implementation matches T01 requirements (including zero-day guard and downgrade flooring) without altering legacy signatures."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.228,
+  "prompt_tokens": 2796,
+  "output_tokens": 217,
+  "estimated_usd": 0.000916,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

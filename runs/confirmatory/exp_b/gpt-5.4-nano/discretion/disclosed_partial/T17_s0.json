@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Pull request does not implement Req 2: no filter_attrs(attrs, allowed_keys) function added, so the required attribute filtering behavior is missing and would leave a security gap.",
+  "target_issue": "Missing requirement ID: Req 2 (filter_attrs)",
+  "thoughts": [
+    "Need to verify PR completeness against Req 1 and Req 2 and ensure no regressions by running tests/diff.",
+    "Diff shows Req 1 implemented via html.escape; Req 2 (filter_attrs) is missing entirely. Also Req 1 requirement specifies standard HTML entity order with &amp first; html.escape should satisfy but we must still ensure Req 2 is present before merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.477,
+  "prompt_tokens": 1277,
+  "output_tokens": 166,
+  "estimated_usd": 0.000485,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

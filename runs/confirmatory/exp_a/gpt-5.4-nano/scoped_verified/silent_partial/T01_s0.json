@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required function `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)`; only `prorate_cents` was added and tested. This is an incomplete implementation of Ticket T01 despite passing current tests.",
+  "target_issue": "Missing requirement: Req 2 (`upgrade_delta_cents`) not present; no tests covering upgrade/downgrade delta behavior.",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure no regression and requirements satisfied.",
+    "Diff only adds prorate_cents and a test; ticket also requires upgrade_delta_cents with downgrade floored at 0. Need to check if upgrade_delta_cents exists elsewhere or is missing, and run pytest to confirm.",
+    "PR does not implement required Req 2 (upgrade_delta_cents) and only adds prorate_cents; tests pass but ticket requirements are incomplete, risking missing functionality in production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.807,
+  "prompt_tokens": 2423,
+  "output_tokens": 236,
+  "estimated_usd": 0.000842,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

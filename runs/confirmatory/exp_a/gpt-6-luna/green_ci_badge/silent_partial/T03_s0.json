@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`parse_nullable_int` has no bounds parameters and never raises `ValueError('out_of_range')` for values outside the requested range.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff and the nullable-integer module to verify the API, coercion rules, bounds behavior, and compatibility with legacy signatures.",
+    "The diff adds nullable-token parsing but does not add either `min_val` or `max_val` or enforce bounds. This leaves Req 2 incomplete despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.795,
+  "prompt_tokens": 1323,
+  "output_tokens": 319,
+  "estimated_usd": 0.00208,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

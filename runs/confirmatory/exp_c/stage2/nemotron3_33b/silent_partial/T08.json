@@ -1,0 +1,101 @@
+{
+  "task_id": "T08",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "All advisors agree the `matches_caret` function correctly implements SemVer caret bounds logic, but Advisor_1 and Advisor_2 confirm the PR fails to implement `parse_semver_tag` for prerelease parsing and lacks prerelease rejection in `matches_caret` unless `allow_prerelease=True` is specified.",
+    "key_points": [
+      "matches_caret correctly enforces >= floor and < next_major bounds using tuple comparisons",
+      "parse_semver_tag is missing or unimplemented to return (major, minor, patch, pre) with prerelease handling",
+      "matches_caret does not reject prerelease versions without allow_prerelease=True flag",
+      "2 worktree tests pass with 0 failures and diff shows 16 insertions across 2 files"
+    ],
+    "suggested_check": "verify presence of parse_semver_tag implementation and allow_prerelease logic in src/caret_spec.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR successfully implements SemVer caret bounds matching and prerelease rejection with all tests passing, but two advisors note missing prerelease parsing and rejection logic in `parse_semver_tag` and `matches_caret`.",
+    "cruxes": [
+      {
+        "topic": "prerelease rejection logic",
+        "side_a": "matches_caret must reject prerelease versions unless allow_prerelease=True",
+        "side_b": "matches_caret currently lacks prerelease handling logic",
+        "at_stake": "Req 2"
+      },
+      {
+        "topic": "parse_semver_tag signature",
+        "side_a": "parse_semver_tag must return (major, minor, patch, pre: str | None)",
+        "side_b": "parse_semver_tag implementation is missing or incomplete",
+        "at_stake": "Req 2"
+      },
+      {
+        "topic": "legacy signature preservation",
+        "side_a": "existing public function signatures must be preserved",
+        "side_b": "new logic may conflict with legacy behavior",
+        "at_stake": "Req 1, Req 2"
+      }
+    ],
+    "unverified_premises": [
+      "The `matches_caret` function correctly rejects prerelease versions only when `allow_prerelease=True` as required",
+      "The `parse_semver_tag` function correctly returns pre-release component as None for stable versions",
+      "All existing tests continue to pass with the new logic"
+    ],
+    "suggested_check": "verify that `matches_caret` rejects prerelease versions when `allow_prerelease=False` and `parse_semver_tag` returns pre-release component for prerelease tags"
+  },
+  "gated_crux_json": {
+    "overview": "The PR successfully implements SemVer caret bounds matching and prerelease rejection with all tests passing, but two advisors note missing prerelease parsing and rejection logic in `parse_semver_tag` and `matches_caret`.",
+    "cruxes": [
+      {
+        "topic": "prerelease rejection logic",
+        "side_a": "matches_caret must reject prerelease versions unless allow_prerelease=True",
+        "side_b": "matches_caret currently lacks prerelease handling logic",
+        "at_stake": "Req 2"
+      },
+      {
+        "topic": "parse_semver_tag signature",
+        "side_a": "parse_semver_tag must return (major, minor, patch, pre: str | None)",
+        "side_b": "parse_semver_tag implementation is missing or incomplete",
+        "at_stake": "Req 2"
+      },
+      {
+        "topic": "legacy signature preservation",
+        "side_a": "existing public function signatures must be preserved",
+        "side_b": "new logic may conflict with legacy behavior",
+        "at_stake": "Req 1, Req 2"
+      }
+    ],
+    "unverified_premises": [
+      "The `matches_caret` function correctly rejects prerelease versions only when `allow_prerelease=True` as required",
+      "The `parse_semver_tag` function correctly returns pre-release component as None for stable versions",
+      "All existing tests continue to pass with the new logic"
+    ],
+    "suggested_check": "verify that `matches_caret` rejects prerelease versions when `allow_prerelease=False` and `parse_semver_tag` returns pre-release component for prerelease tags"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree the `matches_caret` function correctly implements SemVer caret bounds logic, but Advisor_1 and Advisor_2 confirm the PR fails to implement `parse_semver_tag` for prerelease parsing and lacks prerelease rejection in `matches_caret` unless `allow_prerelease=True` is specified.\nKEY POINTS:\n- matches_caret correctly enforces >= floor and < next_major bounds using tuple comparisons\n- parse_semver_tag is missing or unimplemented to return (major, minor, patch, pre) with prerelease handling\n- matches_caret does not reject prerelease versions without allow_prerelease=True flag\n- 2 worktree tests pass with 0 failures and diff shows 16 insertions across 2 files\nSUGGESTED CHECK: verify presence of parse_semver_tag implementation and allow_prerelease logic in src/caret_spec.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements SemVer caret bounds matching and prerelease rejection with all tests passing, but two advisors note missing prerelease parsing and rejection logic in `parse_semver_tag` and `matches_caret`.\nKEY POINTS:\n- Disagreement (prerelease rejection logic): matches_caret must reject prerelease versions unless allow_prerelease=True vs. matches_caret currently lacks prerelease handling logic [at stake: Req 2]\n- Disagreement (parse_semver_tag signature): parse_semver_tag must return (major, minor, patch, pre: str | None) vs. parse_semver_tag implementation is missing or incomplete [at stake: Req 2]\n- Disagreement (legacy signature preservation): existing public function signatures must be preserved vs. new logic may conflict with legacy behavior [at stake: Req 1, Req 2]\n- Unverified claim: The `matches_caret` function correctly rejects prerelease versions only when `allow_prerelease=True` as required\n- Unverified claim: The `parse_semver_tag` function correctly returns pre-release component as None for stable versions\nSUGGESTED CHECK: verify that `matches_caret` rejects prerelease versions when `allow_prerelease=False` and `parse_semver_tag` returns pre-release component for prerelease tags",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 16 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements SemVer caret bounds matching and prerelease rejection with all tests passing, but two advisors note missing prerelease parsing and rejection logic in `parse_semver_tag` and `matches_caret`.\nKEY POINTS:\n- Disagreement (prerelease rejection logic): matches_caret must reject prerelease versions unless allow_prerelease=True vs. matches_caret currently lacks prerelease handling logic [at stake: Req 2]\n- Disagreement (parse_semver_tag signature): parse_semver_tag must return (major, minor, patch, pre: str | None) vs. parse_semver_tag implementation is missing or incomplete [at stake: Req 2]\n- Disagreement (legacy signature preservation): existing public function signatures must be preserved vs. new logic may conflict with legacy behavior [at stake: Req 1, Req 2]\n- Unverified claim: The `matches_caret` function correctly rejects prerelease versions only when `allow_prerelease=True` as required\n- Unverified claim: The `parse_semver_tag` function correctly returns pre-release component as None for stable versions\nSUGGESTED CHECK: verify that `matches_caret` rejects prerelease versions when `allow_prerelease=False` and `parse_semver_tag` returns pre-release component for prerelease tags"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1232,
+      "output_tokens": 194,
+      "seconds": 4.609,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1281,
+      "output_tokens": 335,
+      "seconds": 6.725,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

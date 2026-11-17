@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T11 Req 2 is missing: `src/cursor_hmac.py` defines no `decode_cursor(token, secret)`, so callers cannot verify signatures in constant time or reject tampered/negative offsets as required.",
+  "target_issue": "T11 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the change and its tests, then verify the implementation meets the ticket without breaking legacy behavior.",
+    "The diff adds encoding but does not implement the required `decode_cursor`, so I\u2019ll check the test suite for any additional relevant failures before deciding.",
+    "The existing tests pass, but they cover only encoding and the legacy clamp behavior. The PR omits `decode_cursor` entirely, leaving tampered-cursor verification and negative-offset rejection on decode unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.111,
+  "prompt_tokens": 2283,
+  "output_tokens": 396,
+  "estimated_usd": 0.003093,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

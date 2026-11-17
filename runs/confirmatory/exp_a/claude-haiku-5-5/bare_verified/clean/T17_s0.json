@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "escape_html_text uses html.escape(text, quote=True), which covers &, <, >, \" and ' with &amp; first. filter_attrs skips keys starting with 'on' and keys not in the lowercased allowed set, drops values whose stripped lowercase form starts with 'javascript:', and stores escaped values under normalized keys. The legacy wrap_tag signature and behavior are untouched, and run_pytest exited 0 with 3/3 passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor claims tests pass, but I should verify the diff and run pytest myself rather than trust the self-report.",
+    "The diff looks plausible, but I need to verify the contributor's claim that all tests pass by running pytest myself.",
+    "The diff matches both requirements: html.escape(quote=True) handles entity order, filter_attrs drops 'on*' and disallowed keys, rejects javascript: values, and escapes kept values. I ran pytest myself and all three tests pass, with wrap_tag unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.679,
+  "prompt_tokens": 89171,
+  "output_tokens": 1196,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement Req 1 (missing lru_set(cache, key, value, capacity, pinned=()) with LRU eviction excluding pinned keys). Only lru_touch was added, so ticket T22 is incomplete and would not satisfy capacity/pinning behavior.",
+  "target_issue": "Missing implementation of lru_set (Req 1) and no tests covering eviction/pinned preservation.",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure no regressions and that T22 requirements are correctly implemented.",
+    "Diff only adds lru_touch and a test; it does not implement required lru_set with capacity eviction and pinned-key preservation. Also no tests for eviction/pinning. Need to hold until requirements are implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.711,
+  "prompt_tokens": 1285,
+  "output_tokens": 181,
+  "estimated_usd": 0.000502,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

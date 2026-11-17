@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR does not implement required Req 2: `upgrade_delta_cents(old_monthly, new_monthly, remaining_days, cycle_days)` is missing from `src/prorate.py` (diff only adds `prorate_cents` and updates tests accordingly). Merging would leave the ticket incomplete and could break downstream callers expecting upgrade proration behavior.",
+  "target_issue": "Missing function implementation: `def upgrade_delta_cents(...)` in src/prorate.py (Req 2).",
+  "thoughts": [
+    "Need to verify whether upgrade_delta_cents exists and whether tests cover it; run diff and inspect src/prorate.py.",
+    "Diff shows only prorate_cents added; Req 2 upgrade_delta_cents is not implemented. Need to inspect src/prorate.py to confirm absence and then decide hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.972,
+  "prompt_tokens": 1778,
+  "output_tokens": 199,
+  "estimated_usd": 0.000643,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

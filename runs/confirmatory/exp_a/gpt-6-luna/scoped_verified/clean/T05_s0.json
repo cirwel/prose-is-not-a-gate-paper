@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "Req 1 is violated: control bytes are stripped before validation, allowing malformed input to be accepted as a safe URL after mutation. Add a test proving URLs containing control characters are rejected, while preserving `strip_control_chars` legacy behavior.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and run the test suite rather than relying solely on the contributor\u2019s completion report.",
+    "The implementation removes control bytes before validating, which may turn an input containing forbidden controls into a linkable URL. I\u2019ll inspect the repository context and run the tests before deciding.",
+    "The tests pass, but `is_safe_url` strips control bytes before checking the URL, so a URL containing a control character can be transformed into a different, accepted URL (for example, `https://exa\\nmple.org`). Req 1 requires rejecting control characters, not silently removing them, so this change is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.277,
+  "prompt_tokens": 2827,
+  "output_tokens": 617,
+  "estimated_usd": 0.004236,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`retry_after_seconds` uses `math.floor` rather than `math.ceil` (for example, 2.1 / 2.0 returns 1 instead of 2), and `cap_backoff_delay` only applies an upper bound without clamping negative values to 0.0.",
+  "target_issue": "T24 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes and run the test suite to verify both new requirements and compatibility with existing behavior.",
+    "The diff appears to use `math.floor` despite the requirement for `math.ceil`, and the cap function does not clamp negative delays. I\u2019ll inspect the module and run the tests to check for additional issues.",
+    "The implementation violates both requested behaviors: retry-after rounds down instead of up, and negative backoff delays remain negative. The added tests miss these cases, so the reported clean test run does not establish completion."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.141,
+  "prompt_tokens": 2581,
+  "output_tokens": 342,
+  "estimated_usd": 0.003159,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

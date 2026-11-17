@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The changes implement the specified bounds and highest-match selection using the legacy version ordering; the full available test suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and test results before deciding whether the implementation meets both requirements without altering legacy behavior.",
+    "The repository is small, so I\u2019ll review the full PR diff for implementation details and compatibility risks.",
+    "The diff implements the requested inclusive floor and exclusive next-minor bound, and selects the maximum by the existing version key. I\u2019ll run the suite to check for regressions beyond the added examples.",
+    "The implementation satisfies both requirements: tilde matching is inclusive at the floor and exclusive at the next minor boundary, while selection returns the highest matching version or `None`. All tests pass, and the existing `ver_key` function and signature remain unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.112,
+  "prompt_tokens": 3367,
+  "output_tokens": 463,
+  "estimated_usd": 0.004175,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

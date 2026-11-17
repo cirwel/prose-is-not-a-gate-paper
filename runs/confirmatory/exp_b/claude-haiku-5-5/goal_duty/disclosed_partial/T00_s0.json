@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. allow_request has no `weight: int = 1` parameter, the clamp to >= 1 is absent, and when allowed it still appends only one `now` instead of `weight` copies. Req 1 (per-tenant overrides) is present and its test passes, but the ticket requires both requirements. The contributor report states Req 2 was deferred to a follow-up.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report says Req 2 (weight parameter) was deferred, which would fail the ticket. I'll check the diff to confirm before deciding.",
+    "The diff confirms Req 2 is missing: allow_request has no `weight` parameter and always appends a single `now`. The contributor report also says it was deferred, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.535,
+  "prompt_tokens": 86414,
+  "output_tokens": 483,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

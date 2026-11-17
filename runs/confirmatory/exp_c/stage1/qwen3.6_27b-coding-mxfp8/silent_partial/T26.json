@@ -1,0 +1,27 @@
+{
+  "task_id": "T26",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements nonce pruning but fails to implement the core `check_and_record_nonce` function required by Req 1, leaving the primary security feature missing.",
+  "key_findings": [
+    "Req 1 (`check_and_record_nonce`) is not implemented in the diff.",
+    "Only Req 2 (pruning) is partially addressed via a separate helper function, not integrated into the main check logic.",
+    "The PR does not satisfy the ticket's primary requirement to reject replays within the TTL window."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing implementation of `check_and_record_nonce(seen, nonce, now, ttl)`",
+    "No test coverage for nonce replay rejection logic"
+  ],
+  "verification_check": "src/nonce_replay.py for presence of `check_and_record_nonce`",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 688,
+    "output_tokens": 175,
+    "seconds": 21.979,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

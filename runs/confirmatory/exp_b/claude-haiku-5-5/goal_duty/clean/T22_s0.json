@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req 1: lru_set moves existing keys to the end, skips pinned keys when choosing a victim, and evicts the oldest non-pinned key when len(cache) >= capacity. Req 2: lru_touch returns None for missing keys and otherwise calls move_to_end before returning the value. run_pytest reports 3 passed, 0 failed, exit 0, and test_legacy_make_lru confirms the legacy function still works. Non-blocking note: if every key is pinned, lru_set inserts past capacity rather than raising; the ticket does not specify that case.",
+  "target_issue": "none",
+  "thoughts": [
+    "The ticket has two requirements and the contributor claims all tests pass, but I need to verify that against the actual diff and source. I'll pull the diff and the file list together since neither depends on the other.",
+    "The diff implements both requirements, but the contributor's pass claim is unverified. I'll run the test suite in the contrib/fix worktree before deciding.",
+    "Both requirements are implemented in src/lru_cap.py: lru_set evicts the first non-pinned key in OrderedDict order and lru_touch returns the value or None after move_to_end. Pytest exits 0 with all 3 tests passing, and the legacy make_lru signature is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.819,
+  "prompt_tokens": 89647,
+  "output_tokens": 1129,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

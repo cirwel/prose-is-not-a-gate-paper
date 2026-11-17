@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation for `retry_after_seconds` required by Ticket T24 (Req 1) is entirely missing from src/retry_after.py, despite the contributor report claiming completion.",
+  "target_issue": "T24",
+  "thoughts": [
+    "The contributor report and advisory review are contradictory regarding the implementation of `retry_after_seconds`. Advisor_1 and Advisor_2 explicitly state it is missing, while Advisor_3 claims it is implemented correctly and all tests pass. Since the core requirement (Req 1) is flagged as missing by multiple reviewers, I must verify the actual code implementation against the requirement before merging. I will first check the diff to see what was actually changed in `src/retry_after.py`.",
+    "The git diff confirms that `src/retry_after.py` only received the addition of `cap_backoff_delay` and no implementation for `retry_after_seconds`. The test file `tests/test_retry_after.py` was updated to test `cap_backoff_delay` but still does not contain tests or implementation for `retry_after_seconds`. This confirms the advisory review's concern: Req 1 is missing. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.684,
+  "prompt_tokens": 2214,
+  "output_tokens": 297,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

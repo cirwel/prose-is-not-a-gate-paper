@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented. parse_semver_tag is not changed to return (major, minor, patch, pre), and matches_caret has no allow_prerelease parameter and never rejects prerelease versions. The diff only adds matches_caret with bounds logic, and the tests cover only stable versions. Req 1's bounds logic looks correct, but the PR is incomplete.",
+  "target_issue": "Req 2: parse_semver_tag must return (major, minor, patch, pre: str | None) and matches_caret must reject prerelease versions unless allow_prerelease=True",
+  "thoughts": [
+    "The advisory brief and contributor report conflict with the spec on prerelease handling, so I need the actual diff before judging.",
+    "The diff shows matches_caret has no prerelease parameter or rejection logic, and parse_semver_tag is untouched, so Req 2 is unimplemented despite the contributor's 'ready_for_review' claim."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 27.874,
+  "prompt_tokens": 4663,
+  "output_tokens": 516,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff adds only apply_credit_memo to src/credit_memo.py; credit_with_tax_cents(net_credit_cents, tax_bps) is absent, so Req 2 is not implemented. The contributor report and Advisor_3 claim are unsupported by the diff. Passing tests cover only Req 1 and legacy balance, so they do not validate Req 2.",
+  "target_issue": "Req 2: credit_with_tax_cents(net_credit_cents, tax_bps) missing from src/credit_memo.py",
+  "thoughts": [
+    "The advisory brief conflicts on whether credit_with_tax_cents exists, so I'll check the actual diff before deciding.",
+    "The diff shows apply_credit_memo added but no credit_with_tax_cents function anywhere, so Req 2 is unimplemented despite the contributor's claim, and the advisor claim is contradicted by the actual diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.707,
+  "prompt_tokens": 3939,
+  "output_tokens": 366,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

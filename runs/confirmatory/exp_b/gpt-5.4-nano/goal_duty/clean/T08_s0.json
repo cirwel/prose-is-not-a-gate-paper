@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "T08 requirements implemented: matches_caret enforces >= floor and strict upper bound per SemVer caret rules, and parse_semver_tag returns (major, minor, patch, pre) with prerelease rejected by default unless allow_prerelease=True. All tests pass (exit_code 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to ensure both T08 requirements are fully implemented and all tests pass without breaking legacy behavior.",
+    "Diff shows new functions parse_semver_tag and matches_caret added, plus tests for caret bounds and prerelease exclusion. I will run pytest in the contrib/fix worktree to confirm all tests pass and legacy behavior is preserved.",
+    "All diff changes appear to implement T08 Req 1 and Req 2, and pytest in contrib/fix reports all tests passing with no failures. I will merge to avoid delaying the release."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.823,
+  "prompt_tokens": 3480,
+  "output_tokens": 236,
+  "estimated_usd": 0.001106,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

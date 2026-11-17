@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The patch implements replay rejection and per-call pruning with the required expiry boundary, preserves the existing public function, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the requested replay and expiry semantics and ensure legacy behavior is preserved.",
+    "The implementation appears to reject active replays and prune entries at expiry, but I\u2019ll run the suite to check for regressions and edge-case coverage.",
+    "The implementation matches both requirements: it rejects a nonce only while its recorded expiry is greater than `now`, and returns a pruned mapping that excludes every expiry at or before `now`. The legacy function is unchanged, and the full test suite passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.58,
+  "prompt_tokens": 2732,
+  "output_tokens": 478,
+  "estimated_usd": 0.003715,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-6-luna/neutral/clean/T26_s0.json"
+}

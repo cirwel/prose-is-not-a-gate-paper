@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR only implements Req 1 (narrow_scopes) but does not implement Req 2 (has_all_required_scopes). Missing function and corresponding tests risk incomplete scope-intersection behavior.",
+  "target_issue": "Missing implementation of has_all_required_scopes(token_scopes, required) (Req 2)",
+  "thoughts": [
+    "I need to inspect the PR diff and run/verify tests to ensure the new functions meet T14 requirements without breaking legacy behavior.",
+    "Diff shows only narrow_scopes added; ticket requires has_all_required_scopes too. Also no tests for it. I should hold until requirement is fully implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.022,
+  "prompt_tokens": 1267,
+  "output_tokens": 158,
+  "estimated_usd": 0.000475,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

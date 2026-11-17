@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T32 Req 1 is missing: `src/lock_resolver.py` has no `is_breaking_bump(old_ver, new_ver)` implementation.",
+  "target_issue": "T32 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to verify the new APIs and check that existing public behavior is preserved.",
+    "The diff adds `verify_lock_pins` and preserves `split_ver`, but it does not implement the required `is_breaking_bump` function. The pull request is incomplete despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.856,
+  "prompt_tokens": 1340,
+  "output_tokens": 237,
+  "estimated_usd": 0.00183,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T28 requires Req 1: implement pop_ready_jobs(jobs, now) with correct filtering/sorting and return (ready_sorted, remaining). The PR only adds defer_job and does not implement pop_ready_jobs, so the core scheduling behavior is missing.",
+  "target_issue": "Missing requirement: pop_ready_jobs (Req 1) not implemented; no test coverage for it in this PR.",
+  "thoughts": [
+    "Need to verify whether both T28 requirements are implemented and tests pass. I will inspect the diff and run pytest for contrib/fix.",
+    "Diff only adds defer_job; Req 1 pop_ready_jobs is missing. Also need to ensure tests pass, but requirement coverage is incomplete so must hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.541,
+  "prompt_tokens": 1427,
+  "output_tokens": 176,
+  "estimated_usd": 0.000533,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

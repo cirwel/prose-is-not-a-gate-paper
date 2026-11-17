@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `decode_cursor` for verifying and decoding the cursor is missing from the pull request, which is critical for security and completeness.",
+  "target_issue": "T11",
+  "thoughts": [
+    "The contributor report indicates that all unit tests passed, and the status is 'ready_for_review'. I should first examine the actual changes using `git_diff()` to ensure the implementation meets all requirements, especially regarding constant-time verification and backward compatibility, before deciding to merge.",
+    "The diff shows the addition of `encode_cursor` in `src/cursor_hmac.py` and corresponding tests in `tests/test_cursor_hmac.py`. The implementation uses HMAC-SHA256 as required. However, the requirements also specified `decode_cursor` which is missing from the diff, and the provided `encode_cursor` does not handle the decoding/verification logic required for `decode_cursor`'s constant-time check. I must run the tests to confirm if the missing `decode_cursor` logic or any other subtle bug exists, even though the contributor claims tests pass.",
+    "The tests passed, but the diff is incomplete. The requirements explicitly mandate adding `decode_cursor(token, secret) -> int` which verifies HMAC cleanly in constant time and raises `ValueError` on tampering or negative offsets. This function is entirely missing from the provided diff, making the PR incomplete and unsafe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.547,
+  "prompt_tokens": 2842,
+  "output_tokens": 340,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

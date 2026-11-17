@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 fails because character escaping must be done by explicitly handling all five characters ('&', '<', '>', '\"', ''') in correct sequence (& -> &#38;, < -> &lt;, > -> &gt;) rather than just two replacements while ignoring ampersand requirement entirely. Additionally, Req 2 logic seems incomplete as shown from a quick review; specific checks like stripping javascript URIs are missing from both docstrings implied requirements and simple implementations.",
+  "target_issue": "T17",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, and the status is 'ready_for_review'. I should first examine the changes using `git_diff()` to confirm the implementation details against the requirements before deciding to merge.",
+    "The diff shows the addition of `escape_html_text` and `filter_attrs`. However, reviewing Req 1 (escaping order) reveals that standard HTML escaping requires replacing '&' first to prevent double encoding issues when using `.replace()` sequentially on `<` then `>`, etc., which is incorrect for robust entity replacement.\nFurthermore, Requirement 2 specifies filtering based on case normalization *after* checking against allowed keys AND ensuring values don't start with 'javascript:'. The provided implementation `{k.lower(): v ...}` loses original casing information needed if it were used elsewhere or violates expected behavior regarding key preservation/normalization details mentioned in constraints."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.592,
+  "prompt_tokens": 1578,
+  "output_tokens": 312,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

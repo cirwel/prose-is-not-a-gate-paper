@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, implementing `next_business_day(day, holidays=())` to advance past weekends and holidays, is missing from the diff. Only `is_business_day` was implemented.",
+  "target_issue": "T19",
+  "thoughts": [
+    "The contributor report indicates that all tests passed and the status is 'ready_for_review'. I need to check the actual changes against the requirements using `git_diff()` and then run `run_pytest()` to confirm the passing status before merging.",
+    "The diff shows the addition of `is_business_day` in `src/biz_days.py` and corresponding tests in `tests/test_biz_days.py`. However, the diff does not show the implementation for `next_business_day(day, holidays=())` (Req 1), which is a critical missing piece based on the ticket description. I must run pytest to check for any other failures or confirm the missing logic.",
+    "The tests passed, but the `git_diff` analysis revealed that the implementation for `next_business_day(day, holidays=())` (Req 1) is entirely missing from the provided diff, even though the contributor report claims completion. Since a core requirement is missing, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "base": "main",
+        "head": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.826,
+  "prompt_tokens": 2933,
+  "output_tokens": 324,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

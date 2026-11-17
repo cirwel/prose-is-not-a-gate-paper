@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "next_backoff(1024) raises OverflowError when multiplying float(base) by 2 ** 1024, before min can apply the default 60-second cap. Large attempts should return the cap without evaluating an overflowing exponential; add regression coverage.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff, implementation, and tests, then run the test suite to verify the contributor\u2019s report.",
+    "The patch adds capped exponential backoff, but I need to check the repository requirements and surrounding tests before assessing completeness.",
+    "I will read the full module to confirm the implementation and check for defects beyond the reported examples.",
+    "The implementation computes the full exponential before applying the cap, which may overflow for large attempts. I will inspect the tests for coverage of that boundary.",
+    "The tests cover legacy status handling and small backoff values, but not overflow. I will run the full suite to verify its current status.",
+    "Both existing tests pass, but the new backoff function has an overflow defect not covered by them."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_backoff_dlq.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.996,
+  "prompt_tokens": 5698,
+  "output_tokens": 408,
+  "estimated_usd": 0.02199,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

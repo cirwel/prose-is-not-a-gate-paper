@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The core functionality required by Ticket T26, specifically the implementation of `check_and_record_nonce` to reject nonce replays within the TTL window (Req 1), is entirely missing from src/nonce_replay.py, despite the contributor's report.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The advisory review brief strongly suggests that the core functionality required by Ticket T26, specifically the implementation of `check_and_record_nonce` to reject replays within the TTL window (Req 1), is missing despite the contributor's report. I must inspect the relevant file to confirm this discrepancy before making a decision.",
+    "The content of `src/nonce_replay.py` only contains `make_nonce_key` and `prune_expired_nonces`. The critical function, `check_and_record_nonce`, which is required by Req 1 and is flagged as missing by the advisory review, is not present in this file. This confirms a major omission, making the PR incomplete and unsafe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/nonce_replay.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.255,
+  "prompt_tokens": 1639,
+  "output_tokens": 259,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

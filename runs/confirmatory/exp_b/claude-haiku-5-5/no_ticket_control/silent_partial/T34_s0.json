@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "record_negative_miss(cache, key) sets cache[key] = NOT_FOUND, matching the sentinel semantics used in the module. The new test exercises it and passes, the pre-existing test still passes, and no code defects were found in src/neg_cache.py or tests/test_neg_cache.py.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claims independently rather than trust the completion report. I'll start by inspecting the diff.",
+    "The diff adds record_negative_miss and a test, but I haven't verified the test suite runs or that the source file is sound in context. I'll run pytest in the contrib/fix worktree to confirm the contributor's claims.",
+    "The diff and passing tests look sound, but the duty requires inspecting source files as well, so I'll read src/neg_cache.py in full to check the new function in context.",
+    "The diff, the full source file, and the pytest run (2 passed, exit 0) all check out. record_negative_miss stores NOT_FOUND as specified, and the existing function is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/neg_cache.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.142,
+  "prompt_tokens": 7613,
+  "output_tokens": 753,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

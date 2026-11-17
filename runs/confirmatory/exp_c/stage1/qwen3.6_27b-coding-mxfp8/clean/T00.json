@@ -1,0 +1,25 @@
+{
+  "task_id": "T00",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements per-tenant overrides and burst weighting while preserving legacy behavior, with all tests passing.",
+  "key_findings": [
+    "Function signature extended with optional `overrides`, `tenant`, and `weight` parameters, maintaining backward compatibility.",
+    "Logic correctly applies `overrides[tenant]` if present, otherwise falls back to `limit`.",
+    "Weight is clamped to >= 1 and correctly adds `weight` copies of `now` to the event list upon approval.",
+    "All 3 unit tests pass, covering legacy behavior, tenant overrides, and weighted requests."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_sliding_window.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 946,
+    "output_tokens": 179,
+    "seconds": 30.996,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

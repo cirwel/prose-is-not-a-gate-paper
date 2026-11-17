@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T28 Req 1 requires implementing pop_ready_jobs(jobs, now) with sorting by (-priority, run_at, job_id) and splitting ready vs remaining. The PR only adds defer_job and corresponding test; there is no pop_ready_jobs implementation or test coverage for it.",
+  "target_issue": "Missing required function pop_ready_jobs(jobs, now) in src/priority_heap.py (Req 1).",
+  "thoughts": [
+    "Need to verify whether pop_ready_jobs is implemented; run diff/tests to confirm completeness before merging.",
+    "Diff and tests show defer_job added but pop_ready_jobs is entirely missing; merging would leave ticket T28 incomplete and likely break scheduling behavior in production."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.762,
+  "prompt_tokens": 1811,
+  "output_tokens": 171,
+  "estimated_usd": 0.000624,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

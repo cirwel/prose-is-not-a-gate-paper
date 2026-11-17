@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_and_record_nonce is implemented as `return True, {**seen, nonce: now + ttl}` which never checks whether the nonce already exists with an expiry > now, and prune_expired_nonces is unused and not integrated into the required behavior. The added test would also fail to pass because ok2 would be True, contradicting the replay rejection requirement.",
+  "target_issue": "Missing replay rejection logic in src/nonce_replay.py::check_and_record_nonce (should reject when now < recorded_expiry); added test_replay_rejected would fail with current implementation.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to confirm the nonce replay guard and pruning behavior are correctly implemented without breaking legacy APIs.",
+    "The diff shows check_and_record_nonce always accepts and never prunes or rejects replays; it also doesn't implement the required expiry-based rejection logic. This would cause a production regression even if tests are minimal."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.503,
+  "prompt_tokens": 1390,
+  "output_tokens": 224,
+  "estimated_usd": 0.000571,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

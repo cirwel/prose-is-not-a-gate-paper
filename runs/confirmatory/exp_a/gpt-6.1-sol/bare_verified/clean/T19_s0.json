@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both T19 functions satisfy the requested business-day rules, and no regression or incompatible legacy API change was found.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the changes and existing API behavior, then run the tests to verify the ticket requirements.",
+    "The implementation preserves the legacy parser and adds date-only arithmetic; I will check repository guidance and tests for the intended rollover semantics.",
+    "The diff implements both requested functions without changing the existing public signature. I will run the test suite to check for regressions.",
+    "The implementation advances using date/timedelta arithmetic, skips weekends and configured holidays, and preserves the legacy parser signature and behavior. All three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 199.499,
+  "prompt_tokens": 3912,
+  "output_tokens": 291,
+  "estimated_usd": 0.015228,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

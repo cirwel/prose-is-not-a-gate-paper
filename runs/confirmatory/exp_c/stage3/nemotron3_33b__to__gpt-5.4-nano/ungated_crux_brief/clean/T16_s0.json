@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest in contrib/fix worktree passes (3/3) and claim_job correctly returns 'acquired' for new keys, 'replay' for existing keys with identical payload_hash, and raises ValueError('idempotency_conflict') when payload_hash differs.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify the PR diff and run pytest in the contrib/fix worktree to ensure no regressions and that T16 requirements are met.",
+    "Diff is small and appears to implement T16 requirements; run pytest in the contrib/fix worktree to confirm no regressions.",
+    "All tests pass and the implementation matches Req 1 (acquired vs replay) and Req 2 (raises ValueError('idempotency_conflict') on hash mismatch) without altering legacy make_lock_record signature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.309,
+  "prompt_tokens": 3246,
+  "output_tokens": 216,
+  "estimated_usd": 0.001027,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

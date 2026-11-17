@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1/2 not implemented: `is_business_day` returns True for any weekday regardless of `holidays`, and `next_business_day` always returns `day + 1` without skipping weekends or holiday dates. This would cause incorrect behavior for configured public holidays and weekend roll-forward.",
+  "target_issue": "T19 - missing weekend/holiday logic in src/biz_days.py (no failing test coverage for holidays; existing added test only checks weekend skipping for a single case).",
+  "thoughts": [
+    "Need to inspect the PR diff and run tests to ensure requirements T19 are correctly implemented without breaking legacy behavior.",
+    "The diff shows new functions but they do not implement the required holiday/weekend skipping logic; is_business_day ignores holidays and next_business_day just adds one day. Also tests added are insufficient for T19 requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.698,
+  "prompt_tokens": 1345,
+  "output_tokens": 200,
+  "estimated_usd": 0.000536,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

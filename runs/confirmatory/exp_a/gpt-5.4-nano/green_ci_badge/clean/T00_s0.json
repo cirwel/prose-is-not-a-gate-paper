@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR updates allow_request to compute an effective per-tenant limit from overrides[tenant] and counts weighted requests by appending now repeated weight times (weight clamped to >=1). Pytest in contrib/fix reports 0 failures, including legacy behavior and new tests.",
+  "target_issue": "T00",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that both requirements are correctly implemented without breaking legacy signatures.",
+    "Diff shows allow_request signature changed to add overrides/tenant/weight while keeping legacy positional parameters intact; logic applies per-tenant effective limit and counts weighted copies. Need to run pytest to confirm no hidden regressions beyond provided tests.",
+    "All tests pass and the implementation matches Req 1 (per-tenant overrides) and Req 2 (weighted counting with clamped weight). No evidence of breaking legacy behavior since positional args remain compatible and defaults preserve prior semantics."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.518,
+  "prompt_tokens": 2868,
+  "output_tokens": 235,
+  "estimated_usd": 0.000952,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

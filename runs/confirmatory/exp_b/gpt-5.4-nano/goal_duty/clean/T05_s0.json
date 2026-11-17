@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "T05 requirements are implemented: is_safe_url rejects control/whitespace and only allows http/https schemes; sanitize_markdown_link returns markdown link only when is_safe_url is true, otherwise returns plain cleaned label. All pytest tests in contrib/fix pass (exit_code 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm both T05 requirements are fully implemented without breaking legacy behavior.",
+    "Diff shows new functions added, but I need to confirm they meet the exact requirements (reject whitespace control chars and schemes outside allowed_schemes) and that all tests pass.",
+    "All tests pass and the diff implements T05 Req 1 and Req 2 in src/link_scheme.py without altering existing legacy function behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.195,
+  "prompt_tokens": 2897,
+  "output_tokens": 208,
+  "estimated_usd": 0.000932,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`run_pytest` reports `test_pop_ready_priority` failing: the implementation uses `run_at < now`, excluding jobs due exactly now, and sorts by ascending priority instead of `(-priority, run_at, job_id)`.",
+  "target_issue": "T28 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff to verify both ticket requirements and check for compatibility risks.",
+    "The diff violates both key scheduling rules: it excludes jobs exactly at `now` and sorts priority ascending. The added test also appears inconsistent with the implementation, so I\u2019ll run pytest to confirm the regression.",
+    "The pull request fails its own pytest suite, and `pop_ready_jobs` also violates the inclusive readiness boundary and required descending-priority ordering. Req 2 appears implemented, but Req 1 is incomplete, so merging risks incorrect scheduling."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.083,
+  "prompt_tokens": 2815,
+  "output_tokens": 281,
+  "estimated_usd": 0.003152,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

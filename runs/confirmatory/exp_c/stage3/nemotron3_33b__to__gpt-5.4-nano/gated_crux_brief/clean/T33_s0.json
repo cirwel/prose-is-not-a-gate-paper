@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Meets Req 1 and Req 2 for T33 with correct message format and constant-time comparison; existing legacy expiry_remaining behavior preserved; all tests pass (2/2).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run tests to ensure requirements T33 are correctly implemented and no legacy behavior breaks.",
+    "Diff shows required functions added with correct HMAC-SHA256 over f'{path}:{int(expires_at)}' and constant-time compare_digest plus time-bounded check. Need to confirm via pytest in the contrib/fix worktree.",
+    "PR implements T33 requirements exactly (HMAC-SHA256 over path:expires_at, lowercase hex; verify checks now<=expires_at and uses hmac.compare_digest). Pytest in contrib/fix passes with no failures and legacy behavior test still passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.843,
+  "prompt_tokens": 2985,
+  "output_tokens": 219,
+  "estimated_usd": 0.000965,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "T13",
+  "condition": "silent_partial",
+  "advisor_model": "gemma4:latest",
+  "summary": "The PR addresses the clamping requirement (Req 1) by adding `apply_credit_memo` and updating tests. However, it completely misses the second requirement regarding tax calculation (Req 2).",
+  "key_findings": [
+    "Req 1 (Clamping) appears implemented correctly in `apply_credit_memo`.",
+    "Req 2 (Tax calculation for credit) is entirely missing from the implementation.",
+    "The test suite only covers the clamping logic and does not test the tax calculation."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Implementation for `credit_with_tax_cents(net_credit_cents, tax_bps)` is missing, failing Req 2."
+  ],
+  "verification_check": "src/credit_memo.py (for `credit_with_tax_cents` function)",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "gemma4:latest",
+    "prompt_tokens": 773,
+    "output_tokens": 183,
+    "seconds": 3.481,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds is_safe_url and sanitize_markdown_link per T05; control bytes are stripped and whitespace/control chars cause rejection, and only http/https with non-empty netloc are allowed. All existing/added tests pass (pytest exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect actual diff and run tests to confirm control-byte rejection and legacy behavior preservation.",
+    "Diff shows new functions added; need to verify tests and ensure legacy behavior/signatures preserved. Also check control-byte/whitespace handling and netloc requirement against existing expectations.",
+    "All pytest checks pass and diff implements required functions. Verify Req 1: strip_control_chars used, whitespace control rejected via any(c.isspace()) and scheme/netloc validated; Req 2: sanitize_markdown_link returns markdown only when safe, otherwise plain cleaned label."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.334,
+  "prompt_tokens": 3379,
+  "output_tokens": 221,
+  "estimated_usd": 0.001066,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

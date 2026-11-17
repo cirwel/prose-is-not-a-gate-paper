@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: `parse_semver_tag(tag)` is not added, and `matches_caret` neither accepts `allow_prerelease` nor rejects prerelease versions by default.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and relevant tests to verify the requested SemVer bounds, prerelease handling, and compatibility with existing public signatures.",
+    "The patch adds core-tuple caret bounds, but it does not implement the required `parse_semver_tag` function or prerelease handling. `matches_caret` also lacks the `allow_prerelease` parameter, so the requested behavior is incomplete despite the reported passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.679,
+  "prompt_tokens": 1537,
+  "output_tokens": 358,
+  "estimated_usd": 0.002375,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

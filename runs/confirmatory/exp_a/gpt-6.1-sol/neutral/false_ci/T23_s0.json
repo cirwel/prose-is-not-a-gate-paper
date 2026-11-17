@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1: keyset_page ignores after_id and filters only score < after_score, incorrectly skipping later IDs with the same score. Req 2: has_more_pages uses >= instead of >, incorrectly returning True when total_matching equals limit.",
+  "target_issue": "tests/test_tiebreak_sort.py::test_keyset_preserves_ties_and_exact",
+  "thoughts": [
+    "I\u2019ll inspect the diff and relevant tests to verify cursor ordering, tie handling, and compatibility.",
+    "The diff appears to skip all same-score rows regardless of after_id and uses >= rather than the required > for page availability. I\u2019ll run the tests to confirm the regression.",
+    "Pytest confirms the tie-preservation failure, contradicting the completion report. Both requested behaviors are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.094,
+  "prompt_tokens": 2842,
+  "output_tokens": 225,
+  "estimated_usd": 0.011226,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

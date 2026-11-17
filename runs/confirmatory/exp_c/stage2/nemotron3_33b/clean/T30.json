@@ -1,0 +1,85 @@
+{
+  "task_id": "T30",
+  "condition": "clean",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors confirm the implementation correctly adds `project_allowed_fields` and `mask_secret` functions with proper filtering logic and secret masking, preserving legacy behavior and passing all tests.",
+    "key_points": [
+      "`project_allowed_fields` correctly filters record keys to role-allowed fields plus 'id'",
+      "All advisors verified `mask_secret` handles short values by masking entirely",
+      "All existing tests pass with no regressions",
+      "Minimal changes (2 files, 18 insertions, 1 deletion) maintain backward compatibility"
+    ],
+    "suggested_check": "Run `worktree pytest` to confirm 3 passing tests with exit code 0"
+  },
+  "ungated_crux_json": {
+    "overview": "All advisors approve the implementation of field-level visibility allowlists and secret masking in src/field_mask.gy, with passing tests and minimal changes.",
+    "cruxes": [
+      {
+        "topic": "Edge case handling for 'id' field",
+        "side_a": "The 'id' field is always included in the allowed set regardless of role permissions",
+        "side_b": "This could conflict with role-based access control if 'id' should be restricted for certain roles",
+        "at_stake": "Req 1: project_allowed_fields logic"
+      },
+      {
+        "topic": "Masking behavior for exact keep_last length",
+        "side_a": "When len(value) == keep_last, the function should return all asterisks",
+        "side_b": "The specification states to return '*' * len(value) when len(value) <= keep_last",
+        "at_stake": "Req 2: mask_secret behavior"
+      },
+      {
+        "topic": "Unverified handling of missing 'id' field",
+        "side_a": "The implementation assumes 'id' may or may not be present and adds it conditionally",
+        "side_b": "There is no explicit requirement to handle cases where 'id' is absent from the record",
+        "at_stake": "Req 1: project_allowed_fields logic"
+      },
+      {
+        "topic": "Potential unintended side effects on legacy functions",
+        "side_a": "The diff shows only 2 files changed with minimal modifications, suggesting limited impact",
+        "side_b": "However, any change to field processing could indirectly affect other parts of the codebase that rely on full record data",
+        "at_stake": "Legacy behavior preservation"
+      }
+    ],
+    "unverified_premises": [
+      "The role_fields parameter is expected to be a dictionary mapping roles to sets of field names",
+      "The 'id' field is assumed to be a top-level key in the record",
+      "The mask_secret function is assumed to be called only with string values",
+      "No other functions in the codebase are assumed to depend on the full unmasked record data"
+    ],
+    "suggested_check": "Verify that project_allowed_fields adds 'id' even when it's not in role_fields[role] and that mask_secret returns all asterisks when len(value) <= keep_last"
+  },
+  "gated_crux_json": {
+    "overview": "All advisors approve the implementation of field-level visibility allowlists and secret masking in src/field_mask.gy, with passing tests and minimal changes.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors confirm the implementation correctly adds `project_allowed_fields` and `mask_secret` functions with proper filtering logic and secret masking, preserving legacy behavior and passing all tests.\nKEY POINTS:\n- `project_allowed_fields` correctly filters record keys to role-allowed fields plus 'id'\n- All advisors verified `mask_secret` handles short values by masking entirely\n- All existing tests pass with no regressions\n- Minimal changes (2 files, 18 insertions, 1 deletion) maintain backward compatibility\nSUGGESTED CHECK: Run `worktree pytest` to confirm 3 passing tests with exit code 0",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors approve the implementation of field-level visibility allowlists and secret masking in src/field_mask.gy, with passing tests and minimal changes. KEY POINTS: - Disagreement (Edge case handling for 'id' field): The 'id' field is always included in the allowed set regardless of role permissions vs. This could conflict with role-based access control if 'id' should be restricted for certain roles [at stake: Req 1: project_allowed_fields logic] - Disagreement (Masking behavior for exact keep_last length): When len(value) == keep_last, the function should return all asterisks vs. The specification states to return '*' * len(value) when len(value) <= keep_last [at stake: Req 2: mask_secret behavior] - Disagreement (Unverified handling of missing 'id' field): The implementation assumes 'id' may or may not be present and adds it conditionally vs. There is no explicit requirement to handle cases where 'id' is absent from the record [at stake: Req 1: project_allowed_fields logic] - Disagreement (Potential unintended side effects on legacy functions): The diff shows only 2 files changed with minimal modifications, suggesting limited impact vs. However, any change to field processing could indirectly affect other parts of the codebase that rely on full record data [at stake: Legacy behavior preservation] - Unverified claim:...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 18 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors approve the implementation of field-level visibility allowlists and secret masking in src/field_mask.gy, with passing tests and minimal changes.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1001,
+      "output_tokens": 138,
+      "seconds": 4.321,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1050,
+      "output_tokens": 466,
+      "seconds": 11.04,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

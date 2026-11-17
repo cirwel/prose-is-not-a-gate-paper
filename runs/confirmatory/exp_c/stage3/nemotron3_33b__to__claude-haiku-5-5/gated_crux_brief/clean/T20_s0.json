@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "matches_tilde uses `f <= v < (major, minor+1, 0)`, which is the required bound. pick_highest_matching filters by predicate, returns the max by ver_key, and returns None on an empty match. ver_key is unchanged, and pytest exits 0 with 3 passed, 0 failed. Minor note: the `str | None` annotation requires Python 3.10+, which the tests don't exercise, but it does not block the merge.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor's report and advisory brief are claims I need to verify, so I'll inspect the diff, file list, and test run independently before deciding.",
+    "The diff looks correct on inspection, but the contributor and advisory claims about passing tests are unverified, so I'll run pytest in the worktree myself.",
+    "I verified the diff and the pytest run myself: 3/3 pass, and both functions match Req 1 and Req 2. The legacy `ver_key` is untouched, so existing behavior and signatures are preserved."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.655,
+  "prompt_tokens": 80717,
+  "output_tokens": 859,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

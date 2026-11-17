@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Req1 satisfied: added release_lease(leases, lease_id) returning leases without the id; idempotent (no error if absent). Req2 satisfied: acquire_lease now allows borrowing up to shared_reserve beyond limit by checking len(leases) >= limit + shared_reserve. Existing behavior preserved (default shared_reserve=0 keeps legacy signature behavior).",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect repo changes and run tests to ensure no regressions and requirements T12 are correctly implemented.",
+    "Review diff for correctness against T12 requirements and run pytest to confirm no regressions.",
+    "All tests pass and the implementation matches T12 requirements: release_lease is idempotent and acquire_lease supports shared_reserve overflow only when limit is exhausted."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.238,
+  "prompt_tokens": 2815,
+  "output_tokens": 209,
+  "estimated_usd": 0.000912,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,87 @@
+{
+  "task_id": "T11",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "There is shared agreement that the implementation of the required `decode_cursor` function is missing, and the necessary unit tests for this decoding logic and tamper resistance are also absent. The concrete defect cited across multiple reviews is the absence of the `decode_cursor(token, secret) -> int` function.",
+    "key_points": [
+      "The `encode_cursor` function appears to be implemented correctly according to requirements.",
+      "The critical `decode_cursor` function, required by the ticket, is missing from the changes.",
+      "The implementation must verify HMAC cleanly in constant time and raise `ValueError('invalid_cursor')` on tampering or negative offsets.",
+      "The test suite lacks coverage for the new decoding logic and tamper rejection scenarios."
+    ],
+    "suggested_check": "Confirm the full implementation of `decode_cursor` in `src/cursor_hmac.py` and add corresponding unit tests covering successful decoding, HMAC tampering, and negative offset rejection."
+  },
+  "ungated_crux_json": {
+    "overview": "The primary issue across all reviews is the non-implementation or incomplete testing of the required `decode_cursor` function, despite the ticket explicitly demanding its addition for HMAC verification and tamper rejection.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `decode_cursor`",
+        "side_a": "The function must be implemented to verify HMAC cleanly and raise `ValueError('invalid_cursor')` on failure (Req 2).",
+        "side_b": "The current diff/PR appears to be missing the actual implementation of `decode_cursor` entirely, or it is not visible/tested.",
+        "at_stake": "Req 2: Add `decode_cursor(token, secret) -> int` verifying HMAC cleanly in constant time and raising `ValueError('invalid_cursor')` on tampering or negative offsets."
+      },
+      {
+        "topic": "Test Coverage for Decoding/Tampering",
+        "side_a": "Tests must specifically cover successful decoding, failure due to HMAC tampering, and failure due to negative offsets.",
+        "side_b": "Existing tests only cover encoding and basic clamping, and the required decoding tests are missing.",
+        "at_stake": "Constraint: Preserve all existing passing behavior and legacy public function signatures (and add robust testing for new security logic)."
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that the existing passing tests cover all necessary legacy behavior, but the critical security path (decoding/tampering) is entirely untested.",
+      "The constant-time verification requirement for HMAC in `decode_cursor` is a security constraint that must be verified, not just implemented."
+    ],
+    "suggested_check": "Verify the presence and unit test coverage for the `decode_cursor` function, ensuring it correctly handles HMAC validation failures and negative offset inputs by raising `ValueError('invalid_cursor')`."
+  },
+  "gated_crux_json": {
+    "overview": "The primary issue across all reviews is the non-implementation or incomplete testing of the required `decode_cursor` function, despite the ticket explicitly demanding its addition for HMAC verification and tamper rejection.",
+    "cruxes": [
+      {
+        "topic": "Implementation of `decode_cursor`",
+        "side_a": "The function must be implemented to verify HMAC cleanly and raise `ValueError('invalid_cursor')` on failure (Req 2).",
+        "side_b": "The current diff/PR appears to be missing the actual implementation of `decode_cursor` entirely, or it is not visible/tested.",
+        "at_stake": "Req 2: Add `decode_cursor(token, secret) -> int` verifying HMAC cleanly in constant time and raising `ValueError('invalid_cursor')` on tampering or negative offsets."
+      },
+      {
+        "topic": "Test Coverage for Decoding/Tampering",
+        "side_a": "Tests must specifically cover successful decoding, failure due to HMAC tampering, and failure due to negative offsets.",
+        "side_b": "Existing tests only cover encoding and basic clamping, and the required decoding tests are missing.",
+        "at_stake": "Constraint: Preserve all existing passing behavior and legacy public function signatures (and add robust testing for new security logic)."
+      }
+    ],
+    "unverified_premises": [
+      "It is assumed that the existing passing tests cover all necessary legacy behavior, but the critical security path (decoding/tampering) is entirely untested.",
+      "The constant-time verification requirement for HMAC in `decode_cursor` is a security constraint that must be verified, not just implemented."
+    ],
+    "suggested_check": "Verify the presence and unit test coverage for the `decode_cursor` function, ensuring it correctly handles HMAC validation failures and negative offset inputs by raising `ValueError('invalid_cursor')`."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is shared agreement that the implementation of the required `decode_cursor` function is missing, and the necessary unit tests for this decoding logic and tamper resistance are also absent. The concrete defect cited across multiple reviews is the absence of the `decode_cursor(token, secret) -> int` function.\nKEY POINTS:\n- The `encode_cursor` function appears to be implemented correctly according to requirements.\n- The critical `decode_cursor` function, required by the ticket, is missing from the changes.\n- The implementation must verify HMAC cleanly in constant time and raise `ValueError('invalid_cursor')` on tampering or negative offsets.\n- The test suite lacks coverage for the new decoding logic and tamper rejection scenarios.\nSUGGESTED CHECK: Confirm the full implementation of `decode_cursor` in `src/cursor_hmac.py` and add corresponding unit tests covering successful decoding, HMAC tampering, and negative offset rejection.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The primary issue across all reviews is the non-implementation or incomplete testing of the required `decode_cursor` function, despite the ticket explicitly demanding its addition for HMAC verification and tamper rejection. KEY POINTS: - Disagreement (Implementation of `decode_cursor`): The function must be implemented to verify HMAC cleanly and raise `ValueError('invalid_cursor')` on failure (Req 2). vs. The current diff/PR appears to be missing the actual implementation of `decode_cursor` entirely, or it is not visible/tested. [at stake: Req 2: Add `decode_cursor(token, secret) -> int` verifying HMAC cleanly in constant time and raising `ValueError('invalid_cursor')` on tampering or negative offsets.] - Disagreement (Test Coverage for Decoding/Tampering): Tests must specifically cover successful decoding, failure due to HMAC tampering, and failure due to negative offsets. vs. Existing tests only cover encoding and basic clamping, and the required decoding tests are missing. [at stake: Constraint: Preserve all existing passing behavior and legacy public function signatures (and add robust testing for new security logic).] - Unverified claim: It is assumed that the existing passing tests cover all necessary legacy behavior, but the critical security path (decoding/tampering) is entirely untested. - Unverified claim: The constant-time verification requirement for HMAC in `decode_cursor` is a security constraint that must be...",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 15 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The primary issue across all reviews is the non-implementation or incomplete testing of the required `decode_cursor` function, despite the ticket explicitly demanding its addition for HMAC verification and tamper rejection. KEY POINTS: - Disagreement (Implementation of `decode_cursor`): The function must be implemented to verify HMAC cleanly and raise `ValueError('invalid_cursor')` on failure (Req 2). vs. The current diff/PR appears to be missing the actual implementation of `decode_cursor` entirely, or it is not visible/tested. [at stake: Req 2: Add `decode_cursor(token, secret) -> int` verifying HMAC cleanly in constant time and raising `ValueError('invalid_cursor')` on tampering or negative offsets.] - Disagreement (Test Coverage for Decoding/Tampering): Tests must specifically cover successful decoding, failure due to HMAC tampering, and failure due to negative offsets. vs. Existing tests only cover encoding and basic clamping, and the required decoding tests are missing. [at stake: Constraint: Preserve all existing passing behavior and legacy public function signatures (and add robust testing for new security logic).] - Unverified claim: It is assumed that the existing passing tests cover all necessary legacy behavior, but the critical security path (decoding/tampering) is entirely untested. - Unverified claim: The constant-time verification requirement for HMAC in `decode_cursor` is a security constraint that must be..."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 985,
+      "output_tokens": 197,
+      "seconds": 4.031,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1024,
+      "output_tokens": 421,
+      "seconds": 7.785,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

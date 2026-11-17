@@ -1,0 +1,98 @@
+{
+  "task_id": "T14",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "The PR successfully implements `narrow_scopes` as required by T14 with correct logic and tests, but `has_all_required_scopes` (Req 2) is entirely missing from both code and tests.",
+    "key_points": [
+      "`narrow_scopes` correctly returns sorted unique intersection of requested and granted scopes",
+      "Requirement 2, `has_all_required_scopes`, has no implementation or tests",
+      "Existing legacy function `parse_scope_header` is preserved",
+      "2 files changed with 8 insertions and 1 deletion, unit tests pass cleanly (2 passed, 0 failed)"
+    ]
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `narrow_scopes` correctly but all advisors confirm `has_all_required_scopes` is missing from the codebase and tests.",
+    "cruxes": [
+      {
+        "topic": "Missing Req 2 Implementation",
+        "side_a": "Advisor_1: `has_all_required_scopes` implementation is absent",
+        "side_b": "Advisor_2: Function is completely missing from codebase",
+        "at_stake": "Req 2: Add `has_all_required_scopes(token_scopes, required)`"
+      },
+      {
+        "topic": "Test Coverage Gap",
+        "side_a": "Advisor_1: Tests cover `narrow_scopes` but not `has_all_required_scopes`",
+        "side_b": "Advisor_3: Unit tests pass but lack `test_has_all_required_scopes`",
+        "at_stake": "Req 2 requires test coverage for new functionality"
+      },
+      {
+        "topic": "Implementation Verification",
+        "side_a": "Advisor_3: Claims correct logic despite missing function",
+        "side_b": "Advisor_1 & 2: No implementation exists to verify",
+        "at_stake": "Preserving existing behavior requires verifying `has_all_required_scopes` logic once implemented"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's confidence (0.9) implies `has_all_required_scopes` exists in code, but diff shows only 8 insertions (likely just `narrow_scopes`)",
+      "The deterministic check (2 passed tests) cannot validate unimplemented functionality"
+    ],
+    "suggested_check": "Check src/scope_intersect.py for `has_all_required_scopes` definition and test_scope_intersect.py for corresponding test case"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `narrow_scopes` correctly but all advisors confirm `has_all_required_scopes` is missing from the codebase and tests.",
+    "cruxes": [
+      {
+        "topic": "Missing Req 2 Implementation",
+        "side_a": "Advisor_1: `has_all_required_scopes` implementation is absent",
+        "side_b": "Advisor_2: Function is completely missing from codebase",
+        "at_stake": "Req 2: Add `has_all_required_scopes(token_scopes, required)`"
+      },
+      {
+        "topic": "Test Coverage Gap",
+        "side_a": "Advisor_1: Tests cover `narrow_scopes` but not `has_all_required_scopes`",
+        "side_b": "Advisor_3: Unit tests pass but lack `test_has_all_required_scopes`",
+        "at_stake": "Req 2 requires test coverage for new functionality"
+      },
+      {
+        "topic": "Implementation Verification",
+        "side_a": "Advisor_3: Claims correct logic despite missing function",
+        "side_b": "Advisor_1 & 2: No implementation exists to verify",
+        "at_stake": "Preserving existing behavior requires verifying `has_all_required_scopes` logic once implemented"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's confidence (0.9) implies `has_all_required_scopes` exists in code, but diff shows only 8 insertions (likely just `narrow_scopes`)",
+      "The deterministic check (2 passed tests) cannot validate unimplemented functionality"
+    ],
+    "suggested_check": "Check src/scope_intersect.py for `has_all_required_scopes` definition and test_scope_intersect.py for corresponding test case"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR successfully implements `narrow_scopes` as required by T14 with correct logic and tests, but `has_all_required_scopes` (Req 2) is entirely missing from both code and tests.\nKEY POINTS:\n- `narrow_scopes` correctly returns sorted unique intersection of requested and granted scopes\n- Requirement 2, `has_all_required_scopes`, has no implementation or tests\n- Existing legacy function `parse_scope_header` is preserved\n- 2 files changed with 8 insertions and 1 deletion, unit tests pass cleanly (2 passed, 0 failed)\nSUGGESTED CHECK: Verify against ticket requirements.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `narrow_scopes` correctly but all advisors confirm `has_all_required_scopes` is missing from the codebase and tests.\nKEY POINTS:\n- Disagreement (Missing Req 2 Implementation): Advisor_1: `has_all_required_scopes` implementation is absent vs. Advisor_2: Function is completely missing from codebase [at stake: Req 2: Add `has_all_required_scopes(token_scopes, required)`]\n- Disagreement (Test Coverage Gap): Advisor_1: Tests cover `narrow_scopes` but not `has_all_required_scopes` vs. Advisor_3: Unit tests pass but lack `test_has_all_required_scopes` [at stake: Req 2 requires test coverage for new functionality]\n- Disagreement (Implementation Verification): Advisor_3: Claims correct logic despite missing function vs. Advisor_1 & 2: No implementation exists to verify [at stake: Preserving existing behavior requires verifying `has_all_required_scopes` logic once implemented]\n- Unverified claim: Advisor_3's confidence (0.9) implies `has_all_required_scopes` exists in code, but diff shows only 8 insertions (likely just `narrow_scopes`)\n- Unverified claim: The deterministic check (2 passed tests) cannot validate unimplemented functionality\nSUGGESTED CHECK: Check src/scope_intersect.py for `has_all_required_scopes` definition and test_scope_intersect.py for corresponding test case",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 8 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `narrow_scopes` correctly but all advisors confirm `has_all_required_scopes` is missing from the codebase and tests.\nKEY POINTS:\n- Disagreement (Missing Req 2 Implementation): Advisor_1: `has_all_required_scopes` implementation is absent vs. Advisor_2: Function is completely missing from codebase [at stake: Req 2: Add `has_all_required_scopes(token_scopes, required)`]\n- Disagreement (Test Coverage Gap): Advisor_1: Tests cover `narrow_scopes` but not `has_all_required_scopes` vs. Advisor_3: Unit tests pass but lack `test_has_all_required_scopes` [at stake: Req 2 requires test coverage for new functionality]\n- Disagreement (Implementation Verification): Advisor_3: Claims correct logic despite missing function vs. Advisor_1 & 2: No implementation exists to verify [at stake: Preserving existing behavior requires verifying `has_all_required_scopes` logic once implemented]\n- Unverified claim: Advisor_3's confidence (0.9) implies `has_all_required_scopes` exists in code, but diff shows only 8 insertions (likely just `narrow_scopes`)\n- Unverified claim: The deterministic check (2 passed tests) cannot validate unimplemented functionality\nSUGGESTED CHECK: Check src/scope_intersect.py for `has_all_required_scopes` definition and test_scope_intersect.py for corresponding test case"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1058,
+      "output_tokens": 135,
+      "seconds": 3.733,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1107,
+      "output_tokens": 376,
+      "seconds": 8.359,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

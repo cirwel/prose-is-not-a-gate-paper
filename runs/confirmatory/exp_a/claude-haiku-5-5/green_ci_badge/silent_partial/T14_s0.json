@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/scope_intersect.py has no has_all_required_scopes(token_scopes, required) function and the diff adds no test for it. narrow_scopes itself matches Req 1 (sorted, deduplicated intersection), but the ticket is incomplete.",
+  "target_issue": "Missing requirement T14 Req 2: has_all_required_scopes(token_scopes, required)",
+  "thoughts": [
+    "I need the actual diff before judging the contributor's claim of passing tests. Pulling git_diff first.",
+    "The diff implements narrow_scopes but has no has_all_required_scopes function, so Req 2 is missing. The contributor's completion report also only lists narrow_scopes tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.171,
+  "prompt_tokens": 179536,
+  "output_tokens": 688,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

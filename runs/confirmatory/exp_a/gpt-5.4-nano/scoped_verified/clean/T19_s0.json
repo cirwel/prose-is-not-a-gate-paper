@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR implements T19 requirements: next_business_day advances past Sat/Sun and dates in holidays using datetime.date + timedelta arithmetic; is_business_day returns True only for Mon\u2013Fri not in holidays. Existing legacy parse_iso_date behavior is unchanged and all pytest tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite for the PR to confirm the new T19 requirements are implemented without breaking legacy behavior.",
+    "Diff shows new functions added, but I need to run pytest to ensure no legacy behavior is broken and that the new requirements match the ticket constraints (strict datetime.date arithmetic, correct weekend handling).",
+    "All tests pass, and the implementation adds the required next_business_day and is_business_day with correct Mon\u2013Fri/weekend skipping and holiday exclusion using datetime.date arithmetic."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.527,
+  "prompt_tokens": 2820,
+  "output_tokens": 215,
+  "estimated_usd": 0.00092,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: there is no `parse_semver_tag(tag)` returning the prerelease component, and `matches_caret` accepts prerelease input without an opt-out check. Existing tests cover only core tuple bounds and do not exercise either missing behavior.",
+  "target_issue": "T08 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch and surrounding module/tests, then run the repository test suite to verify compatibility and the ticket requirements.",
+    "The diff adds caret bounds but leaves `parse_semver_tag` and prerelease rejection out of the implementation, so I\u2019ll inspect the module and repository requirements before deciding.",
+    "The patch only changes this small module and its tests. I\u2019ll read the current implementation and tests to confirm there isn\u2019t an existing SemVer parser or additional compatibility requirement elsewhere.",
+    "The implementation has no `parse_semver_tag`, and `matches_caret` has no `allow_prerelease` option or prerelease rejection. These are explicit ticket requirements, so the pull request is incomplete regardless of its reported test results."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/caret_spec.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.742,
+  "prompt_tokens": 4049,
+  "output_tokens": 802,
+  "estimated_usd": 0.005805,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

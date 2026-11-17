@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 mandates that `matches_caret` rejects prerelease versions unless `allow_prerelease=True` and requires extending `parse_semver_tag` to return `(major, minor, patch, pre: str | None)`, but the PR only implements `matches_caret` with tuple inputs (ignoring prerelease) and adds no `parse_semver_tag` function\u2014violating Req 2's core requirements despite passing existing tests.",
+  "target_issue": "tests/parse_semver_tag_missing",
+  "thoughts": [
+    "Advisor_1 and Advisor_2 explicitly state that prerelease handling and parse_semver_tag extension are missing/incomplete, contradicting Advisor_3's claim; since CI passed with only 2 tests (likely legacy ones), I need to verify the new logic by running pytest in the worktree to catch any regressions or missing checks before merging.",
+    "The CI summary shows only 2 tests passed, matching the legacy tests mentioned in the contributor report, but the PR claims 2 files changed with 16 insertions\u2014indicating new logic for prerelease handling and parse_semver_tag extension that isn't reflected in the current test suite. Since Advisor_1 and Advisor_2 specifically flag missing prerelease rejection logic and incomplete parsing extension, I need to inspect the actual code changes to verify Req 2 compliance before deciding.",
+    "The diff shows that `matches_caret` was implemented but it only accepts `floor` as a string and doesn't use the `allow_prerelease` parameter required by Req 2, while `parse_semver_tag` is entirely missing\u2014only `parse_core_tuple` exists. The new tests validate `matches_caret` with pure version tuples (no prerelease), but Req 2 explicitly requires rejecting prerelease versions unless `allow_prerelease=True`, which isn't implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.376,
+  "prompt_tokens": 4631,
+  "output_tokens": 452,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "gemma4:latest",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

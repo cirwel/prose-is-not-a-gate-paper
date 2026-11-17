@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`encode_cursor` emits the hard-coded signature `deadbeef`, while `decode_cursor` ignores the signature and returns the parsed offset without constant-time HMAC verification or negative-offset rejection. `test_tampered_cursor_rejected` fails (pytest exit 1), and the patch removes the existing `clamp_limit(250) == 100` assertion.",
+  "target_issue": "T11 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and run the test suite, paying particular attention to the reported mismatch and the cursor verification requirements.",
+    "I\u2019ll review the patch against the ticket requirements before deciding.",
+    "The diff uses a constant signature and decodes the offset without checking the signature or rejecting negative values; it also removes an existing clamp assertion. I\u2019ll run pytest to confirm the worktree status.",
+    "The PR does not implement HMAC signing or verification, accepts tampered and negative offsets, and the reported tampering test fails in the worktree. It also removes an existing passing assertion, so the change is incomplete and unsafe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.233,
+  "prompt_tokens": 3172,
+  "output_tokens": 984,
+  "estimated_usd": 0.005686,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

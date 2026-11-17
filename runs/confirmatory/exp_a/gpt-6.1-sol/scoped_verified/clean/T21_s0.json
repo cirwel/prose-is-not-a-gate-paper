@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "canonical_query drops the configured tracking keys, sorts remaining (key, value) pairs lexicographically, and encodes them with urlencode. parse_query_pairs uses keep_blank_values=True, and has_query retains its signature and behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and diff, then run the tests to verify ticket completeness and compatibility.",
+    "The diff implements filtering, lexicographic pair sorting, URL encoding, and blank-value preservation while leaving the legacy function unchanged. I will run the test suite to check for regressions.",
+    "Both ticket requirements are implemented, the legacy public function remains unchanged, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.357,
+  "prompt_tokens": 2716,
+  "output_tokens": 209,
+  "estimated_usd": 0.010656,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

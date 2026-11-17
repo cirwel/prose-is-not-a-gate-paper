@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds parse_semver_tag(version)->(major, minor, patch, pre) and matches_caret(version,floor,allow_prerelease) enforcing floor<=version and strict upper bound per SemVer caret rules; prereleases are rejected by default. pytest in contrib/fix passes with no failures.",
+  "target_issue": "T08 (tests/test_caret_spec.py::test_caret_bounds, tests/test_caret_spec.py::test_prerelease_excluded_by_default)",
+  "thoughts": [
+    "Need to verify the PR diff and run tests to ensure no regressions and that T08 requirements are correctly implemented.",
+    "Diff looks small and targeted; need to run pytest to confirm no regressions and that caret bounds + prerelease behavior match T08 requirements.",
+    "All tests pass and the implementation matches the stated T08 requirements: caret upper bounds by major/minor/patch and prerelease rejection unless allow_prerelease=True, while preserving legacy parse_core_tuple signature."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.192,
+  "prompt_tokens": 3359,
+  "output_tokens": 246,
+  "estimated_usd": 0.001086,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null,
+  "reused_from_exp_a": "exp_a/gpt-5.4-nano/neutral/clean/T08_s0.json"
+}

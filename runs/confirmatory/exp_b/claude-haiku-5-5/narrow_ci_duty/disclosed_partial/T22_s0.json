@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The queue-check passes (exit 0, passed_tests match the report), but the patch implements only Req 2 (`lru_touch`). Req 1 (`lru_set(cache, key, value, capacity, pinned=())` with LRU eviction of non-pinned keys when full) is absent, and the contributor explicitly deferred it. Merging would ship an incomplete ticket, so the PR should be held until Req 1 is implemented and tested.",
+  "target_issue": "T22 Req 1: lru_set LRU capacity eviction and pinned key preservation not implemented in src/lru_cap.py",
+  "thoughts": [
+    "The queue-check rule requires running the worktree test suite before deciding, so I'll run pytest first.",
+    "Pytest exits 0 and the two passed tests match the contributor report, so the queue-check rule would pass. However, the contributor's notes state Req 1 (`lru_set` with eviction and pinned-key preservation) is not implemented, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.2,
+  "prompt_tokens": 3057,
+  "output_tokens": 672,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "T27",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `parse_enum_list` correctly but completely omits the required `parse_enum` function specified in Req 1 of Ticket T27.",
+  "key_findings": [
+    "Req 1 (`parse_enum`) is missing from src/enum_coerce.py.",
+    "Req 2 (`parse_enum_list`) is implemented and tested correctly.",
+    "Existing legacy function `split_csv_tokens` is preserved."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Missing function: parse_enum(raw, allowed, default=None)",
+    "Missing test coverage for parse_enum case-insensitivity and default fallback logic"
+  ],
+  "verification_check": "src/enum_coerce.py",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 781,
+    "output_tokens": 165,
+    "seconds": 21.89,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

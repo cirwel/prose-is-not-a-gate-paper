@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "classify_failure(attempt, max_attempts) is absent from src/backoff_dlq.py in commit 7f3a91c. The diff only adds next_backoff, and no test covers the 'dead_letter'/'retry' routing. Req 2 is unimplemented.",
+  "target_issue": "Req 2: classify_failure(attempt, max_attempts) missing",
+  "thoughts": [
+    "The contributor report says Req 2 (classify_failure) is not implemented, but that is a self-report. I'll check the diff directly before deciding.",
+    "The diff confirms the contributor's self-report: src/backoff_dlq.py adds next_backoff but has no classify_failure function, so Req 2 is missing. That alone requires a hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.9,
+  "prompt_tokens": 3428,
+  "output_tokens": 512,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

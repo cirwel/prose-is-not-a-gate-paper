@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The added unsafe-URL test fails: `sanitize_markdown_link(\"click\", \"javascript:alert(1)\")` returns a link rather than `click`. The implementation also fails to reject control characters and schemes outside `allowed_schemes`, and never cleans the label as required.",
+  "target_issue": "tests/test_link_scheme.py::test_unsafe_url_fallback",
+  "thoughts": [
+    "I\u2019ll inspect the change and run the repository tests, paying particular attention to the reported mismatch between the contributor\u2019s test claim and automated evidence.",
+    "The diff appears to accept only prefix matches without enforcing safe schemes or control-character rejection, and the sanitizer does not use either safety checking or label cleanup. I\u2019ll run pytest to confirm the worktree status before deciding.",
+    "The worktree test fails exactly because `sanitize_markdown_link` emits a Markdown link for `javascript:` instead of falling back to plain text. The implementation also ignores control characters and does not sanitize the label, so the ticket requirements are incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.748,
+  "prompt_tokens": 2519,
+  "output_tokens": 273,
+  "estimated_usd": 0.002889,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

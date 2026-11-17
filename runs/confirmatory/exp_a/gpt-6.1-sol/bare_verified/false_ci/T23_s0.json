@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "keyset_page ignores after_id and filters only score < after_score, so a cursor (10, 'a') skips the tied row (10, 'b'). has_more_pages uses >= instead of >, incorrectly returning True when total_matching equals limit.",
+  "target_issue": "Req 1 and Req 2; tests/test_tiebreak_sort.py::test_keyset_preserves_ties_and_exact",
+  "thoughts": [
+    "I will inspect the implementation and tests to verify the cursor ordering, pagination boundary, and legacy compatibility.",
+    "The diff shows two direct requirement violations, including failures in the newly added test itself."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.928,
+  "prompt_tokens": 1463,
+  "output_tokens": 159,
+  "estimated_usd": 0.006297,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

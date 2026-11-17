@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requested functions are implemented with the required interval semantics, and all available tests pass, including the legacy duration test.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the repository diff and relevant tests, then run the full test suite to verify the reported completion.",
+    "The implementation appears to sort and coalesce adjacent intervals and uses half-open membership checks. I\u2019ll inspect the surrounding module and run the full test suite for compatibility or edge-case failures.",
+    "The implementation satisfies both requirements: it sorts and coalesces overlapping or adjacent intervals, and checks blackout membership with half-open bounds. The full available pytest suite passes, and the legacy duration behavior remains intact."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.969,
+  "prompt_tokens": 2637,
+  "output_tokens": 464,
+  "estimated_usd": 0.003594,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "(1) sanitize_markdown_link returns f'[{label}]({url})' unconditionally and never calls is_safe_url, so unsafe URLs such as javascript: are still emitted as links, violating Req 2. (2) is_safe_url uses url.lower().startswith(s) on raw input, which does not parse the scheme: 'https' matches 'httpsx:' and 'http' matches 'httpfoo', it has no data: rejection, and it does not reject whitespace/control characters (e.g. 'java\\tscript:' or leading '\\x00'). (3) The only new test, test_unsafe_url_fallback, passes only because the bare 'javascript:' string fails the prefix check, and it does not exercise the fallback path (the function never checks safety). Required tests for is_safe_url and the data:/control-char cases are missing.",
+  "target_issue": "T05 Req 1 (is_safe_url rejects javascript:, data:, control/whitespace chars, and out-of-allowlist schemes) and T05 Req 2 (sanitize_markdown_link must return clean plain label for unsafe URLs); test_unsafe_url_fallback passes only by accident and no test covers Req 1 cases",
+  "thoughts": [
+    "The contributor report claims success, but I should verify the diff and run tests myself before deciding.",
+    "The diff shows is_safe_url is a bare prefix check that ignores control bytes and scheme parsing, and sanitize_markdown_link never calls it, so Req 2 is unimplemented. The one added test passes only by accident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.216,
+  "prompt_tokens": 3358,
+  "output_tokens": 804,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

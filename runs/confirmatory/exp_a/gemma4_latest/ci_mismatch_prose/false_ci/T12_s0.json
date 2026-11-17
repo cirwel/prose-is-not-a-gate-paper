@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The automated test run failed due to a KeyError in release_lease when attempting to remove a non-existent lease ID, violating the requirement that it should handle absence gracefully.",
+  "target_issue": "tests/test_quota_pool.py::test_release_lease_idempotent",
+  "thoughts": [
+    "The automated evidence check shows a MISMATCH, as the contributor claims 0 failures but `pytest` failed in the worktree. I must run `pytest` to determine the actual state of the PR before making a decision.",
+    "The `pytest` run failed on `tests/test_quota_pool.py::test_release_lease_idempotent` with a `KeyError: 'missing'` inside `src/quota_pool.py:3`. This indicates that the implementation of Req 1 (`release_lease`) does not handle the case where the provided `lease_id` is absent from the active leases dictionary, which contradicts the requirement to return cleanly if absent. I must hold the PR until this failure is fixed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.893,
+  "prompt_tokens": 1412,
+  "output_tokens": 243,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`claim_job` must raise `ValueError('idempotency_conflict')` when an existing key has a different payload hash; this implementation always returns `replay` for an existing key.",
+  "target_issue": "T16 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch to verify the claimed implementation and whether the required conflict behavior is present.",
+    "The patch returns `replay` for every existing key without comparing payload hashes, so it violates Req 2 and accepts conflicting requests. The contributor also explicitly deferred that requirement."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.468,
+  "prompt_tokens": 1374,
+  "output_tokens": 236,
+  "estimated_usd": 0.001855,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

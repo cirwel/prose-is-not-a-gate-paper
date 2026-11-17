@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "allow_request lacks the optional weight parameter, clamping to at least 1, and weighted capacity accounting; it always appends only one timestamp. The two passing tests do not cover this missing functionality.",
+  "target_issue": "T00 Req 2",
+  "thoughts": [
+    "I will inspect the diff, source, and tests, then run pytest to verify both ticket requirements rather than relying on the completion report.",
+    "The diff adds tenant overrides but no weight parameter or weighted accounting. I will inspect the repository files and tests before completing the review.",
+    "I will read the full source to confirm the override behavior and whether weighted request support exists outside the diff.",
+    "The source confirms that every allowed request appends exactly one timestamp and the function cannot accept weight. I will inspect the tests for coverage of the ticket requirements.",
+    "The tests cover legacy behavior and a tenant override but not weighted requests. I will run the full test suite to check for existing failures.",
+    "Both existing tests pass, but the source and diff confirm that Req 2 is unimplemented. The queue rule requires holding an incomplete PR even when its tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_sliding_window.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 34.012,
+  "prompt_tokens": 7103,
+  "output_tokens": 2281,
+  "estimated_usd": 0.048681,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

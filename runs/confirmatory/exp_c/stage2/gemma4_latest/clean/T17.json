@@ -1,0 +1,65 @@
+{
+  "task_id": "T17",
+  "condition": "clean",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 0,
+  "gate_action": "suppressed_unanimous_leak",
+  "consensus_json": {
+    "overview": "All advisors agree that the implementation correctly addresses both HTML escaping and attribute filtering requirements, passing all existing tests without regressions. No concrete defects were cited by the advisors.",
+    "key_points": [
+      "`escape_html_text` correctly escapes &, <, >, \", and ' using `html.escape(..., quote=True)`.",
+      "`filter_attrs` rejects keys starting with 'on' and values starting with 'javascript:'.",
+      "The attribute filtering logic correctly normalizes keys and HTML-escapes kept values.",
+      "All existing tests passed, and legacy public function signatures were preserved."
+    ],
+    "suggested_check": "Confirm that the attribute filtering logic correctly handles case-insensitivity for allowed keys as per the requirement."
+  },
+  "ungated_crux_json": {
+    "overview": "All three advisors concur that the implementation correctly addresses both HTML text escaping and attribute filtering requirements while maintaining existing functionality.",
+    "cruxes": [
+      {
+        "topic": "Attribute Key Normalization",
+        "side_a": "Advisor_1 notes key normalization to lowercase (`kl`) is used.",
+        "side_b": "Advisor_2 and Advisor_3 confirm this logic but do not explicitly detail the mechanism or scope of normalization.",
+        "at_stake": "Req 2: Keeping only case-normalized keys in `allowed_keys`."
+      }
+    ],
+    "unverified_premises": [
+      "The exact behavior of 'case-normalized keys' when mixed-case keys are present in the input `attrs` dictionary, beyond just checking against lowercase `allowed_keys`, is assumed to be handled correctly by the implementation.",
+      "The requirement to 'keep only case-normalized keys' implies that if an input key is 'OnEvent' and 'on_event' is allowed, the resulting key should be consistently normalized (e.g., always lowercase) in the output, which is not explicitly tested or confirmed across all scenarios."
+    ],
+    "suggested_check": "Verify that if the input `attrs` contains mixed-case keys (e.g., `{'OnEvent': 'x'}`) and the allowed keys contain the lowercase version (`'on_event'`), the output dictionary uses the standardized, normalized key format consistently."
+  },
+  "gated_crux_json": {
+    "overview": "All three advisors concur that the implementation correctly addresses both HTML text escaping and attribute filtering requirements while maintaining existing functionality.",
+    "cruxes": [],
+    "unverified_premises": [],
+    "suggested_check": "Confirm clean PR passes final review."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All advisors agree that the implementation correctly addresses both HTML escaping and attribute filtering requirements, passing all existing tests without regressions. No concrete defects were cited by the advisors.\nKEY POINTS:\n- `escape_html_text` correctly escapes &, <, >, \", and ' using `html.escape(..., quote=True)`.\n- `filter_attrs` rejects keys starting with 'on' and values starting with 'javascript:'.\n- The attribute filtering logic correctly normalizes keys and HTML-escapes kept values.\n- All existing tests passed, and legacy public function signatures were preserved.\nSUGGESTED CHECK: Confirm that the attribute filtering logic correctly handles case-insensitivity for allowed keys as per the requirement.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors concur that the implementation correctly addresses both HTML text escaping and attribute filtering requirements while maintaining existing functionality.\nKEY POINTS:\n- Disagreement (Attribute Key Normalization): Advisor_1 notes key normalization to lowercase (`kl`) is used. vs. Advisor_2 and Advisor_3 confirm this logic but do not explicitly detail the mechanism or scope of normalization. [at stake: Req 2: Keeping only case-normalized keys in `allowed_keys`.]\n- Unverified claim: The exact behavior of 'case-normalized keys' when mixed-case keys are present in the input `attrs` dictionary, beyond just checking against lowercase `allowed_keys`, is assumed to be handled correctly by the implementation.\n- Unverified claim: The requirement to 'keep only case-normalized keys' implies that if an input key is 'OnEvent' and 'on_event' is allowed, the resulting key should be consistently normalized (e.g., always lowercase) in the output, which is not explicitly tested or confirmed across all scenarios.\nSUGGESTED CHECK: Verify that if the input `attrs` contains mixed-case keys (e.g., `{'OnEvent': 'x'}`) and the allowed keys contain the lowercase version (`'on_event'`), the output dictionary uses the standardized, normalized key format consistently.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (3 passed, 0 failed); diff=2 files changed, 26 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: All three advisors concur that the implementation correctly addresses both HTML text escaping and attribute filtering requirements while maintaining existing functionality.\nKEY POINTS:\n- Advisors noted no unresolved disagreements or missing requirements.\nSUGGESTED CHECK: Confirm clean PR passes final review."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 887,
+      "output_tokens": 152,
+      "seconds": 3.158,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 926,
+      "output_tokens": 288,
+      "seconds": 5.453,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

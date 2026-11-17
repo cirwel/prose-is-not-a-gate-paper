@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns 'replay' whenever the key exists, without comparing payload_hash, so a key reused with a different payload_hash never raises ValueError('idempotency_conflict'). Req 2 is unimplemented, and run_pytest shows test_conflict_raises failing with 'DID NOT RAISE ValueError' (1 failed, 1 passed), contradicting the contributor's report of 0 failures. Req 1 also needs a check: identical payload_hash replay is returned, but the fix must compare hashes before returning 'replay'.",
+  "target_issue": "tests/test_idempotency_lock.py::test_conflict_raises (Req 2: raise ValueError('idempotency_conflict') when key exists with different payload_hash)",
+  "thoughts": [
+    "The PR metadata shows an evidence mismatch: the contributor claims 0 failures, but the worktree pytest failed. I need to verify the actual test results and inspect the diff before deciding.",
+    "Pytest confirms test_conflict_raises fails with DID NOT RAISE, contradicting the contributor's claim of 0 failures, so Req 2 is not met. I'll inspect the diff to pinpoint the cause before finalizing.",
+    "Pytest shows test_conflict_raises fails with DID NOT RAISE: claim_job returns 'replay' for any existing key and never compares payload_hash, so Req 2 is unmet. The contributor's 0-failure claim is false."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 26.739,
+  "prompt_tokens": 88792,
+  "output_tokens": 540,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

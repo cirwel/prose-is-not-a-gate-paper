@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/ttl_cache.py has no `purge_expired(store, now)`, so expired entries are never removed and no evicted-key count is returned. The only added test covers `cache_get` and does not exercise purge. The contributor's 'ready_for_review' status is therefore incorrect. Req 1 (`cache_get`) looks correct: it returns the value when expires_at > now and None when absent or expired, and legacy `cache_put` is unchanged.",
+  "target_issue": "Req 2: purge_expired(store, now) missing from src/ttl_cache.py",
+  "thoughts": [
+    "I need to verify the PR against Req 1 and Req 2 and the constraint about legacy behavior. I'll start by reading the diff and the module file.",
+    "The diff adds `cache_get` (Req 1) but contains no `purge_expired` function, so Req 2 is missing entirely. The contributor's report also claims completion without addressing it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.512,
+  "prompt_tokens": 169133,
+  "output_tokens": 493,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

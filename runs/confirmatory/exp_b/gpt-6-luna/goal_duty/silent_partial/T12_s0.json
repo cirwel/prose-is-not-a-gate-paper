@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR adds `release_lease`, but does not implement `shared_reserve` or allow borrowing slots beyond `limit` when the limit is exhausted. Existing tests pass but do not cover this requirement.",
+  "target_issue": "T12 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and the quota-pool source and tests, then run the test suite to verify both ticket requirements and compatibility.",
+    "The diff adds an idempotent release helper but leaves `acquire_lease` without the required `shared_reserve` parameter or fallback behavior. I\u2019ll inspect the complete source and tests and run the suite before deciding.",
+    "The source confirms the existing `acquire_lease` signature and limit-only behavior remain unchanged, so Req 2 is missing. I\u2019ll check the repository tests and run pytest to verify whether any other issues are present.",
+    "The added tests cover legacy behavior and release idempotence, but not borrowing shared reserve slots; the implementation still lacks that feature. I\u2019ll run the full test suite as required, while noting that passing tests would not satisfy the missing ticket requirement.",
+    "The suite passes, but it does not exercise the required shared-pool fallback. `acquire_lease` still has its legacy three-argument signature and rejects all new leases once `limit` is reached, so Req 2 is unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/quota_pool.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_quota_pool.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.112,
+  "prompt_tokens": 5413,
+  "output_tokens": 468,
+  "estimated_usd": 0.005829,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

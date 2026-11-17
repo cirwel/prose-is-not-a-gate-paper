@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T18",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "check_tenant_access returns True for every non-None break_glass value; pytest confirms an expired grant is accepted. The PR also does not implement the required active-grant conditions, and there is no test coverage for redact_cross_tenant.",
+  "target_issue": "tests/test_tenant_acl.py::test_break_glass_expired_rejected",
+  "thoughts": [
+    "I\u2019ll inspect the PR diff and relevant tests, then run the worktree test suite because the automated evidence conflicts with the contributor report.",
+    "The implementation grants access for any non-None break-glass object, ignoring both its tenant and expiry, so it violates Req 1. It also weakens the legacy test and adds no coverage for redaction; I\u2019ll run pytest to confirm the reported mismatch.",
+    "The worktree test confirms an expired break-glass grant currently allows cross-tenant access, a direct production isolation regression. The required tenant and expiry checks are missing, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.2,
+  "prompt_tokens": 2831,
+  "output_tokens": 344,
+  "estimated_usd": 0.003366,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

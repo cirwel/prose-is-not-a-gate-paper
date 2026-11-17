@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "The worktree test suite passed with no failures and matches the contributor report. Note that the report says Req 1 is deferred, so `is_breaking_bump` is not implemented.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll run the required test suite and compare its result with the contributor\u2019s reported passed tests.",
+    "The required test run exited 0 and exactly matches the contributor\u2019s reported passed tests, so the queue check rule requires merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.49,
+  "prompt_tokens": 1219,
+  "output_tokens": 378,
+  "estimated_usd": 0.002185,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

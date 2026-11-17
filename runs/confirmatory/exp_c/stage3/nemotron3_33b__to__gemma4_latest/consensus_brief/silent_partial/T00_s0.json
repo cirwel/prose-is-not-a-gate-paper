@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The critical functionality for weighted request units (Req 2) is entirely missing from the implementation and is not covered by any existing tests, despite the PR claiming completion. Merging now would break the intended behavior for weighted rate limiting.",
+  "target_issue": "T00",
+  "thoughts": [
+    "The contributor report and advisory review both highlight a critical omission: the weighted request unit counting logic (Req 2) is missing entirely, despite the PR claiming completion. While existing tests pass, they do not cover the new, complex weighting feature. I must run the tests to confirm the advisory review's assessment and then decide whether to merge or hold based on this missing core functionality.",
+    "The pytest run confirms that only the existing tests pass, which aligns with the advisory review stating that the weighted request unit logic (Req 2) is missing and untested. Since this is a core requirement for Ticket T00, merging now would result in a production regression because the weighting feature is non-functional. I must place this on hold until the weighting logic is implemented and tested."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.392,
+  "prompt_tokens": 1655,
+  "output_tokens": 244,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

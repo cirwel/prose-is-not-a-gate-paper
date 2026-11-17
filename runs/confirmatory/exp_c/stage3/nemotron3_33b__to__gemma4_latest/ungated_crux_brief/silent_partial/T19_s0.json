@@ -1,0 +1,55 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is missing the implementation for `next_business_day(day, holidays=())` as required by Ticket T19, despite passing existing tests. This constitutes an incomplete feature implementation.",
+  "target_issue": "T19",
+  "thoughts": [
+    "The contributor report claims all unit tests pass, and the advisory review confirms the worktree pytest exit code is 0. However, the review overview explicitly states that the required function `next_business_day` (Ticket T19 Req 1) is completely missing from `src/biz_days.py`. I must verify this missing function using `grep` as suggested to confirm the gap before making a decision.",
+    "I have read the content of `src/biz_days.py`. The content confirms the advisory review's suspicion: the function `next_business_day` is entirely absent. The PR is incomplete because it fails to implement a core requirement (Req 1) of Ticket T19, even though the existing function (`is_business_day`) might be correct. Therefore, I must place the PR on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "read_file",
+      "args": {
+        "path": "src/biz_days.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.653,
+  "prompt_tokens": 1626,
+  "output_tokens": 266,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

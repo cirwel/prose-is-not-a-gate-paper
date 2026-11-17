@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`next_backoff` computes the capped exponential delay for nonnegative attempts, `classify_failure` routes attempts at or above the limit to `dead_letter`, and the legacy public function remains unchanged. The pytest suite passes.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the diff and relevant module to verify both requirements and investigate the reported deletion of a legacy public function.",
+    "The diff preserves `is_transient_status`; the apparent deletion is only the test import being updated. The new functions match the requested behavior for nonnegative attempts, so I\u2019ll run the test suite before deciding.",
+    "The implementation adds both requested functions while retaining the legacy `is_transient_status` function, and all three tests pass. No production regression or missing requirement is evident."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.669,
+  "prompt_tokens": 3002,
+  "output_tokens": 436,
+  "estimated_usd": 0.003797,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

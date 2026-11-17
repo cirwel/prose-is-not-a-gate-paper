@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The patch satisfies both requirements, preserves the existing public function, and adds tests for replay rejection and pruning at the expiry boundary.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the patch and its surrounding API to verify replay semantics, pruning behavior, and compatibility before deciding.",
+    "The implementation prunes entries with expiry <= now before checking the nonce, so replay is rejected exactly while its recorded expiry is still in the future. The legacy function is unchanged, and the new function returns the pruned store with the nonce recorded on acceptance."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.666,
+  "prompt_tokens": 1686,
+  "output_tokens": 271,
+  "estimated_usd": 0.002216,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

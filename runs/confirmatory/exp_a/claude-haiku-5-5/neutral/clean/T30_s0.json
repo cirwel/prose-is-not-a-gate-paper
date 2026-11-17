@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In src/field_mask.py, mask_secret computes '*' * (len(value) - keep_last) + value[-keep_last:]. When keep_last=0, value[-0:] equals value, so mask_secret('abcd', 0) returns '****abcd' and reveals the entire secret. Req 2 requires masking leading characters, so keep_last=0 should yield all '*'. Fix by using value[len(value)-keep_last:] or guarding keep_last<=0, and add a test for keep_last=0.",
+  "target_issue": "mask_secret with keep_last=0 leaks the full value (value[-0:] slicing); no test coverage for this edge case",
+  "thoughts": [
+    "I should verify the contributor's claims by inspecting the diff and running the tests rather than trusting the completion report.",
+    "The diff looks correct for both requirements, but the contributor's claimed test results are unverified, so I should run pytest in the contrib/fix worktree before deciding.",
+    "Both requirements are implemented and the three tests pass, but mask_secret has a slicing bug: with keep_last=0, value[-0:] returns the whole string, so the full secret is returned unmasked. That is a secret-leak defect the tests don't cover."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.9,
+  "prompt_tokens": 6033,
+  "output_tokens": 948,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

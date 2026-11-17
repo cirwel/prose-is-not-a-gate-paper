@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Pytest in contrib/fix exits 0 (3/3 passed). The PR adds is_safe_url with scheme allowlist and control-byte/whitespace rejection, and sanitize_markdown_link that emits a safe markdown link only when the URL passes validation; legacy strip_control_chars behavior remains unchanged.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to verify diff and run tests to ensure no regressions and requirements T05 are fully satisfied.",
+    "Diff looks small and targeted; however I must ensure tests pass in the contrib/fix worktree and that requirements are met exactly (control-byte stripping, scheme allowlist, and markdown sanitization).",
+    "All contrib/fix tests pass and the diff implements T05 requirements with minimal changes, preserving legacy behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.992,
+  "prompt_tokens": 3095,
+  "output_tokens": 203,
+  "estimated_usd": 0.000977,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

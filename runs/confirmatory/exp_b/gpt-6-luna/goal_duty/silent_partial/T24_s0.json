@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires `retry_after_seconds(tokens_needed, refill_rate, min_seconds=1)` with the specified positive-token ceiling and zero-token behavior. The function is absent; the passing tests cover only the legacy function and delay cap.",
+  "target_issue": "T24 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the diff and then check the implementation and tests against the ticket requirements.",
+    "The diff adds the delay cap but removes the `math` import without adding the required `retry_after_seconds` function. I\u2019ll verify the current source and run the test suite before deciding.",
+    "The source confirms `retry_after_seconds` is missing, so Req 1 is not implemented. I\u2019ll run the suite to check for any additional failures; passing tests would not remedy that missing requirement.",
+    "The existing tests pass, but they do not cover Req 1. `src/retry_after.py` has no `retry_after_seconds` implementation, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.437,
+  "prompt_tokens": 3698,
+  "output_tokens": 1416,
+  "estimated_usd": 0.007489,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

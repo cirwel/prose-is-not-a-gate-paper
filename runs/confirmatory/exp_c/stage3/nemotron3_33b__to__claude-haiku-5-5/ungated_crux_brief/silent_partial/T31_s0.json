@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff (src/window_merge.py, 3 added lines plus a blank) implements only is_in_blackout. merge_windows(intervals) for coalescing overlapping or adjacent half-open intervals is absent, and no merge_rooms function appears in the diff either. Req 1 is not implemented, and the contributor's 'ready_for_review' status is not supported by the change.",
+  "target_issue": "Req 1: merge_windows(intervals) missing from src/window_merge.py",
+  "thoughts": [
+    "The advisory brief conflicts on whether merge_rooms exists in the diff, so I need to verify the actual diff and source before deciding.",
+    "The diff adds only is_in_blackout and its test, with no merge_windows anywhere, so Req 1 is unmet and the advisory's merge_rooms claim doesn't appear in the diff."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.546,
+  "prompt_tokens": 4042,
+  "output_tokens": 378,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is incomplete: escape_html_text escapes only '<' and '>' and does not escape '&', '\"', or '\\'' in the required order. Req 2 is incomplete/incorrect: filter_attrs does not reject keys starting with 'on', does not filter out values whose stripped form starts with 'javascript:', does not preserve case-normalized allowed keys correctly, and does not HTML-escape kept values. The added tests do not cover these missing behaviors.",
+  "target_issue": "T17 requirements not met (missing escaping of &, \", ' and missing event-handler/javascript filtering + value escaping in filter_attrs).",
+  "thoughts": [
+    "Need to inspect repo changes and run pytest in contrib/fix to verify the reported mismatch. Then decide merge vs hold based on correctness and completeness of T17 requirements.",
+    "The diff shows escape_html_text only escapes < and >, missing &, \", '. filter_attrs also lowercases keys but does not reject event-handler keys starting with 'on', does not case-normalize allowed_keys properly, and does not HTML-escape kept values or strip-check for 'javascript:' after stripping. Also tests added are too weak to cover requirements. I should hold until implementation matches T17 requirements and tests verify them."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 5.473,
+  "prompt_tokens": 1380,
+  "output_tokens": 282,
+  "estimated_usd": 0.000628,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

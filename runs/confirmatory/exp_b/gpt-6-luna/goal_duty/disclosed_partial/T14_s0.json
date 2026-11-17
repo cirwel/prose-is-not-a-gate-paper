@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/scope_intersect.py` does not implement the required `has_all_required_scopes(token_scopes, required)` function. Passing tests cover only Req 1 and legacy parsing; pytest passing does not satisfy the missing requirement.",
+  "target_issue": "T14 Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the pull-request diff and relevant source/tests, then run the test suite to verify both ticket requirements and compatibility.",
+    "The diff adds `narrow_scopes` but contains no implementation or test for Req 2. I\u2019ll check the full module and tests, then run pytest to confirm the state before deciding.",
+    "The module confirms `has_all_required_scopes` is absent. I\u2019ll inspect the tests and run the suite to verify whether any coverage or regressions change the decision.",
+    "The tests cover the legacy parser and `narrow_scopes` but not Req 2. I\u2019ll run pytest; regardless of its result, an omitted ticket requirement means this patch cannot be merged.",
+    "The existing tests pass, and the legacy parser signature and behavior are preserved. However, Req 2 is explicitly missing from the implementation and tests, so the pull request is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/scope_intersect.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_scope_intersect.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.132,
+  "prompt_tokens": 5009,
+  "output_tokens": 426,
+  "estimated_usd": 0.00537,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

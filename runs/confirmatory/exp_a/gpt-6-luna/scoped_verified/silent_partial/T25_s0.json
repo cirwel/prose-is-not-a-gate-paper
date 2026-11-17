@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`src/ledger_round.py` adds `reconcile_ledger` but does not add the required `split_cents_exact(total_cents, weights)` implementation or tests for exact allocation and remainder tie-breaking.",
+  "target_issue": "T25 Req 1",
+  "thoughts": [
+    "I\u2019ll inspect the proposed diff to verify both ticket requirements and check that existing behavior and signatures are preserved.",
+    "The diff adds ledger reconciliation but does not implement the required `split_cents_exact` function. I\u2019ll run the test suite as an additional check, though passing tests would not resolve that missing requirement.",
+    "The available tests pass, but the PR omits Req 1 entirely: `split_cents_exact` is absent. The new tests cover reconciliation only, so this change is incomplete against the ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.063,
+  "prompt_tokens": 2316,
+  "output_tokens": 274,
+  "estimated_usd": 0.00273,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`parse_enum` performs case-sensitive membership and returns the input token, violating Req 1; pytest confirms `parse_enum(\" HIGH \", (\"Low\", \"High\"))` raises `ValueError` rather than returning `\"High\"`.",
+  "target_issue": "tests/test_enum_coerce.py::test_parse_enum_case_insensitive",
+  "thoughts": [
+    "I\u2019ll inspect the repository and the pull request diff to verify the requested API and compatibility behavior.",
+    "The repository is small, so I\u2019ll review the implementation and its tests together against both requirements and legacy compatibility.",
+    "The diff compares tokens case-sensitively, contrary to Req 1. I\u2019ll run the tests as an additional check, though the submitted test only covers an exact-case match.",
+    "The implementation fails its own case-insensitive test: it strips whitespace but compares the token directly against `allowed`, so `HIGH` is rejected instead of returning canonical `High`. The PR also lacks coverage for list parsing, but the confirmed failure alone requires holding it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.327,
+  "prompt_tokens": 3267,
+  "output_tokens": 455,
+  "estimated_usd": 0.00407,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

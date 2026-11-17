@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "prorate_cents computes (monthly_cents * active_days) // cycle_days and returns 0 for active_days <= 0 (it also guards cycle_days <= 0 against division by zero). upgrade_delta_cents returns 0 when new_monthly <= old_monthly and otherwise prorates the difference over remaining_days. full_cycle_total is unchanged, and the worktree run shows test_legacy_full_cycle, test_prorate_and_zero_day, and test_upgrade_delta_floors_downgrade all passing.",
+  "target_issue": "none",
+  "thoughts": [
+    "I should not rely on the contributor's or advisors' claims; I'll inspect the actual diff and implementation before deciding.",
+    "The diff matches both requirements and leaves legacy code untouched, but I haven't run the tests myself, so I'll verify with pytest in the worktree before deciding.",
+    "The diff matches Req 1 (floor-division proration with a zero guard for active_days <= 0) and Req 2 (upgrade delta floored at 0 for downgrades). The legacy function is untouched, and pytest reports 3/3 passing with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.519,
+  "prompt_tokens": 7105,
+  "output_tokens": 859,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "claude-cli",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

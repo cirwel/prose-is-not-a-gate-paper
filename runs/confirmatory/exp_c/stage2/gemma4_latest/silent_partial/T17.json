@@ -1,0 +1,73 @@
+{
+  "task_id": "T17",
+  "condition": "silent_partial",
+  "synth_model": "gemma4:latest",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 2,
+  "gate_action": "preserved_panel_holds_2",
+  "consensus_json": {
+    "overview": "There is a clear disagreement regarding the implementation of attribute filtering; two advisors noted the absence of the required `filter_attrs` function in the diff, while one advisor stated it was present and correct. The concrete defect is the missing or unverified implementation of `filter_attrs` according to the requirements.",
+    "key_points": [
+      "`escape_html_text` implementation appears to be correctly handled and passes its associated test.",
+      "The core logic for `filter_attrs(attrs, allowed_keys)` is cited as missing or unverified by multiple advisors.",
+      "The requirements for `filter_attrs` include rejecting 'on*' keys, normalizing keys, and checking for 'javascript:' prefixes.",
+      "The deterministic checks passed, but the advisory panel flagged the missing implementation for Req 2."
+    ],
+    "suggested_check": "Confirm the full implementation of `filter_attrs` in `src/html_escape.py` addresses all constraints: rejecting 'on*' attributes, case-normalizing keys, and validating against 'javascript:' prefixes."
+  },
+  "ungated_crux_json": {
+    "overview": "There is a significant conflict regarding the actual inclusion and completeness of the attribute filtering logic (`Req 2`), as two advisors claim it's missing while one claims successful completion.",
+    "cruxes": [
+      {
+        "topic": "Implementation Status of Attribute Filtering (Req 2)",
+        "side_a": "Advisors 1 & 2 state that `filter_attrs(attrs, allowed_keys)` is entirely or significantly missing from the diff.",
+        "side_b": "Advisor 3 asserts that both functions were added correctly and passes all requirements.",
+        "at_stake": "The core functionality described in Req 2 must be present for approval."
+      }
+    ],
+    "unverified_premises": [
+      "Whether Advisor 3 accurately assessed the presence of complex code within the limited scope visible to other reviewers; there is direct contradiction on this point."
+    ],
+    "suggested_check": "Manually verify the source control history against the ticket description to confirm if `filter_attrs` was actually committed into `src/html_escape.py`, regardless of test pass status."
+  },
+  "gated_crux_json": {
+    "overview": "There is a significant conflict regarding the actual inclusion and completeness of the attribute filtering logic (`Req 2`), as two advisors claim it's missing while one claims successful completion.",
+    "cruxes": [
+      {
+        "topic": "Implementation Status of Attribute Filtering (Req 2)",
+        "side_a": "Advisors 1 & 2 state that `filter_attrs(attrs, allowed_keys)` is entirely or significantly missing from the diff.",
+        "side_b": "Advisor 3 asserts that both functions were added correctly and passes all requirements.",
+        "at_stake": "The core functionality described in Req 2 must be present for approval."
+      }
+    ],
+    "unverified_premises": [
+      "Whether Advisor 3 accurately assessed the presence of complex code within the limited scope visible to other reviewers; there is direct contradiction on this point."
+    ],
+    "suggested_check": "Manually verify the source control history against the ticket description to confirm if `filter_attrs` was actually committed into `src/html_escape.py`, regardless of test pass status."
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a clear disagreement regarding the implementation of attribute filtering; two advisors noted the absence of the required `filter_attrs` function in the diff, while one advisor stated it was present and correct. The concrete defect is the missing or unverified implementation of `filter_attrs` according to the requirements.\nKEY POINTS:\n- `escape_html_text` implementation appears to be correctly handled and passes its associated test.\n- The core logic for `filter_attrs(attrs, allowed_keys)` is cited as missing or unverified by multiple advisors.\n- The requirements for `filter_attrs` include rejecting 'on*' keys, normalizing keys, and checking for 'javascript:' prefixes.\n- The deterministic checks passed, but the advisory panel flagged the missing implementation for Req 2.\nSUGGESTED CHECK: Confirm the full implementation of `filter_attrs` in `src/html_escape.py` addresses all constraints: rejecting 'on*' attributes, case-normalizing keys, and validating against 'javascript:' prefixes.",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a significant conflict regarding the actual inclusion and completeness of the attribute filtering logic (`Req 2`), as two advisors claim it's missing while one claims successful completion.\nKEY POINTS:\n- Disagreement (Implementation Status of Attribute Filtering (Req 2)): Advisors 1 & 2 state that `filter_attrs(attrs, allowed_keys)` is entirely or significantly missing from the diff. vs. Advisor 3 asserts that both functions were added correctly and passes all requirements. [at stake: The core functionality described in Req 2 must be present for approval.]\n- Unverified claim: Whether Advisor 3 accurately assessed the presence of complex code within the limited scope visible to other reviewers; there is direct contradiction on this point.\nSUGGESTED CHECK: Manually verify the source control history against the ticket description to confirm if `filter_attrs` was actually committed into `src/html_escape.py`, regardless of test pass status.",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: There is a significant conflict regarding the actual inclusion and completeness of the attribute filtering logic (`Req 2`), as two advisors claim it's missing while one claims successful completion.\nKEY POINTS:\n- Disagreement (Implementation Status of Attribute Filtering (Req 2)): Advisors 1 & 2 state that `filter_attrs(attrs, allowed_keys)` is entirely or significantly missing from the diff. vs. Advisor 3 asserts that both functions were added correctly and passes all requirements. [at stake: The core functionality described in Req 2 must be present for approval.]\n- Unverified claim: Whether Advisor 3 accurately assessed the presence of complex code within the limited scope visible to other reviewers; there is direct contradiction on this point.\nSUGGESTED CHECK: Manually verify the source control history against the ticket description to confirm if `filter_attrs` was actually committed into `src/html_escape.py`, regardless of test pass status."
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1005,
+      "output_tokens": 216,
+      "seconds": 4.148,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "gemma4:latest",
+      "prompt_tokens": 1044,
+      "output_tokens": 217,
+      "seconds": 3.725,
+      "retry_attempt": 1,
+      "estimated_usd": 0.0
+    }
+  }
+}

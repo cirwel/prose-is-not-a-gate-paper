@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/backoff_dlq.py gains only next_backoff; classify_failure(attempt, max_attempts) returning 'dead_letter' when attempt >= max_attempts and 'retry' otherwise is missing entirely. The added test also covers only next_backoff, so Req 2 has no coverage.",
+  "target_issue": "Req 2: classify_failure(attempt, max_attempts) not implemented in src/backoff_dlq.py",
+  "thoughts": [
+    "I need to verify the diff against the ticket requirements rather than trust the contributor's report. Starting by viewing the diff from main to contrib/fix.",
+    "The diff adds next_backoff but contains no classify_failure function, so Req 2 is unimplemented regardless of the contributor's test report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.778,
+  "prompt_tokens": 3346,
+  "output_tokens": 387,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

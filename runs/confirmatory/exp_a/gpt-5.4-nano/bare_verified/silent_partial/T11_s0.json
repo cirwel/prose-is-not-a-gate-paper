@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements Req 1 (encode_cursor) but omits Req 2 entirely: no decode_cursor(token, secret) with constant-time HMAC verification and no ValueError('invalid_cursor') handling for tampered offsets/negative offsets. Current tests only cover encode_cursor and legacy clamp_limit, so missing functionality could regress production cursor handling.",
+  "target_issue": "Missing decode_cursor implementation for ticket T11 (no tests for tampered/negative cursor decoding).",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure T11 is correctly implemented without breaking existing behavior.",
+    "The diff only adds encode_cursor and does not implement decode_cursor or tampering/constant-time verification requirements. I should hold until decode_cursor is added and tests cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.778,
+  "prompt_tokens": 1276,
+  "output_tokens": 187,
+  "estimated_usd": 0.000506,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

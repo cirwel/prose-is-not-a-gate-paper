@@ -1,0 +1,72 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "`retry_after_seconds` returns 0 for nonpositive token needs and otherwise applies the requested ceiling and minimum; `cap_backoff_delay` clamps the delay to the requested bounds. Existing behavior is preserved and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first, then verify the implementation against the ticket and existing public APIs.",
+    "The diff uses `math.ceil` but does not show an import; I\u2019ll inspect the full module and test suite to confirm whether that causes a failure or conflicts with existing behavior.",
+    "The module imports `math`, and the new functions match the stated formulas for ordinary positive refill rates and delay bounds. I\u2019ll run the full test suite and check the repository\u2019s relevant tests before deciding.",
+    "All three available tests pass, and the legacy function signature is unchanged. I\u2019ll read the full test file once to verify the coverage and preserved behavior before finalizing.",
+    "The module implements both requested behaviors, retains `compute_wait_ratio` unchanged, and the full available pytest suite passes. No ticket requirement appears missing, so this PR is ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 5,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.829,
+  "prompt_tokens": 5955,
+  "output_tokens": 914,
+  "estimated_usd": 0.007688,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

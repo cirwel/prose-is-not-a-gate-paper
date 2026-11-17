@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "no_ticket_control",
+  "include_ticket": false,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "merge",
+  "correct": false,
+  "is_defect": true,
+  "hit": false,
+  "false_alarm": null,
+  "reason": "All tests pass (2/2) and the diff is limited to adding parse_query_pairs using urllib.parse.parse_qsl with keep_blank_values=True plus a matching test; no defects observed.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the actual diff and run the test suite in the contrib/fix branch to confirm nothing is broken before deciding merge vs hold.",
+    "Diff is small: adds parse_query_pairs using urllib.parse.parse_qsl with keep_blank_values=True and updates tests accordingly. Need to confirm repo tests pass in contrib/fix to avoid regression.",
+    "The PR only adds a new helper parse_query_pairs and a corresponding unit test; the full pytest run in contrib/fix passes with no failures, and the change is syntactically and semantically straightforward."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.716,
+  "prompt_tokens": 2072,
+  "output_tokens": 209,
+  "estimated_usd": 0.000726,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

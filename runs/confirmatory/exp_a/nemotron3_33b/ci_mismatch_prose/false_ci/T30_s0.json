@@ -1,0 +1,50 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 requires filtering fields to role_allowed keys (plus 'id'), but project_allowed_fields returns the unfiltered record; Req 2 requires masking to '*' * len(value) when len(value) <= keep_last, but mask_secret returns '****' + value[-keep_last:] which is incorrect for short values.",
+  "target_issue": "T30",
+  "thoughts": [
+    "The contributor reports 0 failed tests and the worktree pytest passed, but the automated evidence check shows a mismatch, indicating a discrepancy between reported and actual test results.",
+    "The diff shows that project_allowed_fields returns a full copy of the record without filtering by role_fields, and mask_secret incorrectly prefixes four asterisks regardless of the value length, violating both requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.269,
+  "prompt_tokens": 1719,
+  "output_tokens": 202,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

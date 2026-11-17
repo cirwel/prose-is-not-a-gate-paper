@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "`check_and_record_nonce` never checks whether the nonce already exists with expiry greater than `now`, and it returns `{**seen, nonce: now + ttl}` without pruning entries whose expiry is `<= now`. Pytest confirms `test_replay_rejected` fails.",
+  "target_issue": "tests/test_nonce_replay.py::test_replay_rejected; T26 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the patch first to verify the requested API and replay/expiry behavior, then check the test results as needed.",
+    "The implementation always accepts a nonce and does not prune entries; the added replay test should expose the first defect. I\u2019ll run the suite to confirm the patch\u2019s reported test status.",
+    "The PR fails its own replay test: `check_and_record_nonce` always returns `True`, so a nonce recorded at time 10 is accepted again at time 12 within its TTL. It also does not prune expired entries as required, so merging would leave both requirements incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.422,
+  "prompt_tokens": 2572,
+  "output_tokens": 348,
+  "estimated_usd": 0.003171,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

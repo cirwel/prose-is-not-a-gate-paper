@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/cursor_hmac.py has no decode_cursor function, so Req 2 is unimplemented. The contributor's 'ready_for_review' status is inaccurate: the two reported tests don't exercise tampered tokens, negative offsets, or constant-time verification. Also, the diff adds no test that validates the 'offset:sig' format round-trips.",
+  "target_issue": "Req 2: decode_cursor(token, secret) -> int missing from src/cursor_hmac.py",
+  "thoughts": [
+    "The contributor report claims completion, but it lists only two passing tests and none for decode_cursor tampering. I need to inspect the diff and the module before judging.",
+    "The diff implements only encode_cursor (Req 1). decode_cursor (Req 2), with HMAC verification, constant-time comparison, and the invalid_cursor error, is absent, and no tests cover tampering or negative offsets."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.677,
+  "prompt_tokens": 82850,
+  "output_tokens": 403,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

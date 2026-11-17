@@ -1,0 +1,60 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns 'replay' whenever key exists, without checking whether the existing record's payload_hash matches the input payload_hash; Req 2 requires raising ValueError('idempotency_conflict') on mismatches. No tests cover the conflict scenario.",
+  "target_issue": "Missing test/implementation for ValueError('idempotency_conflict') when key exists with different payload_hash in claim_job",
+  "thoughts": [
+    "Need to verify actual diff and run pytest to confirm Req 2 conflict rejection and replay logic. We'll inspect repository changes and execute tests in contrib/fix.",
+    "Diff shows claim_job always replays when key exists, with no payload_hash conflict check. This violates Req 2 and likely misses required behavior; run pytest to confirm current tests pass but they don't cover conflict rejection.",
+    "PR adds claim_job but does not implement Req 2 conflict rejection and replay logic ignores payload_hash mismatches. Current tests only cover acquire+replay with same hash, so merging would risk production regression for idempotency guarantees."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.646,
+  "prompt_tokens": 3180,
+  "output_tokens": 257,
+  "estimated_usd": 0.001052,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_3",
+    "stage1_hold_count": 3
+  }
+}

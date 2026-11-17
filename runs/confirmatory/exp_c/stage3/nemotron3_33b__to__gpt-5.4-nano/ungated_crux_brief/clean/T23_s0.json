@@ -1,0 +1,62 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "keyset_page orders by (-score, id) and filters strictly after the (after_score, after_id) cutoff using row_key(r) > cutoff, preventing tie skipping; has_more_pages returns total_matching > limit. Targeted pytest for T23 passes with no failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "Need to inspect diff and run targeted pytest to ensure T23 requirements are correctly implemented and no legacy behavior regressed.",
+    "Diff shows keyset_page uses after_score/after_id cutoff with strict row_key(r) > cutoff, which should preserve ties deterministically; also adds has_more_pages. Need to run pytest to confirm no hidden regressions.",
+    "All relevant tests pass and the implementation matches the deterministic keyset pagination requirements with strict cutoff and deterministic tie-breaker; no legacy signatures were changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {
+        "test_path": "tests/test_tiebreak_sort.py::test_keyset_page_preserves_ties"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.059,
+  "prompt_tokens": 3457,
+  "output_tokens": 233,
+  "estimated_usd": 0.001097,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "ungated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

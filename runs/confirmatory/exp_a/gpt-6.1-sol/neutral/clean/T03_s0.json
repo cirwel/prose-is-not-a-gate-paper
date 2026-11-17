@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Nullable parsing strips whitespace and matches null tokens case-insensitively. Non-null integers are checked against optional inclusive bounds, with violations raising ValueError('out_of_range'); parse_strict_int retains its signature and behavior.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the implementation and tests for nullable parsing, bounds enforcement, and legacy compatibility.",
+    "The implementation preserves the legacy function and applies inclusive bounds only to non-null values. I will run the tests to verify the reported results.",
+    "The diff satisfies both requirements, leaves the legacy public function unchanged, and all three tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.291,
+  "prompt_tokens": 2640,
+  "output_tokens": 203,
+  "estimated_usd": 0.010356,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

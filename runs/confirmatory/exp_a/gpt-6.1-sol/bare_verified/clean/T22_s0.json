@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "In lru_set, a cache containing only ('cfg', 1) with capacity=1 and pinned={'cfg'} grows to two entries when inserting 'new': no victim is found, the loop breaks, and cache[key] = value still executes. Handle the no-evictable-key case without exceeding capacity or removing pinned keys, and add a regression test.",
+  "target_issue": "T22 Req 1",
+  "thoughts": [
+    "I will inspect the implementation and tests to verify capacity enforcement, pinned-key preservation, and compatibility with the legacy API.",
+    "The eviction loop appears to exceed capacity when every resident key is pinned, because it breaks and then unconditionally inserts the new key. I will run the suite to check the existing coverage and regressions.",
+    "All three tests pass, but they do not cover insertion into a full cache whose keys are all pinned. That path unconditionally inserts after finding no eviction candidate, violating the capacity limit."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 12.123,
+  "prompt_tokens": 3051,
+  "output_tokens": 266,
+  "estimated_usd": 0.012345,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

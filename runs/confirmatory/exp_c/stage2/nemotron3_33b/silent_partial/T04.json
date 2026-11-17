@@ -1,0 +1,73 @@
+{
+  "task_id": "T04",
+  "condition": "silent_partial",
+  "synth_model": "nemotron3:33b",
+  "header_line": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)",
+  "stage1_hold_count": 3,
+  "gate_action": "preserved_panel_holds_3",
+  "consensus_json": {
+    "overview": "The PR correctly implements `next_backoff` with capping logic and preserves existing behavior, but `classify_failure` is missing from both source and tests despite being required in Req 2.",
+    "key_points": [
+      "`next_backoff` correctly computes min(cap, base * 2**attempt) for attempt >= 0",
+      "Existing tests pass with 2/2 success and 0 failures",
+      "Req 2 (`classify_failure`) implementation and tests are absent",
+      "Legacy behavior like `is_transient_status` is preserved"
+    ],
+    "suggested_check": "Verify `classify_failure(attempt, max_attempts)` exists in src/backoff_dlq.py and is tested in tests/test_backoff_dlq.py"
+  },
+  "ungated_crux_json": {
+    "overview": "The PR implements `next_backoff` correctly but omits the required `classify_failure` function and its tests, creating a critical gap in meeting ticket T04 requirements.",
+    "cruxes": [
+      {
+        "topic": "Req 2 Implementation",
+        "side_a": "Advisor_1 claims `classify_failure` is missing from diff/tests",
+        "side_b": "Advisor_2 and Advisor_3 confirm `classify_failure` is completely absent from source and tests",
+        "at_stake": "Req 2 (classify_failure) requirement"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `classify_failure` is implemented contradicts Advisor_1 and Advisor_2's findings"
+    ],
+    "suggested_check": "Check src/backoff_dlq.py for presence of `classify_failure` function definition"
+  },
+  "gated_crux_json": {
+    "overview": "The PR implements `next_backoff` correctly but omits the required `classify_failure` function and its tests, creating a critical gap in meeting ticket T04 requirements.",
+    "cruxes": [
+      {
+        "topic": "Req 2 Implementation",
+        "side_a": "Advisor_1 claims `classify_failure` is missing from diff/tests",
+        "side_b": "Advisor_2 and Advisor_3 confirm `classify_failure` is completely absent from source and tests",
+        "at_stake": "Req 2 (classify_failure) requirement"
+      }
+    ],
+    "unverified_premises": [
+      "Advisor_3's claim that `classify_failure` is implemented contradicts Advisor_1 and Advisor_2's findings"
+    ],
+    "suggested_check": "Check src/backoff_dlq.py for presence of `classify_failure` function definition"
+  },
+  "briefs": {
+    "consensus_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR correctly implements `next_backoff` with capping logic and preserves existing behavior, but `classify_failure` is missing from both source and tests despite being required in Req 2.\nKEY POINTS:\n- `next_backoff` correctly computes min(cap, base * 2**attempt) for attempt >= 0\n- Existing tests pass with 2/2 success and 0 failures\n- Req 2 (`classify_failure`) implementation and tests are absent\n- Legacy behavior like `is_transient_status` is preserved\nSUGGESTED CHECK: Verify `classify_failure(attempt, max_attempts)` exists in src/backoff_dlq.py and is tested in tests/test_backoff_dlq.py",
+    "ungated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `next_backoff` correctly but omits the required `classify_failure` function and its tests, creating a critical gap in meeting ticket T04 requirements.\nKEY POINTS:\n- Disagreement (Req 2 Implementation): Advisor_1 claims `classify_failure` is missing from diff/tests vs. Advisor_2 and Advisor_3 confirm `classify_failure` is completely absent from source and tests [at stake: Req 2 (classify_failure) requirement]\n- Unverified claim: Advisor_3's claim that `classify_failure` is implemented contradicts Advisor_1 and Advisor_2's findings\nSUGGESTED CHECK: Check src/backoff_dlq.py for presence of `classify_failure` function definition",
+    "gated_crux_brief": "DETERMINISTIC CHECKS: worktree pytest exit=0 (2 passed, 0 failed); diff=2 files changed, 9 insertions(+), 1 deletion(-)\nREVIEW OVERVIEW: The PR implements `next_backoff` correctly but omits the required `classify_failure` function and its tests, creating a critical gap in meeting ticket T04 requirements.\nKEY POINTS:\n- Disagreement (Req 2 Implementation): Advisor_1 claims `classify_failure` is missing from diff/tests vs. Advisor_2 and Advisor_3 confirm `classify_failure` is completely absent from source and tests [at stake: Req 2 (classify_failure) requirement]\n- Unverified claim: Advisor_3's claim that `classify_failure` is implemented contradicts Advisor_1 and Advisor_2's findings\nSUGGESTED CHECK: Check src/backoff_dlq.py for presence of `classify_failure` function definition"
+  },
+  "meta": {
+    "consensus": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1103,
+      "output_tokens": 168,
+      "seconds": 3.928,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    },
+    "crux": {
+      "provider": "ollama",
+      "model": "nemotron3:33b",
+      "prompt_tokens": 1152,
+      "output_tokens": 193,
+      "seconds": 4.361,
+      "retry_attempt": 0,
+      "estimated_usd": 0.0
+    }
+  }
+}

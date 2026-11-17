@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The next_backoff function incorrectly computes 2 ** 5 = 32 instead of applying the cap, resulting in 64.0 (2.0 * 32) instead of the expected 10.0 (min(10.0, 2.0 * 32)). This indicates a logic error in the exponential calculation, causing a production regression risk.",
+  "target_issue": "tests/backoff_dlq.py",
+  "thoughts": [
+    "The contributor claims 0 test failures and the worktree pytest passed, but the automated evidence check shows a mismatch, indicating potential hidden issues. I need to verify the actual test results in the worktree.",
+    "The pytest run shows one failure: test_next_backoff_and_dlq, which checks next_backoff(5, base=2.0, cap=10.0) == 10.0. The actual result is 64.0, meaning the cap is not being applied correctly. This violates Req 1's requirement to compute min(cap, base * (2 ** attempt))."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.66,
+  "prompt_tokens": 1688,
+  "output_tokens": 265,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

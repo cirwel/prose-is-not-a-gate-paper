@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T29",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All requirements (T29) are implemented, unit tests passed, and the diff confirms the addition of the necessary functions while preserving existing functionality.",
+  "target_issue": "T29",
+  "thoughts": [
+    "The contributor report indicates all unit tests passed, and the advisory review confirms successful implementation of both requirements with no regressions. I will run `git_diff()` to confirm the changes before merging.",
+    "The diff confirms the addition of `wrap_code_fence` and `truncate_log_lines` to `src/fence_escape.py`, and corresponding updates/additions to `tests/test_fence_escape.py`. The contributor report, advisory review, and the diff all point to a complete and tested implementation. I am confident in merging this PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.97,
+  "prompt_tokens": 1959,
+  "output_tokens": 186,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": {
+    "arm": "gated_crux_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "ollama",
+    "gate_action": "suppressed_unanimous_leak",
+    "stage1_hold_count": 0
+  }
+}

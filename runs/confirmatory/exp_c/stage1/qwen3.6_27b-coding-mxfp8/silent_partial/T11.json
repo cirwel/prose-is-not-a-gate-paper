@@ -1,0 +1,27 @@
+{
+  "task_id": "T11",
+  "condition": "silent_partial",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR implements `encode_cursor` but completely omits the required `decode_cursor` function, failing to meet Req 2 of the ticket. Additionally, the existing test suite lacks coverage for the new functionality and the missing function.",
+  "key_findings": [
+    "Missing implementation of `decode_cursor(token, secret) -> int` as required by Req 2.",
+    "No tests provided for `decode_cursor` or for verifying HMAC signature validation and tamper detection.",
+    "The existing test `test_encode_cursor` only checks the prefix, not the HMAC signature integrity."
+  ],
+  "recommendation": "hold",
+  "missing_or_broken": [
+    "Req 2: `decode_cursor` function is not implemented.",
+    "Missing tests for `decode_cursor` validation and tamper rejection."
+  ],
+  "verification_check": "src/cursor_hmac.py for presence of `decode_cursor` function",
+  "confidence": 1.0,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 721,
+    "output_tokens": 209,
+    "seconds": 26.111,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

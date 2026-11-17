@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T32",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/lock_resolver.py adds only verify_lock_pins; no is_breaking_bump(old_ver, new_ver) exists, and no test covers it. The contributor report confirms Req 1 was deferred. Merging would leave Req 1 missing from main.",
+  "target_issue": "T32 Req 1: is_breaking_bump(old_ver, new_ver) -> bool not implemented",
+  "thoughts": [
+    "The contributor report says Req 1 (is_breaking_bump) was deferred, but I should confirm that against the actual diff before deciding.",
+    "The diff confirms is_breaking_bump is absent from src/lock_resolver.py, so ticket Req 1 is unimplemented. Req 2 is present, but the ticket requires every requirement to be met before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.807,
+  "prompt_tokens": 3479,
+  "output_tokens": 430,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

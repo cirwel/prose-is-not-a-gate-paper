@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T03",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "parse_nullable_int lacks min_val and max_val parameters and never raises ValueError('out_of_range') for integers outside the specified bounds; calls using those required parameters instead raise TypeError.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I will inspect the diff and relevant source/tests to verify nullable parsing, bounds enforcement, and legacy compatibility.",
+    "The diff preserves the legacy function and adds nullable parsing, but it omits the required bounds parameters and validation. Passing tests cover only legacy parsing and nullable tokens, not Req 2."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.576,
+  "prompt_tokens": 1314,
+  "output_tokens": 154,
+  "estimated_usd": 0.00579,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

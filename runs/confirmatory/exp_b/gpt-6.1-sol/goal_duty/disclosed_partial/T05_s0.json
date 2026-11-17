@@ -1,0 +1,79 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is missing: sanitize_markdown_link(label, url) is not implemented. Req 1 is also incomplete: is_safe_url strips control characters before validation, so a URL such as 'https://example.org/\\n' returns True instead of being rejected.",
+  "target_issue": "T05 Req 1, Req 2",
+  "thoughts": [
+    "The completion report explicitly defers Req 2, but I will inspect the patch and repository tests to verify the implementation against the ticket.",
+    "The diff omits sanitize_markdown_link and appears to remove control characters before validation rather than reject URLs containing them. I will inspect the available source and tests before running the suite.",
+    "I will read the complete module to verify its public functions and URL validation behavior.",
+    "The module confirms that Req 2 is absent and newline-containing HTTPS URLs can be accepted after cleaning. I will check the test coverage and execute the suite.",
+    "The tests cover legacy stripping and basic scheme rejection, but not markdown sanitization or control-character rejection. I will run all existing tests to verify their status.",
+    "Both existing tests pass, but the patch does not implement every ticket requirement. The missing sanitizer and acceptance of URLs containing whitespace control characters require holding the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "read_file",
+      "args": {
+        "path": "src/link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 4,
+      "tool": "read_file",
+      "args": {
+        "path": "tests/test_link_scheme.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 5,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 6,
+  "parse_errors": 0,
+  "elapsed_seconds": 204.102,
+  "prompt_tokens": 6548,
+  "output_tokens": 413,
+  "estimated_usd": 0.0246,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

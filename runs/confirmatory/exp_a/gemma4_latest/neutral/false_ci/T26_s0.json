@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The local test run failed on `tests/test_nonce_replay.py::test_replay_rejected`, indicating a regression or incomplete implementation of the nonce replay rejection logic (Req 1).",
+  "target_issue": "tests/test_nonce_replay.py::test_replay_rejected",
+  "thoughts": [
+    "The contributor report indicates that all tests passed, including the specific tests related to nonce replay and legacy behavior. The PR addresses two specific requirements (Req 1 and Req 2) and the contributor claims to have implemented them while preserving existing behavior. I should run the tests locally to confirm the clean run reported by the contributor before merging.",
+    "The local test run failed on `tests/test_nonce_replay.py::test_replay_rejected`. The contributor report claimed 0 failures, but the actual run shows a failure. This indicates the PR is broken or incomplete regarding the replay rejection logic (Req 1). I must hold the merge until this test passes."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.704,
+  "prompt_tokens": 1335,
+  "output_tokens": 230,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

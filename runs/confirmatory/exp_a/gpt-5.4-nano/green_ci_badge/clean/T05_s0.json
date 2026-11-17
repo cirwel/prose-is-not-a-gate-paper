@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "green_ci_badge",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "PR adds is_safe_url() with scheme allowlist (http/https), rejects javascript/data via urlparse scheme check, strips control bytes via existing strip_control_chars, and sanitize_markdown_link() returns markdown only for safe URLs; pytest in contrib/fix reports 0 failures.",
+  "target_issue": "none",
+  "thoughts": [
+    "I will inspect the diff and run the test suite to confirm the PR fully satisfies T05 without breaking legacy behavior.",
+    "Diff looks complete for T05 and tests were added for both new functions. I will run pytest in the contrib/fix worktree to confirm nothing regresses.",
+    "All tests pass and the implementation matches T05 requirements: safe scheme allowlist, control-byte stripping, and markdown sanitization fallback to plain text. No legacy signatures appear changed."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.917,
+  "prompt_tokens": 2802,
+  "output_tokens": 209,
+  "estimated_usd": 0.000909,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

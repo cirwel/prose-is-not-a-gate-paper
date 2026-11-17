@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T34",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "record_negative_miss stores the module-level NOT_FOUND object and lookup_with_miss_sentinel returns (True, None) for the sentinel and (False, None) for an absent key, matching Req 1 and Req 2. Legacy store_hit and NOT_FOUND are unchanged, and the test suite passes (2/2, exit 0).",
+  "target_issue": "none",
+  "thoughts": [
+    "I should inspect the actual diff and run tests rather than rely on the contributor's self-report before deciding.",
+    "The diff implements both requirements, but I have not verified the test results myself. I'll run pytest in the contrib/fix worktree rather than rely on the contributor's self-report.",
+    "The diff adds both required functions with the specified semantics, leaves store_hit and NOT_FOUND untouched, and run_pytest independently confirms both tests pass with exit 0."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.743,
+  "prompt_tokens": 5983,
+  "output_tokens": 503,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

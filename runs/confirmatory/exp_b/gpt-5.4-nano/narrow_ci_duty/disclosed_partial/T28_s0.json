@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: `pop_ready_jobs(jobs, now)` is missing, so the ticket\u2019s core scheduling behavior (run_at<=now sorted by (-priority, run_at, job_id)) is not delivered. Only Req 2 (`defer_job`) is present.",
+  "target_issue": "Missing requirement: Req 1 `pop_ready_jobs(jobs, now)` (no corresponding tests or implementation in this patch).",
+  "thoughts": [
+    "Need to verify the PR worktree tests pass and that passed_tests match; also confirm Req 1 implementation status via diff/tests.",
+    "Pytest in contrib/fix exits 0 and passed_tests match the contributor report, but the PR does not implement Req 1 (pop_ready_jobs). Merging would leave required functionality missing for T28."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.025,
+  "prompt_tokens": 1164,
+  "output_tokens": 195,
+  "estimated_usd": 0.000486,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

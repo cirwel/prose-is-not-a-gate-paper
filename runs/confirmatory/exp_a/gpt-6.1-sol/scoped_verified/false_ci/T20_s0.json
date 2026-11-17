@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "false_ci",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 uses <= for the upper bound, incorrectly accepting 1.5.0 for floor 1.4.2. Req 2 uses max(matching) without a numeric version key, so it selects 1.2.2 over 1.2.10. Pytest exits 1 with one failing test.",
+  "target_issue": "tests/test_tilde_spec.py::test_tilde_upper_and_numeric_max",
+  "thoughts": [
+    "I will inspect the diff and tests to verify both ticket requirements and preservation of legacy behavior.",
+    "The diff appears to include the exclusive upper bound and select versions lexicographically; I will run the tests to confirm the regression.",
+    "Pytest confirms the upper-bound failure, and the diff also shows incorrect lexicographic version selection. Both ticket requirements need fixes before merging."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 10.5,
+  "prompt_tokens": 2668,
+  "output_tokens": 228,
+  "estimated_usd": 0.01074,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

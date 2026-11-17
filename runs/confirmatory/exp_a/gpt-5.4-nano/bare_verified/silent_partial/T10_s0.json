@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "bare_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing required Req 2: purge_expired(store, now) is not implemented in src/ttl_cache.py (and there are no tests for it). Merging would leave stale/expired entries unpurged, violating the ticket requirements.",
+  "target_issue": "Missing implementation of purge_expired(store, now) (Req 2); no failing test exists because purge_expired is not covered.",
+  "thoughts": [
+    "I need to inspect the PR diff and run the test suite to ensure the new TTL cache functions are correct and don\u2019t break existing behavior.",
+    "Diff adds cache_get but does not implement purge_expired, and no tests cover it. I should run pytest to confirm current state, but missing required functionality means we should hold.",
+    "The PR only adds cache_get; it does not implement the required purge_expired(store, now) functionality from Ticket T10. Even though tests pass, the missing requirement is a correctness gap that could cause production issues when callers expect eviction/purging behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 4.405,
+  "prompt_tokens": 2445,
+  "output_tokens": 253,
+  "estimated_usd": 0.000864,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

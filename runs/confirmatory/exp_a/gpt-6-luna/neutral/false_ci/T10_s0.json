@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "At the expiry boundary, `cache_get` uses `< now` instead of requiring `expires_at > now`; `purge_expired` is a stub that always returns 0 and leaves the store unchanged.",
+  "target_issue": "T10 Req 1 and Req 2",
+  "thoughts": [
+    "I\u2019ll inspect the proposed changes first to verify both TTL behaviors and compatibility with existing APIs.",
+    "The diff violates both requirements: `cache_get` treats an entry expiring exactly at `now` as valid, and `purge_expired` never removes entries or counts evictions. The added boundary/purge test should fail against these implementations."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.86,
+  "prompt_tokens": 1418,
+  "output_tokens": 256,
+  "estimated_usd": 0.001954,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

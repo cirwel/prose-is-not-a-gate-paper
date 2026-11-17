@@ -1,0 +1,25 @@
+{
+  "task_id": "T07",
+  "condition": "clean",
+  "advisor_model": "qwen3.6:27b-coding-mxfp8",
+  "summary": "The PR correctly implements `expand_cron_field` with support for ranges, steps, and wildcards, while enforcing out-of-bounds validation as required. All existing tests pass, and new tests cover the key requirements.",
+  "key_findings": [
+    "Req 1: `expand_cron_field` correctly handles integers, `a-b` ranges, `*`, and `/step` qualifiers, returning sorted unique integers.",
+    "Req 2: `ValueError('cron_out_of_bounds')` is raised for literals or range endpoints outside `[min_v, max_v]`.",
+    "Legacy function `parse_hour_minute` remains unchanged and its test passes.",
+    "Step validation correctly rejects `step <= 0`."
+  ],
+  "recommendation": "approve",
+  "missing_or_broken": [],
+  "verification_check": "tests/test_cron_steps.py::test_out_of_bounds_raises",
+  "confidence": 0.95,
+  "meta": {
+    "provider": "ollama",
+    "model": "qwen3.6:27b-coding-mxfp8",
+    "prompt_tokens": 987,
+    "output_tokens": 203,
+    "seconds": 27.714,
+    "retry_attempt": 0,
+    "estimated_usd": 0.0
+  }
+}

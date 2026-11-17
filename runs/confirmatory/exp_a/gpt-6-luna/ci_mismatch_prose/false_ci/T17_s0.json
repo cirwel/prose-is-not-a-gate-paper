@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "false_ci",
+  "signal": "ci_mismatch_prose",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pytest suite fails at test_escape_ampersand_and_js_href. The diff also fails T17 Req 1 by not escaping &, \" or ', and fails Req 2 by not rejecting on* keys or javascript: values and not HTML-escaping retained values.",
+  "target_issue": "tests/test_html_escape.py::test_escape_ampersand_and_js_href",
+  "thoughts": [
+    "I\u2019ll inspect the pull request diff to assess whether the requirements are implemented correctly.",
+    "The diff visibly misses multiple explicit requirements; I\u2019ll run the suite as an additional check, though passing tests would not cover those omissions.",
+    "The PR fails its own test because escape_html_text does not escape ampersands, and the implementation also omits quote/apostrophe escaping and all required attribute filtering beyond allowlisting. These are concrete security and correctness gaps, so this change is not safe to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 40.742,
+  "prompt_tokens": 2553,
+  "output_tokens": 3334,
+  "estimated_usd": 0.012711,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": false,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

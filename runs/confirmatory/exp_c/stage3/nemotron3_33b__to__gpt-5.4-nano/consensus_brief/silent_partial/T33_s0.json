@@ -1,0 +1,53 @@
+{
+  "experiment": "exp_c",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-5.4-nano",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "PR implements only verify_path_token; required sign_path_token(secret, path, expires_at) -> str (Req 1) is missing from src/signed_url.py. Tests added do not cover signing, so the missing function would not be caught.",
+  "target_issue": "Missing implementation of Req 1: sign_path_token in src/signed_url.py (no failing test yet because tests only cover verify_path_token).",
+  "thoughts": [
+    "Need to inspect diff and repository to confirm whether sign_path_token is actually missing and whether any tests cover it. If missing, hold to avoid regression/requirement gap.",
+    "Diff shows verify_path_token added but sign_path_token from Req 1 is not implemented. This is a missing required public function, so merging would leave the ticket incomplete despite passing tests."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.566,
+  "prompt_tokens": 1728,
+  "output_tokens": 193,
+  "estimated_usd": 0.000625,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": {
+    "arm": "consensus_brief",
+    "synth": "nemotron3:33b",
+    "decider_family": "openai",
+    "gate_action": "preserved_panel_holds_2",
+    "stage1_hold_count": 2
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "experiment": "exp_a",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "scoped_verified",
+  "duty": "discretion",
+  "include_ticket": true,
+  "model": "gpt-6-luna",
+  "provider": "openai",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The diff meets T28\u2019s sorting, readiness, and non-mutation requirements, and pytest passes all available tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "I\u2019ll inspect the changed files and test results, then verify both requirements and compatibility with existing behavior.",
+    "The repository is small; I\u2019ll review the patch to check the implementation and any signature changes.",
+    "The implementation appears to satisfy the requested partitioning, ordering, and non-mutation behavior while leaving the legacy function unchanged. I\u2019ll run the test suite to verify the patch.",
+    "Both requested functions are implemented, the legacy `make_job` signature and behavior are unchanged, and the full available test suite passes. The ready jobs are sorted by the specified key, pending jobs retain their input order, and `defer_job` copies rather than mutates its input."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "list_files",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 13.806,
+  "prompt_tokens": 3681,
+  "output_tokens": 506,
+  "estimated_usd": 0.004564,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

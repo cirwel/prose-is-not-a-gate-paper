@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Test suite exits 0 with passed_tests matching the report (3/3, no failures). Req 1: cache_get returns the value only when expires_at > now, else None. Req 2: purge_expired deletes expired keys and returns the count. The legacy cache_put signature and behavior are untouched.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and checking that it exits 0 and matches the contributor's passed_tests before deciding. I'll run pytest first.",
+    "run_pytest exited 0 and its passed tests match the contributor's passed_tests list. Before merging I want to confirm that Req 1 and Req 2 are actually implemented in the diff, since passing tests alone don't prove that.",
+    "run_pytest exited 0 with the three tests matching the contributor's passed_tests exactly. The diff implements cache_get and purge_expired with the spec's expiry rule (expired when expires_at <= now), and cache_put's signature is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.122,
+  "prompt_tokens": 5925,
+  "output_tokens": 644,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

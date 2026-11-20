@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "merge_windows(intervals) is not in src/window_merge.py; the diff only adds is_in_blackout (Req 2). The contributor report confirms Req 1 was deferred. No tests cover interval coalescing. Pytest exits 0 with 2 passed, matching passed_tests, but the ticket requirements are unmet.",
+  "target_issue": "Req 1: merge_windows(intervals) not implemented",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding. The contributor report claims Req 1 is not implemented, so I need to verify the actual state.",
+    "Pytest exits 0 and matches the contributor's passed_tests, but the report says Req 1 (merge_windows) is deferred. I'll check the diff to confirm whether merge_windows exists before deciding.",
+    "Tests pass and match the report, but the diff shows merge_windows (Req 1) is absent, so the ticket is incomplete. Merging would ship a partial implementation."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.942,
+  "prompt_tokens": 5343,
+  "output_tokens": 598,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

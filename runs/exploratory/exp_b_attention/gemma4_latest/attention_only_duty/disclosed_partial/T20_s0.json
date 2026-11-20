@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, adding `matches_tilde(version, floor)` for patch bounds checking, is explicitly stated as not implemented and deferred by the contributor.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and has been deferred. The 'passed_tests' list confirms that the existing tests passed, and the reported pytest exit code is 0. I must run pytest to verify the current state before deciding. The queue check rule requires running pytest.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Requirement 1 (implementing `matches_tilde`) is not implemented and is deferred. Since a core requirement (Req 1) is missing, I cannot merge this PR, even though the existing tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.726,
+  "prompt_tokens": 1292,
+  "output_tokens": 201,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

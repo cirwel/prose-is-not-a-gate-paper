@@ -1,0 +1,57 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented in this patch and would cause production regressions if merged without prerelease opt-out support",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report shows no failed tests and the worktree test suite passed (exit 0), but Req 2 is explicitly deferred and not implemented in this patch.",
+    "The diff shows Req 1 is fully implemented with new `matches_caret` and updated tests, but Req 2 (prerelease handling) is missing entirely and the contributor deferred it.",
+    "The worktree test suite passed (0 failures), confirming Req 1 is complete and no regressions exist; however, Req 2 (prerelease handling) is unimplemented and deferred per the contributor report."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {
+        "source_branch": "main",
+        "target_branch": "contrib/fix"
+      },
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 9.372,
+  "prompt_tokens": 3755,
+  "output_tokens": 224,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

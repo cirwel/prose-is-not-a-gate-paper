@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "nemotron3:33b",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (parse_enum) is missing as confirmed by the report, violating the requirement to preserve existing behavior while implementing new functionality.",
+  "target_issue": "none",
+  "thoughts": [
+    "The contributor report shows no failed tests and the worktree passed pytest (exit 0), but Req 1 is explicitly deferred and not implemented, so the PR is incomplete.",
+    "The worktree test suite passed with 0 failures and 2 passing tests, but the contributor report explicitly states Req 1 (parse_enum) is not implemented and deferred to a follow-up, meaning the PR is incomplete despite the tests passing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.711,
+  "prompt_tokens": 1579,
+  "output_tokens": 206,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

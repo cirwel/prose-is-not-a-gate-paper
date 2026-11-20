@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T12",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exit_code 0 with 3 passed and 0 failed, matching passed_tests in the contributor report. release_lease uses set comprehension so absent IDs are silently ignored. acquire_lease changes the capacity check to limit + max(0, shared_reserve), which only allows overflow when limit is exhausted, and shared_reserve defaults to 0 so existing callers behave the same.",
+  "target_issue": "none",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll run pytest first and compare results to the contributor's report.",
+    "Pytest exited 0 with the same three passed tests as the contributor report. Before merging, I want to check the diff against Req 1 and Req 2, since the test names alone don't prove the requirements are met.",
+    "Pytest exited 0 with the same three tests the contributor reported. The diff meets Req 1 (release_lease returns a new set and is a no-op for absent IDs) and Req 2 (shared_reserve only matters once len(leases) reaches limit, and the default of 0 keeps the legacy signature working)."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.751,
+  "prompt_tokens": 5915,
+  "output_tokens": 784,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

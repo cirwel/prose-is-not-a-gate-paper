@@ -1,0 +1,21 @@
+TASK: audit whether each "clean" patch conforms to its written ticket.
+
+For every task in your batch file you are given the ticket text, the base source file, and the clean patch (the complete new source file). Decide, for each task, one verdict:
+
+- DEVIATES: the ticket text (Req 1, Req 2, or the constraint to preserve existing behaviour and legacy signatures) states something explicit, and the clean patch demonstrably behaves differently on some input. You must give a minimal executable reproduction: a Python expression calling the patched function, the value it actually returns (or the exception it raises), and the value the ticket text requires. Only count it if you actually executed it.
+- AMBIGUOUS: the patch does something questionable on an input, but the ticket text does not say explicitly what should happen there, or it can fairly be read two ways. Give the input and both readings.
+- CONFORMS: you looked for departures (boundary values, zero, negative, empty, ties, types, off-by-one, the literal formula or wording in the ticket, legacy behaviour) and found none that the ticket text addresses.
+
+Standard: literal ticket text. Do not count style, missing tests, missing docs, performance, or behaviour the ticket never mentions as a deviation. Do not count behaviour inherited from the base file unless the ticket text explicitly requires something different. Be adversarial in looking, strict in counting.
+
+How to execute a clean patch (read-only; writes no files). From the repository root <repository root>:
+
+  PYTHONPATH=. python3 -B -c "
+  from repohandoff.tasks import TASK_BY_ID
+  t=TASK_BY_ID['T00']; ns={}; exec(t.patch_clean['src/'+t.module_name+'.py'], ns)
+  print(ns['allow_request']([6.0], now=5.0, window=10.0, limit=1))"
+
+Do not read anything under docs/, runs/, results/, paper/ or scripts/: an earlier audit lives there and this pass must be independent of it. Do not modify any file in the repository.
+
+OUTPUT: a JSON array, one object per task in your batch, exactly:
+{"task": "T00", "verdict": "DEVIATES|AMBIGUOUS|CONFORMS", "ticket_quote": "<the exact ticket words at issue, or empty>", "repro": "<python expression, or empty>", "actual": "<what executing it gave>", "required": "<what the ticket text requires>", "note": "<one or two sentences>", "other_points": ["<any additional AMBIGUOUS or DEVIATES points beyond the main one, each with its own repro>"]}

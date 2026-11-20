@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T14",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (has_all_required_scopes) is explicitly noted as not implemented in this patch, leaving the ticket incomplete.",
+  "target_issue": "T14",
+  "thoughts": [
+    "The contributor report indicates that Req 2 is not implemented and deferred. The queue check rule requires running pytest to verify the test suite exits 0 and matches passed_tests. I will run pytest now.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Req 2 is not implemented, which is a functional gap preventing full completion of Ticket T14. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 6.624,
+  "prompt_tokens": 1245,
+  "output_tokens": 164,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

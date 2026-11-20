@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exited 0 with 3 passed and 0 failed, matching passed_tests in the contributor report. merge_windows coalesces overlapping and adjacent half-open intervals (s <= prev_e), returns [] for empty input, and drops zero-length intervals. is_in_blackout is True iff start <= ts < end. The legacy interval_duration signature and behavior are untouched. Test coverage is thin (3 tests), but the code matches both requirements.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and comparing it to the contributor's reported results before deciding. I'll run pytest first.",
+    "The worktree suite exited 0 and the three passed tests match the contributor report. Before merging, I want to confirm the diff actually implements both requirements, since the tests cover only three cases.",
+    "The worktree suite exits 0 and matches the contributor's three passed tests. The diff implements Req 1 with half-open adjacency merging, skips empty intervals, and keeps `interval_duration` unchanged. Req 2 uses the correct `start <= ts < end` check."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.084,
+  "prompt_tokens": 5785,
+  "output_tokens": 940,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

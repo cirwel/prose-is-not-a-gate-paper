@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T15",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exited 0 with passed_tests matching the contributor report (test_legacy_extract_keys, test_dedup_first_and_last, test_dedup_with_stats), no failures. The diff meets Req 1: keep='first' keeps the first occurrence and keep='last' keeps the last occurrence, both in original relative order. It meets Req 2: deduplicate_rows_with_stats returns (unique_rows, len(rows)-len(unique)) and deduplicate_rows still returns list[dict]. The legacy extract_keys signature is unchanged. Invalid keep values raise ValueError.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding, so I'll run pytest first rather than trusting the contributor's self-reported results.",
+    "The pytest run exited 0 with the same three tests as the contributor report, but I still need to confirm the code meets Req 1 and Req 2 and keeps the legacy signatures. I'll read the diff before deciding.",
+    "The worktree pytest run exited 0 with the same three tests as the contributor report. The diff implements first/last dedup with order preservation, adds the stats wrapper without changing deduplicate_rows' return type, and leaves extract_keys untouched."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.402,
+  "prompt_tokens": 80512,
+  "output_tokens": 814,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/window_merge.py has no merge_windows(intervals) function, and no test covers it. The diff adds only is_in_blackout (Req 2) and its half-open test. The contributor report's 'ready_for_review' status is inaccurate. Merging would ship an incomplete ticket T31.",
+  "target_issue": "Req 1: merge_windows(intervals) missing from src/window_merge.py",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and verifying exit 0 and agreement with the contributor report before deciding. Starting with the test run.",
+    "The test run exited 0 and matches the contributor report, but the only tests cover is_in_blackout and legacy behavior, so merge_windows (Req 1) is untested. I'll read the diff to check that implementation before deciding.",
+    "The test suite exits 0 and matches the contributor report, but the diff adds only is_in_blackout and never implements merge_windows, so Req 1 is missing."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.484,
+  "prompt_tokens": 79462,
+  "output_tokens": 618,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

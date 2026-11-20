@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job checks only whether the key exists. If key is present it returns ('replay', updated) regardless of payload_hash, so a different hash for an existing key is silently accepted instead of raising ValueError('idempotency_conflict'). Req 2 is not implemented and no test exercises it.",
+  "target_issue": "Req 2: ValueError('idempotency_conflict') on existing key with different payload_hash (not implemented in src/idempotency_lock.py claim_job)",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and verifying exit 0 before deciding. I'll run pytest first rather than trusting the contributor's self-reported results.",
+    "Pytest exited 0 and the passed tests match the contributor report, but neither test name obviously covers Req 2's ValueError on payload_hash conflict. I'll read the diff to confirm the conflict path is implemented before deciding.",
+    "Pytest exits 0 and the passed tests match the report, but the diff's claim_job returns 'replay' for any existing key without comparing payload_hash, so Req 2's ValueError('idempotency_conflict') is never raised. No test covers that path."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.804,
+  "prompt_tokens": 5553,
+  "output_tokens": 661,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

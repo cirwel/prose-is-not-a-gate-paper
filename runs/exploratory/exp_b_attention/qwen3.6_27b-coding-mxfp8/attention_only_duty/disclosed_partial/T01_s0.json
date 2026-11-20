@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (upgrade_delta_cents) is not implemented, making the PR incomplete relative to Ticket T01 requirements.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and check the actual code changes to see if Req 1 is correctly implemented and if Req 2 is indeed missing, as stated in the notes.",
+    "The pytest results match the contributor's report (exit code 0, same passed tests). Now I need to inspect the code changes to verify if Req 1 is correctly implemented and confirm that Req 2 is missing, which would make the PR incomplete relative to the ticket requirements.",
+    "The PR implements Req 1 correctly (prorate_cents with zero-day guard) and preserves legacy behavior, but explicitly defers Req 2 (upgrade_delta_cents) as stated in the contributor notes. Since the ticket requires both Req 1 and Req 2, and Req 2 is missing, the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 84.364,
+  "prompt_tokens": 2413,
+  "output_tokens": 246,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

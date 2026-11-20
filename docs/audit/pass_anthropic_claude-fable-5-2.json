@@ -1,0 +1,476 @@
+[
+ {
+  "task": "T00",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "Preserve all existing passing behavior and legacy public function signatures.",
+  "repro": "allow_request([1.0], now=1.0, window=10.0, limit=1.5)",
+  "actual": "(False, [1.0])  (base file returns (True, [1.0, 1.0]))",
+  "required": "Reading A: legacy behaviour must be preserved on every input, so (True, [1.0, 1.0]). Reading B: limit is annotated int, a fractional limit is outside the contract, and for integer limits `len(active) + 1 > limit` equals the base `len(active) >= limit`.",
+  "note": "The rewritten comparison only differs from the base for a non-integer limit, which the int annotation excludes; for integer limits, overrides, weight clamp and the (now - window, now] boundary all behaved as the ticket says.",
+  "other_points": [
+   "AMBIGUOUS: 'apply per-tenant overrides from overrides[tenant]' does not say what an override is; the patch treats it as a replacement limit (allow_request([1.0], 5.0, 10.0, 1, {'a': 3}, 'a') -> (True, [1.0, 5.0])). A reading where the override carries a window or a dict of settings is not excluded by the text.",
+   "AMBIGUOUS: a weighted request larger than the remaining room is rejected whole (allow_request([], 5.0, 10.0, 2, weight=3) -> (False, [])); the ticket does not say whether partial admission is wanted."
+  ]
+ },
+ {
+  "task": "T01",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "returning integer rounded `(monthly_cents * active_days) // cycle_days` with `0` if `active_days <= 0`",
+  "repro": "prorate_cents(100, 10, -30)",
+  "actual": "0 (also prorate_cents(100, 10, 0) -> 0)",
+  "required": "Literal formula gives (100*10)//-30 == -34, and ZeroDivisionError for cycle_days == 0; the ticket names only the active_days <= 0 guard.",
+  "note": "The patch adds an unrequested `cycle_days <= 0 -> 0` guard. Reading A: the formula is literal and only active_days is guarded, so -34 / an exception is required. Reading B: the title's 'Zero-Day Guard' covers a zero/invalid cycle and the ticket never says what a non-positive cycle should yield. Counted as ambiguous because the input is outside any stated domain.",
+  "other_points": [
+   "AMBIGUOUS: upgrade_delta_cents(100, 200, 15, -30) -> 0 (inherits the same cycle_days guard; ticket gives no formula for Req 2).",
+   "Checked and conforming: prorate_cents(-100,10,30) -> -34 (matches formula), prorate_cents(100,45,30) -> 150, upgrade_delta_cents(200,100,15,30) -> 0, upgrade_delta_cents(100,200,15,30) -> 50, full_cycle_total unchanged."
+  ]
+ },
+ {
+  "task": "T02",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "fall back to `keyring['previous']` if `kid` matches previous active key, returning the key dict",
+  "repro": "select_signing_key({'current':{'kid':'a'},'previous':{'kid':'b','status':'disabled'}},'b')",
+  "actual": "{'kid': 'b', 'status': 'disabled'}",
+  "required": "Reading A ('previous active key' = the previously active key, any non-retired status): return the dict, as the patch does. Reading B ('active' is a status condition on the previous key): a previous key whose status is not 'active' must not be returned (KeyError).",
+  "note": "The patch returns any previous-slot key that is not exactly status=='retired', including status 'disabled' or no status at all; the ticket's word 'active' can be read as a description or as a status requirement.",
+  "other_points": [
+   "AMBIGUOUS: select_signing_key({'current':{'kid':'a','status':'retired'},'previous':{'kid':'a','status':'active'}},'a') raises PermissionError('key_retired') instead of falling back to the active previous key with the same kid; the ticket does not say which wins when both slots share a kid.",
+   "AMBIGUOUS: select_signing_key({'previous':{'kid':'b','status':'Retired'}},'b') returns the key; the status match is case-sensitive, ticket gives only the literal 'retired'.",
+   "Checked and conforming: retired current key with matching kid raises PermissionError('key_retired'); unknown kid still raises KeyError; active current key is returned unchanged (legacy behaviour)."
+  ]
+ },
+ {
+  "task": "T03",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "treating whitespace and case-insensitive null tokens as `None`",
+  "repro": "parse_nullable_int(\"   \", null_tokens=(\"null\",))",
+  "actual": "raises ValueError: invalid literal for int() with base 10: ''",
+  "required": "Reading A: whitespace is always None, independent of null_tokens -> None. Reading B: whitespace is None only because '' is in the default null_tokens; a caller who removes '' gets a parse error.",
+  "note": "Whitespace-only input is None only when '' is among null_tokens. With default tokens every probe conformed (bounds inclusive, null skips bounds check, case-insensitive match).",
+  "other_points": [
+   "AMBIGUOUS: parse_nullable_int(\"na\", null_tokens=(\" NA \",)) raises ValueError (invalid literal) because the input is stripped but the tokens are not; ticket does not say whether tokens are normalised beyond case."
+  ]
+ },
+ {
+  "task": "T04",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "computing `min(cap, base * (2 ** attempt))` for `attempt >= 0`",
+  "repro": "next_backoff(1024, base=1)",
+  "actual": "raises OverflowError: int too large to convert to float",
+  "required": "Reading A: the literal formula with an integer base, min(60.0, 1 * (2 ** 1024)), evaluates to 60.0, so 60.0 is required. Reading B: base is a float (default 1.0), and the literal formula with base=1.0 raises the same OverflowError (executed: min(60.0, 1.0 * (2 ** 1024)) raises), so the patch matches.",
+  "note": "The patch coerces base to float before multiplying, so a large attempt overflows where the literal formula with an int base would return the cap. With the default float base the literal formula overflows identically, hence not counted as a deviation.",
+  "other_points": [
+   "AMBIGUOUS: next_backoff(-3) returns 1.0 (attempt clamped to 0); the literal formula gives 0.125. The ticket scopes the formula to attempt >= 0 and says nothing about negatives."
+  ]
+ },
+ {
+  "task": "T05",
+  "verdict": "DEVIATES",
+  "ticket_quote": "Add `is_safe_url(url, allowed_schemes=('https', 'http')) -> bool` rejecting `javascript:`, `data:`, whitespace control chars, and schemes outside `allowed_schemes`.",
+  "repro": "is_safe_url('https://example.com/\\n')",
+  "actual": "True (same for 'https://exa\\tmple.com' and 'https://a.com/\\x00b')",
+  "required": "False: a URL containing whitespace control characters must be rejected.",
+  "note": "The patch strips control characters before validating, so a URL containing newline/tab/NUL is accepted rather than rejected. The only counter-reading is the title's 'Strip Control Bytes', but Req 1 puts whitespace control chars in the reject list of is_safe_url itself.",
+  "other_points": [
+   "DEVIATES (arguable): is_safe_url('javascript://alert(1)', allowed_schemes=('javascript',)) -> True and is_safe_url('data://text/html,x', allowed_schemes=('data',)) -> True; ticket lists `javascript:` and `data:` as rejected independently of the allowlist. Ambiguous if a caller-supplied allowlist is read as overriding.",
+   "AMBIGUOUS: is_safe_url('mailto:x@y.com', allowed_schemes=('mailto',)) -> False, because the patch additionally requires a netloc; ticket lists no such rejection ground. Likewise is_safe_url('http:foo') -> False.",
+   "AMBIGUOUS: sanitize_markdown_link('a', ' https://a.com ') -> '[a](https://a.com)'; ticket template is f'[{clean_label}]({url})' with the original url, which read literally gives '[a]( https://a.com )'. Also sanitize_markdown_link('a', 'https://a.com/\\n') -> '[a](https://a.com/)' (linked, although Req 1 read literally makes that URL unsafe, so plain 'a' would be required).",
+   "AMBIGUOUS: is_safe_url(' https://a.com ') -> True (surrounding spaces stripped; a space is whitespace but not a control char)."
+  ]
+ },
+ {
+  "task": "T06",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Cycle detection raised ValueError('role_cycle_detected') on a 2-cycle and a self-loop and returned False on a diamond DAG and an empty graph; expand_roles terminated on a cyclic graph with the full closure. normalize_roles is unchanged.",
+  "other_points": [
+   "AMBIGUOUS: detect_role_cycle({str(i):[str(i+1)] for i in range(5000)}) raises RecursionError on an acyclic 5000-deep chain. The ticket says ValueError iff a cycle exists (no ValueError is raised here), but says nothing on depth limits.",
+   "AMBIGUOUS: sorted(expand_roles([' Admin '],{'admin':['user']})) returns [' Admin ']; expand_roles does not apply normalize_roles, and the ticket does not say whether it should.",
+   "AMBIGUOUS: expand_roles includes the direct roles themselves in the result (expand_roles(['a'],{'a':['b'],'b':['a','c']}) -> {'a','b','c'}); the ticket says 'traversing inherited roles' without stating whether the starting roles are in the output, or what the return type is."
+  ]
+ },
+ {
+  "task": "T07",
+  "verdict": "DEVIATES",
+  "ticket_quote": "Raise `ValueError('cron_out_of_bounds')` when any literal or range endpoint falls outside `[min_v, max_v]`",
+  "repro": "expand_cron_field(\"-1\", 0, 59)",
+  "actual": "raises ValueError(\"invalid literal for int() with base 10: ''\")",
+  "required": "ValueError('cron_out_of_bounds') (the literal -1 lies outside [0, 59])",
+  "note": "Any part containing '-' is treated as a range, so a negative integer literal is never parsed as a literal; the error is a ValueError but not the mandated message. Counter-reading: cron syntax has no negative literals, so this is malformed input the ticket is silent on; a lenient auditor could file this as AMBIGUOUS.",
+  "other_points": [
+   "DEVIATES (same cause, Req 1 'supporting integers'): expand_cron_field(\"-1\", -5, 5) raises ValueError(\"invalid literal for int() with base 10: ''\"); an in-bounds integer should give [-1].",
+   "AMBIGUOUS: expand_cron_field(\"5/2\", 0, 10) returns [5]; the step on a bare literal is silently ignored. Reading A (standard cron): 5/2 means 5..max step 2 -> [5, 7, 9]. Reading B: step applies only to ranges and *.",
+   "AMBIGUOUS: expand_cron_field(\"5-3\", 0, 10) and expand_cron_field(\"*/0\", 0, 10) both raise ValueError('cron_out_of_bounds') although both endpoints are in bounds; ticket does not say what a reversed range or zero step should do.",
+   "AMBIGUOUS: expand_cron_field(\"1,,2\", 0, 59) raises ValueError(\"invalid literal for int() with base 10: ''\"); ticket silent on empty list items."
+  ]
+ },
+ {
+  "task": "T08",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "Add `matches_caret(version, floor)` enforcing `>= floor` and strictly `< next_major` ... on `(major, minor, patch)` tuples.",
+  "repro": "matches_caret((1, 2, 3), (1, 0, 0))",
+  "actual": "raises AttributeError: 'tuple' object has no attribute 'lstrip'",
+  "required": "Reading A: version and floor are (major, minor, patch) tuples, so the call must return True. Reading B: 'on tuples' describes the internal comparison; Req 2 needs prerelease information that a 3-tuple cannot carry, so the arguments are tag strings and the patch is right.",
+  "note": "The patch accepts only strings. All caret bounds (major>0, 0.y, 0.0.z) and the prerelease opt-out behaved as specified on string input.",
+  "other_points": [
+   "AMBIGUOUS: matches_caret('1.2.3-rc1', '1.2.3', allow_prerelease=True) -> True. With prereleases allowed the patch compares the core tuple only, so a prerelease of the floor version counts as >= floor; SemVer precedence would put it below. The ticket does not say which ordering applies.",
+   "AMBIGUOUS: a prerelease on the floor is ignored (matches_caret('1.2.3', '1.2.3-rc1') -> True); the ticket only speaks of rejecting prerelease versions, not prerelease floors.",
+   "AMBIGUOUS: parse_semver_tag('1.2.3-') returns pre=None, so a tag with an empty prerelease suffix passes as a release; the ticket does not address it."
+  ]
+ },
+ {
+  "task": "T09",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Executed traversal, prefix-sibling escape ('../<root>x/y' raises path_escape), '.', '..', empty, and hidden-segment cases including '...', '..a', backslash and leading-slash inputs; none departs from the ticket text.",
+  "other_points": [
+   "AMBIGUOUS: safe_join(root, '/etc/passwd') -> root/etc/passwd (leading slash stripped and re-rooted instead of raising); ticket does not say how an absolute rel_path is treated.",
+   "AMBIGUOUS: safe_join(root, '..\\\\..\\\\x') on POSIX -> root/'..\\\\..\\\\x' (backslashes not treated as separators); slash normalization is stated only for Req 2."
+  ]
+ },
+ {
+  "task": "T10",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Boundary executed: with expires_at=10.0, cache_get at now=10.0 returns None and at 9.999 returns the value, matching `entry['expires_at'] > now`; purge_expired uses the complementary `<= now`, removes exactly those keys and returns the count. cache_put is unchanged.",
+  "other_points": [
+   "AMBIGUOUS: a live entry whose stored value is None returns None from cache_get, indistinguishable from absent/expired; the ticket's return contract makes this unavoidable and does not address it.",
+   "AMBIGUOUS: cache_get({'a':{'value':1}},'a',0) raises KeyError('expires_at') for an entry lacking expires_at; the ticket does not cover malformed entries."
+  ]
+ },
+ {
+  "task": "T11",
+  "verdict": "DEVIATES",
+  "ticket_quote": "raising `ValueError('invalid_cursor')` on tampering or negative offsets",
+  "repro": "decode_cursor(\"5:\\u00e9\", \"s\")",
+  "actual": "raises TypeError: comparing strings with non-ASCII characters is not supported",
+  "required": "ValueError('invalid_cursor') (the signature has been tampered with)",
+  "note": "hmac.compare_digest is called on str operands, so any non-ASCII character in the signature part escapes as TypeError instead of the mandated ValueError.",
+  "other_points": [
+   "DEVIATES: decode_cursor(\"\\u00b2:abc\", \"s\") raises ValueError(\"invalid literal for int() with base 10: '\\u00b2'\") rather than ValueError('invalid_cursor'); str.isdigit() accepts superscript digits that int() rejects.",
+   "AMBIGUOUS: encode_cursor(1.9, \"s\") returns '1:<sig>' (silently truncates a non-integer offset); ticket silent."
+  ]
+ },
+ {
+  "task": "T12",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Checked release of absent and present leases, re-acquire of a held lease, limit exhausted with reserve 0, 1 and negative, and reserve exhausted; all match the ticket and the base behaviour at shared_reserve=0.",
+  "other_points": [
+   "AMBIGUOUS: acquire_lease(set(), -1, 'a', shared_reserve=2) -> (True, {'a'}). With a negative limit the patch treats capacity as limit + reserve = 1; a reading where an exhausted limit simply opens `shared_reserve` extra slots would allow 2. The ticket does not cover negative limits."
+  ]
+ },
+ {
+  "task": "T13",
+  "verdict": "DEVIATES",
+  "ticket_quote": "Add `credit_with_tax_cents(net_credit_cents, tax_bps)` computing `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`.",
+  "repro": "credit_with_tax_cents(-100, 1000)",
+  "actual": "0",
+  "required": "-110, i.e. -100 + (-100 * 1000) // 10_000; the ticket gives the formula with no clamp or guard.",
+  "note": "The patch adds an unrequested `net_credit_cents <= 0 -> 0` early return, so any negative net credit departs from the stated formula. Positive and zero inputs match the formula exactly.",
+  "other_points": [
+   "AMBIGUOUS: apply_credit_memo(100, -50) -> 100; the patch clamps a negative credit to 0 before subtracting. Ticket only says 'clamping negative results to 0', so paid - credit = 150 is the other reading.",
+   "Checked and conforming: apply_credit_memo(100,150) -> 0, (100,30) -> 70, (-100,10) -> 0; credit_with_tax_cents(999,825) -> 1081, (100,-500) -> 95; invoice_balance unchanged."
+  ]
+ },
+ {
+  "task": "T14",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "narrow_scopes(['b','a','a','c'],['a','b','b','z']) returned ['a','b'] (sorted, deduplicated, intersection); has_all_required_scopes gave True for empty required, False for a missing scope, True with duplicate required entries. parse_scope_header is unchanged.",
+  "other_points": [
+   "AMBIGUOUS: narrow_scopes('read write','read') returns ['a','d','e','r'] because a raw string is iterated per character; the ticket says 'collections' and does not say whether a space-delimited header string must be accepted.",
+   "AMBIGUOUS: matching is case-sensitive (has_all_required_scopes(['A'],['a']) -> False); the ticket is silent on case."
+  ]
+ },
+ {
+  "task": "T15",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Probed first/last ordering, stats count, empty input, invalid keep (raises ValueError, unspecified). No departure the ticket text addresses.",
+  "other_points": [
+   "AMBIGUOUS (weak): deduplicate_rows(iter([{\"k\":1},{\"k\":2},{\"k\":1}]), lambda r:r[\"k\"], keep=\"last\") returns [] because rows is iterated twice; title says 'Stream Rows' but the ticket never states that non-list iterables must be supported."
+  ]
+ },
+ {
+  "task": "T16",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "New key returns 'acquired' with a recorded lock, same hash returns 'replay', different hash raises ValueError('idempotency_conflict'); the input dict is not mutated.",
+  "other_points": [
+   "AMBIGUOUS (out of the str domain): claim_job({'k': {'hash': float('nan'), 'state': 'active'}}, 'k', float('nan')) raises ValueError('idempotency_conflict') because NaN != NaN, though the payload_hash is 'identical'. Hashes are strings in the base file, so not counted."
+  ]
+ },
+ {
+  "task": "T17",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "keeping only case-normalized keys in `allowed_keys` whose stripped values do not start with `'javascript:'`, and HTML-escaping kept values",
+  "repro": "filter_attrs({'href': ' x&y '}, {'href'})",
+  "actual": "{'href': 'x&amp;y'}",
+  "required": "Reading A: stripping is only for the javascript: test, so the kept value is the original escaped: {'href': ' x&amp;y '}. Reading B: the stripped value is the kept value, as the patch returns.",
+  "note": "The patch returns the whitespace-stripped value rather than the original; the ticket does not say which is the 'kept value'. No explicit-text departure was found.",
+  "other_points": [
+   "AMBIGUOUS: filter_attrs({'href': 'JavaScript:alert(1)'}, {'href'}) -> {}; the patch tests the prefix case-insensitively while the ticket literal is lowercase 'javascript:' (literal reading would keep it).",
+   "AMBIGUOUS: filter_attrs({' HREF ': 'u'}, {'href'}) -> {'href': 'u'}; keys are stripped as well as lowercased, ticket says only 'case-normalized'.",
+   "AMBIGUOUS: filter_attrs({'href': 'java\\tscript:x'}, {'href'}) -> {'href': 'java\\tscript:x'} (embedded-tab obfuscation kept); ticket only specifies the prefix test on the stripped value.",
+   "Checked and conforming: escape_html_text('&<>\"\\'') -> '&amp;&lt;&gt;&quot;&#x27;'; 'ONCLICK' rejected even when allowlisted; {'only': 'v'} with 'only' allowed -> {} (matches the literal 'starting with on' rule)."
+  ]
+ },
+ {
+  "task": "T18",
+  "verdict": "DEVIATES",
+  "ticket_quote": "returning `True` iff `actor_tenant == resource_tenant` or `break_glass` grants active temporary access",
+  "repro": "check_tenant_access('', '')",
+  "actual": "False",
+  "required": "True (actor_tenant == resource_tenant holds, and the ticket states True iff that equality holds or break-glass grants access)",
+  "note": "The patch adds a truthiness guard (`actor_tenant and actor_tenant == resource_tenant`) that the ticket's iff condition does not contain, so equal but falsy tenants ('' or None) are denied. check_tenant_access(None, None) also returns False.",
+  "other_points": [
+   "AMBIGUOUS: check_tenant_access('a','b',{'tenant':'b'},-5) returns True. A break_glass dict with no 'expires_at' defaults to -1, so any now < -1 is granted; the ticket's literal `break_glass['expires_at']` would raise KeyError, and it does not say what a missing expiry means.",
+   "AMBIGUOUS: redact_cross_tenant([{'x':1}],None) returns [{'x': 1}]. The patch uses r.get('tenant'), so a record with no tenant key matches actor_tenant=None; the ticket's literal `record['tenant']` would raise KeyError and it does not address missing keys.",
+   "AMBIGUOUS: redact_cross_tenant returns shallow copies (result[0] is records[0] -> False) rather than the original record objects; 'returning only records ... without mutating inputs' can be read either way.",
+   "Checked and conforming: expiry boundary is strict (now == expires_at -> False, now=9.99 -> True); wrong break_glass tenant -> False; inputs are not mutated."
+  ]
+ },
+ {
+  "task": "T19",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "advancing past Saturday/Sunday (`weekday() >= 5`) and any date in `holidays`",
+  "repro": "next_business_day(date(2026,11,18))",
+  "actual": "datetime.date(2026, 11, 19)",
+  "required": "Reading A (title 'Roll Dates Past Weekends'): a day that is already a business day is returned unchanged -> date(2026,11,18) (a Wednesday). Reading B (function name 'next'): always the first business day strictly after `day` -> date(2026,11,19).",
+  "note": "The patch always advances at least one day, so a business day never maps to itself; the ticket does not say which is intended.",
+  "other_points": [
+   "AMBIGUOUS: is_business_day(datetime(2026,11,23,9,0), holidays=(date(2026,11,23),)) returns True (a datetime never equals a date in the holiday set) and next_business_day on a datetime returns a datetime; 'strictly in `datetime.date` arithmetic' could be read as requiring date semantics, or as restricting inputs to dates."
+  ]
+ },
+ {
+  "task": "T20",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Tilde lower bound inclusive and upper bound (major, minor+1, 0) exclusive both hold; pick_highest_matching orders numerically ('1.10.0' over '1.9.9'), returns None for empty input and for no match.",
+  "other_points": [
+   "AMBIGUOUS: pick_highest_matching(['1.2.3', 'v1.2.3'], lambda v: True) -> '1.2.3' (first of equal keys wins); the ticket does not define tie-breaking."
+  ]
+ },
+ {
+  "task": "T21",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "canonical_query output equals urlencode(sorted(non-stripped pairs)) on duplicates, blanks, special characters, empty input and custom strip_keys; parse_query_pairs equals parse_qsl(..., keep_blank_values=True) on all inputs without a leading '?'.",
+  "other_points": [
+   "AMBIGUOUS: parse_query_pairs('?a=1') -> [('a', '1')] because the patch strips leading '?'; plain parse_qsl gives [('?a', '1')]. Ticket does not say whether a leading '?' is part of the query.",
+   "Stripping is case-sensitive: canonical_query([('UTM_SOURCE','x')]) -> 'UTM_SOURCE=x'; ticket does not ask for case folding."
+  ]
+ },
+ {
+  "task": "T22",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "evicting the least-recently-used non-pinned key when full",
+  "repro": "(lambda c: (lru_set(c,'c',3,2,pinned=('a','b')), list(c)))(OrderedDict(a=1,b=2))",
+  "actual": "(None, ['a', 'b', 'c'])",
+  "required": "Reading A (pinned preservation wins): nothing is evictable, so insert anyway and exceed capacity, as the patch does. Reading B (capacity is enforced, per the ticket title 'Enforce LRU Capacity Eviction'): the cache must not grow past capacity, so the insert must be refused or fail.",
+  "note": "When every existing key is pinned and the cache is full, the patch silently grows the cache to 3 entries with capacity 2; the ticket does not say what happens when no non-pinned key exists.",
+  "other_points": [
+   "AMBIGUOUS: (lambda c: (lru_set(c,'d',4,1), list(c)))(OrderedDict(a=1,b=2,c=3)) -> ('c', ['d']). On an already over-capacity cache the patch evicts three keys in a loop and reports only the last; the ticket says 'the least-recently-used non-pinned key' (singular) and specifies no return value.",
+   "AMBIGUOUS: (lambda c: (lru_set(c,'a',1,0), list(c)))(OrderedDict()) -> (None, ['a']). With capacity 0 the key is still stored; the ticket does not address capacity <= 0.",
+   "AMBIGUOUS: lru_touch on a key whose stored value is None returns None, indistinguishable from a missing key; inherent in the ticket's 'returning value or None'.",
+   "Checked and conforming: LRU order respected after lru_touch (touch 'a' then set 'c' evicts 'b'); pinned LRU key is skipped and the next non-pinned key is evicted; updating an existing key replaces the value and moves it to the end without eviction; make_lru unchanged."
+  ]
+ },
+ {
+  "task": "T23",
+  "verdict": "DEVIATES",
+  "ticket_quote": "sorting cleanly by `(-row['score'], row['id'])`",
+  "repro": "keyset_page([{\"score\":1.2,\"id\":\"a\"},{\"score\":1.9,\"id\":\"b\"}], 10)",
+  "actual": "[{'score': 1.2, 'id': 'a'}, {'score': 1.9, 'id': 'b'}]",
+  "required": "[{'score': 1.9, 'id': 'b'}, {'score': 1.2, 'id': 'a'}] (higher score first under the stated key)",
+  "note": "The patch sorts by the legacy row_key, which is (-int(score), str(id)), not the ticket's literal key; fractional scores are truncated into false ties. Depends on non-integer scores, which the legacy helper's type hint excludes but the ticket text does not.",
+  "other_points": [
+   "DEVIATES (same cause, id coerced to str): keyset_page([{\"score\":5,\"id\":10},{\"score\":5,\"id\":9}], 10) returns id 10 before id 9; the stated key (-score, id) requires id 9 first.",
+   "AMBIGUOUS: keyset_page([{\"score\":5,\"id\":\"a\"},{\"score\":5,\"id\":\"b\"},{\"score\":4,\"id\":\"c\"}], 10, after_score=5) returns all three rows; a cursor with only after_score is silently ignored. Ticket does not say what a half-specified cursor means."
+  ]
+ },
+ {
+  "task": "T24",
+  "verdict": "DEVIATES",
+  "ticket_quote": "returning `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`",
+  "repro": "retry_after_seconds(float('nan'), 1.0)",
+  "actual": "raises ValueError: cannot convert float NaN to integer",
+  "required": "0 (NaN > 0 is False, so the ticket's 'else 0' branch applies; the literal expression evaluates to 0)",
+  "note": "The patch inverts the guard to `tokens_needed <= 0`, which is not the complement of `tokens_needed > 0` for NaN, so NaN falls through to math.ceil and raises. Narrow (NaN only); all ordinary inputs matched.",
+  "other_points": [
+   "AMBIGUOUS: cap_backoff_delay(5, max_delay=-1) -> 0.0. 'Upper values to max_delay' read literally gives -1.0; 'negative values to 0.0' gives 0.0. The ticket does not order the two clamps for a negative max_delay.",
+   "AMBIGUOUS: cap_backoff_delay(float('nan')) -> 30.0; NaN is neither negative nor above the cap and the ticket does not address it.",
+   "AMBIGUOUS: retry_after_seconds(5, -1) -> 1 and refill_rate=0 raises ZeroDivisionError; both follow the literal formula, and the ticket says nothing about non-positive refill rates."
+  ]
+ },
+ {
+  "task": "T25",
+  "verdict": "DEVIATES",
+  "ticket_quote": "distributing remainder pennies one-by-one from the highest fractional part (ties broken by lowest index)",
+  "repro": "split_cents_exact(10, [1, 1, 4])",
+  "actual": "[2, 1, 7]",
+  "required": "[2, 2, 6]: exact shares are 5/3, 5/3, 20/3, all with fractional part 2/3, remainder 2, so the tie goes to the two lowest indices (0 and 1).",
+  "note": "The patch computes shares in floating point, so mathematically equal fractional parts compare unequal (6.666...7 vs 1.666...7) and the lowest-index tie-break is not honoured. A brute-force comparison against an exact-rational reference found 2782 mismatches for 2-4 weights in 0..7 and totals 0..59.",
+  "other_points": [
+   "DEVIATES: split_cents_exact(10**23, [1, 1, 1]) -> three shares of 33333333333333331935233 summing to 99999999999999995805699, not total_cents ('summing strictly to total_cents'); float precision loss. Also split_cents_exact(10**18+7, [3,3,3]) sums to 999999999999999939.",
+   "DEVIATES (negative total, arguably out of domain): split_cents_exact(-5, [1, 1]) -> [-1, -2], sum -3, not -5.",
+   "AMBIGUOUS: split_cents_exact(100, [0, 0]) -> [0, 0] (sum 0, not 100); ticket does not say what a zero total weight should do, and no split can satisfy it for [].",
+   "reconcile_ledger conforms: ([1,2],[3]) -> (True, 0); ([5],[3]) -> (False, 2); ([1],[4]) -> (False, -3). Sign convention of net_delta (debits - credits) is not specified by the ticket."
+  ]
+ },
+ {
+  "task": "T26",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Boundary executed: with recorded expiry 10.0, now=9.99 is rejected and now=10.0 is accepted and re-recorded, matching 'rejecting replays while now < recorded_expiry'; entries with expiry <= now are dropped from updated_seen on both accept and reject paths. make_nonce_key is unchanged.",
+  "other_points": [
+   "AMBIGUOUS: check_and_record_nonce({},'x',1,0) -> (True, {'x': 1}) and ttl=-3 -> (True, {'x': -2}). A zero or negative ttl records an entry that is already expired (expiry <= now), so updated_seen momentarily holds an expired nonce and the nonce is replayable immediately; the ticket does not address ttl <= 0.",
+   "AMBIGUOUS: the input `seen` dict is not mutated (a new dict is returned); the ticket says 'updated_seen' without stating whether the input may be modified in place."
+  ]
+ },
+ {
+  "task": "T27",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "falling back to `default` only if `raw` is empty and `default is not None`",
+  "repro": "parse_enum(\"\", (\"Red\",))",
+  "actual": "raises ValueError('unknown_enum:')",
+  "required": "Unspecified. Reading A: empty raw with no default is an error (as patched; the message format is borrowed from Req 2). Reading B: returns None, since the signature's default is None and Req 2 only names an error for 'unknown non-empty entries'.",
+  "note": "Everything the ticket states explicitly conformed: trim, case-insensitive canonical return, default only for empty raw, list error message for unknown non-empty tokens, empty list entries skipped.",
+  "other_points": [
+   "AMBIGUOUS: parse_enum(\"A\", (\"A\",\"a\")) returns 'a' (last case-colliding entry wins); ticket silent on which canonical entry to return.",
+   "AMBIGUOUS: parse_enum(\" \", (\"Red\",), default=\"zzz\") returns 'zzz' although it is not in allowed; ticket does not say default must be validated.",
+   "AMBIGUOUS: parse_enum_list(\"red,  Xx \", (\"Red\",\"Blue\")) raises 'unknown_enum:Xx' using the trimmed token; ticket's `tok` could be raw or trimmed."
+  ]
+ },
+ {
+  "task": "T28",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "returning `(ready_sorted, remaining)` where ready jobs have `run_at <= now`",
+  "repro": "pop_ready_jobs([make_job('a', float('nan')), make_job('b', 1.0)], 5.0)",
+  "actual": "([{'job_id': 'b', 'run_at': 1.0, 'priority': 0}], [])  -- job 'a' is in neither list",
+  "required": "Reading A: 'remaining' is every job that is not ready, so job 'a' must appear in the second list. Reading B: the ticket only defines the ready set; 'remaining' is never defined, and a NaN run_at is outside what it considers.",
+  "note": "The patch builds remaining with a second predicate (run_at > now) instead of the complement of ready, so a job with NaN run_at is silently dropped. Sort order (-priority, run_at, job_id) and the run_at == now boundary are correct.",
+  "other_points": [
+   "AMBIGUOUS: defer_job({'job_id': 'a', 'run_at': 2**53 + 1, 'priority': 0}, 0)['run_at'] == 2**53 + 1 -> False. The patch coerces to float, so it differs from the literal `job['run_at'] + delay_seconds` for integers beyond float precision; make_job always stores floats, so this needs a hand-built job dict."
+  ]
+ },
+ {
+  "task": "T29",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "preserving up to `max_lines` lines and appending `'...[truncated N lines]'` iff lines were removed",
+  "repro": "truncate_log_lines('a\\nb\\nc', -1)",
+  "actual": "'a\\nb\\n...[truncated 4 lines]'",
+  "required": "Reading A: 'up to max_lines' is literal, so no content line may be kept and N must equal the lines removed (3), i.e. '...[truncated 3 lines]'. Reading B: the ticket does not address negative max_lines at all.",
+  "note": "For negative max_lines the patch keeps two lines and reports four truncated for a three-line text, which is internally inconsistent, but the ticket never mentions negative limits. All non-negative cases executed match the text.",
+  "other_points": [
+   "AMBIGUOUS: truncate_log_lines('a\\nb\\n', 2) -> 'a\\nb'; the trailing newline is dropped and no marker is appended. Whether a trailing newline is a removed line or preserved content is unspecified.",
+   "AMBIGUOUS: truncate_log_lines('a\\x0cb', 5) -> 'a\\nb' and truncate_log_lines('a\\u2028b', 1) -> 'a\\n...[truncated 1 lines]'; str.splitlines treats form feed and U+2028 as line breaks and rewrites them, ticket does not define a line.",
+   "AMBIGUOUS: wrap_code_fence('a\\r\\nb', 'py') -> '```py\\na\\nb\\n```'; the code's newlines are normalized inside the fence, ticket says only to wrap 'cleanly'.",
+   "Checked and conforming: wrap_code_fence('a```b','py') uses 4 backticks, '````' uses 5, no backticks uses 3; truncate_log_lines('a\\nb\\nc', 2) -> 'a\\nb\\n...[truncated 1 lines]', max_lines 3 -> unchanged, max_lines 0 -> '...[truncated 3 lines]'."
+  ]
+ },
+ {
+  "task": "T30",
+  "verdict": "DEVIATES",
+  "ticket_quote": "Add `mask_secret(value, keep_last=4)` masking leading characters with `'*'`",
+  "repro": "mask_secret('secret', 0)",
+  "actual": "'******secret'",
+  "required": "'******' (keep the last 0 characters, mask the leading ones; output the same length as the input with nothing revealed)",
+  "note": "With keep_last=0 the slice value[-0:] is the whole string, so the patch appends the full plaintext secret after six asterisks and returns a 12-character string. The ticket's short-circuit `len(value) <= keep_last` does not cover this case, so the general masking rule applies and is violated.",
+  "other_points": [
+   "AMBIGUOUS: mask_secret('secret', -2) returns '********cret' (longer than the input, four characters revealed); the ticket does not address negative keep_last.",
+   "Checked and conforming: mask_secret('abcdefgh') -> '****efgh'; len == keep_last -> '****'; shorter -> '***'; empty -> ''. project_allowed_fields keeps only allowed keys plus 'id' when present, returns {'id': 1} for an unknown role, does not add 'id' when absent, and returns a new dict; has_role unchanged."
+  ]
+ },
+ {
+  "task": "T31",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Probed unsorted input, overlap, adjacency, containment, empty list, boundary ts values; all match. Degenerate intervals are dropped (see other_points) which the ticket does not address.",
+  "other_points": [
+   "AMBIGUOUS (weak): merge_windows([(1,3),(5,5),(9,7)]) returns [(1, 3)]; empty and reversed intervals are silently discarded, and list inputs come back as tuples (merge_windows([[1,3],[2,4]]) -> [(1, 4)]). Ticket silent on both."
+  ]
+ },
+ {
+  "task": "T32",
+  "verdict": "DEVIATES",
+  "ticket_quote": "missing from `locked` or violate exact version equality",
+  "repro": "verify_lock_pins({'a': None}, {})",
+  "actual": "[]",
+  "required": "['a'] (package 'a' is present in declared and missing from locked)",
+  "note": "The patch tests `locked.get(pkg) != ver`, which conflates 'missing' with 'locked to None', so a declared package with a None version that is absent from the lock is not reported. Narrow: needs a None declared version, outside the dict[str, str] annotation.",
+  "other_points": [
+   "DEVIATES (narrow): is_breaking_bump('0.1.0', '-1.5.0') -> False. The ticket's stated condition `old[0] == 0 and new[1] > old[1]` is True for this input (split_ver accepts '-1.5.0' as (-1, 5, 0)); the patch adds an extra `n[0] == 0` test. Only reachable with a negative major, since new[0] > 0 already returns True."
+  ]
+ },
+ {
+  "task": "T33",
+  "verdict": "DEVIATES",
+  "ticket_quote": "checking `now <= expires_at`",
+  "repro": "verify_path_token('s', '/p', 100, sign_path_token('s', '/p', 100), 100.5)",
+  "actual": "True",
+  "required": "False: 100.5 <= 100 is false, so the token is expired.",
+  "note": "The patch compares int(now) > int(expires_at), truncating both, so a fractional `now` up to one second past expiry still verifies. Integer inputs behave as the ticket states (now=100 -> True, now=101 -> False).",
+  "other_points": [
+   "Same cause, other direction of truncation: verify_path_token('s', '/p', 100.9, sign_path_token('s', '/p', 100), 100.95) -> True, where 100.95 <= 100.9 is false.",
+   "AMBIGUOUS: verify_path_token('s', '/p', 100, '\\u00e9', 50) raises TypeError from hmac.compare_digest on a non-ASCII str token instead of returning False; ticket mandates compare_digest and a bool return but does not address non-ASCII tokens.",
+   "sign_path_token('s','/p',100) equals hmac.new(b's', b'/p:100', sha256).hexdigest(), lowercase; uppercase token is rejected."
+  ]
+ },
+ {
+  "task": "T34",
+  "verdict": "CONFORMS",
+  "ticket_quote": "",
+  "repro": "",
+  "actual": "",
+  "required": "",
+  "note": "Executed: after record_negative_miss the lookup returns (True, None) and the stored object is the module's NOT_FOUND; an uncached key returns (False, None); a falsy cached value 0 returns (True, 0). store_hit and NOT_FOUND are unchanged.",
+  "other_points": [
+   "AMBIGUOUS: after store_hit(c,'k',None), lookup_with_miss_sentinel(c,'k') returns (True, None), identical to the result for a cached NOT_FOUND sentinel. The ticket requires distinguishing sentinel from uncached key only, and does not say how a genuinely cached None should differ from a negative miss."
+  ]
+ },
+ {
+  "task": "T35",
+  "verdict": "AMBIGUOUS",
+  "ticket_quote": "returning the zero-based slice `items[(p-1)*sz : p*sz]`",
+  "repro": "slice_page((1,2,3),1,2)",
+  "actual": "[1, 2]",
+  "required": "Reading A (literal expression): the slice itself -> (1, 2) for a tuple, 'cd' for slice_page(\"abcdef\",2,2). Reading B: the page's elements as a list -> [1, 2] and ['c', 'd'] (as patched).",
+  "note": "The patch wraps the slice in list(), changing the type for non-list sequences; for list inputs the result is identical to the ticket's expression. Clamping and total_pages formula matched on all boundary probes (page<=0, size 0, size>100, total<=0).",
+  "other_points": []
+ }
+]

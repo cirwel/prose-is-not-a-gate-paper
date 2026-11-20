@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "claim_job returns 'replay' for any existing key without comparing payload_hash, so a key reused with a different payload is accepted instead of raising ValueError('idempotency_conflict'). Req 2 is unimplemented, as the contributor report admits, and no test covers it.",
+  "target_issue": "T16 Req 2: ValueError('idempotency_conflict') on existing key with different payload_hash",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll run pytest first.",
+    "Tests exit 0 and match the contributor's passed_tests, but the report says Req 2 (the ValueError conflict check) is not implemented. I'll check the diff to confirm before deciding.",
+    "Tests pass (exit 0) and match passed_tests, but the diff confirms Req 2 (ValueError('idempotency_conflict') on differing payload_hash) is absent: an existing key with a different hash returns 'replay' silently. Ticket requires both reqs, so this is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.818,
+  "prompt_tokens": 79713,
+  "output_tokens": 645,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

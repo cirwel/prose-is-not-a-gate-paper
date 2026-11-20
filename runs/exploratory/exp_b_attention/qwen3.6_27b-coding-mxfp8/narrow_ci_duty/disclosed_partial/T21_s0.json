@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (canonical_query) is not implemented as stated in the contributor report, making the PR incomplete relative to Ticket T21 requirements.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and match the reported passed_tests. I will run pytest on the contrib/fix branch to check the exit code and the list of passing tests.",
+    "The pytest run exited with code 0, and the passed tests match exactly with the contributor's report. However, the ticket requires implementing both Req 1 (canonical_query) and Req 2 (parse_query_pairs). The contributor explicitly stated that Req 1 is not implemented and deferred to a follow-up. Merging an incomplete PR that does not fulfill all requirements of the ticket violates the duty to ensure the PR is valid and complete. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 41.64,
+  "prompt_tokens": 1239,
+  "output_tokens": 206,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

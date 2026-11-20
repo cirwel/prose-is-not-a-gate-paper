@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The diff does not add `sign_path_token(secret, path, expires_at) -> str`. Only `verify_path_token` was added to src/signed_url.py, and no test exercises signing. The contributor report's 'completed T33 changes' claim is therefore incomplete. Tests pass, but Req 1 is unimplemented.",
+  "target_issue": "T33 Req 1: sign_path_token missing from src/signed_url.py",
+  "thoughts": [
+    "Duty rule requires running the worktree test suite and comparing against the contributor report before deciding. I'll start by running pytest.",
+    "The worktree suite exits 0 and matches the report's passed_tests, but passing tests alone don't prove Req 1 and Req 2 are implemented as specified. I'll inspect the diff for the HMAC format, the expiry check, and compare_digest usage.",
+    "The suite exits 0 and matches the report, but the diff adds only verify_path_token. Req 1 requires sign_path_token, which is absent from src/signed_url.py."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.506,
+  "prompt_tokens": 5630,
+  "output_tokens": 607,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

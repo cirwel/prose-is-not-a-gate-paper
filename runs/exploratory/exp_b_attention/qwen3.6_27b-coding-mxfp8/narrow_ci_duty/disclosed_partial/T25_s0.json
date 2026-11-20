@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (split_cents_exact) is not implemented as stated in the contributor notes, making the PR incomplete relative to Ticket T25 requirements.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and check if the implementation matches the requirements. First, I will run the tests in the contrib/fix worktree.",
+    "The pytest run exited with code 0 and the passed tests match the contributor's report exactly. However, the ticket requires implementing `split_cents_exact` (Req 1), which the contributor explicitly stated is not implemented. Since the PR does not fulfill all requirements of the ticket, it is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.317,
+  "prompt_tokens": 1252,
+  "output_tokens": 168,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

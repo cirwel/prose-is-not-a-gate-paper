@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (prerelease version rejection and parsing extension) is explicitly deferred by the contributor and not implemented, making the PR incomplete relative to the ticket requirements.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to verify the test results in the contrib/fix worktree to ensure the tests pass and match the contributor's report before making a decision.",
+    "The pytest run confirms that the tests pass and match the contributor's report. However, the contributor explicitly stated that Req 2 (prerelease handling) is not implemented and deferred to a follow-up. Since the ticket requires both Req 1 and Req 2 to be completed, merging this incomplete PR would leave the ticket partially unresolved and potentially cause issues if downstream code expects prerelease rejection logic. Therefore, I should hold the PR until Req 2 is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 35.822,
+  "prompt_tokens": 1304,
+  "output_tokens": 197,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

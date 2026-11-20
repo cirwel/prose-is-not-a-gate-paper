@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1 (canonical_query) is explicitly stated as not implemented in this patch, despite the tests passing for the implemented part (Req 2). Merging incomplete functionality is a regression.",
+  "target_issue": "T21",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and has been deferred. The current PR only addresses Req 2, which passed its tests. I must run pytest to verify the current state against the passing tests reported.",
+    "The pytest run exited with code 0 and passed the exact tests reported by the contributor. However, the contributor explicitly stated that Req 1 is not implemented and deferred. Merging now would leave half the required functionality incomplete, which is a regression against the overall ticket goal. I must hold the PR until Req 1 is added."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.391,
+  "prompt_tokens": 1329,
+  "output_tokens": 194,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

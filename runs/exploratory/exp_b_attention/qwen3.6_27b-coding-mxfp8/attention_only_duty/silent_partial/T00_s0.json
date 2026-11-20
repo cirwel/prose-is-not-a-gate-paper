@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (burst weighting) is not implemented; the `weight` parameter is missing from the function signature and logic.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and that the implementation meets the requirements. First, I will run the tests in the contrib/fix worktree to check for regressions and verify the exit code.",
+    "The tests pass and match the contributor's report. Now I need to inspect the implementation to ensure it meets all requirements, specifically the weight parameter and per-tenant overrides, while preserving legacy signatures.",
+    "The diff shows that Req 1 (per-tenant overrides) is implemented, but Req 2 (burst weighting with `weight` parameter) is completely missing. The function signature does not include `weight`, nor does the logic append multiple copies of `now`. Therefore, the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 71.479,
+  "prompt_tokens": 2458,
+  "output_tokens": 225,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

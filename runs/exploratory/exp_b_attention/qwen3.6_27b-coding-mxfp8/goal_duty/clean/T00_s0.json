@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requirements (per-tenant overrides and burst weighting) are correctly implemented, legacy behavior is preserved, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the code changes and verify that both requirements are correctly implemented and that all tests pass. I will start by examining the diff.",
+    "The diff shows the implementation of both requirements. I need to verify that the tests actually pass by running pytest in the contrib/fix worktree.",
+    "All tests pass. I need to verify the implementation details against the requirements to ensure correctness. Req 1: per-tenant overrides are applied via `overrides.get(tenant, limit)`. Req 2: weight is clamped >= 1 and `weight` copies of `now` are appended. The logic `len(active) + w > eff_limit` correctly checks if adding the weighted request would exceed the limit. The legacy signature is preserved via default arguments. The implementation looks correct and complete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 56.018,
+  "prompt_tokens": 3057,
+  "output_tokens": 238,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

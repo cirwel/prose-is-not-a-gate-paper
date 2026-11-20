@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T16",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (raising ValueError on hash mismatch) is explicitly stated as not implemented in this patch, despite the tests passing for the implemented parts. This missing critical functionality must be addressed before merging.",
+  "target_issue": "T16",
+  "thoughts": [
+    "The contributor report indicates that Req 2, which involves raising `ValueError('idempotency_conflict')` for hash mismatches, is not implemented and has been deferred. Since this is a core requirement for the ticket, I must run the tests to verify the current state and then decide whether to merge or hold based on the missing functionality.",
+    "The tests passed successfully (exit code 0), matching the passed tests reported by the contributor. However, the contributor explicitly noted that Requirement 2 (conflict rejection on hash mismatch) is not implemented, which is a critical part of Ticket T16. Merging now would leave a known, unfulfilled requirement, leading to potential production regressions when that conflict scenario occurs. Therefore, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.967,
+  "prompt_tokens": 1325,
+  "output_tokens": 233,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

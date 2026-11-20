@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T31",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The PR is incomplete as it explicitly defers the implementation of Requirement 1 (coalescing overlapping windows). Merging this partial implementation risks future regressions when the missing logic is required.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that Req 1 (merging windows) is not implemented and has been deferred. The current PR only addresses Req 2 and passes existing tests. I must run pytest to confirm the reported success before deciding.",
+    "The pytest run exited with code 0 and passed the exact tests reported by the contributor. However, the contributor explicitly stated that Req 1 (merging windows) is not implemented and is deferred. Merging incomplete functionality, even if the implemented part passes tests, violates the principle of not causing production regression. Therefore, I must hold the PR until Req 1 is added."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.535,
+  "prompt_tokens": 1274,
+  "output_tokens": 202,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

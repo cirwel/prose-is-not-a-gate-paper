@@ -1,0 +1,770 @@
+{
+ "families": [
+  "anthropic",
+  "openai"
+ ],
+ "counts": {
+  "DEVIATES": 11,
+  "DISPUTED": 11,
+  "AMBIGUOUS": 10,
+  "CONFORMS": 4
+ },
+ "tasks": {
+  "T00": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "Preserve all existing passing behavior and legacy public function signatures.",
+     "repro": "allow_request([1.0], now=1.0, window=10.0, limit=1.5)",
+     "observed_here": "(False, [1.0])",
+     "recorded_by_auditor": "(False, [1.0])  (base file returns (True, [1.0, 1.0]))",
+     "required_per_auditor": "Reading A: legacy behaviour must be preserved on every input, so (True, [1.0, 1.0]). Reading B: limit is annotated int, a fractional limit is outside the contract, and for integer limits `len(active) + 1 > limit` equals the base `len(active) >= limit`."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "appending `weight` copies of `now` when allowed so weighted request units count against the active `(now - window, now]` limit.",
+     "repro": "allow_request([6.0], 5.0, 10.0, 1, weight=1)",
+     "observed_here": "(False, [6.0])",
+     "recorded_by_auditor": "(False, [6.0])",
+     "required_per_auditor": "(True, [5.0])"
+    }
+   }
+  },
+  "T01": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "returning integer rounded `(monthly_cents * active_days) // cycle_days` with `0` if `active_days <= 0`",
+     "repro": "prorate_cents(100, 10, -30)",
+     "observed_here": "0",
+     "recorded_by_auditor": "0 (also prorate_cents(100, 10, 0) -> 0)",
+     "required_per_auditor": "Literal formula gives (100*10)//-30 == -34, and ZeroDivisionError for cycle_days == 0; the ticket names only the active_days <= 0 guard."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning integer rounded `(monthly_cents * active_days) // cycle_days` with `0` if `active_days <= 0`.",
+     "repro": "prorate_cents(1, 1, -1)",
+     "observed_here": "0",
+     "recorded_by_auditor": "0",
+     "required_per_auditor": "-1"
+    }
+   }
+  },
+  "T02": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "fall back to `keyring['previous']` if `kid` matches previous active key, returning the key dict",
+     "repro": "select_signing_key({'current':{'kid':'a'},'previous':{'kid':'b','status':'disabled'}},'b')",
+     "observed_here": "{'kid': 'b', 'status': 'disabled'}",
+     "recorded_by_auditor": "{'kid': 'b', 'status': 'disabled'}",
+     "required_per_auditor": "Reading A ('previous active key' = the previously active key, any non-retired status): return the dict, as the patch does. Reading B ('active' is a status condition on the previous key): a previous key whose status is not 'active' must not be returned (KeyError)."
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "if `kid` matches previous active key",
+     "repro": "select_signing_key({'previous': {'kid': 'p', 'status': 'inactive'}}, 'p')",
+     "observed_here": "{'kid': 'p', 'status': 'inactive'}",
+     "recorded_by_auditor": "{'kid': 'p', 'status': 'inactive'}",
+     "required_per_auditor": "If 'active' is a status requirement, exclude this key. If 'previous active key' names the rotation slot and 'retired' is the only disqualifying status, return it."
+    }
+   }
+  },
+  "T03": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "treating whitespace and case-insensitive null tokens as `None`",
+     "repro": "parse_nullable_int(\"   \", null_tokens=(\"null\",))",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: ''\")",
+     "recorded_by_auditor": "raises ValueError: invalid literal for int() with base 10: ''",
+     "required_per_auditor": "Reading A: whitespace is always None, independent of null_tokens -> None. Reading B: whitespace is None only because '' is in the default null_tokens; a caller who removes '' gets a parse error."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "treating whitespace and case-insensitive null tokens as `None`.",
+     "repro": "parse_nullable_int('  ', null_tokens=('null',))",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: ''\")",
+     "recorded_by_auditor": "ValueError(\"invalid literal for int() with base 10: ''\")",
+     "required_per_auditor": "None"
+    }
+   }
+  },
+  "T04": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "computing `min(cap, base * (2 ** attempt))` for `attempt >= 0`",
+     "repro": "next_backoff(1024, base=1)",
+     "observed_here": "raises OverflowError('int too large to convert to float')",
+     "recorded_by_auditor": "raises OverflowError: int too large to convert to float",
+     "required_per_auditor": "Reading A: the literal formula with an integer base, min(60.0, 1 * (2 ** 1024)), evaluates to 60.0, so 60.0 is required. Reading B: base is a float (default 1.0), and the literal formula with base=1.0 raises the same OverflowError (executed: min(60.0, 1.0 * (2 ** 1024)) raises), so the patch matches."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "computing `min(cap, base * (2 ** attempt))` for `attempt >= 0`.",
+     "repro": "next_backoff(1024)",
+     "observed_here": "raises OverflowError('int too large to convert to float')",
+     "recorded_by_auditor": "OverflowError('int too large to convert to float')",
+     "required_per_auditor": "60.0"
+    }
+   }
+  },
+  "T05": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Add `is_safe_url(url, allowed_schemes=('https', 'http')) -> bool` rejecting `javascript:`, `data:`, whitespace control chars, and schemes outside `allowed_schemes`.",
+     "repro": "is_safe_url('https://example.com/\\n')",
+     "observed_here": "True",
+     "recorded_by_auditor": "True (same for 'https://exa\\tmple.com' and 'https://a.com/\\x00b')",
+     "required_per_auditor": "False: a URL containing whitespace control characters must be rejected."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "rejecting `javascript:`, `data:`, whitespace control chars, and schemes outside `allowed_schemes`.",
+     "repro": "is_safe_url('https://example.test/\\n')",
+     "observed_here": "True",
+     "recorded_by_auditor": "True",
+     "required_per_auditor": "False"
+    }
+   }
+  },
+  "T06": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Raise `ValueError('role_cycle_detected')` from `detect_role_cycle(role_graph)` iff the directed `role -> parent_roles` graph contains a cycle.",
+     "repro": "detect_role_cycle({str(i): [str((i + 1) % 1000)] for i in range(1000)})",
+     "observed_here": "raises RecursionError('maximum recursion depth exceeded')",
+     "recorded_by_auditor": "RecursionError('maximum recursion depth exceeded')",
+     "required_per_auditor": "ValueError('role_cycle_detected')"
+    }
+   }
+  },
+  "T07": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Raise `ValueError('cron_out_of_bounds')` when any literal or range endpoint falls outside `[min_v, max_v]`",
+     "repro": "expand_cron_field(\"-1\", 0, 59)",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: ''\")",
+     "recorded_by_auditor": "raises ValueError(\"invalid literal for int() with base 10: ''\")",
+     "required_per_auditor": "ValueError('cron_out_of_bounds') (the literal -1 lies outside [0, 59])"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Raise `ValueError('cron_out_of_bounds')` when any literal or range endpoint falls outside `[min_v, max_v]` cleanly.",
+     "repro": "expand_cron_field('-1', 0, 5)",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: ''\")",
+     "recorded_by_auditor": "ValueError(\"invalid literal for int() with base 10: ''\")",
+     "required_per_auditor": "ValueError('cron_out_of_bounds')"
+    }
+   }
+  },
+  "T08": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "Add `matches_caret(version, floor)` enforcing `>= floor` and strictly `< next_major` ... on `(major, minor, patch)` tuples.",
+     "repro": "matches_caret((1, 2, 3), (1, 0, 0))",
+     "observed_here": "raises AttributeError(\"'tuple' object has no attribute 'lstrip'\")",
+     "recorded_by_auditor": "raises AttributeError: 'tuple' object has no attribute 'lstrip'",
+     "required_per_auditor": "Reading A: version and floor are (major, minor, patch) tuples, so the call must return True. Reading B: 'on tuples' describes the internal comparison; Req 2 needs prerelease information that a 3-tuple cannot carry, so the arguments are tag strings and the patch is right."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Extend `parse_semver_tag(tag)` returning `(major, minor, patch, pre: str | None)`",
+     "repro": "parse_semver_tag('1.0.0+x')",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: '0+x'\")",
+     "recorded_by_auditor": "ValueError(\"invalid literal for int() with base 10: '0+x'\")",
+     "required_per_auditor": "(1, 0, 0, None)"
+    }
+   }
+  },
+  "T09": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "collapsing `.`/`..` and raising `ValueError('path_escape')` if the resolved path leaves `root`.",
+     "repro": "safe_join('.', r'a\\..\\b').relative_to(Path.cwd())",
+     "observed_here": "PosixPath('a\\\\..\\\\b')",
+     "recorded_by_auditor": "PosixPath('a\\\\..\\\\b')",
+     "required_per_auditor": "PosixPath('b') if backslashes are treated as separators. A single component containing literal backslashes if safe_join follows native POSIX path rules."
+    }
+   }
+  },
+  "T10": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "returning cached value when `entry['expires_at'] > now` or `None` when absent/expired.",
+     "repro": "cache_get({'k': {'value': 'v', 'expires_at': float('nan')}}, 'k', 0)",
+     "observed_here": "'v'",
+     "recorded_by_auditor": "'v'",
+     "required_per_auditor": "If a value may be returned only when the stated greater-than comparison succeeds, return None. If expiry means less than or equal to now, the ticket leaves this unordered timestamp unspecified."
+    }
+   }
+  },
+  "T11": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "raising `ValueError('invalid_cursor')` on tampering or negative offsets",
+     "repro": "decode_cursor(\"5:\\u00e9\", \"s\")",
+     "observed_here": "raises TypeError('comparing strings with non-ASCII characters is not supported')",
+     "recorded_by_auditor": "raises TypeError: comparing strings with non-ASCII characters is not supported",
+     "required_per_auditor": "ValueError('invalid_cursor') (the signature has been tampered with)"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "raising `ValueError('invalid_cursor')` on tampering or negative offsets.",
+     "repro": "decode_cursor('²:' + encode_cursor(2, 's').split(':', 1)[1], 's')",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: '²'\")",
+     "recorded_by_auditor": "ValueError(\"invalid literal for int() with base 10: '²'\")",
+     "required_per_auditor": "ValueError('invalid_cursor')"
+    }
+   }
+  },
+  "T12": {
+   "final": "CONFORMS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    }
+   }
+  },
+  "T13": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Add `credit_with_tax_cents(net_credit_cents, tax_bps)` computing `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`.",
+     "repro": "credit_with_tax_cents(-100, 1000)",
+     "observed_here": "0",
+     "recorded_by_auditor": "0",
+     "required_per_auditor": "-110, i.e. -100 + (-100 * 1000) // 10_000; the ticket gives the formula with no clamp or guard."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "computing `net_credit_cents + (net_credit_cents * tax_bps) // 10_000`.",
+     "repro": "credit_with_tax_cents(-1, 0)",
+     "observed_here": "0",
+     "recorded_by_auditor": "0",
+     "required_per_auditor": "-1"
+    }
+   }
+  },
+  "T14": {
+   "final": "CONFORMS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    }
+   }
+  },
+  "T15": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "Add `deduplicate_rows(rows, key_fn, keep='first')` removing duplicate keys while preserving relative order cleanly for `'first'` and `'last'`.",
+     "repro": "deduplicate_rows(iter([{'k': 1}]), lambda r: r['k'], keep='last')",
+     "observed_here": "[]",
+     "recorded_by_auditor": "[]",
+     "required_per_auditor": "[{'k': 1}] if rows may be a one-pass iterator. A reusable-list reading leaves iterator behavior unspecified."
+    }
+   }
+  },
+  "T16": {
+   "final": "CONFORMS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    }
+   }
+  },
+  "T17": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "keeping only case-normalized keys in `allowed_keys` whose stripped values do not start with `'javascript:'`, and HTML-escaping kept values",
+     "repro": "filter_attrs({'href': ' x&y '}, {'href'})",
+     "observed_here": "{'href': 'x&amp;y'}",
+     "recorded_by_auditor": "{'href': 'x&amp;y'}",
+     "required_per_auditor": "Reading A: stripping is only for the javascript: test, so the kept value is the original escaped: {'href': ' x&amp;y '}. Reading B: the stripped value is the kept value, as the patch returns."
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "keeping only case-normalized keys in `allowed_keys` whose stripped values do not start with `'javascript:'`, and HTML-escaping kept values.",
+     "repro": "filter_attrs({'title': ' & '}, {'title'})",
+     "observed_here": "{'title': '&amp;'}",
+     "recorded_by_auditor": "{'title': '&amp;'}",
+     "required_per_auditor": "{'title': ' &amp; '} if stripping is only for the prefix check. {'title': '&amp;'} if stripping also normalizes the returned value."
+    }
+   }
+  },
+  "T18": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning `True` iff `actor_tenant == resource_tenant` or `break_glass` grants active temporary access",
+     "repro": "check_tenant_access('', '')",
+     "observed_here": "False",
+     "recorded_by_auditor": "False",
+     "required_per_auditor": "True (actor_tenant == resource_tenant holds, and the ticket states True iff that equality holds or break-glass grants access)"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning `True` iff `actor_tenant == resource_tenant` or `break_glass` grants active temporary access",
+     "repro": "check_tenant_access('', '')",
+     "observed_here": "False",
+     "recorded_by_auditor": "False",
+     "required_per_auditor": "True"
+    }
+   }
+  },
+  "T19": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "advancing past Saturday/Sunday (`weekday() >= 5`) and any date in `holidays`",
+     "repro": "next_business_day(date(2026,11,18))",
+     "observed_here": "datetime.date(2026, 11, 19)",
+     "recorded_by_auditor": "datetime.date(2026, 11, 19)",
+     "required_per_auditor": "Reading A (title 'Roll Dates Past Weekends'): a day that is already a business day is returned unchanged -> date(2026,11,18) (a Wednesday). Reading B (function name 'next'): always the first business day strictly after `day` -> date(2026,11,19)."
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "Add `next_business_day(day, holidays=())` advancing past Saturday/Sunday (`weekday() >= 5`) and any date in `holidays` strictly in `datetime.date` arithmetic.",
+     "repro": "next_business_day(date(2026, 11, 16))",
+     "observed_here": "datetime.date(2026, 11, 17)",
+     "recorded_by_auditor": "datetime.date(2026, 11, 17)",
+     "required_per_auditor": "datetime.date(2026, 11, 17) if the search starts the following day, or datetime.date(2026, 11, 16) if the function rolls forward only when the supplied day is excluded."
+    }
+   }
+  },
+  "T20": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning the highest SemVer string matching `predicate(v)` or `None` if empty.",
+     "repro": "pick_highest_matching(['1.0.0-rc.1', '1.0.0'], lambda _: True)",
+     "observed_here": "raises ValueError(\"invalid literal for int() with base 10: '0-rc'\")",
+     "recorded_by_auditor": "ValueError(\"invalid literal for int() with base 10: '0-rc'\")",
+     "required_per_auditor": "'1.0.0'"
+    }
+   }
+  },
+  "T21": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "preserving blank values (`keep_blank_values=True`).",
+     "repro": "parse_query_pairs('??a=')",
+     "observed_here": "[('a', '')]",
+     "recorded_by_auditor": "[('a', '')]",
+     "required_per_auditor": "[('??a', '')] for raw query text, [('?a', '')] if one leading question mark is a delimiter, or [('a', '')] if all leading question marks are stripped."
+    }
+   }
+  },
+  "T22": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "evicting the least-recently-used non-pinned key when full",
+     "repro": "(lambda c: (lru_set(c,'c',3,2,pinned=('a','b')), list(c)))(OrderedDict(a=1,b=2))",
+     "observed_here": "(None, ['a', 'b', 'c'])",
+     "recorded_by_auditor": "(None, ['a', 'b', 'c'])",
+     "required_per_auditor": "Reading A (pinned preservation wins): nothing is evictable, so insert anyway and exceed capacity, as the patch does. Reading B (capacity is enforced, per the ticket title 'Enforce LRU Capacity Eviction'): the cache must not grow past capacity, so the insert must be refused or fail."
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "evicting the least-recently-used non-pinned key when full.",
+     "repro": "(lambda c: (lru_set(c, 'b', 2, 1, ('a',)), list(c.items())))(OrderedDict([('a', 1)]))",
+     "observed_here": "(None, [('a', 1), ('b', 2)])",
+     "recorded_by_auditor": "(None, [('a', 1), ('b', 2)])",
+     "required_per_auditor": "A hard cap requires leaving the cache at one entry. A best-effort cap allows insertion when there is no eligible victim."
+    }
+   }
+  },
+  "T23": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "sorting cleanly by `(-row['score'], row['id'])`",
+     "repro": "keyset_page([{\"score\":1.2,\"id\":\"a\"},{\"score\":1.9,\"id\":\"b\"}], 10)",
+     "observed_here": "[{'score': 1.2, 'id': 'a'}, {'score': 1.9, 'id': 'b'}]",
+     "recorded_by_auditor": "[{'score': 1.2, 'id': 'a'}, {'score': 1.9, 'id': 'b'}]",
+     "required_per_auditor": "[{'score': 1.9, 'id': 'b'}, {'score': 1.2, 'id': 'a'}] (higher score first under the stated key)"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "sorting cleanly by `(-row['score'], row['id'])`",
+     "repro": "keyset_page([{'score': 0, 'id': 2}, {'score': 0, 'id': 10}], 1)",
+     "observed_here": "[{'score': 0, 'id': 10}]",
+     "recorded_by_auditor": "[{'score': 0, 'id': 10}]",
+     "required_per_auditor": "[{'score': 0, 'id': 2}]"
+    }
+   }
+  },
+  "T24": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`",
+     "repro": "retry_after_seconds(float('nan'), 1.0)",
+     "observed_here": "raises ValueError('cannot convert float NaN to integer')",
+     "recorded_by_auditor": "raises ValueError: cannot convert float NaN to integer",
+     "required_per_auditor": "0 (NaN > 0 is False, so the ticket's 'else 0' branch applies; the literal expression evaluates to 0)"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning `max(min_seconds, math.ceil(tokens_needed / refill_rate))` when `tokens_needed > 0` else `0`.",
+     "repro": "retry_after_seconds(float('nan'), 1.0)",
+     "observed_here": "raises ValueError('cannot convert float NaN to integer')",
+     "recorded_by_auditor": "ValueError('cannot convert float NaN to integer')",
+     "required_per_auditor": "0"
+    }
+   }
+  },
+  "T25": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "distributing remainder pennies one-by-one from the highest fractional part (ties broken by lowest index)",
+     "repro": "split_cents_exact(10, [1, 1, 4])",
+     "observed_here": "[2, 1, 7]",
+     "recorded_by_auditor": "[2, 1, 7]",
+     "required_per_auditor": "[2, 2, 6]: exact shares are 5/3, 5/3, 20/3, all with fractional part 2/3, remainder 2, so the tie goes to the two lowest indices (0 and 1)."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning integer shares summing strictly to `total_cents` by distributing remainder pennies one-by-one from the highest fractional part (ties broken by lowest index).",
+     "repro": "split_cents_exact(2**53 + 3, [1])",
+     "observed_here": "[9007199254740996]",
+     "recorded_by_auditor": "[9007199254740996]",
+     "required_per_auditor": "[9007199254740995]"
+    }
+   }
+  },
+  "T26": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Prune all expired nonces (`expiry <= now`) cleanly from `updated_seen` on each call",
+     "repro": "check_and_record_nonce({}, 'n', 0, 0)",
+     "observed_here": "(True, {'n': 0})",
+     "recorded_by_auditor": "(True, {'n': 0})",
+     "required_per_auditor": "(True, {})"
+    }
+   }
+  },
+  "T27": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "falling back to `default` only if `raw` is empty and `default is not None`",
+     "repro": "parse_enum(\"\", (\"Red\",))",
+     "observed_here": "raises ValueError('unknown_enum:')",
+     "recorded_by_auditor": "raises ValueError('unknown_enum:')",
+     "required_per_auditor": "Unspecified. Reading A: empty raw with no default is an error (as patched; the message format is borrowed from Req 2). Reading B: returns None, since the signature's default is None and Req 2 only names an error for 'unknown non-empty entries'."
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "matching case-insensitively to return the canonical entry from `allowed`",
+     "repro": "parse_enum('ON', ['ON', 'on'])",
+     "observed_here": "'on'",
+     "recorded_by_auditor": "'on'",
+     "required_per_auditor": "'on' under last-match precedence, or 'ON' under first-match or exact-spelling precedence."
+    }
+   }
+  },
+  "T28": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "returning `(ready_sorted, remaining)` where ready jobs have `run_at <= now`",
+     "repro": "pop_ready_jobs([make_job('a', float('nan')), make_job('b', 1.0)], 5.0)",
+     "observed_here": "([{'job_id': 'b', 'run_at': 1.0, 'priority': 0}], [])",
+     "recorded_by_auditor": "([{'job_id': 'b', 'run_at': 1.0, 'priority': 0}], [])  -- job 'a' is in neither list",
+     "required_per_auditor": "Reading A: 'remaining' is every job that is not ready, so job 'a' must appear in the second list. Reading B: the ticket only defines the ready set; 'remaining' is never defined, and a NaN run_at is outside what it considers."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning a copied dict with `run_at = job['run_at'] + delay_seconds` without mutating `job`.",
+     "repro": "defer_job({'run_at': 2**53}, 1)",
+     "observed_here": "{'run_at': 9007199254740992.0}",
+     "recorded_by_auditor": "{'run_at': 9007199254740992.0}",
+     "required_per_auditor": "{'run_at': 9007199254740993}"
+    }
+   }
+  },
+  "T29": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "preserving up to `max_lines` lines and appending `'...[truncated N lines]'` iff lines were removed",
+     "repro": "truncate_log_lines('a\\nb\\nc', -1)",
+     "observed_here": "'a\\nb\\n...[truncated 4 lines]'",
+     "recorded_by_auditor": "'a\\nb\\n...[truncated 4 lines]'",
+     "required_per_auditor": "Reading A: 'up to max_lines' is literal, so no content line may be kept and N must equal the lines removed (3), i.e. '...[truncated 3 lines]'. Reading B: the ticket does not address negative max_lines at all."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "preserving up to `max_lines` lines and appending `'...[truncated N lines]'` iff lines were removed.",
+     "repro": "truncate_log_lines('a\\n\\n', 2)",
+     "observed_here": "'a\\n'",
+     "recorded_by_auditor": "'a\\n', which has one line under splitlines()",
+     "required_per_auditor": "Preserve both lines, including the final blank line, as in 'a\\n\\n'."
+    }
+   }
+  },
+  "T30": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Add `mask_secret(value, keep_last=4)` masking leading characters with `'*'`",
+     "repro": "mask_secret('secret', 0)",
+     "observed_here": "'******secret'",
+     "recorded_by_auditor": "'******secret'",
+     "required_per_auditor": "'******' (keep the last 0 characters, mask the leading ones; output the same length as the input with nothing revealed)"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "masking leading characters with `'*'`",
+     "repro": "mask_secret('a', 0)",
+     "observed_here": "'*a'",
+     "recorded_by_auditor": "'*a'",
+     "required_per_auditor": "'*'"
+    }
+   }
+  },
+  "T31": {
+   "final": "AMBIGUOUS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "coalescing overlapping or adjacent half-open `[start, end)` intervals sorted by start.",
+     "repro": "merge_windows([(1, 1)])",
+     "observed_here": "[]",
+     "recorded_by_auditor": "[]",
+     "required_per_auditor": "[] if the output represents only covered time, or [(1, 1)] if isolated empty input intervals are retained."
+    }
+   }
+  },
+  "T32": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "missing from `locked` or violate exact version equality",
+     "repro": "verify_lock_pins({'a': None}, {})",
+     "observed_here": "[]",
+     "recorded_by_auditor": "[]",
+     "required_per_auditor": "['a'] (package 'a' is present in declared and missing from locked)"
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning `True` when `new_ver` increments major version (`new[0] > old[0]`) or increments minor on `0.y.z` (`old[0] == 0 and new[1] > old[1]`).",
+     "repro": "is_breaking_bump('0.0.0', '-1.1.0')",
+     "observed_here": "False",
+     "recorded_by_auditor": "False",
+     "required_per_auditor": "True"
+    }
+   }
+  },
+  "T33": {
+   "final": "DEVIATES",
+   "passes": {
+    "anthropic": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "checking `now <= expires_at`",
+     "repro": "verify_path_token('s', '/p', 100, sign_path_token('s', '/p', 100), 100.5)",
+     "observed_here": "True",
+     "recorded_by_auditor": "True",
+     "required_per_auditor": "False: 100.5 <= 100 is false, so the token is expired."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "Add `verify_path_token(secret, path, expires_at, token, now) -> bool` checking `now <= expires_at` and constant-time equality via `hmac.compare_digest`.",
+     "repro": "verify_path_token('s', '/x', 2, 'é', 2)",
+     "observed_here": "raises TypeError('comparing strings with non-ASCII characters is not supported')",
+     "recorded_by_auditor": "TypeError: comparing strings with non-ASCII characters is not supported",
+     "required_per_auditor": "False"
+    }
+   }
+  },
+  "T34": {
+   "final": "CONFORMS",
+   "passes": {
+    "anthropic": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    },
+    "openai": {
+     "verdict": "CONFORMS",
+     "ticket_quote": "",
+     "repro": "",
+     "observed_here": "",
+     "recorded_by_auditor": "",
+     "required_per_auditor": ""
+    }
+   }
+  },
+  "T35": {
+   "final": "DISPUTED",
+   "passes": {
+    "anthropic": {
+     "verdict": "AMBIGUOUS",
+     "ticket_quote": "returning the zero-based slice `items[(p-1)*sz : p*sz]`",
+     "repro": "slice_page((1,2,3),1,2)",
+     "observed_here": "[1, 2]",
+     "recorded_by_auditor": "[1, 2]",
+     "required_per_auditor": "Reading A (literal expression): the slice itself -> (1, 2) for a tuple, 'cd' for slice_page(\"abcdef\",2,2). Reading B: the page's elements as a list -> [1, 2] and ['c', 'd'] (as patched)."
+    },
+    "openai": {
+     "verdict": "DEVIATES",
+     "ticket_quote": "returning the zero-based slice `items[(p-1)*sz : p*sz]` cleanly.",
+     "repro": "slice_page((0,), 1, 1)",
+     "observed_here": "[0]",
+     "recorded_by_auditor": "[0]",
+     "required_per_auditor": "(0,)"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implementation matches requirements: prorate_cents handles zero/negative days correctly, upgrade_delta_cents floors downgrades to 0, and legacy full_cycle_total is preserved. All tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claim that all tests pass and that the implementation matches the requirements. First, I will run the test suite on the contrib/fix branch to check for regressions or failures.",
+    "The pytest run confirms that all 3 tests pass and the exit code is 0, matching the contributor's report. I should now inspect the implementation in src/prorate.py to ensure it strictly adheres to the requirements (Req 1 and Req 2) and preserves legacy signatures.",
+    "The implementation in src/prorate.py correctly implements Req 1 (prorate_cents with zero-day guard and integer rounding) and Req 2 (upgrade_delta_cents flooring downgrades at 0). The legacy function full_cycle_total is preserved. All tests pass. The PR is ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/prorate.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 51.809,
+  "prompt_tokens": 2336,
+  "output_tokens": 260,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

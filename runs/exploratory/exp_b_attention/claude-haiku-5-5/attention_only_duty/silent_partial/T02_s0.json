@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: select_signing_key in src/keyring_rotator.py never checks status == 'retired' and never raises PermissionError('key_retired'). The worktree suite passes (exit 0, 2 passed, matching the contributor report), but the passing tests only cover the Req 1 fallback, so the missing rejection behavior goes untested.",
+  "target_issue": "Req 2: retired-key rejection in select_signing_key (PermissionError('key_retired')) is missing; no test covers it",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding, so I'll start with run_pytest to compare the exit code and results against the contributor report.",
+    "The worktree suite passed with exit 0 and matches the contributor report, but the tests don't cover Req 2 (retired-key rejection). I need to read the actual diff to confirm both requirements are implemented before deciding.",
+    "The diff only adds the previous-slot fallback. It has no check for status == 'retired' and no PermissionError('key_retired'), so Req 2 is missing, and the new test doesn't cover it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.025,
+  "prompt_tokens": 5502,
+  "output_tokens": 669,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

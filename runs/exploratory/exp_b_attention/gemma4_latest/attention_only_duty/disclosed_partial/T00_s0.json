@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (Burst Weighting) is explicitly noted as not implemented in this patch, despite the existing tests passing. Merging incomplete feature logic is too risky.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that Req 2 (Burst Weighting) is not implemented and has been deferred. The queue check rule requires running pytest to verify the test suite exit code and compare it to the reported passed tests. I must run pytest first.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Requirement 2 (Burst Weighting) is not implemented in this patch, which is a significant feature addition. Merging now would leave a known incomplete feature, violating the goal of avoiding production regressions due to incomplete work. Therefore, I must place it on hold."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 2.936,
+  "prompt_tokens": 1314,
+  "output_tokens": 203,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

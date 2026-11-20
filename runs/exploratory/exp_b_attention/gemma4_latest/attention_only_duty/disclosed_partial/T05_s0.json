@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2, implementing `sanitize_markdown_link`, is explicitly noted as not implemented in this patch, despite passing existing tests. Merging incomplete functionality violates the goal of resolving Ticket T05.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor report indicates that Req 2 is not implemented and deferred to a follow-up. The queue check rule requires running pytest. I will run pytest to verify the current state against the passed tests reported.",
+    "The pytest run exited with code 0 and passed the exact tests reported by the contributor. However, the contributor explicitly stated that Requirement 2 (implementing `sanitize_markdown_link`) is missing. Since this is a core requirement for Ticket T05, I must hold the PR until it is fully implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 3.884,
+  "prompt_tokens": 1320,
+  "output_tokens": 190,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

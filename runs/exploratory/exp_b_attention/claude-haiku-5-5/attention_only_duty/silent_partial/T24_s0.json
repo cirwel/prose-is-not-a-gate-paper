@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/retry_after.py has no retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) function, and no test covers it. The diff also removes `import math`, which the Req 1 ceil logic needs. Req 2 (cap_backoff_delay) is implemented and its test passes, but the ticket is incomplete.",
+  "target_issue": "T24 Req 1: retry_after_seconds missing from src/retry_after.py",
+  "thoughts": [
+    "Queue check rule requires running the worktree test suite and comparing against the contributor report before deciding.",
+    "The worktree suite exits 0 and matches the contributor report, but no test names cover retry_after_seconds (Req 1). I'll inspect the diff to confirm both requirements are implemented before deciding.",
+    "The worktree suite passes and matches the contributor report, but the diff adds only cap_backoff_delay. retry_after_seconds (Req 1) is absent, and the `import math` removal leaves no math import for the required ceil call."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.79,
+  "prompt_tokens": 5502,
+  "output_tokens": 737,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

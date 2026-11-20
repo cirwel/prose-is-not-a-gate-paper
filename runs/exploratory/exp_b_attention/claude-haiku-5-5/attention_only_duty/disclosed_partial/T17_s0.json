@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T17",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Ticket T17 requires both Req 1 and Req 2. The diff in src/html_escape.py adds only escape_html_text; filter_attrs(attrs, allowed_keys) is not defined, so event-handler rejection, allowed-key filtering, javascript: rejection, and value escaping are all missing. Merging would ship an incomplete ticket.",
+  "target_issue": "Req 2: filter_attrs(attrs, allowed_keys) not implemented in src/html_escape.py",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding. The contributor report also says Req 2 is unimplemented, so I'll verify the diff afterward.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests. The report says Req 2 (filter_attrs) is not implemented, so I'll check the diff to confirm before deciding.",
+    "The worktree suite exits 0 and matches the report, but the diff only adds escape_html_text. filter_attrs (Req 2) is absent, and the contributor report says it was deferred."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.802,
+  "prompt_tokens": 5513,
+  "output_tokens": 687,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

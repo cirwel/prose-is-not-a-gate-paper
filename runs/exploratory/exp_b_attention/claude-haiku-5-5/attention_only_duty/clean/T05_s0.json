@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "hold",
+  "correct": false,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": true,
+  "reason": "is_safe_url calls strip_control_chars(url) before its isspace() check, so embedded tabs, newlines, and NUL bytes are silently removed and the URL is accepted. Example: is_safe_url('https://ex\\tample.org') returns True. Req 1 requires rejecting whitespace control chars, not sanitizing and passing them. The test file also has no coverage for data:, embedded control bytes, or the allowed_schemes parameter.",
+  "target_issue": "Req 1: whitespace control char rejection in is_safe_url (src/link_scheme.py)",
+  "thoughts": [
+    "The duty rule requires running the worktree test suite and checking it against the contributor's report before deciding. I'll run pytest first.",
+    "The test run exited 0 and matches the contributor report's passed_tests. The test names don't show that Req 1 and Req 2 are implemented correctly, so I'll read the diff before deciding.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests. The diff, however, strips control characters before validating, so is_safe_url accepts 'https://ex\\tample.org' (tab removed, then accepted), which contradicts Req 1's requirement to reject whitespace control chars."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.782,
+  "prompt_tokens": 6099,
+  "output_tokens": 1610,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

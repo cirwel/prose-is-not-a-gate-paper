@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All tests pass, implementation correctly handles remainder distribution with specified tie-breaking logic, and reconcile_ledger returns correct tuple structure.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claim that all tests pass and that the implementation meets the requirements. First, I will run the test suite on the contrib/fix branch to check for regressions or failures.",
+    "The pytest run confirms that all 3 tests pass and the exit code is 0, matching the contributor's report. I should now inspect the implementation to ensure it correctly handles the specific requirements, particularly the tie-breaking logic for `split_cents_exact` and the exact signature for `reconcile_ledger`.",
+    "The implementation of `split_cents_exact` correctly distributes remainder pennies based on highest fractional part, with ties broken by lowest index (since `i` is the secondary sort key in ascending order). The `reconcile_ledger` function correctly returns `(balanced, net_delta)` where `balanced` is true if sums are equal. All tests pass and the code matches the requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/ledger_round.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 36.959,
+  "prompt_tokens": 2402,
+  "output_tokens": 270,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

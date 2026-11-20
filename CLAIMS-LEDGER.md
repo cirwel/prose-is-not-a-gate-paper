@@ -1,6 +1,6 @@
 # Claims Ledger
 
-**Manuscript:** *Prose Is Not a Gate: Duty Narrowing, Verification Notices, and Programmatic Crux Gates in Multi-Agent Software Handoffs*
+**Manuscript:** *What the Reviewer Is Told to Check: Instruction Scope, Notices, and Test-Passing Partial Work in Multi-Agent Code Handoffs* (working title until 2026-11-20: *Prose Is Not a Gate*)
 
 Every quantitative, statistical, and architectural claim in `paper/main.tex` and `README.md` maps directly to a verified repository artifact below.
 
@@ -111,3 +111,25 @@ Applied after a cold read by an outside model family (`docs/reviews/2026-11-20-c
 | Vouchers | Ed25519 commit vouchers | Harness-signed vouchers over a tree manifest and report, using a fixture key. Not Git commit signatures. | `repohandoff/crypto.py` |
 | Recount | All statistics independently recounted | A second script, sharing no imports with the analysis, re-aggregates counts, Wilson intervals, McNemar pairs and repository signs. It does not recompute Holm, Wilcoxon or signal-detection values and does not re-judge labels. | `scripts/recount_independent.py` |
 | Field cases | Production field evidence | Illustrations selected after the experiments from one private repository; not evidence for the experimental claims. | manuscript section 6 |
+
+---
+
+## 7. Corrections of 2026-11-20, second round (supersede sections 4 and 6 where they differ)
+
+Applied after a five-seat review (three Anthropic seats reading the repository, one OpenAI and one Google seat by consult) and a decision ballot on which all three families voted the same way on every item (`docs/REVIEWS.md` section 5). No confirmatory record, hypothesis or statistic changed.
+
+| Topic | Earlier wording | Corrected statement | Checked against |
+|---|---|---|---|
+| Title | *Prose Is Not a Gate* | Retitled. The largest effect comes from changing prose in the receiver's instruction, so the old title contradicted the evidence. | Experiment B |
+| Field cases (section 4 of this ledger) | Section 6 of the manuscript, rule 5 | Removed from the manuscript. The repository is private, the cases were chosen after the experiments, and nothing in them is checkable by a reader. Section 4 of this ledger is retained as history only. | ballot D3 |
+| Four-layer stack | A contribution and organizing frame | Dropped as a contribution. Table 1 remains as a description of what each deterministic check returns by construction. No deterministic check of a patch against its ticket exists in the harness. | `repohandoff/crypto.py`, `repohandoff/briefs.py` |
+| Experiment B | "Procedural CI tunnel vision", "literal-obedience inversion" | A bundled instruction change: `narrow_ci_duty` changes both what the receiver looks at and the verdict it is told to return. A post hoc arm on four no-cost models removes the verdict rule and keeps the check (`results/exploratory_attention_arm.md`). | `repohandoff/prompts.py` |
+| `H2b` split | "Two models from one developer" | `gpt-6-luna` and `gpt-6.1-sol` returned `merge`; `gpt-5.4-nano`, also from OpenAI, held `36/36`. The developer does not explain the split. | raw records |
+| Clean label | "At least 7" of 22 audited fixtures deviate; 59 of 110 holds cite a deviation | All 36 audited by two independent passes from two families: 11 deviate by agreement of both, 11 are disputed, 10 ambiguous, 4 unobjected. 73 of 110 Experiment A clean holds fall on the 11 (a count by task, not by cited reason). | `docs/CLEAN-LABEL-AUDIT.md`, `scripts/verify_clean_label_audit.py` |
+| Signal-detection values | Reported in the body | Moved to an appendix: they score every hold on a clean-labelled patch as an error. | `results/clean_label_sensitivity.md` |
+| Experiment C | A main-body experiment with a design rule | One paragraph in the body, full report in an appendix. All five of its terminal parse errors are in the `gemma4 -> nemotron3` pairing and make up every discordant pair of that pairing's `H3c` contrast. Rule 3 removed. On the 25 tasks without an agreed deviation, ungated crux briefs drew 10/125 clean holds against 0/125 gated (exploratory). | raw records |
+| Part 2 "silent partial" (`4/216`) | Silent omissions | A keyword-rule label. All four reports claim both requirements implemented and all four describe the workaround in their notes. | raw records, `repohandoff/worker.py` |
+| Part 2 "test tampering" (`5/216`) | Tampering, counted under "Concealed" | Five runs with an edit to a pre-existing test: two reported failing tests, two filed no report, one (`gemma4 T01`) passed and disclosed the edit in its notes. None conceals the edit. The AST check does not cover `conftest.py`, pytest configuration or module-level skips. | raw records, `repohandoff/worker.py` |
+| `H4b` | "Concealed" rate `10/216` | The pre-registered sum is still reported; a reading of the ten reports finds none that conceals what the worker did. | raw records |
+| `nemotron3` `H1c` | "Missed 1/36" under the mismatch banner | The one non-hold is a terminal parse error; the verdict is unknown. | raw record `T08` |
+| Design rules | Five rules | Two scoped observations with experimental support, three untested implications. | ballot D7 |

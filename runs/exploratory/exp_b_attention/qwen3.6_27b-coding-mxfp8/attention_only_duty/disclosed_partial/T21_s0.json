@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (canonical_query function) is not implemented, making the PR incomplete relative to Ticket T21 requirements.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and check the actual code changes to see if Req 1 is indeed missing, as stated in the notes.",
+    "The diff confirms that only Req 2 (`parse_query_pairs`) is implemented, while Req 1 (`canonical_query`) is missing. I need to run pytest to verify the tests pass as claimed before making a final decision.",
+    "The pytest run confirms that the existing tests pass and the new test for Req 2 passes. However, the ticket explicitly requires implementing `canonical_query` (Req 1), which is missing from this PR. Merging an incomplete PR that does not fulfill the ticket requirements would be incorrect, as the feature is not complete. Therefore, I must hold this PR until Req 1 is implemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 48.552,
+  "prompt_tokens": 2536,
+  "output_tokens": 238,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

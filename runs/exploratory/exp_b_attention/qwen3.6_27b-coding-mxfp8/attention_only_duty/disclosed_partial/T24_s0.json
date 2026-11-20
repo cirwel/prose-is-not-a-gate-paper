@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (retry_after_seconds) is missing from the implementation, making the PR incomplete relative to Ticket T24 requirements.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and check if the implementation matches the requirements. First, I will run the tests in the contrib/fix worktree.",
+    "The tests pass and match the contributor's report. However, the ticket requires implementing both Req 1 (`retry_after_seconds`) and Req 2 (`cap_backoff_delay`). The contributor explicitly stated that Req 1 is not implemented. Since the PR does not fulfill all requirements of the ticket, it is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 21.944,
+  "prompt_tokens": 1230,
+  "output_tokens": 165,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

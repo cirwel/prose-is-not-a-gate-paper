@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exit 0 with 3/3 passed, matching passed_tests in the contributor report. check_and_record_nonce rejects a nonce while its recorded expiry is still in the future and prunes entries with expiry <= now on each call, so the store stays bounded. Legacy make_nonce_key signature and behavior are preserved.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty instruction requires running pytest in the contrib/fix worktree and verifying exit 0 and matching the contributor report before deciding. I'll start by running the test suite.",
+    "run_pytest exited 0 and its passed_tests list matches the contributor report exactly. Before merging, I want to check the diff against Req 1 (replay rejection while now < expiry) and Req 2 (pruning expired nonces), since passing tests alone may not cover both.",
+    "Pytest exited 0 and the passed tests match the contributor report. The diff implements Req 1 (rejects while now < expiry, since the stored expiry is now+ttl) and Req 2 (prune keeps only exp > now), and the legacy make_nonce_key is unchanged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.738,
+  "prompt_tokens": 5955,
+  "output_tokens": 821,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

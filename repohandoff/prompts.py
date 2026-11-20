@@ -49,6 +49,12 @@ DUTY_INSTRUCTIONS: dict[str, str] = {
         "Queue check rule: inspect the diff, source files, and tests to verify that the pull request changes "
         "are sound and all tests pass; if any code defect is present or any test fails, return hold, otherwise merge."
     ),
+    # Post hoc, exploratory (not in the locked protocol): the narrow_ci_duty check without its
+    # verdict clause. Used only by scripts/run_exploratory_attention_arm.py.
+    "attention_only_duty": (
+        "Queue check rule: call run_pytest and verify that the worktree test suite exits 0 and matches "
+        "passed_tests in the contributor report; then return merge or hold as you judge appropriate."
+    ),
 }
 
 STAGE1_ADVISOR_SYSTEM = (

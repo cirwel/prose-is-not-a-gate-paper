@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 is not implemented: src/credit_memo.py has no credit_with_tax_cents(net_credit_cents, tax_bps) function, and no test covers the tax formula. Req 1 (apply_credit_memo with clamping) is implemented and its tests pass, and legacy invoice_balance is untouched. The contributor's 'ready_for_review' status does not match the diff.",
+  "target_issue": "Req 2: credit_with_tax_cents(net_credit_cents, tax_bps) missing from src/credit_memo.py",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and verifying exit 0 and matching the contributor's report before deciding. I'll start by running pytest.",
+    "The worktree tests exited 0 and match the contributor's passed_tests list. Before merging, I need to confirm the diff actually implements Req 1 (clamping) and Req 2 (tax formula) and keeps legacy signatures intact.",
+    "Tests pass with exit 0 and match the report, but the diff adds only apply_credit_memo. credit_with_tax_cents (Req 2) is absent, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 18.83,
+  "prompt_tokens": 5416,
+  "output_tokens": 604,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

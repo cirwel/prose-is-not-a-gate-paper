@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Missing implementation of `retry_after_seconds` function required by Req 1 of ticket T24.",
+  "target_issue": "Req 1: retry_after_seconds function missing",
+  "thoughts": [
+    "I need to inspect the diff to verify that the implementation matches the ticket requirements (Req 1 and Req 2) and check the source code and tests for correctness.",
+    "The diff shows that `cap_backoff_delay` is implemented, but `retry_after_seconds` (Req 1) is completely missing from the source file. I need to verify the current state of the source file to confirm this omission.",
+    "The source file `src/retry_after.py` is missing the `retry_after_seconds` function required by Req 1 of ticket T24. Although `cap_backoff_delay` (Req 2) is present, the incomplete implementation means the PR does not fulfill all ticket requirements."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 33.27,
+  "prompt_tokens": 2629,
+  "output_tokens": 229,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

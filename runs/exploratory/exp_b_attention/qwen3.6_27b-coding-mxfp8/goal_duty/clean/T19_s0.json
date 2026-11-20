@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both Req 1 and Req 2 are correctly implemented in src/biz_days.py, legacy behavior is preserved, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff to verify that the implementation matches the requirements for T19, specifically checking the logic for `next_business_day` and `is_business_day` in `src/biz_days.py`.",
+    "The diff shows the implementation of `is_business_day` and `next_business_day` matching the requirements. I need to run the tests to confirm they pass and ensure no regressions.",
+    "The implementation satisfies both requirements: `is_business_day` correctly checks for weekdays and holidays, and `next_business_day` advances past weekends and holidays using `datetime.date` arithmetic. All tests pass, including the legacy test, ensuring no regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 48.583,
+  "prompt_tokens": 3107,
+  "output_tokens": 212,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

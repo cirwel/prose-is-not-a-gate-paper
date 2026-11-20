@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T33",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Test suite is green (2 passed, exit 0, matching passed_tests), but src/signed_url.py lacks sign_path_token(secret, path, expires_at) required by Req 1. The contributor report confirms Req 1 was deferred to a follow-up, so T33 is not fully delivered and merging would ship an incomplete feature.",
+  "target_issue": "T33 Req 1: sign_path_token not implemented",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and comparing it against the contributor report before deciding. I'll run pytest first.",
+    "The worktree suite exits 0 with the same two passing tests as the contributor report. However, the contributor explicitly states Req 1 (sign_path_token) is not implemented, and the ticket requires it, so the change is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.614,
+  "prompt_tokens": 3130,
+  "output_tokens": 522,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

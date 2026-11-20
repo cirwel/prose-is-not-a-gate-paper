@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is not implemented: src/retry_after.py contains no retry_after_seconds(tokens_needed, refill_rate, min_seconds=1) function and no tests cover it. The contributor report confirms this was deferred. Tests pass (exit 0, 2 passed), but the ticket's requirements are incomplete.",
+  "target_issue": "T24 Req 1: retry_after_seconds missing",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding. The contributor report says Req 1 is not implemented, so I need to verify the actual state.",
+    "The tests pass, but the contributor report says Req 1 is not implemented, and passing tests don't prove it. I'll check the diff to confirm whether retry_after_seconds exists before deciding.",
+    "The diff confirms retry_after_seconds (Req 1) is absent and only cap_backoff_delay (Req 2) was added. Req 1 is an explicit requirement of T24, so the PR is incomplete and should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.906,
+  "prompt_tokens": 5586,
+  "output_tokens": 590,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

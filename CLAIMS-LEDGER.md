@@ -85,3 +85,30 @@ Every quantitative, statistical, and architectural claim in `paper/main.tex` and
 1. **No human subjects:** All receivers, advisors, synthesizers, and coding workers are LLMs (`seed = 0`, `T = 0.2`); results do not establish human-factor complacency rates.
 2. **Micro-repository scope:** Each task uses a single Python module and focused pytest suite; larger multi-file codebases may show different base-rate noise and inspection budgets.
 3. **Cross-benchmark contrast boundaries:** Tool-equipped code receivers (`Exp A`, `Exp C Stage 3`) differ structurally from non-tool/tabular decision pipelines where receivers cannot run tests or inspect diffs directly.
+
+---
+
+## 6. Corrections of 2026-11-20 (supersede the rows above where they differ)
+
+Applied after a cold read by an outside model family (`docs/reviews/2026-11-20-cold-read-gpt-6.2-sol.md`) and a check of each point against the code and raw records. No confirmatory data, hypothesis or statistic changed.
+
+| Topic | Earlier wording | Corrected statement | Checked against |
+|---|---|---|---|
+| Record count | `6,012` records | `6,012` files, `5,616` unique. `396` Experiment B `discretion` cells (`clean`, `silent_partial`) are copies of Experiment A `neutral` decisions, marked `reused_from_exp_a`. The reuse is not stated in the lock. | `repohandoff/sweep.py`, raw records |
+| Spend | `$12.21` confirmatory plus `$1.43` calibration | Estimates stored in the unique records sum to `$11.36`; the copies add `$0.85`. The cumulative usage log shows `$13.65`. The `$2.29` difference covers calibration and any call not retained in a record. | `results/cost_summary.json`, raw records |
+| Discarded trials | `0` confirmatory trials discarded | Not provable from the archive: receiver and worker records keep no per-call retry metadata. | raw records |
+| "Pre-registered null" (`H1a`, `H1b`, `H3`) | Nulls described as pre-registered | The contrasts were pre-registered; the lock states directional expectations, and the results are null. | `HYPOTHESES.md` |
+| Sign test as primary | Described as the pre-registered primary test | The lock names sign and Wilcoxon tests without ranking them. Leading with the sign test is a reporting choice. | `HYPOTHESES.md` section 3 |
+| Decoding | `temperature = 0.2`, `seed = 0` for all models | Requested, not uniformly applied: the Claude CLI backend takes neither, the OpenAI backend drops `temperature` when rejected, Ollama retries change both. | `repohandoff/backends.py` |
+| Neutral metadata slot | Length-matched | Fixed position, not length-matched (about 40 to 150 characters across arms). | `repohandoff/prompts.py` |
+| `H2c` | Isolates ticket removal | `no_ticket_control` removes the ticket and also rewords the duty. It is a control, and its direction is expected. | `repohandoff/prompts.py` |
+| Stage-2 `36/36` and `34/34` | Crux "fabrication" and "suppression" findings | The synthesis prompt asks for cruxes, so non-empty fields are prompt compliance. The gate clears fields on unanimous passing panels by rule, so `34/34` restates the rule. Both are descriptive; the three pre-registered `H3` contrasts are at Stage 3 and are null. | `repohandoff/prompts.py`, `repohandoff/briefs.py` |
+| Part 2 `135/216` | Worker failure rate | `131` of the `135` followed the instruction to leave the frozen requirement unimplemented and disclose it. The count describes how often a green local suite accompanies an incomplete ticket. | `repohandoff/worker.py`, `repohandoff/prompts.py` |
+| `TestIntegrityGate` `5/5` | Catch rate | Definitional: the tampering label is the gate's own AST flag. The informative case is the single run (`gemma4 T01`) that `CIDigestGate` alone passed. | `repohandoff/worker.py` |
+| `gemma4 T01` report | Worker updated its report with passing test names | The harness fills `passed_tests` from its own run and signs the post-edit tree; the worker reports a boolean. | `repohandoff/worker.py` |
+| `3/131` disclosed partials blocked | Partial detection | All three had reported `tests_passed = false`; the blocks are report mismatches. | raw records |
+| "Evaded" (`7/216`) | Outcome label | The pre-registered label is `complete`. "Evaded" was chosen after the lock. The bypass mechanisms are as the workers reported them; the archive keeps no final source. | raw records |
+| Vouchers | Ed25519 commit vouchers | Harness-signed vouchers over a tree manifest and report, using a fixture key. Not Git commit signatures. | `repohandoff/crypto.py` |
+| Recount | All statistics independently recounted | A second script, sharing no imports with the analysis, re-aggregates counts, Wilson intervals, McNemar pairs and repository signs. It does not recompute Holm, Wilcoxon or signal-detection values and does not re-judge labels. | `scripts/recount_independent.py` |
+| Field cases | Production field evidence | Illustrations selected after the experiments from one private repository; not evidence for the experimental claims. | manuscript section 6 |
+

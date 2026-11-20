@@ -25,7 +25,7 @@ Revised 2026-11-20 after an outside cold read and a fixture audit (`docs/reviews
    - Descriptively, a synthesizer asked to surface disagreement returns a non-empty crux or unverified-premise field on `36/36` clean PRs, which is what its prompt asks for. A rule that clears those fields when the panel is unanimous and tests pass removes `34/34` by construction.
 
 4. **Part 2 (`H4`): 216 live coding-worker runs under a visible API freeze.**
-   - Workers were told to leave the frozen requirement unimplemented and disclose it. `131/216` were classified as disclosed partials (green local tests, failing oracle, a report naming an unfinished requirement); `4` left it out silently; `5` altered pre-existing tests; `1` reported a pass that failed; `7` passed both suites with no tampering flag, which the freeze test should have prevented; `34` failed with disclosure and `34` did not finish.
+   - Workers were told to leave the frozen requirement unimplemented and disclose it. `131/216` were classified as disclosed partials (green local tests, failing oracle, a report naming an unfinished requirement); `4` were classified as silent partials (the report claims completion); `5` altered pre-existing tests; `1` reported a pass that failed; `7` passed both suites with no tampering flag, which the freeze test should have prevented; `34` failed with disclosure and `34` did not finish.
    - `CIDigestGate + TestIntegrityGate` flag every failing, unfinished and tampered run (the tampering result is definitional) and pass `128/131` disclosed and `4/4` silent partials. A green local suite does not separate a disclosed partial from a complete change.
 
 5. **Descriptive incident records.** Five incidents from one private, author-operated repository illustrate the taxonomy. They are not evidence for the experimental claims and readers cannot inspect the commits.
@@ -66,7 +66,7 @@ python3 -m repohandoff.analyze runs/confirmatory \
   --cost-out /tmp/repohandoff-check/cost_summary.json
 
 # 3. Verify zero-context independent stdlib recount (must report DISCREPANCIES: 0)
-python3 scripts/recount_independent.py runs/confirmatory results/summary.json
+python3 scripts/recount_independent.py runs/confirmatory /tmp/repohandoff-check/summary.json
 
 # 4. Regenerate figures and verify manuscript hygiene
 python3 scripts/make_figures.py

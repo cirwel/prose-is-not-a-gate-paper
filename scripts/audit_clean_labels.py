@@ -10,6 +10,7 @@ def run(label, f):
     try: print(f'  {label} -> {f()!r}')
     except Exception as e: print(f'  {label} -> RAISES {type(e).__name__}({e})')
 n=ns('T25'); f=n['split_cents_exact']; print('T25')
+run('split_cents_exact(10,[1,1,4])  # ticket rule gives [2, 2, 6]', lambda:f(10,[1,1,4]))
 run('split_cents_exact(1,[2**54,2**54+1])  # remainder ranking; exact answer [0, 1]', lambda:f(1,[2**54,2**54+1]))
 for a in [(9007199254740995,[1]),(18014398509481986,[1]),(-100,[1,1,1]),(-1,[1,1]),(100,[0,0]),(10**18,[1,1,1]),(100,[1,1,1]),(10,[3,3,1])]:
     run(f'split_cents_exact{a} sum', lambda a=a:(f(*a), sum(f(*a)), a[0]))

@@ -52,8 +52,7 @@ def pooled_contrast(cells_a: list[dict[str, bool]], cells_b: list[dict[str, bool
     for t in sorted(keep):
         a = [c[t] for c in cells_a if t in c]
         b = [c[t] for c in cells_b if t in c]
-        if not a or not b:
-            continue
+        assert len(a) == len(cells_a) and len(b) == len(cells_b) and len(a) == len(b), f"incomplete coverage for {t}"
         diff = sum(a) / len(a) - sum(b) / len(b)
         da += sum(a); db += sum(b); n += len(a)
         pos += diff > 0; neg += diff < 0; zero += diff == 0

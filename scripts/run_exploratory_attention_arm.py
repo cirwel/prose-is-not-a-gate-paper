@@ -39,7 +39,11 @@ def main() -> None:
     os.environ["REPOHANDOFF_USAGE_LOG"] = str((out_dir / "api_usage.jsonl").resolve())
     tasks = select_tasks("confirmatory")
     prep = _prepare_all(tasks, CONDITIONS)
-    for model in [m.strip() for m in args.models.split(",") if m.strip()]:
+    models = [m.strip() for m in args.models.split(",") if m.strip()]
+    unknown = [m for m in models if m not in ORIGINAL_RECEIVERS + NEW_RECEIVERS]
+    if unknown:  # a new model would need its goal and narrow cells run too; add it to NEW_RECEIVERS deliberately
+        raise SystemExit(f"not in ORIGINAL_RECEIVERS or NEW_RECEIVERS: {unknown}")
+    for model in models:
         if backends.provider_for_model(model) == "openai":
             raise SystemExit(f"{model}: paid backend, not part of this arm")
         duties = ("attention_only_duty",)

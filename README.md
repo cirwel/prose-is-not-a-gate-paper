@@ -15,7 +15,7 @@ Revised 2026-11-20 after two rounds of outside review (`docs/REVIEWS.md` section
 1. **Experiment B (`H2`): what the receiver is told to check decides what it catches.**
    - Changing one sentence of the receiver's instruction from `goal_duty` (verify every ticket requirement) to `narrow_ci_duty` (verify CI passes and matches the report; merge if so) lowers holds on `silent_partial` patches from `147/180` to `20/180` (`-70.6 pp`, `36/36` concordant repositories, `p_sign_holm = 8.73e-11`), and in each of the 6 models (`p_holm < 0.05`).
    - Under the narrow sentence, `gpt-6-luna` and `gpt-6.1-sol` return `merge` for PRs whose notes disclose an omitted requirement (holding `2/36` and `0/18`). That is what the sentence says to do. Three other models, including `gpt-5.4-nano` from the same developer, hold all 36.
-   - The two sentences differ in both the scope of the check and the dictated verdict. A post hoc arm (`attention_only_duty`: the same CI-only check with the verdict left open, four no-cost models, not pre-registered) separates them: `claude-haiku-5-5` and `qwen3.6` hold every silent partial again (`36/36`, `18/18`), while `gemma4` and `nemotron3` still hold none (`0/36` each). The mechanism differs by model.
+   - The two sentences differ in both the scope of the check and the dictated verdict. A post hoc arm (`attention_only_duty`: the same CI-only check with the verdict left open, four no-cost models, not pre-registered) removes the verdict rule and keeps the check, one draw per cell: `claude-haiku-5-5` and `qwen3.6` hold every silent partial again (`36/36`, `18/18`), while `gemma4` and `nemotron3` still hold none (`0/36` each; `nemotron3` rarely ran the tests at all). Which half of the sentence mattered appears to differ by model; the arm cannot assign the effect to one clause.
    - Without the ticket (`H2c`), `silent_partial` holds fall by `74.4 pp`. The arm removes the ticket and also rewords the duty, so it cannot apportion the drop.
 
 2. **Experiment A (`H1`): badge contrasts are non-significant; an accurate mismatch notice helps two receivers.**
@@ -24,11 +24,11 @@ Revised 2026-11-20 after two rounds of outside review (`docs/REVIEWS.md` section
 
 3. **The `clean` label does not mean "conforms to the ticket".**
    - Two independent audits (Anthropic and OpenAI models, blind to receiver decisions, executable reproductions) agree that 11 of the 36 `clean` patches depart from their written tickets on inputs the oracle does not test. 11 more are disputed, 10 are ambiguous at most, and 4 drew no objection (`docs/CLEAN-LABEL-AUDIT.md`).
-   - Receivers held 110 of 792 clean-labelled patches in Experiment A; 73 of those holds fall on the 11. These are holds on clean-labelled patches, not false alarms. Every statistic that uses the label is recomputed on the audited subsets in `results/clean_label_sensitivity.md`.
+   - In Experiment A, 110 of 792 decisions on clean-labelled patches were holds; 73 of them fall on the 11 (an overlap by task; hold reasons were not audited). These are holds on clean-labelled patches, not false alarms. Hold counts and pooled contrasts that use the label are recomputed on the audited subsets in `results/clean_label_sensitivity.md`.
 
 4. **Experiment C (`H3`): the three pre-registered contrasts on disagreement briefs are non-significant.**
    - At the Stage-3 decision, brief type makes no significant pooled difference (largest `+2.8 pp`, `p_sign_holm = 0.68`). Every decider had code tools in every arm. Reported in an appendix of the manuscript.
-   - A synthesizer asked to surface disagreement fills a crux field on `36/36` clean PRs, which is what its prompt asks for, and the gate's `34/34` clearing restates its own rule. All five terminal parse errors sit in one pairing and make up its only discordant pairs on `silent_partial`.
+   - A synthesizer asked to surface disagreement fills a crux field on `36/36` clean PRs, which is what its prompt asks for, and the gate's `34/34` clearing restates its own rule. All five terminal parse errors sit in one pairing, and three of them make up its only discordant pairs on `silent_partial`.
    - Exploratory: on the 25 tasks without an agreed departure, the ungated brief drew `10/125` clean holds against `0/125` for the gated brief.
 
 5. **Part 2 (`H4`): 216 live coding-worker runs under a visible API freeze.**
@@ -36,7 +36,7 @@ Revised 2026-11-20 after two rounds of outside review (`docs/REVIEWS.md` section
    - Of the five test edits, two reported failing tests, two filed no report, and one (`gemma4 T01`) stripped the freeze test's assertions, passed, and said so in its notes. A digest check alone passes that one.
    - `CIDigestGate + TestIntegrityGate` flag every failing and unfinished run and every test edit the AST check can see (definitional), and pass `128/131` disclosed partials and `4/4` over-claims. A green local suite does not separate a partial change from a complete one.
 
-**Limits.** One draw per cell; decoding settings were not uniform across backends; fixtures, tickets and oracles share one AI-assisted authoring process and were audited by models, not by an independent human; the Experiment B contrast is a bundled instruction change and the arm that separates it is post hoc on four models; 396 of the 6,012 records are copies of Experiment A decisions reused as Experiment B baselines; all receivers and workers are LLMs; contributors in Experiments A to C are scripted.
+**Limits.** One draw per cell; decoding settings were not uniform across backends; fixtures, tickets and oracles share one AI-assisted authoring process and were audited by models, not by an independent human; the Experiment B contrast is a bundled instruction change and the arm that removes its verdict rule is post hoc on four no-cost models; 396 of the 6,012 records are copies of Experiment A decisions reused as Experiment B baselines; all receivers and workers are LLMs; contributors in Experiments A to C are scripted.
 
 ---
 
@@ -44,7 +44,7 @@ Revised 2026-11-20 after two rounds of outside review (`docs/REVIEWS.md` section
 
 - `paper/main.tex`, `paper/references.bib`, `paper/main.pdf`: Compiled LaTeX manuscript and verified bibliography (`28` entries).
 - `repohandoff/`: Benchmark package (`tasks.py`, `task_bank/`, `sandbox.py`, `crypto.py`, `receiver.py`, `briefs.py`, `worker.py`, `prompts.py`, `backends.py`, `sweep.py`, `analyze.py`).
-- `runs/confirmatory/`: Complete raw confirmatory JSON dataset (`6,012` records across `exp_a`, `exp_b`, `exp_c_stage1`, `exp_c_stage2`, `exp_c_stage3`, `part2`).
+- `runs/confirmatory/`: Complete raw confirmatory JSON dataset (`6,012` records across `exp_a`, `exp_b`, `exp_c/stage1`, `exp_c/stage2`, `exp_c/stage3`, `part2`).
 - `runs/exploratory/exp_b_attention/`: Post hoc Experiment B arm (486 records, four no-cost models). Not part of the confirmatory dataset or its recount.
 - `results/`: Generated statistical tables (`tables.md`), machine-readable summary (`summary.json`), API cost ledger (`cost_summary.json`), recount check (`recount_check.txt`), clean-label sensitivity analysis (`clean_label_sensitivity.md`), and the post hoc arm table (`exploratory_attention_arm.md`).
 - `figures/`: Figures (`fig2_signals_duties`, `fig3_workers`, `figA_briefs` in PDF and PNG).

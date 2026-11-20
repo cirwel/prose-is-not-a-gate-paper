@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T00",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "The PR implements both requirements correctly: per-tenant overrides are applied when present, and request weight is clamped to >=1 and counted against the limit. Legacy behavior is preserved through default arguments, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claim that all tests pass by running the test suite on the contrib/fix branch.",
+    "The pytest run exited with code 0 and the passed tests match the contributor's report exactly. I should now inspect the implementation to ensure it meets the specific requirements (per-tenant overrides, weight clamping, and legacy signature preservation) before merging.",
+    "The implementation correctly handles per-tenant overrides (Req 1) and weighted requests with clamping (Req 2). The legacy signature is preserved via default arguments, and all tests pass. The logic for checking the limit (`len(active) + w > eff_limit`) correctly accounts for the weight of the current request before allowing it."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 70.727,
+  "prompt_tokens": 2651,
+  "output_tokens": 239,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

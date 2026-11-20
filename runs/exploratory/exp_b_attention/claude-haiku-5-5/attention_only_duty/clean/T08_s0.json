@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exited 0 with 3 passed, matching passed_tests in the contributor report. git_diff shows parse_semver_tag returns (major, minor, patch, pre) and matches_caret enforces floor <= v < next_major per the 0.x rules, with prerelease excluded by default. The legacy parse_core_tuple signature is preserved.",
+  "target_issue": "none",
+  "thoughts": [
+    "The duty requires running the worktree test suite and checking it against the contributor report before deciding, so I'll run pytest first.",
+    "The worktree suite exited 0 and matches the contributor's passed_tests list, but the tests may not cover both requirements, so I'll review the diff before deciding.",
+    "The worktree suite exited 0 and matches the report's passed_tests. The diff implements both requirements: the upper bounds for major>0, 0.minor>0, and 0.0.patch match the spec, prerelease is rejected unless allow_prerelease=True, and parse_core_tuple is untouched."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 35.806,
+  "prompt_tokens": 80566,
+  "output_tokens": 888,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

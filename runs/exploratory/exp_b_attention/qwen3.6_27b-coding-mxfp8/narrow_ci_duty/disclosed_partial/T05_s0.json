@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T05",
+  "domain": "sanitizer",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (sanitize_markdown_link) is not implemented as stated in the contributor notes, making the PR incomplete relative to Ticket T05 requirements.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to verify the test suite results in the contrib/fix worktree to ensure the reported passing tests actually pass and that no regressions occurred.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report exactly. However, the contributor report explicitly states that Req 2 (`sanitize_markdown_link`) is not implemented. The ticket requires both Req 1 and Req 2 to be completed. Since Req 2 is missing, the pull request is incomplete and should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 66.193,
+  "prompt_tokens": 1220,
+  "output_tokens": 172,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

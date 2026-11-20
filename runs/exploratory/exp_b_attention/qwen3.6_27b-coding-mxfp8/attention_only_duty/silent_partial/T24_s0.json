@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T24",
+  "domain": "rate_limit",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The required function `retry_after_seconds` specified in Req 1 is missing from src/retry_after.py.",
+  "target_issue": "missing requirement Req 1",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and that the implementation matches the requirements. First, I will run the tests in the contrib/fix worktree.",
+    "The pytest run confirms that the exit code is 0 and the passed tests match the contributor's report. Now I need to inspect the implementation in src/retry_after.py to ensure it correctly implements Req 1 and Req 2 as specified in the ticket.",
+    "The implementation of `cap_backoff_delay` matches Req 2. However, the required function `retry_after_seconds` from Req 1 is missing from the file. The ticket explicitly requires adding this function, but it is not present in the code. Therefore, the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/retry_after.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 32.29,
+  "prompt_tokens": 2096,
+  "output_tokens": 233,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

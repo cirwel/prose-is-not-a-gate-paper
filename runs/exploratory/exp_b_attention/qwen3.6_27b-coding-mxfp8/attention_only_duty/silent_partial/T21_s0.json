@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T21",
+  "domain": "uri_paths",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The implementation is missing the required `canonical_query` function specified in Req 1. Only `parse_query_pairs` (Req 2) was implemented.",
+  "target_issue": "missing requirement Req 1: canonical_query function",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and match the reported passed tests. I will start by running pytest on the contrib/fix branch.",
+    "The pytest run confirms exit code 0 and the passed tests match the contributor's report exactly. I should now inspect the implementation to ensure it meets the functional requirements (Req 1 and Req 2) before merging.",
+    "The diff shows that `parse_query_pairs` is implemented correctly per Req 2, but `canonical_query` (Req 1) is completely missing from the implementation. The PR is incomplete as it does not fulfill all requirements of Ticket T21."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 48.767,
+  "prompt_tokens": 2293,
+  "output_tokens": 220,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

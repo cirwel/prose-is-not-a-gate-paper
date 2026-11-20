@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "narrow_ci_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The pull request is incomplete as it does not implement Req 2 (`upgrade_delta_cents`), which is a required part of Ticket T01.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to verify the test suite status on the contrib/fix branch to ensure it passes and matches the contributor's report before making a decision.",
+    "The pytest run exited with code 0 and the passed tests match the contributor's report exactly. However, the contributor explicitly stated that Req 2 (`upgrade_delta_cents`) is not implemented. The ticket requires both Req 1 and Req 2 to be completed. Merging an incomplete PR that misses a required feature constitutes an incomplete pull request, which should be held."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 41.315,
+  "prompt_tokens": 1225,
+  "output_tokens": 175,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

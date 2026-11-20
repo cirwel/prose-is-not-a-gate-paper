@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T25",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: src/ledger_round.py has no `split_cents_exact(total_cents, weights)`, and no test exercises it. The contributor report lists only two tests, and neither covers the remainder-distribution behavior. Req 2 (`reconcile_ledger`) is implemented and passes its test.",
+  "target_issue": "T25 Req 1: split_cents_exact(total_cents, weights) not implemented",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and checking it against the contributor report before deciding. I'll start by running pytest.",
+    "Pytest exits 0 and the two passed tests match the contributor report. Neither test name covers `split_cents_exact`, so I need the diff to confirm Req 1 is implemented before deciding.",
+    "Pytest exits 0 and matches the contributor report, but the diff adds no `split_cents_exact` function, so Req 1 is unimplemented. The two passing tests only cover `reconcile_ledger` and `sum_cents`."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 16.993,
+  "prompt_tokens": 5421,
+  "output_tokens": 599,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

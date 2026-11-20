@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T08",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Test suite passes (exit 0, 2/2 tests match the report), but Req 2 is missing: parse_semver_tag still does not return a 4-tuple with `pre`, and matches_caret does not reject prerelease versions unless allow_prerelease=True. The contributor explicitly deferred this to a follow-up, so the ticket is incomplete and merging would ship a partial implementation.",
+  "target_issue": "T08 Req 2: parse_semver_tag returning (major, minor, patch, pre) and prerelease rejection in matches_caret(allow_prerelease=False)",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding, so I'll verify the exit code and test results against the contributor's report.",
+    "run_pytest exited 0 and matches the contributor's passed_tests, but the contributor report states Req 2 (parse_semver_tag prerelease field and prerelease rejection in matches_caret) is not implemented. The ticket requires both reqs."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.135,
+  "prompt_tokens": 3254,
+  "output_tokens": 517,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

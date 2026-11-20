@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T10",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/ttl_cache.py adds cache_get only. purge_expired(store, now) is absent from the diff, so Req 2 (remove expired entries and return the evicted count) is not implemented. The test suite passes only because it never exercises purge_expired. The contributor's 'ready_for_review' status is inaccurate.",
+  "target_issue": "Req 2: purge_expired(store, now) missing from src/ttl_cache.py",
+  "thoughts": [
+    "Duty rule requires running the worktree test suite and comparing against the contributor report before deciding. Starting with the diff to see what changed.",
+    "The duty rule requires running the worktree test suite and comparing it to the contributor report before deciding. The diff also shows no purge_expired yet, which I'll check after the test run.",
+    "The worktree suite exits 0 and matches the contributor report, but the diff contains no purge_expired function, so Req 2 is unimplemented."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.381,
+  "prompt_tokens": 5898,
+  "output_tokens": 479,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

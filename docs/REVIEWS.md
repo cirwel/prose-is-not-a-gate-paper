@@ -1,5 +1,7 @@
 # Review & Adversarial Critique Dispositions
 
+(The manuscript was retitled on 2026-11-20; see section 5. Earlier sections keep the working title.)
+
 This log documents all cross-family reviews conducted across the design, implementation, statistical audit, and manuscript revision phases of *Prose Is Not a Gate: Duty Narrowing, Verification Notices, and Programmatic Crux Gates in Multi-Agent Software Handoffs*.
 
 ---
@@ -43,3 +45,42 @@ This log documents all cross-family reviews conducted across the design, impleme
 - **Fixture audit:** [CLEAN-LABEL-AUDIT.md](CLEAN-LABEL-AUDIT.md). 7 of the 22 clean fixtures that drew a hold in Experiment A depart from their written tickets; 59 of 110 holds cite a reproduced departure.
 - **Reference check:** all 28 bibliography entries verified against arXiv, Crossref, RFC Editor or the cited page. Four corrected (a missing ToolEmu author, a misspelled MASK author, two URLs that pointed at homepages).
 - **Dispositions.** Every point from both reads was checked against the code and records before being applied; each is listed in `CLAIMS-LEDGER.md` section 6. Applied: abstract, introduction, results framing, figure text, captions, methods disclosures (record reuse, cost, decoding, post-lock scoring rules), related-work sentences, design rules, bibliography. Not done, and stated as limits in the manuscript: repeated seeds, a blinded multi-annotator label adjudication, an audit of clean holds outside Experiment A, a freeze-free worker control, and a repository-clustered interval for Part 2. The title was left unchanged. No confirmatory data, hypothesis or statistic changed.
+
+---
+
+## 5. Five-Seat Review, Decision Ballot and Second Revision (2026-11-20)
+
+**Review of the first revision.** Five independent reads, none of which changed the repository:
+
+| Seat | Family | Method | Outcome |
+|---|---|---|---|
+| Ground truth | `anthropic` (`claude-fable-5-2`) | Own script over the raw records | 32 of 32 recomputed items match the manuscript; all 7 first-audit fixture deviations reproduce. Not checked: Wilson intervals, Wilcoxon and per-model Holm values, tool-call rates, the cumulative spend figure |
+| Code review | `anthropic` (`claude-fable-5-2`) | Harness and statistics code | Statistics code correct. `silent_partial` in Part 2 is a keyword-rule label; all 5 Experiment C parse errors sit in one pairing; 2 of the 5 "tampering" runs filed no report; the AST test check ignores `conftest.py`, pytest configuration and module-level skips |
+| Argument | `anthropic` (`claude-fable-5-2`) | Manuscript against its own evidence | Title contradicted by Experiment B; the four-layer stack is a frame; rules 3 to 5 unsupported; six internal contradictions |
+| Consult | `openai` (Codex host) | Abstract, rules and method notes inline | `3/5`, release after named edits |
+| Consult | `google` (Antigravity host) | Same material | `2/5`, needs more work: audit all fixtures, disentangle or reframe Experiment B, retitle |
+
+The consult hosts cannot read files, so those two seats judged from text supplied inline.
+
+**Decision ballot.** The author delegated the open decisions to the panel. Three seats voted (one per family: an Anthropic subagent reading the repository, and the OpenAI and Google consult hosts from an inline brief). All three chose the same option on every item:
+
+| Decision | Outcome (3 of 3) |
+|---|---|
+| Title | *What the Reviewer Is Told to Check: Instruction Scope, Notices, and Test-Passing Partial Work in Multi-Agent Code Handoffs* |
+| Experiment C | One paragraph in the body, full report in an appendix (not removed: it was pre-registered) |
+| Field anecdotes and rule 5 | Deleted from the manuscript |
+| Four-layer stack and signal-detection values | Table 1 kept as a by-construction setup; stack dropped as a contribution; architecture figure dropped; signal-detection values moved to an appendix |
+| Experiment B disentangling arm | Run post hoc on the four no-cost models, labelled exploratory, and reframe Experiment B as a bundled instruction change regardless |
+| Clean-label ground truth | Audit all 36 with two independent passes from different families, executable reproductions, a per-task table, and a sensitivity analysis on audited subsets; fixtures and records unchanged |
+| Rules | Keep only what has experimental support, as scoped observations |
+
+Vetoes raised and honored: no claim that Experiment B shows narrowed attention specifically; no hold on a clean-labelled patch called a false alarm; no construction-defined result presented as a measurement; the four Part 2 "silent" labels and five "tampering" labels not presented as verified concealment; the locked protocol still traceable under its working title.
+
+**What was done.** Each ballot outcome was carried out (`CLAIMS-LEDGER.md` section 7 lists the changed statements).
+
+- **Label audit.** `docs/CLEAN-LABEL-AUDIT.md`. Passes by `claude-fable-5-2` and `gpt-6.2-sol`, each blind to receiver decisions. 11 of 36 clean patches deviate by agreement of both, 11 are disputed, 10 ambiguous, 4 unobjected. All reproductions re-execute (`scripts/verify_clean_label_audit.py`).
+- **Sensitivity analysis.** `results/clean_label_sensitivity.md`.
+- **Post hoc arm.** `runs/exploratory/exp_b_attention/`, `results/exploratory_attention_arm.md`.
+- **Part 2 labels.** The ten reports behind `H4b` were read individually; the manuscript now describes what each says.
+- **Not done.** No fixture was repaired and no experiment re-run on repaired fixtures. The arm does not include `gpt-6-luna` or `gpt-6.1-sol` (paid backends). No human adjudicated the audit. Repeated seeds, a freeze-free worker control and a repository-clustered interval for Part 2 remain undone, as in section 4.
+

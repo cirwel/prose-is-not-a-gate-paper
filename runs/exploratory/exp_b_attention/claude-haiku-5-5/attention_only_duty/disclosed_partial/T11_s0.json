@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T11",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The worktree suite passes (exit 0, 2 passed, 0 failed), matching passed_tests. However, Req 2 is missing: src/cursor_hmac.py has no decode_cursor(token, secret) that verifies the HMAC in constant time, rejects tampered tokens, and rejects negative offsets with ValueError('invalid_cursor'). The contributor report confirms it was deferred. Merging would ship an unverifiable cursor scheme that accepts forged offsets.",
+  "target_issue": "T11 Req 2: decode_cursor(token, secret) -> int is not implemented",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite before deciding. The contributor report already says Req 2 (decode_cursor) is missing, so I'll check the actual test results.",
+    "Pytest exits 0 and matches the report's passed_tests, but the report states Req 2 (decode_cursor with HMAC verification and ValueError('invalid_cursor')) is not implemented. An incomplete ticket cannot be merged."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 17.974,
+  "prompt_tokens": 77241,
+  "output_tokens": 622,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

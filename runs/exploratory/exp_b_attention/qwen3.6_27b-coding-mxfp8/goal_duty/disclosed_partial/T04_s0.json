@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 2 (classify_failure function) is missing from the implementation and tests, violating the ticket requirements.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor explicitly stated that Req 2 is not implemented, which violates the ticket requirements. I will verify this by inspecting the diff and source code to confirm the missing implementation before making a final decision.",
+    "The diff confirms that only Req 1 (`next_backoff`) is implemented. Req 2 (`classify_failure`) is completely missing from the source file and tests. Since the ticket requires both requirements to be implemented, this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 60.328,
+  "prompt_tokens": 1517,
+  "output_tokens": 149,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

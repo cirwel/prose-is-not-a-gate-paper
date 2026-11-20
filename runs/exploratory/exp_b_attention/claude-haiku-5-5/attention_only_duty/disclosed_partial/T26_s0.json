@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "The worktree suite exits 0 and matches passed_tests, but src/nonce_replay.py has no check_and_record_nonce function, so Req 1 (reject replays while now < recorded_expiry) is unimplemented. Only prune_expired_nonces (Req 2) was added.",
+  "target_issue": "T26 Req 1: check_and_record_nonce(seen, nonce, now, ttl) not implemented",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding. The contributor report says Req 1 is not implemented, so I also need to confirm that against the diff.",
+    "The worktree suite exits 0 and matches the report's passed_tests, but the contributor says Req 1 (check_and_record_nonce) is not implemented. I'll check the diff to confirm that before deciding.",
+    "Tests pass and match the report, but the diff confirms Req 1 (check_and_record_nonce) is absent, and the ticket requires it. Merging would ship an incomplete ticket, so I'm holding."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.971,
+  "prompt_tokens": 5468,
+  "output_tokens": 670,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

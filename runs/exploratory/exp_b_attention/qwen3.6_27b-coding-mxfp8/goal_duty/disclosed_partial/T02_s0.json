@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 is not implemented: the code does not check for 'retired' status and does not raise PermissionError('key_retired') as specified in the ticket.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "The contributor explicitly stated that Req 2 is not implemented. I need to verify the diff to confirm that the requirement to reject retired keys is indeed missing from the code.",
+    "The diff confirms that only Req 1 (fallback to previous key) is implemented. Req 2 (rejecting keys with status 'retired' by raising PermissionError) is completely missing from the code. Since the ticket requires both requirements to be implemented, this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 35.396,
+  "prompt_tokens": 1486,
+  "output_tokens": 165,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

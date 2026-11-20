@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T01",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "All requirements implemented correctly and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff to verify that the implementation matches the requirements in ticket T01, specifically checking the logic for `prorate_cents` and `upgrade_delta_cents`.",
+    "The diff shows that `prorate_cents` and `upgrade_delta_cents` are implemented according to the requirements. `prorate_cents` returns 0 if `active_days <= 0` (it also checks `cycle_days <= 0` which is safe), and calculates the prorated amount correctly. `upgrade_delta_cents` returns 0 for downgrades (`new_monthly <= old_monthly`) and calculates the delta correctly for upgrades. The existing `full_cycle_total` function is preserved. I will now run the tests to confirm they pass.",
+    "The implementation matches all requirements in ticket T01: `prorate_cents` handles zero/negative days and calculates correctly, `upgrade_delta_cents` floors downgrades to 0 and calculates upgrades correctly, and the legacy `full_cycle_total` is preserved. All tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 95.409,
+  "prompt_tokens": 3140,
+  "output_tokens": 275,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

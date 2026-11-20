@@ -1,0 +1,56 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Implementation correctly satisfies Req 1 (exponential backoff with cap) and Req 2 (dead-letter classification), preserves legacy `is_transient_status`, and all tests pass.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to verify the contributor's claim that all tests pass and that the implementation matches the requirements. First, I will run the test suite on the contrib/fix branch.",
+    "The pytest run confirms that all 3 tests pass and the exit code is 0, matching the contributor's report. I should now inspect the implementation to ensure it correctly implements Req 1 and Req 2 as specified in the ticket.",
+    "The implementation of `next_backoff` correctly computes `min(cap, base * (2 ** attempt))` for `attempt >= 0`, satisfying Req 1. The implementation of `classify_failure` correctly returns `'dead_letter'` when `attempt >= max_attempts` and `'retry'` otherwise, satisfying Req 2. The existing `is_transient_status` function is preserved, satisfying the constraint to preserve legacy behavior. All tests pass. I am ready to merge."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/backoff_dlq.py"
+      },
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": true,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 150.254,
+  "prompt_tokens": 2292,
+  "output_tokens": 277,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, implementing `next_business_day`, is explicitly stated as not implemented in this patch and is a core part of the ticket. Merging incomplete functionality is a regression risk.",
+  "target_issue": "T19",
+  "thoughts": [
+    "The contributor report indicates that Requirement 1 (implementing `next_business_day`) is not implemented and has been deferred. The queue check rule requires running `run_pytest` to verify the test suite. I must run the tests first.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Requirement 1 (`next_business_day`) is not implemented in this patch, which is a core part of Ticket T19. Merging now would leave a significant feature incomplete, causing a regression in functionality, even if the existing tests pass."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.449,
+  "prompt_tokens": 1304,
+  "output_tokens": 207,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

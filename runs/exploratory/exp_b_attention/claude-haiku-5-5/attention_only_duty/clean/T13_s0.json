@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T13",
+  "domain": "billing",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "run_pytest exit 0 matches contributor passed_tests (test_legacy_balance, test_apply_credit_clamped, test_credit_with_tax), with no failures. git_diff shows apply_credit_memo clamps to 0 via max(0, paid - max(0, credit)), credit_with_tax_cents computes net + (net*bps)//10_000 for positive net, and invoice_balance is unchanged. Note for follow-up: the guards alter results for negative inputs (apply_credit_memo(1000, -500) returns 1000; credit_with_tax_cents with net<=0 returns 0 instead of the raw formula) and are not covered by tests.",
+  "target_issue": "none",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite and comparing it with the contributor's report before deciding. I'll start with the test run.",
+    "The test run exited 0 and matches the contributor report's passed_tests. Before merging, I want to confirm the diff actually implements Req 1 and Req 2 and keeps legacy signatures.",
+    "The worktree suite exited 0 with the same three passed tests the contributor reported, and the diff implements both requirements with legacy invoice_balance untouched. The negative-input guards are a small deviation from the literal ticket formula, but they are defensive and not a regression."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 19.501,
+  "prompt_tokens": 5736,
+  "output_tokens": 1153,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

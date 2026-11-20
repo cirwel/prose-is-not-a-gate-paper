@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T20",
+  "domain": "semver",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Test suite passes (2/2, exit 0), but Req 1 is missing: `matches_tilde(version, floor)` is not implemented, so the required patch-bound check (`>= floor` and `< (major, minor+1, 0)`) does not exist. Only Req 2 (`pick_highest_matching`) is delivered. Passing tests do not cover the ticket's full scope.",
+  "target_issue": "T20 Req 1: matches_tilde(version, floor) not implemented",
+  "thoughts": [
+    "The duty instruction requires running the worktree test suite and comparing it to the contributor report before deciding. The report already says Req 1 is missing, so I'll confirm against the actual test run.",
+    "The worktree suite exits 0 and matches the contributor report's passed_tests. However, the contributor's own notes say Req 1 (`matches_tilde`) is not implemented, so the ticket is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 11.461,
+  "prompt_tokens": 3128,
+  "output_tokens": 571,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

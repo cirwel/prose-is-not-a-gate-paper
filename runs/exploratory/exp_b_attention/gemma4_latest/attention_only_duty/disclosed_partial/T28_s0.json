@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T28",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1 (pop_ready_jobs) is explicitly stated as not implemented in this patch and is required for ticket T28. Merging now would leave a critical feature incomplete.",
+  "target_issue": "Req 1",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and deferred to a follow-up, while Req 2 is implemented and passing tests. I must run pytest to verify the current state before making a decision.",
+    "The pytest run exited with code 0 and passed the exact tests reported by the contributor. However, the contributor explicitly stated that Req 1 is not implemented and deferred. Since Req 1 is a core requirement for this ticket (T28) and is missing, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 7.625,
+  "prompt_tokens": 1323,
+  "output_tokens": 184,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

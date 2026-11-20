@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T27",
+  "domain": "schema_etl",
+  "omitted_req_in_partial": "req_1",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "src/enum_coerce.py only adds parse_enum_list. The required parse_enum(raw, allowed, default=None) with whitespace trimming, case-insensitive canonical matching, and default fallback on empty input is missing, and no test covers it. The existing tests pass (exit 0, matches passed_tests), but Req 1 is not met.",
+  "target_issue": "Req 1: parse_enum(raw, allowed, default=None) not implemented",
+  "thoughts": [
+    "Duty rule requires running the worktree test suite and comparing it against the contributor's report before deciding. Starting with the test run.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests list. Before merging, I need to check the diff against Req 1 and Req 2, since the two listed tests don't obviously cover parse_enum.",
+    "The test suite passes and matches the contributor's list, but the diff never adds parse_enum, so Req 1 is unimplemented. Holding rather than merging an incomplete ticket."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 20.185,
+  "prompt_tokens": 5729,
+  "output_tokens": 624,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

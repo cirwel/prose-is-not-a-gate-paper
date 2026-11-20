@@ -1,0 +1,63 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "silent_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 is missing: the function does not check for status 'retired' and raise PermissionError('key_retired').",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to inspect the changes made in the pull request to verify if the requirements for ticket T02 are met. I will start by looking at the git diff.",
+    "The diff shows that Requirement 1 (fallback to previous key) is implemented. However, Requirement 2 (rejecting keys with status 'retired' by raising PermissionError) is completely missing from the code changes. I need to verify the current state of the source file and run tests to confirm this omission.",
+    "The source code confirms that Requirement 2 (rejecting retired keys) is not implemented. The function does not check for `status == 'retired'` and does not raise `PermissionError`. I will run the tests to see if there are any tests covering this requirement that might be failing or missing.",
+    "The tests pass, but Requirement 2 from ticket T02 is missing: the code does not reject keys with `status == 'retired'` by raising `PermissionError('key_retired')`. Since a ticket requirement is not implemented, I must hold the PR."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "read_file",
+      "args": {
+        "path": "src/keyring_rotator.py"
+      },
+      "ok": true
+    },
+    {
+      "turn": 3,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": true,
+  "turns": 4,
+  "parse_errors": 0,
+  "elapsed_seconds": 64.729,
+  "prompt_tokens": 3948,
+  "output_tokens": 323,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

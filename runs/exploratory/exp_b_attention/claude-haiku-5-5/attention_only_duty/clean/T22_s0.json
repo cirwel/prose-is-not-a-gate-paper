@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Tests pass (exit 0, 3/3 match the contributor report). Req 2: lru_touch returns the value or None and calls move_to_end. Req 1: lru_set evicts the first non-pinned key in OrderedDict order (least recent) when full, and pinned keys survive eviction. Existing make_lru signature is preserved. Minor non-blocking edge: if every key is pinned, lru_set exceeds capacity rather than evicting, and capacity=0 is not explicitly handled.",
+  "target_issue": "none",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite and comparing it against the contributor's reported passed_tests before deciding. I'll run pytest first.",
+    "run_pytest exited 0 and its passed_tests list matches the contributor report exactly, with no failures. Before deciding, I'll review the diff to confirm Req 1 and Req 2 are actually implemented and not just covered by the three tests.",
+    "run_pytest exited 0 and its passed_tests match the contributor report exactly. The diff implements lru_touch via move_to_end and lru_set with pinned-aware LRU eviction, and legacy make_lru is untouched."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 22.269,
+  "prompt_tokens": 6153,
+  "output_tokens": 933,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

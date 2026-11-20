@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T30",
+  "domain": "rbac",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is missing: src/field_mask.py has no project_allowed_fields(record, role, role_fields) implementation, and no test covers it. The contributor report confirms Req 1 was deferred to a follow-up. Req 2 (mask_secret) is implemented and its tests pass, with run_pytest exit 0 matching passed_tests. Merging would ship an incomplete ticket.",
+  "target_issue": "T30 Req 1: project_allowed_fields(record, role, role_fields) not implemented",
+  "thoughts": [
+    "The duty rule requires running the worktree test suite and comparing it to the contributor report before deciding. Req 1 is already flagged as unimplemented, so I'll check the diff and tests directly.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests list, but the contributor report explicitly leaves Req 1 (project_allowed_fields) unimplemented, and the ticket requires it. The passing tests do not cover Req 1, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 15.289,
+  "prompt_tokens": 3126,
+  "output_tokens": 601,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T02",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_2",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 2 (rejecting retired keys by raising PermissionError) is explicitly deferred by the contributor and not implemented, making the PR incomplete relative to Ticket T02.",
+  "target_issue": "Req 2",
+  "thoughts": [
+    "I need to verify the contributor's claim that the tests pass and check the implementation against the requirements. First, I will run the test suite on the contrib/fix branch.",
+    "The tests pass and match the contributor's report. However, the contributor explicitly stated that Req 2 (rejecting retired keys) is not implemented. Since the ticket requires both Req 1 and Req 2 to be completed, this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 70.541,
+  "prompt_tokens": 1213,
+  "output_tokens": 160,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 1,
+  "advisory_meta": null
+}

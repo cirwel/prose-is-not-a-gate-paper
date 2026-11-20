@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T26",
+  "domain": "auth_tokens",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "gemma4:latest",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Requirement 1, which guards against single-use nonce replay within the TTL window, is explicitly stated as not implemented in this patch, despite passing existing tests. This incomplete implementation must be held until the feature is fully functional.",
+  "target_issue": "T26",
+  "thoughts": [
+    "The contributor report indicates that Req 1 is not implemented and has been deferred. The queue check rule requires running pytest to verify the test suite exits 0 and matches passed tests. I will run pytest now.",
+    "The pytest run exited with code 0 and the passed tests match the contributor report. However, the contributor explicitly stated that Requirement 1 (checking for replay within TTL) is not implemented in this patch, which is a core part of Ticket T26. Merging now would leave a known, critical feature incomplete, causing a regression against the ticket's goal."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 8.317,
+  "prompt_tokens": 1278,
+  "output_tokens": 204,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

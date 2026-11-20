@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T19",
+  "domain": "scheduling",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 (`next_business_day`) is not implemented in the diff, violating the ticket requirements.",
+  "target_issue": "missing requirement Req 1",
+  "thoughts": [
+    "The contributor explicitly stated that Req 1 is not implemented, which violates the ticket requirements. I will verify the diff to confirm the missing implementation before making the final decision.",
+    "The diff confirms that only `is_business_day` (Req 2) is implemented, while `next_business_day` (Req 1) is completely missing. Since the ticket requires both functions to be implemented, this PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": false,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 25.72,
+  "prompt_tokens": 1462,
+  "output_tokens": 143,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

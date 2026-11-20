@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T23",
+  "domain": "pagination",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "Req 1 is unimplemented: src/tiebreak_sort.py has no keyset_page(rows, limit, after_score=None, after_id=None) function, and no tests cover sorting by (-score, id), strict after-cursor filtering, or limit slicing. Only Req 2 (has_more_pages) is present. The test suite passes (exit 0, 2 passed), and legacy row_key is preserved, but the ticket requirements are not met.",
+  "target_issue": "T23 Req 1: keyset_page missing from src/tiebreak_sort.py",
+  "thoughts": [
+    "The contributor report says Req 1 (keyset_page) is not implemented, so this PR is incomplete. The duty rule still requires running the worktree test suite first to verify exit status and the reported passed_tests.",
+    "Pytest exits 0 and matches the two reported passed_tests, but the contributor report explicitly says Req 1 (keyset_page) is not implemented. I need to confirm in the diff that keyset_page is absent before deciding.",
+    "Pytest exits 0 with the two reported passed_tests, and the diff confirms only has_more_pages was added; keyset_page (Req 1) is absent, so the ticket is not complete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 24.18,
+  "prompt_tokens": 88773,
+  "output_tokens": 542,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

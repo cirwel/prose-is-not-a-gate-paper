@@ -1,0 +1,47 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T22",
+  "domain": "cache_store",
+  "omitted_req_in_partial": "req_1",
+  "condition": "disclosed_partial",
+  "signal": "neutral",
+  "duty": "attention_only_duty",
+  "include_ticket": true,
+  "model": "claude-haiku-5-5",
+  "provider": "claude-cli",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "hold",
+  "decision": "hold",
+  "correct": true,
+  "is_defect": true,
+  "hit": true,
+  "false_alarm": null,
+  "reason": "run_pytest exits 0 with the two reported tests passing, but lru_set(cache, key, value, capacity, pinned=()) is absent from this patch. Req 1 (LRU capacity eviction with pinned-key preservation) is unimplemented and has no test coverage, so merging would ship an incomplete ticket.",
+  "target_issue": "T22 Req 1: lru_set eviction and pinned key preservation in src/lru_cap.py",
+  "thoughts": [
+    "The queue check rule requires running the worktree test suite before deciding. The contributor report says Req 1 is missing, so I expect a hold, but I need the actual results first.",
+    "The worktree suite exits 0 and matches the contributor's passed_tests, but the contributor states Req 1 (lru_set with pinned-aware eviction) is not implemented. The ticket requires both requirements, so the PR is incomplete."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": false,
+  "called_read_file": false,
+  "turns": 2,
+  "parse_errors": 0,
+  "elapsed_seconds": 14.878,
+  "prompt_tokens": 3128,
+  "output_tokens": 514,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 2,
+  "advisory_meta": null
+}

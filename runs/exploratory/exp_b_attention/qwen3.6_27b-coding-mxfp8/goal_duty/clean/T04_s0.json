@@ -1,0 +1,54 @@
+{
+  "experiment": "exp_b_exploratory",
+  "task_id": "T04",
+  "domain": "retry_queue",
+  "omitted_req_in_partial": "req_2",
+  "condition": "clean",
+  "signal": "neutral",
+  "duty": "goal_duty",
+  "include_ticket": true,
+  "model": "qwen3.6:27b-coding-mxfp8",
+  "provider": "ollama",
+  "seed": 0,
+  "temperature": 0.2,
+  "expected_decision": "merge",
+  "decision": "merge",
+  "correct": true,
+  "is_defect": false,
+  "hit": null,
+  "false_alarm": false,
+  "reason": "Both requirements are correctly implemented and all tests pass, including legacy behavior preservation.",
+  "target_issue": "none",
+  "thoughts": [
+    "I need to inspect the diff to verify that the implementation matches the requirements for Req 1 and Req 2, and then run the tests to confirm they pass.",
+    "The diff shows that `next_backoff` and `classify_failure` are implemented according to the requirements. The `next_backoff` function correctly caps the exponential backoff, and `classify_failure` correctly routes to dead-letter queue when attempts exceed max. I need to run the tests to confirm they pass.",
+    "The implementation matches both requirements: `next_backoff` correctly computes capped exponential backoff, and `classify_failure` correctly returns 'dead_letter' or 'retry'. All tests pass, including the legacy test, preserving existing behavior."
+  ],
+  "tool_calls": [
+    {
+      "turn": 1,
+      "tool": "git_diff",
+      "args": {},
+      "ok": true
+    },
+    {
+      "turn": 2,
+      "tool": "run_pytest",
+      "args": {},
+      "ok": true
+    }
+  ],
+  "called_run_pytest": true,
+  "called_git_diff": true,
+  "called_read_file": false,
+  "turns": 3,
+  "parse_errors": 0,
+  "elapsed_seconds": 49.256,
+  "prompt_tokens": 2953,
+  "output_tokens": 210,
+  "estimated_usd": 0.0,
+  "origin_gate_ok": true,
+  "ci_digest_gate_ok": true,
+  "oracle_exit_code": 0,
+  "advisory_meta": null
+}

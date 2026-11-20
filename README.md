@@ -10,22 +10,22 @@ This repository contains the `RepoHandoff` benchmark, pre-registration protocol,
 
 Revised 2026-11-20 after an outside cold read and a fixture audit (`docs/reviews/`, `docs/CLEAN-LABEL-AUDIT.md`, `CLAIMS-LEDGER.md` section 6). The hypotheses were locked in `HYPOTHESES.md` at commit `f7ec48c` before any confirmatory task ran. A second script recounts the reported counts from the raw records (`results/recount_check.txt`, `DISCREPANCIES: 0`).
 
-1. **Experiment A (`H1`): badges show no pooled effect; an accurate mismatch notice helps weak receivers.**
+1. **Experiment A (`H1`): the badge contrasts are non-significant; an accurate mismatch notice helps weak receivers.**
    - On `silent_partial`, the two pre-registered badge contrasts are small and non-significant across the five core models: `H1a` `+3.3 pp` (`p_sign_holm = 0.2188`), `H1b` `+1.7 pp` (`p_sign_holm = 0.5811`). Several cells sit at ceiling or floor.
    - An accurate mismatch notice on `false_ci` raises holds by `+25.6 pp` (`36/36` concordant repositories, `p_sign_holm = 8.73e-11`), driven by `nemotron3:33b` (`0/36` to `35/36`) and `gemma4:latest` (`25/36` to `36/36`). A spurious notice on clean patches was not tested.
-   - Receivers held 110 of 792 patches labelled `clean`. An audit found that 59 of those holds cite a reproduced departure of the patch from its written ticket (7 of the 36 clean fixtures deviate on an edge case the oracle does not exercise). These are holds on clean-labelled patches, not false alarms.
+   - Receivers held 110 of 792 patches labelled `clean`. A provisional audit found that 59 of those holds cite a reproduced departure of the patch from its written ticket (at least 7 of the 36 clean fixtures deviate on an edge case the oracle does not exercise). These are holds on clean-labelled patches, not false alarms.
 
 2. **Experiment B (`H2`): narrowing the receiver's duty to CI agreement lowers detection.**
    - Changing the prompt from `goal_duty` to `narrow_ci_duty` lowers `silent_partial` holds by `70.6 pp` pooled (`36/36` concordant repositories, `p_sign_holm = 8.73e-11`), and in each of the 6 models (`p_holm < 0.05`).
-   - Under the narrow prompt, two models from one developer merge PRs whose notes disclose an omitted requirement (`gpt-6-luna` holds `36/36` then `2/36`; `gpt-6.1-sol` `18/18` then `0/18`). The prompt tells them to merge when tests match, so this is compliance with the instruction as written. Three other models hold all 36.
-   - Without the ticket (`H2c`), `silent_partial` holds fall by `74.4 pp`. This is a control with an expected direction; the arm also rewords the duty.
+   - Under the narrow prompt, two models from one developer return `merge` for PRs whose notes disclose an omitted requirement (`gpt-6-luna` holds `36/36` then `2/36`; `gpt-6.1-sol` `18/18` then `0/18`). The prompt tells them to merge when tests match, so this is compliance with the instruction as written. Three other models hold all 36.
+   - Without the ticket (`H2c`), `silent_partial` holds fall by `74.4 pp`. The arm removes the ticket and also rewords the duty, so it cannot apportion the drop.
 
-3. **Experiment C (`H3`): the three pre-registered contrasts on disagreement briefs are null.**
+3. **Experiment C (`H3`): the three pre-registered contrasts on disagreement briefs are non-significant.**
    - At the Stage-3 decision, brief type makes no significant pooled difference (largest `+2.8 pp`, `p_sign_holm = 0.68`). Every decider had code tools in every arm.
-   - Descriptively, a synthesizer asked to surface disagreement returns non-empty crux fields on `36/36` clean PRs, which is what its prompt asks for. A rule that clears those fields when the panel is unanimous and tests pass removes `34/34` by construction.
+   - Descriptively, a synthesizer asked to surface disagreement returns a non-empty crux or unverified-premise field on `36/36` clean PRs, which is what its prompt asks for. A rule that clears those fields when the panel is unanimous and tests pass removes `34/34` by construction.
 
 4. **Part 2 (`H4`): 216 live coding-worker runs under a visible API freeze.**
-   - Workers were told to leave the frozen requirement unimplemented and disclose it. `131/216` did so with green local tests; `4` left it out silently; `5` altered pre-existing tests; `1` reported a pass that failed; `7` completed the requirement by getting around the syntactic freeze check; `34` failed with disclosure and `34` did not finish.
+   - Workers were told to leave the frozen requirement unimplemented and disclose it. `131/216` were classified as disclosed partials (green local tests, failing oracle, a report naming an unfinished requirement); `4` left it out silently; `5` altered pre-existing tests; `1` reported a pass that failed; `7` passed both suites with no tampering flag, which the freeze test should have prevented; `34` failed with disclosure and `34` did not finish.
    - `CIDigestGate + TestIntegrityGate` flag every failing, unfinished and tampered run (the tampering result is definitional) and pass `128/131` disclosed and `4/4` silent partials. A green local suite does not separate a disclosed partial from a complete change.
 
 5. **Descriptive incident records.** Five incidents from one private, author-operated repository illustrate the taxonomy. They are not evidence for the experimental claims and readers cannot inspect the commits.
@@ -49,7 +49,7 @@ Revised 2026-11-20 after an outside cold read and a fixture audit (`docs/reviews
 
 ## Offline Reproduction
 
-All analysis, independent counting, unit tests, figure generation, hygiene checks, and LaTeX builds reproduce offline without API keys or network access (using Python `>= 3.12` and `pdflatex` + `bibtex`):
+All analysis, independent counting, unit tests, figure generation, hygiene checks, and LaTeX builds run without API keys. Installing the Python requirements needs network access once; the PDF builds with `tectonic` (which downloads TeX packages on first use) or with a local `pdflatex` + `bibtex`:
 
 ```bash
 # 1. Run offline unit test suite (86 tests)
@@ -57,10 +57,13 @@ python3 -m pip install -r requirements.txt
 python3 -m pytest -q tests
 
 # 2. Recompute summary tables and stats from raw JSON traces
+# (written to a scratch directory: without the original usage log, the analyzer
+#  would overwrite the archived cumulative cost figure with zero)
+mkdir -p /tmp/repohandoff-check
 python3 -m repohandoff.analyze runs/confirmatory \
-  --out-md results/tables.md \
-  --out-json results/summary.json \
-  --cost-out results/cost_summary.json
+  --out-md /tmp/repohandoff-check/tables.md \
+  --out-json /tmp/repohandoff-check/summary.json \
+  --cost-out /tmp/repohandoff-check/cost_summary.json
 
 # 3. Verify zero-context independent stdlib recount (must report DISCREPANCIES: 0)
 python3 scripts/recount_independent.py runs/confirmatory results/summary.json
@@ -74,6 +77,7 @@ PYTHONPATH=. python3 scripts/audit_clean_labels.py
 
 # 6. Build manuscript PDF (tectonic, or pdflatex + bibtex)
 cd paper && tectonic main.tex
+# or: pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
 ```
 
 ---

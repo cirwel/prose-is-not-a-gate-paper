@@ -295,7 +295,7 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     # Bottom-Left: Part 2 Live Worker outcome distribution by model
     ax_bl = fig.add_subplot(gs[1, 0])
     outcome_specs = [
-        ("complete", "Complete via freeze bypass", COLORS["green"]),
+        ("complete", "Passed both suites despite freeze", COLORS["green"]),
         ("disclosed_partial", "Disclosed partial", COLORS["sky"]),
         ("silent_partial", "Silent partial", COLORS["orange"]),
         ("test_tampering", "Test tampering", COLORS["vermillion"]),

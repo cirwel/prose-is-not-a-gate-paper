@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import os
+import sys
 import re
 import shutil
 import subprocess
@@ -11,7 +12,10 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-PYTHON_BIN = "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
+# The confirmatory runs used the interpreter below. Elsewhere (CI, another machine)
+# fall back to the running interpreter so the offline tests are portable.
+_RUN_PYTHON = "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
+PYTHON_BIN = os.environ.get("REPOHANDOFF_PYTHON") or (_RUN_PYTHON if os.path.exists(_RUN_PYTHON) else sys.executable)
 _EXCLUDED_DIRS = {".git", "__pycache__", ".pytest_cache"}
 
 

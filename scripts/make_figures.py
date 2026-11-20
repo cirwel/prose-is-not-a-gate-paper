@@ -115,7 +115,7 @@ def make_fig1(summary: dict[str, Any], out_dir: Path) -> None:
         (
             2.65,
             "Layer 1: OriginGate (Ed25519 Signature + Audience + Task Binding)",
-            f"Verifies identity/integrity only: passes {det['false_ci']['origin_gate_pass']}/36 false_ci and {det['silent_partial']['origin_gate_pass']}/36 silent_partial (0 defects stopped).",
+            f"Verifies identity/integrity only: passes {det['false_ci']['origin_gate_pass']}/36 false_ci and {det['silent_partial']['origin_gate_pass']}/36 silent_partial (by construction).",
             "#FDF2EC",
             COLORS["vermillion"],
         ),
@@ -129,14 +129,14 @@ def make_fig1(summary: dict[str, Any], out_dir: Path) -> None:
         (
             1.05,
             "Layer 3: Programmatic Crux Gate (Deterministic Pytest + Stage-1 Panel Threshold)",
-            f"Suppresses {suppressed_clean}/34 unanimous clean Stage-2 crux leaks while preserving 36/36 partial-PR panel holds.",
+            f"Clears crux fields on {suppressed_clean}/34 unanimous clean panels (by rule); keeps all 36/36 partial-PR briefs.",
             "#EEF6FC",
             COLORS["blue"],
         ),
         (
             0.25,
             "Layer 4: Request-Bound Goal Verification (Ticket Reqs vs. Diff & Source)",
-            f"Lifts silent_partial hold rate by +{h2a_pp:.1f} pp over Narrow CI Duty (p_holm < 0.05 on 6/6 models).",
+            f"Tested as an LLM prompt (goal_duty), not a deterministic gate: +{h2a_pp:.1f} pp silent_partial holds vs. narrow_ci_duty.",
             "#E9F7F1",
             COLORS["green"],
         ),
@@ -266,7 +266,7 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     ax_tl.set_xticklabels(s_labels)
     ax_tl.set_ylim(0, 1.30)
     ax_tl.set_ylabel("Non-Empty Clean Crux Rate")
-    ax_tl.set_title("A1. Stage-2 Clean Crux Fabrication", fontweight="bold")
+    ax_tl.set_title("A1. Stage-2 Non-Empty Crux Fields on Clean PRs", fontweight="bold")
     ax_tl.grid(axis="y", linestyle=":", alpha=0.5)
     ax_tl.legend(loc="upper center", ncol=2, frameon=False, fontsize=7.5)
 
@@ -287,15 +287,15 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     ax_tr.set_yticks(yp)
     ax_tr.set_yticklabels([PAIRING_LABELS[p] for p in pairs])
     ax_tr.set_xlim(-0.03, 0.45)
-    ax_tr.set_xlabel("Clean False-Alarm Hold Rate (95% CI)")
-    ax_tr.set_title("A2. Stage-3 Decider Clean FA (silent_partial >= 94%)", fontweight="bold")
+    ax_tr.set_xlabel("Hold Rate on Clean-Labelled PRs (95% CI)")
+    ax_tr.set_title("A2. Stage-3 Decider Holds on Clean PRs", fontweight="bold")
     ax_tr.grid(axis="x", linestyle=":", alpha=0.5)
     ax_tr.legend(loc="upper center", bbox_to_anchor=(0.48, -0.22), ncol=3, frameon=False, fontsize=7.4)
 
     # Bottom-Left: Part 2 Live Worker outcome distribution by model
     ax_bl = fig.add_subplot(gs[1, 0])
     outcome_specs = [
-        ("complete", "Complete", COLORS["green"]),
+        ("complete", "Passed both suites despite freeze", COLORS["green"]),
         ("disclosed_partial", "Disclosed partial", COLORS["sky"]),
         ("silent_partial", "Silent partial", COLORS["orange"]),
         ("test_tampering", "Test tampering", COLORS["vermillion"]),
@@ -341,7 +341,7 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     ax_br.set_yticklabels([f"{lbl} (n={gmap[g]['n']})" for g, lbl in present_gates])
     ax_br.set_xlim(0, 1.15)
     ax_br.set_xlabel("Fraction Blocked by Deterministic Gates")
-    ax_br.set_title("B2. Deterministic Gate Blind Spots on Partial Delivery", fontweight="bold")
+    ax_br.set_title("B2. Deterministic Gate Flags by Worker Outcome", fontweight="bold")
     ax_br.grid(axis="x", linestyle=":", alpha=0.5)
     ax_br.legend(loc="upper center", bbox_to_anchor=(0.48, -0.22), ncol=1, frameon=False, fontsize=7.4)
 

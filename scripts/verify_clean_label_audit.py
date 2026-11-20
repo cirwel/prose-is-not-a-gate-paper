@@ -6,13 +6,20 @@ Outputs: docs/clean_label_audit.json, and a per-task listing on stdout.
 
 Final verdict per task:
   DEVIATES   both passes independently returned DEVIATES, and for each the main reproduction is a valid
-             expression that, run here against the clean patch, gives the result the auditor recorded
+             expression that runs here against the clean patch and is consistent with the auditor's note
   DISPUTED   exactly one pass returned DEVIATES
   AMBIGUOUS  no pass returned DEVIATES and at least one returned AMBIGUOUS
   CONFORMS   both passes returned CONFORMS
 
 What this script establishes is that the recorded behaviour of the patch is real. Whether that behaviour
 departs from the ticket is the auditors' reading of the ticket text, quoted in each row; it is not recomputed.
+
+Two checks, both fatal on failure:
+  1. For every DEVIATES verdict the reproduction must be a valid expression whose result here is consistent
+     with the auditor's free-text "actual" field. That field is prose, so this is a loose textual check.
+  2. Every observed result must equal, exactly, the one pinned in docs/clean_label_audit.json. The pinned
+     results for the DEVIATES rows were read against the auditors' notes by hand and by an outside reviewer.
+Pass --repin to rewrite the pinned file after a deliberate change.
 
 Run from the repository root: PYTHONPATH=. python3 -B scripts/verify_clean_label_audit.py
 """
@@ -68,6 +75,8 @@ def main() -> None:
     fams = sorted(passes)
     assert len(fams) == 2, fams
     out = {}
+    pin_path = ROOT / "docs" / "clean_label_audit.json"
+    pinned = None if "--repin" in sys.argv or not pin_path.exists() else json.loads(pin_path.read_text())["tasks"]
     for i in range(36):
         tid = f"T{i:02d}"
         vs = [passes[f][tid]["verdict"] for f in fams]
@@ -76,8 +85,10 @@ def main() -> None:
             r = passes[f][tid]
             expr = (r.get("repro") or "").strip()
             obs[f] = observe(tid, expr) if expr else ""
-            if r["verdict"] == "DEVIATES":
-                assert reproduces(obs[f], str(r.get("actual", ""))), (tid, f, expr, obs[f], r.get("actual"))
+            if r["verdict"] == "DEVIATES" and not reproduces(obs[f], str(r.get("actual", ""))):
+                raise SystemExit(f"{tid} [{f}]: {expr!r} gave {obs[f]!r}, auditor recorded {r.get('actual')!r}")
+            if pinned is not None and pinned[tid]["passes"][f]["observed_here"] != obs[f]:
+                raise SystemExit(f"{tid} [{f}]: {expr!r} gave {obs[f]!r}, pinned {pinned[tid]['passes'][f]['observed_here']!r}")
         if vs.count("DEVIATES") == 2:
             final = "DEVIATES"
         elif vs.count("DEVIATES") == 1:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Recompute every statistic that uses the `clean` label on audited subsets of the 36 tasks.
+"""Recompute hold counts on clean-labelled patches (Experiments A to C) and the pooled H3a/H3b contrasts
+on audited subsets of the 36 tasks.
 
 Reads docs/clean_label_audit.json (per-task verdicts from two independent audit passes)
 and the raw confirmatory records. Standard library only. Writes
@@ -128,6 +129,8 @@ def main() -> None:
     pairings = sorted(p.name for p in (RUNS / "exp_c" / "stage3").iterdir() if p.is_dir())
     arms = ["consensus_brief", "ungated_crux_brief", "gated_crux_brief"]
     c = {(p, arm): load(f"exp_c/stage3/{p}/{arm}/clean") for p in pairings for arm in arms}
+    if len(pairings) != 5 or any(set(v) != all_ids for v in c.values()):
+        raise SystemExit("Experiment C stage 3: expected five pairings with all 36 clean records per arm")
     L += ["## Experiment C: Stage-3 holds on clean-labelled patches, five pairings pooled", "",
           "| Arm | " + " | ".join(f"`{k}`" for k in subsets) + " |", "|---|" + "---|" * len(subsets)]
     for arm in arms:

@@ -118,5 +118,5 @@ Each finding was checked against the records before it was applied.
 - Volume and page details for the 2026 `Science` entry, DOIs for three older journal articles, and a uniform author-list length: left as they are; every entry has a working identifier.
 - Larger type in the dense tables: they are scaled to the text width and legible at page size on screen.
 
-No reviewer re-read the corrected PDF.
+**Fix check.** `gpt-6.2-sol` then read the 23 rebuilt pages and the diff: no new rendering defect, and four wording points (the abstract's "largest effect", the `Unfin` definition, which report field the three blocked partials set, and a table reference), all applied. The Google reader did not re-read, and the last four edits were not re-read by anyone.
 

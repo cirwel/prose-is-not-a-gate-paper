@@ -18,9 +18,9 @@ plt.rcParams.update(
         "font.size": 9,
         "axes.titlesize": 10,
         "axes.labelsize": 9,
-        "xtick.labelsize": 8,
-        "ytick.labelsize": 8,
-        "legend.fontsize": 8,
+        "xtick.labelsize": 8.6,
+        "ytick.labelsize": 8.6,
+        "legend.fontsize": 8.6,
         "axes.spines.top": False,
         "axes.spines.right": False,
     }
@@ -42,13 +42,13 @@ MODEL_ORDER = [
     ("gpt-6.1-sol", "gpt-6.1-sol (N=18)"),
     ("gpt-6-luna", "gpt-6-luna"),
     ("gpt-5.4-nano", "gpt-5.4-nano"),
-    ("gemma4:latest", "gemma4 (8B)"),
-    ("nemotron3:33b", "nemotron3 (33B)"),
+    ("gemma4:latest", "gemma4:latest"),
+    ("nemotron3:33b", "nemotron3:33b"),
 ]
 
 PAIRING_LABELS = {
-    "gemma4:latest -> nemotron3:33b": "gemma4 synth -> nemotron3",
-    "nemotron3:33b -> claude-haiku-5-5": "nemotron3 -> haiku-5-5",
+    "gemma4:latest -> nemotron3:33b": "gemma4 -> nemotron3",
+    "nemotron3:33b -> claude-haiku-5-5": "nemotron3 -> claude-haiku-5-5",
     "nemotron3:33b -> gemma4:latest": "nemotron3 -> gemma4",
     "nemotron3:33b -> gpt-5.4-nano": "nemotron3 -> gpt-5.4-nano",
     "nemotron3:33b -> gpt-6-luna": "nemotron3 -> gpt-6-luna",
@@ -82,7 +82,7 @@ def make_fig2(summary: dict[str, Any], out_dir: Path) -> None:
     a_map = _cell_lookup(summary["exp_a"]["cells"], ("model", "signal", "condition"))
     b_map = _cell_lookup(summary["exp_b"]["cells"], ("model", "duty", "condition"))
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10.5, 5.1), sharey=True)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.8, 5.6), sharey=True)
 
     # Panel A: Exp A false_ci (neutral vs ci_mismatch_prose) + silent_partial (neutral vs green_ci_badge)
     y_positions = list(range(len(MODEL_ORDER)))[::-1]
@@ -104,9 +104,9 @@ def make_fig2(summary: dict[str, Any], out_dir: Path) -> None:
     ax1.set_yticklabels([lbl for _, lbl in MODEL_ORDER])
     ax1.set_xlim(-0.05, 1.07)
     ax1.set_xlabel("Hold Rate (95% Wilson CI)")
-    ax1.set_title("A. Exp A: Badges & Mismatch Prose under Discretion", fontweight="bold")
+    ax1.set_title("A. Exp A: badges and mismatch notice", fontweight="bold")
     ax1.grid(axis="x", linestyle=":", alpha=0.5)
-    ax1.legend(loc="upper center", bbox_to_anchor=(0.48, -0.15), ncol=2, frameon=False, fontsize=7.6)
+    ax1.legend(loc="upper center", bbox_to_anchor=(0.48, -0.13), ncol=1, frameon=False, fontsize=8.6)
 
     # Panel B: Exp B instruction arms
     seen_b: set[str] = set()
@@ -124,9 +124,9 @@ def make_fig2(summary: dict[str, Any], out_dir: Path) -> None:
 
     ax2.set_xlim(-0.05, 1.07)
     ax2.set_xlabel("Hold Rate (95% Wilson CI)")
-    ax2.set_title("B. Exp B: goal_duty vs. narrow_ci_duty Instructions", fontweight="bold")
+    ax2.set_title("B. Exp B: instruction sentence", fontweight="bold")
     ax2.grid(axis="x", linestyle=":", alpha=0.5)
-    ax2.legend(loc="upper center", bbox_to_anchor=(0.48, -0.15), ncol=2, frameon=False, fontsize=7.6)
+    ax2.legend(loc="upper center", bbox_to_anchor=(0.48, -0.13), ncol=1, frameon=False, fontsize=8.6)
 
     fig.tight_layout()
     fig.savefig(out_dir / "fig2_signals_duties.pdf", bbox_inches="tight")
@@ -139,8 +139,8 @@ def make_fig_briefs(summary: dict[str, Any], out_dir: Path) -> None:
     c3_map = _cell_lookup(summary["exp_c"]["cells"], ("pairing", "arm", "condition"))
     s2_map = {(r["synth_model"], r["condition"]): r for r in summary["exp_c"]["stage2"]}
 
-    fig = plt.figure(figsize=(12.2, 3.6))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.2], wspace=0.58)
+    fig = plt.figure(figsize=(9.2, 3.9))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.0], wspace=1.0)
 
     # Top-Left: Exp C Stage-2 Clean Crux Leak before vs after programmatic gate
     ax_tl = fig.add_subplot(gs[0, 0])
@@ -150,18 +150,19 @@ def make_fig_briefs(summary: dict[str, Any], out_dir: Path) -> None:
     w = 0.34
     ung_vals = [s2_map[(s, "clean")]["ungated_crux_nonempty"]["rate"] for s in synths]
     gat_vals = [s2_map[(s, "clean")]["gated_crux_nonempty"]["rate"] for s in synths]
-    ax_tl.bar([x - w / 2 for x in x_idx], ung_vals, width=w, color=COLORS["vermillion"], label="Ungated Stage-2 Crux")
-    ax_tl.bar([x + w / 2 for x in x_idx], gat_vals, width=w, color=COLORS["blue"], label="Gated Stage-2 Crux")
+    ax_tl.bar([x - w / 2 for x in x_idx], ung_vals, width=w, color=COLORS["vermillion"], label="Ungated")
+    ax_tl.bar([x + w / 2 for x in x_idx], gat_vals, width=w, color=COLORS["blue"], label="Gated")
     for x, uv, gv in zip(x_idx, ung_vals, gat_vals):
-        ax_tl.text(x - w / 2, uv + 0.03, f"{int(round(uv*36))}/36", ha="center", va="bottom", fontsize=7.8)
-        ax_tl.text(x + w / 2, gv + 0.03, f"{int(round(gv*36))}/36", ha="center", va="bottom", fontsize=7.8)
+        ax_tl.text(x - w / 2, uv + 0.03, f"{int(round(uv*36))}/36", ha="center", va="bottom", fontsize=8.6)
+        ax_tl.text(x + w / 2, gv + 0.03, f"{int(round(gv*36))}/36", ha="center", va="bottom", fontsize=8.6)
     ax_tl.set_xticks(x_idx)
     ax_tl.set_xticklabels(s_labels)
     ax_tl.set_ylim(0, 1.30)
-    ax_tl.set_ylabel("Non-Empty Clean Crux Rate")
-    ax_tl.set_title("A. Stage-2 Non-Empty Crux Fields on Clean-Labelled PRs", fontweight="bold")
+    ax_tl.set_yticks([0.0, 0.25, 0.5, 0.75, 1.0])
+    ax_tl.set_ylabel("Fraction of clean-labelled PRs")
+    ax_tl.set_title("A. Stage-2 non-empty crux fields", fontweight="bold")
     ax_tl.grid(axis="y", linestyle=":", alpha=0.5)
-    ax_tl.legend(loc="upper center", ncol=2, frameon=False, fontsize=7.5)
+    ax_tl.legend(loc="upper center", ncol=2, frameon=False, fontsize=8.6)
 
     # Top-Right: Exp C Stage-3 Clean FA across 5 cross-family pairings
     ax_tr = fig.add_subplot(gs[0, 1])
@@ -181,9 +182,9 @@ def make_fig_briefs(summary: dict[str, Any], out_dir: Path) -> None:
     ax_tr.set_yticklabels([PAIRING_LABELS[p] for p in pairs])
     ax_tr.set_xlim(-0.03, 0.45)
     ax_tr.set_xlabel("Hold Rate on Clean-Labelled PRs (95% CI)")
-    ax_tr.set_title("B. Stage-3 Decider Holds on Clean-Labelled PRs", fontweight="bold")
+    ax_tr.set_title("B. Stage-3 holds, clean-labelled PRs", fontweight="bold")
     ax_tr.grid(axis="x", linestyle=":", alpha=0.5)
-    ax_tr.legend(loc="upper center", bbox_to_anchor=(0.48, -0.22), ncol=3, frameon=False, fontsize=7.4)
+    ax_tr.legend(loc="upper center", bbox_to_anchor=(0.48, -0.22), ncol=3, frameon=False, fontsize=8.6)
 
     fig.savefig(out_dir / "figA_briefs.pdf", bbox_inches="tight")
     fig.savefig(out_dir / "figA_briefs.png", dpi=300, bbox_inches="tight")
@@ -195,8 +196,8 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     p2_models = [r for r in summary["part2"]["by_model"] if r["model"] != "POOLED_ALL"]
     p2_gates = summary["part2"]["gate_visibility_by_outcome"]
 
-    fig = plt.figure(figsize=(12.2, 3.9))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.2], wspace=0.58)
+    fig = plt.figure(figsize=(9.6, 4.3))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.0], wspace=1.0)
 
     # Left: Part 2 Live Worker outcome distribution by model
     ax_bl = fig.add_subplot(gs[0, 0])
@@ -219,8 +220,8 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     ax_bl.set_yticklabels([f"{r['model']} (N={r['n']})" for r in p2_models])
     ax_bl.set_xlim(0, 1.0)
     ax_bl.set_xlabel("Proportion of Worker Runs")
-    ax_bl.set_title("A. Part 2 Worker Outcomes (N=216)", fontweight="bold")
-    ax_bl.legend(loc="upper center", bbox_to_anchor=(0.45, -0.22), ncol=2, frameon=False, fontsize=7.2)
+    ax_bl.set_title("A. Worker outcomes (N=216)", fontweight="bold")
+    ax_bl.legend(loc="upper center", bbox_to_anchor=(0.45, -0.22), ncol=1, frameon=False, fontsize=8.6)
 
     # Right: Deterministic Gate Catch Rate by Outcome Channel
     ax_br = fig.add_subplot(gs[0, 1])
@@ -231,6 +232,7 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
         ("test_tampering", "Pre-existing test edited"),
         ("disclosed_partial", "Disclosed partial"),
         ("silent_partial", "Partial, completion claimed"),
+        ("complete", "Passed both suites"),
     ]
     gmap = {r["outcome"]: r for r in p2_gates}
     present_gates = [(g, lbl) for g, lbl in gate_order if g in gmap]
@@ -242,14 +244,14 @@ def make_fig3(summary: dict[str, Any], out_dir: Path) -> None:
     ax_br.barh([y - h_bar / 2 for y in yg], comb_rates, height=h_bar, color=COLORS["blue"], label="CIDigestGate + TestIntegrityGate")
     for y, (g, _) in zip(yg, present_gates):
         comb = gmap[g]["combined_deterministic_caught"]
-        ax_br.text(comb["rate"] + 0.02, y - h_bar / 2, f"{comb['k']}/{comb['n']}", va="center", ha="left", fontsize=7.8)
+        ax_br.text(comb["rate"] + 0.02, y - h_bar / 2, f"{comb['k']}/{comb['n']}", va="center", ha="left", fontsize=8.6)
     ax_br.set_yticks(yg)
     ax_br.set_yticklabels([f"{lbl} (n={gmap[g]['n']})" for g, lbl in present_gates])
     ax_br.set_xlim(0, 1.15)
     ax_br.set_xlabel("Fraction Blocked by Deterministic Gates")
-    ax_br.set_title("B. Deterministic Gate Flags by Worker Outcome", fontweight="bold")
+    ax_br.set_title("B. Flagged by deterministic gates", fontweight="bold")
     ax_br.grid(axis="x", linestyle=":", alpha=0.5)
-    ax_br.legend(loc="upper center", bbox_to_anchor=(0.48, -0.22), ncol=1, frameon=False, fontsize=7.4)
+    ax_br.legend(loc="upper center", bbox_to_anchor=(0.48, -0.22), ncol=1, frameon=False, fontsize=8.6)
 
     fig.savefig(out_dir / "fig3_workers.pdf", bbox_inches="tight")
     fig.savefig(out_dir / "fig3_workers.png", dpi=300, bbox_inches="tight")

@@ -133,3 +133,13 @@ Applied after a five-seat review (three Anthropic seats reading the repository, 
 | `H4b` | "Concealed" rate `10/216` | The pre-registered sum is still reported; a reading of the ten reports finds none that conceals what the worker did. | raw records |
 | `nemotron3` `H1c` | "Missed 1/36" under the mismatch banner | The one non-hold is a terminal parse error; the verdict is unknown. | raw record `T08` |
 | Design rules | Five rules | Two scoped observations with experimental support, three untested implications. | ballot D7 |
+
+## 8. Manuscript audit follow-up
+
+| Passage | Interpretation in the revision | Evidence |
+|---|---|---|
+| Experiment B instruction contrast | H2a changes the duty sentence (147/180 to 20/180 holds). The numerically larger H2c also removes the ticket (147/180 to 13/180). The observed change in inspection behavior refers specifically to calls to `git_diff`. | `results/tables.md` §§2, 2b |
+| Experiment A notice | Alongside increased holds, `run_pytest` calls on `false_ci` rose from 12/36 to 36/36 for Gemma and from 0/36 to 22/36 for Nemotron. | `results/tables.md` §1, neutral and mismatch rows |
+| Clean-label sensitivity | After excluding the 11 agreed deviations, 36 of 37 holds fall on disputed or ambiguous tasks. The four unobjected patches drew one hold in 80 decisions. | `results/clean_label_sensitivity.md` |
+| Experiment C gate | Among the 11 agreed deviations, the gate cleared fields on nine and retained them on T07 and T32 in Gemma's Stage-2 records. On T25 the cleared brief raised the tie-breaking question that the fixture audit subsequently tested. The post hoc comparison records which fields the gate cleared. | `docs/clean_label_audit.json`, `runs/confirmatory/exp_c/stage2/gemma4_latest/clean/T25.json` and the other ten agreed-deviation task records in that directory |
+| Partial handoffs and gate scope | All scripted test-passing partials passed the three gates. Three live runs labelled disclosed partial were blocked for report mismatches. The digest gate checked signature, issuer and audience without checking the voucher against an expected task ID. | `results/tables.md` §§0, 4a, `repohandoff/crypto.py`, `HYPOTHESES.md` §4 |

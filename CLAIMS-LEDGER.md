@@ -133,3 +133,22 @@ Applied after a five-seat review (three Anthropic seats reading the repository, 
 | `H4b` | "Concealed" rate `10/216` | The pre-registered sum is still reported; a reading of the ten reports finds none that conceals what the worker did. | raw records |
 | `nemotron3` `H1c` | "Missed 1/36" under the mismatch banner | The one non-hold is a terminal parse error; the verdict is unknown. | raw record `T08` |
 | Design rules | Five rules | Two scoped observations with experimental support, three untested implications. | ballot D7 |
+
+---
+
+## 8. Corrections of 2026-11-21 (final reads of the PDF)
+
+Applied after two outside-family reads of the rendered PDF (`docs/REVIEWS.md` section 6). No confirmatory data, hypothesis or statistic changed.
+
+| Topic | Earlier wording | Corrected statement | Checked against |
+|---|---|---|---|
+| Mismatch notice and test runs | The two local models "rarely ran the tests themselves"; a notice "can substitute for a check" | With the notice both ran the tests more often: `nemotron3` `run_pytest` on 0/36 then 22/36 `false_ci` trials, `gemma4` on 12/36 then 36/36 | `runs/confirmatory/exp_a` |
+| `TestIntegrityGate` on `false_ci` | "n/a" in Table 1 | Flags 8 of 36: those patches also loosen or change a legacy test | `repohandoff.receiver.prepare_condition_state` on `T00`..`T35` |
+| Oracle exit code 2 in Part 2 | "a collection error" | 112 of the 135 partial-labelled runs have exit code 2; the likely cause is an import of a missing public name (the scripted partial patches give exit 2 on 30 of 36 tasks); the archive cannot confirm it per run | `runs/confirmatory/part2`, fixture preparation |
+| No-change disclosed partials | Stated only in the abstract | 16 of 131, by model: `gpt-5.4-nano` 6, `gpt-6-luna` 3, `qwen3.6` 3, `claude-haiku-5-5` 2, `gpt-6.1-sol` 1, `gemma4` 1 | `implemented_allowed_req` in `runs/confirmatory/part2` |
+| Table 5 column for the `complete` outcome | "Evaded" | "Both_Pass"; the pre-registered label remains `complete` | manuscript Table 5 |
+| `git_diff` use in Experiment A | `32/36` to `36/36` for four models | `35/36` or `36/36` on silent partials for the three hosted models with 36 tasks, `18/18` for `gpt-6.1-sol` | `runs/confirmatory/exp_a` |
+| `H2b` pooled difference | `+22.8 pp` | `-22.8 pp` (0.994 to 0.767), the same sign convention as `H2a` and `H2c` | `results/tables.md` section 2 |
+| Experiment C overlap | Panels overlap "because `qwen3.6` participated in every panel" | `gemma4` and `nemotron3` serve at Stage 1 and again as synthesizers or deciders | `repohandoff/briefs.py` |
+| Location of materials | "the project repository", no address | Repository URL and release `paper-v1.0` | manuscript section 8 |
+

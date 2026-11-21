@@ -84,3 +84,39 @@ Vetoes raised and honored: no claim that Experiment B shows narrowed attention s
 - **Part 2 labels.** The ten reports behind `H4b` were read individually; the manuscript now describes what each says.
 - **Not done.** No fixture was repaired and no experiment re-run on repaired fixtures. The arm does not include `gpt-6-luna` or `gpt-6.1-sol` (paid backends). No human adjudicated the audit. Repeated seeds, a freeze-free worker control and a repository-clustered interval for Part 2 remain undone, as in section 4.
 
+---
+
+## 6. Final Reads of the Rendered PDF (2026-11-21)
+
+The author delegated the last read of the PDF to two model families outside the one that revised the manuscript. Each read all 22 rendered pages as images, with the extracted text alongside.
+
+| Reader | Family | Access | Outcome |
+|---|---|---|---|
+| `gpt-6.2-sol` (Codex CLI, read-only) | `openai` | Page images, extracted text, repository | `3.5/5`, ready after the listed fixes. [Report](reviews/2026-11-21-pdf-read-gpt-6.2-sol.md) |
+| `Gemini 4 Neon` (Antigravity CLI, sandboxed) | `google` | Page images and extracted text only | `3.5/5`, ready after the listed fixes. [Report](reviews/2026-11-21-pdf-read-gemini-4-neon.md) |
+
+Each finding was checked against the records before it was applied.
+
+**Applied.**
+
+- Rendering: a file path that ran off the page in Appendix C, two overfull lines in the reproducibility section, Table 9's width, hyphens inserted into two identifiers, Python quotes collapsed into typographic ones in the audit table, an unclosed quotation in the Table 5 caption, a citation printed without brackets, missing PDF title and author metadata, small figure text, and a figure panel that left out the seven runs that passed both suites.
+- The paper named no location for its materials. It now gives the repository URL and the release.
+- The mismatch-notice result said the two local models "rarely ran the tests themselves" and that a notice "can substitute for a check". The records show both models ran the tests more often with the notice (`nemotron3` on 0/36 then 22/36 false-CI trials, `gemma4` on 12/36 then 36/36), and the text now says so.
+- Table 1 showed `TestIntegrityGate` as "n/a" on `false_ci`. Computed from the fixture preparation, it flags 8 of the 36 `false_ci` patches, which also loosen or change a legacy test (`T02`, `T04`, `T10`, `T11`, `T18`, `T21`, `T33`, `T35`). The table and the fixture description now state it.
+- The abstract's count of 16 disclosed partials that changed no file was not in the body; it is now, by model. The abstract also says how the `disclosed_partial` label is assigned and which 3 of the 131 the digest check blocked.
+- The oracle exit code 2 is no longer called a collection error outright; the text gives the likely cause and says the archive cannot confirm it per run.
+- Abstract wording: the Experiment B result is introduced as a comparison of two instruction sentences, counts are given as decisions, not patches; both badge contrasts are named with their direction; the post hoc arm states that one of its four models was not an original receiver.
+- `H3a` to `H3c` are defined where first used; Youden's `J` is in Table 7; `Dis_Fail` and `Unfin` are defined in the Table 5 caption; the Table 5 column "Evaded" is now "Both_Pass"; the `H2b` difference carries the same sign as `H2a` and `H2c`; `H3a` on the audited subset is reported next to `H3b`.
+- Smaller corrections: tool-call counts that used a 36-task denominator for an 18-task model, the description of what Stage-1 advisors see, the reason the Experiment C stages overlap, "redundant" removed from a tool-call count, "Part 1" and "Stage-1/2" used before definition, abbreviations expanded at first use, and sentences that read as revision notes.
+- Bibliography: RFC 9162 added and cited, published venues added to five arXiv entries, journal details added to one `Science` entry, a title capitalisation fixed. 29 entries.
+
+**Not applied.**
+
+- Moving file paths out of table captions into one availability section: the paths are how a reader finds each table's source, and the repository is now linked.
+- Removing `CLAIMS-LEDGER.md` and this file from the availability statement, and removing the retry, cost and deviation bookkeeping from the methods: they are disclosures and stay.
+- Dated snapshot identifiers for three hosted models: none was recorded, and the paper now says so.
+- Volume and page details for the 2026 `Science` entry, DOIs for three older journal articles, and a uniform author-list length: left as they are; every entry has a working identifier.
+- Larger type in the dense tables: they are scaled to the text width and legible at page size on screen.
+
+No reviewer re-read the corrected PDF.
+

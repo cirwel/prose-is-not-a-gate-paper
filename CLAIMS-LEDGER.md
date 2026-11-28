@@ -134,12 +134,33 @@ Applied after a five-seat review (three Anthropic seats reading the repository, 
 | `nemotron3` `H1c` | "Missed 1/36" under the mismatch banner | The one non-hold is a terminal parse error; the verdict is unknown. | raw record `T08` |
 | Design rules | Five rules | Two scoped observations with experimental support, three untested implications. | ballot D7 |
 
-## 8. Manuscript audit follow-up
+---
+
+## 8. Corrections of 2026-11-21 (final reads of the PDF)
+
+Applied after two outside-family reads of the rendered PDF (`docs/REVIEWS.md` section 6). No confirmatory data, hypothesis or statistic changed.
+
+| Topic | Earlier wording | Corrected statement | Checked against |
+|---|---|---|---|
+| Mismatch notice and test runs | The two local models "rarely ran the tests themselves"; a notice "can substitute for a check" | With the notice both ran the tests more often: `nemotron3` `run_pytest` on 0/36 then 22/36 `false_ci` trials, `gemma4` on 12/36 then 36/36 | `runs/confirmatory/exp_a` |
+| `TestIntegrityGate` on `false_ci` | "n/a" in Table 1 | Flags 8 of 36: those patches also loosen or change a legacy test | `repohandoff.receiver.prepare_condition_state` on `T00`..`T35` |
+| Oracle exit code 2 in Part 2 | "a collection error" | 112 of the 135 partial-labelled runs have exit code 2; the likely cause is an import of a missing public name (the scripted partial patches give exit 2 on 30 of 36 tasks); the archive cannot confirm it per run | `runs/confirmatory/part2`, fixture preparation |
+| No-change disclosed partials | Stated only in the abstract | 16 of 131, by model: `gpt-5.4-nano` 6, `gpt-6-luna` 3, `qwen3.6` 3, `claude-haiku-5-5` 2, `gpt-6.1-sol` 1, `gemma4` 1 | `implemented_allowed_req` in `runs/confirmatory/part2` |
+| Table 5 column for the `complete` outcome | "Evaded" | "Both_Pass"; the pre-registered label remains `complete` | manuscript Table 5 |
+| `git_diff` use in Experiment A | `32/36` to `36/36` for four models | `35/36` or `36/36` on silent partials for the three hosted models with 36 tasks, `18/18` for `gpt-6.1-sol` | `runs/confirmatory/exp_a` |
+| `H2b` pooled difference | `+22.8 pp` | `-22.8 pp` (0.994 to 0.767), the same sign convention as `H2a` and `H2c` | `results/tables.md` section 2 |
+| Experiment C overlap | Panels overlap "because `qwen3.6` participated in every panel" | `gemma4` and `nemotron3` serve at Stage 1 and again as synthesizers or deciders | `repohandoff/briefs.py` |
+| Location of materials | "the project repository", no address | Repository URL and release `paper-v1.0` | manuscript section 8 |
+
+---
+
+## 9. Manuscript audit follow-up
 
 | Passage | Interpretation in the revision | Evidence |
 |---|---|---|
 | Experiment B instruction contrast | H2a changes the duty sentence (147/180 to 20/180 holds). The numerically larger H2c also removes the ticket (147/180 to 13/180). The observed change in inspection behavior refers specifically to calls to `git_diff`. | `results/tables.md` §§2, 2b |
-| Experiment A notice | Alongside increased holds, `run_pytest` calls on `false_ci` rose from 12/36 to 36/36 for Gemma and from 0/36 to 22/36 for Nemotron. | `results/tables.md` §1, neutral and mismatch rows |
+| Experiment A notice | Alongside increased holds, `run_pytest` calls on `false_ci` rose from 12/36 to 36/36 for Gemma and from 0/36 to 22/36 for Nemotron (see also section 8). | `results/tables.md` §1, neutral and mismatch rows |
 | Clean-label sensitivity | After excluding the 11 agreed deviations, 36 of 37 holds fall on disputed or ambiguous tasks. The four unobjected patches drew one hold in 80 decisions. | `results/clean_label_sensitivity.md` |
 | Experiment C gate | Among the 11 agreed deviations, the gate cleared fields on nine and retained them on T07 and T32 in Gemma's Stage-2 records. On T25 the cleared brief raised the tie-breaking question that the fixture audit subsequently tested. The post hoc comparison records which fields the gate cleared. | `docs/clean_label_audit.json`, `runs/confirmatory/exp_c/stage2/gemma4_latest/clean/T25.json` and the other ten agreed-deviation task records in that directory |
 | Partial handoffs and gate scope | All scripted test-passing partials passed the three gates. Three live runs labelled disclosed partial were blocked for report mismatches. The digest gate checked signature, issuer and audience without checking the voucher against an expected task ID. | `results/tables.md` §§0, 4a, `repohandoff/crypto.py`, `HYPOTHESES.md` §4 |
+

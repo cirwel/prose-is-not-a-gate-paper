@@ -4,13 +4,15 @@
 
 This repository contains the `RepoHandoff` benchmark, pre-registration protocol, raw confirmatory dataset (`6,012` JSON execution records, `5,616` unique, across `7` models from `5` developers), statistical analysis, a separate recount script, a label audit, figures, and the LaTeX manuscript (`paper/main.pdf`).
 
+**Release:** `paper-v1.0` (2026-11-21). No DOI has been minted.
+
 The repository and the locked protocol carry the working title *Prose Is Not a Gate*. The manuscript was retitled on 2026-11-20 to reflect the change in hold rates when a single reviewer instruction was rewritten.
 
 ---
 
 ## Findings
 
-Revised 2026-11-20 after two rounds of outside review (`docs/REVIEWS.md` sections 4 and 5, `CLAIMS-LEDGER.md` sections 6 and 7). The hypotheses were locked in `HYPOTHESES.md` at commit `f7ec48c` before any confirmatory task ran. A second script recounts the reported counts from the raw records (`results/recount_check.txt`, `DISCREPANCIES: 0`).
+Revised 2026-11-20 after two rounds of outside review, and corrected on 2026-11-21 after two outside reads of the rendered PDF (`docs/REVIEWS.md` sections 4 to 6, `CLAIMS-LEDGER.md` sections 6 to 9). The hypotheses were locked in `HYPOTHESES.md` at commit `f7ec48c` before any confirmatory task ran. A second script recounts the reported counts from the raw records (`results/recount_check.txt`, `DISCREPANCIES: 0`).
 
 1. **Experiment B (`H2`): changing the scope and verdict rule changes holds on scripted partials.**
    - Changing one sentence of the receiver's instruction from `goal_duty` (verify every ticket requirement) to `narrow_ci_duty` (verify CI passes and matches the report; merge if so) lowers holds on `silent_partial` patches from `147/180` to `20/180` (`-70.6 pp`, `36/36` concordant repositories, `p_sign_holm = 8.73e-11`), and in each of the 6 models (`p_holm < 0.05`).
@@ -42,7 +44,7 @@ Revised 2026-11-20 after two rounds of outside review (`docs/REVIEWS.md` section
 
 ## Repository Layout
 
-- `paper/main.tex`, `paper/references.bib`, `paper/main.pdf`: Compiled LaTeX manuscript and verified bibliography (`28` entries).
+- `paper/main.tex`, `paper/references.bib`, `paper/main.pdf`: Compiled LaTeX manuscript and verified bibliography (`29` entries).
 - `repohandoff/`: Benchmark package (`tasks.py`, `task_bank/`, `sandbox.py`, `crypto.py`, `receiver.py`, `briefs.py`, `worker.py`, `prompts.py`, `backends.py`, `sweep.py`, `analyze.py`).
 - `runs/confirmatory/`: Complete raw confirmatory JSON dataset (`6,012` records across `exp_a`, `exp_b`, `exp_c/stage1`, `exp_c/stage2`, `exp_c/stage3`, `part2`).
 - `runs/exploratory/exp_b_attention/`: Post hoc Experiment B arm (486 records, four no-cost models). Not part of the confirmatory dataset or its recount.

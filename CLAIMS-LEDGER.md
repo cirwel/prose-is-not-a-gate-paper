@@ -152,3 +152,15 @@ Applied after two outside-family reads of the rendered PDF (`docs/REVIEWS.md` se
 | Experiment C overlap | Panels overlap "because `qwen3.6` participated in every panel" | `gemma4` and `nemotron3` serve at Stage 1 and again as synthesizers or deciders | `repohandoff/briefs.py` |
 | Location of materials | "the project repository", no address | Repository URL and release `paper-v1.0` | manuscript section 8 |
 
+---
+
+## 9. Manuscript audit follow-up (post-`paper-v1.0`)
+
+| Passage | Interpretation in the revision | Evidence |
+|---|---|---|
+| Experiment B instruction contrast | H2a changes the duty sentence (147/180 to 20/180 holds). The numerically larger H2c also removes the ticket (147/180 to 13/180). The observed change in inspection behavior refers specifically to calls to `git_diff`. | `results/tables.md` §§2, 2b |
+| Experiment A notice | Holds rose in two local receivers (the hosted receivers were already at ceiling), while `run_pytest` calls on `false_ci` rose from 12/36 to 36/36 for Gemma, from 0/36 to 22/36 for Nemotron, and across the hosted receivers as well (see also section 8). | `results/tables.md` §1, neutral and mismatch rows |
+| Clean-label sensitivity | After excluding the 11 agreed deviations, 36 of 37 holds fall on disputed or ambiguous tasks. The four unobjected patches drew one hold in 80 decisions. | `results/clean_label_sensitivity.md` |
+| Experiment C gate | Among the 11 agreed deviations, the gate cleared fields on nine and retained them on T07 and T32 in Gemma's Stage-2 records. On T25 the cleared ungated brief raised the tie-breaking question that the fixture audit subsequently tested; Gemma's consensus brief in the same record also flagged equal-fractional-part edge cases, and the downstream `nemotron3` decider merged T25 under all three briefs. | `docs/clean_label_audit.json`, `runs/confirmatory/exp_c/stage2/gemma4_latest/clean/T25.json` and the other ten agreed-deviation task records in that directory, `runs/confirmatory/exp_c/stage3/gemma4_latest__to__nemotron3_33b/{consensus_brief,ungated_crux_brief,gated_crux_brief}/clean/T25_s0.json` |
+| Partial handoffs, gate scope, and Section 7.2 lead-in | All scripted test-passing partials passed the three gates (separated in Section 7.2 from the two untested implications). Three live runs labelled disclosed partial were blocked for report mismatches. The digest gate checked signature, issuer and audience without checking the voucher against an expected task ID. Release `paper-v1.0` precedes these clarifications. | `results/tables.md` §§0, 4a, `repohandoff/receiver.py` (`prepare_condition_state`), `repohandoff/crypto.py`, `HYPOTHESES.md` §4 |
+
